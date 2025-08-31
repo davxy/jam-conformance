@@ -12,8 +12,8 @@
 | jamduna | 99.093624 |
 | fastroll | 129.47636400000002 |
 | jamzilla | 189.09077399999998 |
-| javajam | 275.748734 |
-| vinwolf | 448.98662900000005 |
+| javajam | 251.79711999999998 |
+| vinwolf | 450.139179 |
 | tsjam | 1009.6247549999999 |
 | jampy | 11545.168256 |
 | pyjamaz | 12592.32126 |
@@ -32,8 +32,8 @@
 | spacejam | 26.57682632000001 |
 | fastroll | 31.823475390000016 |
 | jamzilla | 55.21935671999999 |
-| javajam | 74.87655674999999 |
-| vinwolf | 148.64215648 |
+| javajam | 57.36181760999999 |
+| vinwolf | 148.13259989999995 |
 | tsjam | 258.6470560799999 |
 | jampy | 2366.109330360002 |
 | pyjamaz | 2963.920823650001 |
@@ -47,6 +47,7 @@
 | fastroll | 0.0 |
 | jamduna | 0.0 |
 | jamzig | 0.0 |
+| javajam | 0.0 |
 | turbojam | 0.0 |
 | polkajam_perf_int | 1.547637 |
 | polkajam | 1.5499260000000001 |
@@ -54,9 +55,8 @@
 | jamzilla | 6.288353 |
 | pyjamaz | 6.321101 |
 | boka | 7.128649 |
-| javajam | 10.493443 |
 | spacejam | 10.511154999999999 |
-| vinwolf | 44.053405 |
+| vinwolf | 45.279576 |
 | jampy | 72.31611000000001 |
 | jamixir | 342.247583 |
 
@@ -71,9 +71,9 @@
 | jamzig | 18.097 |
 | spacejam | 25.05 |
 | fastroll | 28.453 |
-| javajam | 42.824 |
+| javajam | 28.704 |
 | jamzilla | 48.486 |
-| vinwolf | 100.489 |
+| vinwolf | 105.294 |
 | tsjam | 113.098 |
 | jampy | 979.948 |
 | pyjamaz | 1363.839 |
@@ -92,8 +92,8 @@
 | jamduna | 41.305 |
 | fastroll | 48.505 |
 | jamzilla | 81.848 |
-| javajam | 118.136 |
-| vinwolf | 211.114 |
+| javajam | 92.065 |
+| vinwolf | 210.126 |
 | tsjam | 439.723 |
 | jampy | 4030.871 |
 | pyjamaz | 5186.699 |
@@ -112,8 +112,8 @@
 | jamduna | 56.601 |
 | fastroll | 71.965 |
 | jamzilla | 119.588 |
-| javajam | 166.389 |
-| vinwolf | 295.301 |
+| javajam | 140.102 |
+| vinwolf | 292.142 |
 | tsjam | 626.661 |
 | jampy | 6267.833 |
 | pyjamaz | 7104.005 |
@@ -132,8 +132,8 @@
 | jamduna | 77.58 |
 | fastroll | 105.318 |
 | jamzilla | 177.169 |
-| javajam | 250.974 |
-| vinwolf | 400.667 |
+| javajam | 209.182 |
+| vinwolf | 394.823 |
 | tsjam | 942.176 |
 | jampy | 9273.082 |
 | pyjamaz | 10905.759 |
@@ -152,8 +152,8 @@
 | jamduna | 26.000773496246907 |
 | fastroll | 31.922783003173215 |
 | jamzilla | 47.918797393589024 |
-| javajam | 69.84641206257659 |
-| vinwolf | 105.76625965454726 |
+| javajam | 64.0271399386295 |
+| vinwolf | 104.74499686355432 |
 | tsjam | 275.5023694364715 |
 | jampy | 2732.1492274484754 |
 | pyjamaz | 3337.401339409811 |
