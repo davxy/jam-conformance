@@ -33,8 +33,18 @@ Only disputed reports are shown in the table
 
 ### GP 0.7.0
 
-|            | boka | jamduna | jamixir | jamzig | jamzilla | javajam | spacejam | turbojam | vinwolf |
-|------------|------|---------|---------|--------|----------|---------|----------|----------|---------|
+|            | boka | jamduna | jamixir | jampy | jamzig | jamzilla | javajam | pyjamaz | spacejam | tsjam | turbojam | vinwolf |
+|------------|------|---------|---------|-------|--------|----------|---------|---------|----------|-------|----------|---------|
+| 1756548459 |      |   ❌    |   💀    |       |   ❌   |          |         |         |          |  ❌   |          |         |
+| 1756548583 |  ❌  |   ❌    |         |       |        |          |         |         |          |  💀   |    ❌    |         |
+| 1756548667 |  ❌  |         |         |  ❌   |        |          |         |         |    ❌    |  ❌   |          |         |
+| 1756548706 |  ❌  |   ❌    |   ❌    |       |   ❌   |    ❌    |         |   ❌    |    ❌    |  ❌   |    ❌    |         |
+| 1756548741 |      |   ❌    |         |       |   ❌   |          |   ❌    |         |          |  ❌   |    ❌    |         |
+| 1756548767 |      |         |         |  ❌   |        |          |         |   ❌    |    ❌    |  ❌   |          |         |
+| 1756548796 |  ❌  |         |         |  ❌   |        |          |         |         |    ❌    |  ❌   |          |         |
+| 1756548916 |      |   ❌    |   ❌    |  ❌   |   ❌   |          |         |   ❌    |    ❌    |  ❌   |    ❌    |         |
+| 1756572122 |  ❌  |         |         |  ❌   |   ❌   |          |         |   💀    |    ❌    |  ❌   |    ❌    |         |
+
 
 ### GP 0.6.7
 
@@ -70,7 +80,7 @@ Performance testing is currently run on the public jam-test-vectors traces to
 allow easy reproduction and optimization. We plan to provide test traces that
 target more aggressively the PVM in future testing cycles.
 
-Current categiries:
+Current categories:
 - `fallback`: No work reports. No safrole.
 - `safrole`: No work reports. Safrole enabled.
 - `storage`: At most 5 storage-related work items per report. No Safrole.
