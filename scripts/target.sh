@@ -436,7 +436,7 @@ case "$ACTION" in
     "get")
         if [ "$TARGET" = "all" ]; then
             echo "Downloading all targets: ${AVAILABLE_TARGETS[*]}"
-            local failed_targets=()
+            failed_targets=()
             for TARGET in "${AVAILABLE_TARGETS[@]}"; do
                 echo "Downloading $TARGET for $OS..."
                 if is_repo_target; then
