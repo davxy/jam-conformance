@@ -11,6 +11,7 @@
 | boka | 31.340597999999996 |
 | jamzig | 31.570784999999997 |
 | pyjamaz | 48.507303 |
+| fastroll | 49.065774 |
 | jamduna | 50.081184 |
 | tsjam | 52.48994 |
 | turbojam | 53.542769 |
@@ -28,6 +29,7 @@
 | polkajam | 1.7037406099999997 |
 | jamzig | 1.7204263999999996 |
 | turbojam | 3.6399815300000022 |
+| fastroll | 3.81793003 |
 | tsjam | 5.54929492 |
 | jamzilla | 9.976896700000003 |
 | javajam | 10.82540557 |
@@ -42,6 +44,7 @@
 
 | Team | Value |
 |------|-------|
+| fastroll | 0.0 |
 | jamduna | 0.0 |
 | jamzig | 0.0 |
 | turbojam | 0.0 |
@@ -61,6 +64,7 @@
 
 | Team | Value |
 |------|-------|
+| fastroll | 0.0 |
 | jamduna | 0.0 |
 | jamzig | 0.0 |
 | turbojam | 0.0 |
@@ -80,6 +84,7 @@
 
 | Team | Value |
 |------|-------|
+| fastroll | 0.0 |
 | jamduna | 0.0 |
 | jamzig | 0.0 |
 | turbojam | 0.0 |
@@ -99,6 +104,7 @@
 
 | Team | Value |
 |------|-------|
+| fastroll | 0.0 |
 | jamduna | 0.0 |
 | jamzig | 0.0 |
 | turbojam | 0.0 |
@@ -127,6 +133,7 @@
 | boka | 27.919 |
 | pyjamaz | 42.623 |
 | turbojam | 44.508 |
+| fastroll | 47.241 |
 | tsjam | 50.563 |
 | jamzilla | 57.468 |
 | jampy | 74.003 |
@@ -147,6 +154,7 @@
 | jamzig | 5.9657619563234165 |
 | pyjamaz | 9.650507505623453 |
 | turbojam | 12.436223343106905 |
+| fastroll | 12.939029305640421 |
 | tsjam | 13.41605288703718 |
 | vinwolf | 13.651289849371233 |
 | jamzilla | 14.155468098326539 |

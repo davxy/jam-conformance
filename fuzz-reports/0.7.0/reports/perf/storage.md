@@ -10,6 +10,7 @@
 | spacejam | 74.957792 |
 | jamzig | 81.58665099999999 |
 | jamduna | 99.093624 |
+| fastroll | 129.47636400000002 |
 | jamzilla | 189.09077399999998 |
 | javajam | 275.748734 |
 | vinwolf | 448.98662900000005 |
@@ -29,6 +30,7 @@
 | jamzig | 20.713402419999998 |
 | jamduna | 23.877081249999996 |
 | spacejam | 26.57682632000001 |
+| fastroll | 31.823475390000016 |
 | jamzilla | 55.21935671999999 |
 | javajam | 74.87655674999999 |
 | vinwolf | 148.64215648 |
@@ -42,6 +44,7 @@
 
 | Team | Value |
 |------|-------|
+| fastroll | 0.0 |
 | jamduna | 0.0 |
 | jamzig | 0.0 |
 | turbojam | 0.0 |
@@ -67,6 +70,7 @@
 | jamduna | 11.039 |
 | jamzig | 18.097 |
 | spacejam | 25.05 |
+| fastroll | 28.453 |
 | javajam | 42.824 |
 | jamzilla | 48.486 |
 | vinwolf | 100.489 |
@@ -86,6 +90,7 @@
 | jamzig | 33.052 |
 | spacejam | 35.039 |
 | jamduna | 41.305 |
+| fastroll | 48.505 |
 | jamzilla | 81.848 |
 | javajam | 118.136 |
 | vinwolf | 211.114 |
@@ -105,6 +110,7 @@
 | spacejam | 44.893 |
 | jamzig | 49.579 |
 | jamduna | 56.601 |
+| fastroll | 71.965 |
 | jamzilla | 119.588 |
 | javajam | 166.389 |
 | vinwolf | 295.301 |
@@ -124,6 +130,7 @@
 | spacejam | 66.898 |
 | jamzig | 76.548 |
 | jamduna | 77.58 |
+| fastroll | 105.318 |
 | jamzilla | 177.169 |
 | javajam | 250.974 |
 | vinwolf | 400.667 |
@@ -143,6 +150,7 @@
 | spacejam | 15.282099349823135 |
 | jamzig | 21.743956089019743 |
 | jamduna | 26.000773496246907 |
+| fastroll | 31.922783003173215 |
 | jamzilla | 47.918797393589024 |
 | javajam | 69.84641206257659 |
 | vinwolf | 105.76625965454726 |

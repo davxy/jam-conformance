@@ -96,9 +96,9 @@ TARGETS[graymatter.cmd]="fuzz-m1-target --stay-open --listen $DEFAULT_SOCK"
 TARGETS[fastroll.repo]="fastroll-jam/fastroll-releases"
 TARGETS[fastroll.file.linux]="fastroll-linux-x86_64-tiny"
 TARGETS[fastroll.file.macos]="fastroll-macos-aarch64-tiny"
-TARGETS[fastroll.cmd.linux]="${TARGETS[fastroll.file.linux]} fuzz"
-TARGETS[fastroll.cmd.macos]="${TARGETS[fastroll.file.macos]} fuzz"
-TARGETS[fastroll.cmd.args]="--socket $DEFAULT_SOCK"
+TARGETS[fastroll.cmd.linux]="${TARGETS[fastroll.file.linux]}"
+TARGETS[fastroll.cmd.macos]="${TARGETS[fastroll.file.macos]}"
+TARGETS[fastroll.cmd.args]="fuzz --socket $DEFAULT_SOCK"
 
 ### Auxiliary functions:
 
