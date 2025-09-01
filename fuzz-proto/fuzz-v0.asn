@@ -10,15 +10,6 @@ Hash ::= OCTET STRING (SIZE(32))
 HeaderHash ::= Hash
 StateRootHash ::= Hash
 
--- Features is a u32 where the MSB (bit 31) is reserved for future extensions
--- If MSB is 1, another u32 follows with more feature flags
-Features ::= U32
-
--- Feature bit constants
-feature-block-ancestry INTEGER ::= 1      -- 2^0
-feature-simple-forking INTEGER ::= 2      -- 2^1
-feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
-
 Version ::= SEQUENCE {
     major U8,
     minor U8,
@@ -26,14 +17,10 @@ Version ::= SEQUENCE {
 }
 
 PeerInfo ::= SEQUENCE {
-    -- Fuzzer protocol version
-    fuzz-version U8,
     -- Application version
     app-version  Version,
     -- JAM protocol version
     jam-version  Version,
-    -- Supported features
-    features Features,
     -- Application name
     name UTF8String
 }
