@@ -127,6 +127,7 @@ Encoded:
 | `SetState` | `StateRoot` | Initialize or reset target state |
 | `ImportBlock` | `StateRoot` | Process block and return resulting state root |
 | `GetState` | `State` | Retrieve posterior state associated to given header hash |
+| `RefineBundle` | `WorkReport` | Compute work report given work package bundle |
 
 #### Message Flow
 
@@ -145,6 +146,8 @@ The protocol adheres to a strict request–response model with the following rul
   detect inconsistencies.
 - **Full state retrieval:** The `GetState` request is issued only when a state
   root mismatch is detected.
+- **Refinement:** If work package bundle refinement is supported by the target, the fuzzer may send a `RefineBundle` and the fuzzer target must send a `WorkReport` in response.  The work package `auth-code-host`, `auth-code-hash` for authorization and `service` and `code-hash` for each work item may be found in the previously transmitted states referenced by the Work package `context` by `anchor` or `lookup-anchor` (for historical lookup).  For purposes of bounding the number of state, only the last 600 states `SetState` should be considered.  
+- **Refinement failures:** If a work package bundle refinement fails, the target must return a work report regardless, and then wait for another block or refine bundle from the target as usual.
 - **Error handling:** Receiving an unexpected or malformed message results in
   immediate session termination.
 - **Timeouts:** The fuzzer may impose time limits on the target’s responses.
@@ -175,7 +178,12 @@ The protocol adheres to a strict request–response model with the following rul
              |   | ----------------------> |   | Process block #1
              |   |      StateRoot          |   |
   Check root |   | <---------------------- |   | Return head state root
-             |   |          ...            |   |
+                 +- REFINE (if supported) -+
+             |   |       RefineBundle      |   |
+             |   | ----------------------> |   | Process bundle 
+             |   |      WorkReport         |   |
+             |   | <---------------------- |   | Return work report
+             |   |          ...            |   |            
              |   |                         |   |
              |   |      ImportBlock        |   |
              |   | ----------------------> |   | Process block #n
