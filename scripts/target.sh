@@ -5,7 +5,8 @@ set -e
 # Change to the script's directory
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-DEFAULT_SOCK="/tmp/jam_target.sock"
+# Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
+DEFAULT_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
 
 # Target configuration using associative array with dot notation
 declare -A TARGETS
