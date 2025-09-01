@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 
+import argparse
 import json
-import os
-import sys
 from pathlib import Path
-from typing import Dict, List, Any, Tuple
-import math
+from typing import Dict, Any, Tuple
 
 # Implementation language mapping based on official JAM clients list
 # Source: https://graypaper.com/clients/
 IMPLEMENTATION_LANGUAGES = {
-    'jamzig': 'Zig',        # JamZig (confirmed)
-    'jamzilla': 'Go',       # Jamzilla (confirmed)
-    'javajam': 'Java',      # JavaJAM (confirmed)
-    'pyjamaz': 'Python',    # PyJAMaz (confirmed)
-    'jampy': 'Python',      # Jampy (confirmed)
-    'jamts': 'TS',          # Likely TSJam or similar TypeScript client
-    'turbojam': 'C++',      # TurboJam C++ implementation
-    'polkajam': 'Rust',     # PolkaJam (confirmed)
-    'polkajam_int': 'Rust (int)',  # PolkaJam interpreted mode
-    'boka': 'Swift',        # Boka (confirmed)
-    'spacejam': 'Rust',     # SpaceJam (confirmed)
-    'vinwolf': 'Rust',      # Vinwolf (confirmed)
-    'jamduna': 'Go',        # JAM DUNA (confirmed)
+    'boka': 'Swift',
+    'fastroll': 'Rust',
+    'jamduna': 'Go',
+    'jampy': 'Python',
+    'tsjam': 'TS',
+    'jamixir': 'Elixir',
+    'jamzig': 'Zig',
+    'jamzilla': 'Go',
+    'javajam': 'Java',
+    'polkajam': 'Rust',
+    'polkajam_int': 'Rust (i)',
+    'pyjamaz': 'Python',
+    'spacejam': 'Rust',
+    'turbojam': 'C++',
+    'vinwolf': 'Rust',
 }
 
 def load_json_reports(base_path: str = "fuzz-reports/0.7.0/reports") -> Dict[str, Dict[str, Any]]:
@@ -85,16 +85,17 @@ def format_time(ms: float) -> str:
 def get_language_color(lang: str) -> str:
     """Return ANSI color code for language (for terminal display)."""
     colors = {
-        'Rust': '\033[38;5;208m',     # Orange
-        'Rust (int)': '\033[38;5;214m', # Light Orange
-        'Zig': '\033[38;5;46m',       # Green
-        'Python': '\033[38;5;33m',    # Blue
-        'Java': '\033[38;5;196m',     # Red
-        'TS': '\033[38;5;39m',        # Cyan
-        'Go': '\033[38;5;51m',        # Light Blue
-        'C++': '\033[38;5;201m',       # Magenta
-        'Swift': '\033[38;5;213m',     # Pink
-        'Unknown': '\033[38;5;240m',  # Gray
+        'Rust': '\033[38;5;208m',       # Orange
+        'Rust (i)': '\033[38;5;214m',   # Light Orange
+        'Zig': '\033[38;5;46m',         # Green
+        'Python': '\033[38;5;33m',      # Blue
+        'Java': '\033[38;5;196m',       # Red
+        'TS': '\033[38;5;39m',          # Cyan
+        'Go': '\033[38;5;51m',          # Light Blue
+        'C++': '\033[38;5;201m',        # Magenta
+        'Swift': '\033[38;5;213m',      # Pink
+        'Elixir': '\033[38;5;129m',     # Purple
+        'Unknown': '\033[38;5;240m',    # Gray
     }
     return colors.get(lang, '\033[0m')
 
@@ -124,7 +125,7 @@ def print_overall_comparison(reports: Dict[str, Dict[str, Any]]):
     """Print overall performance comparison across all tests."""
     
     print(f"\n{'='*90}")
-    print(f"  OVERALL PERFORMANCE COMPARISON (Average Across All Tests)")
+    print("  OVERALL PERFORMANCE COMPARISON (Average Across All Tests)")
     print(f"{'='*90}\n")
     
     overall_stats = calculate_overall_average(reports)
@@ -262,56 +263,42 @@ def print_detailed_stats(reports: Dict[str, Dict[str, Any]], impl_name: str):
             print()
 
 def main():
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "--help" or sys.argv[1] == "-h":
-            print("Usage: python visualize_perf_enhanced.py [options]")
-            print("\nOptions:")
-            print("  --overall         Show overall average performance across all tests")
-            print("  --test TYPE       Show comparison for specific test (default: safrole)")
-            print("  --impl NAME       Show detailed stats for specific implementation")
-            print("  --all             Show all available tests")
-            print("\nExamples:")
-            print("  python visualize_perf_enhanced.py --overall")
-            print("  python visualize_perf_enhanced.py --test storage")
-            print("  python visualize_perf_enhanced.py --impl boka")
-            return
+    parser = argparse.ArgumentParser(
+        description="Visualize JAM implementation performance reports",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""Examples:
+  visualize_perf_enhanced.py --overall
+  visualize_perf_enhanced.py --test storage
+  visualize_perf_enhanced.py --impl boka
+  visualize_perf_enhanced.py --path fuzz-reports/0.6.7/reports"""
+    )
+    
+    parser.add_argument("-o", "--overall", action="store_true",
+                       help="Show overall average performance across all tests")
+    parser.add_argument("-t", "--test", default="safrole",
+                       help="Show comparison for specific test (default: safrole)")
+    parser.add_argument("-i", "--impl",
+                       help="Show detailed stats for specific implementation")
+    parser.add_argument("-a", "--all", action="store_true",
+                       help="Show all available tests")
+    parser.add_argument("-p", "--path", default="./",
+                       help="Specify base path for reports (default: current directory)")
+    
+    args = parser.parse_args()
     
     # Load all reports
-    reports = load_json_reports()
+    reports = load_json_reports(args.path)
     
     if not reports:
         print("No performance reports found!")
         return
     
-    # Parse command line arguments
-    test_type = "safrole"
-    show_overall = False
-    impl_detail = None
-    show_all = False
-    
-    i = 1
-    while i < len(sys.argv):
-        if sys.argv[i] == "--test" and i + 1 < len(sys.argv):
-            test_type = sys.argv[i + 1]
-            i += 2
-        elif sys.argv[i] == "--impl" and i + 1 < len(sys.argv):
-            impl_detail = sys.argv[i + 1]
-            i += 2
-        elif sys.argv[i] == "--overall":
-            show_overall = True
-            i += 1
-        elif sys.argv[i] == "--all":
-            show_all = True
-            i += 1
-        else:
-            i += 1
-    
     # Show requested information
-    if show_overall:
+    if args.overall:
         print_overall_comparison(reports)
-    elif impl_detail:
-        print_detailed_stats(reports, impl_detail)
-    elif show_all:
+    elif args.impl:
+        print_detailed_stats(reports, args.impl)
+    elif args.all:
         # Get all test types
         all_tests = set()
         for impl_tests in reports.values():
@@ -323,7 +310,7 @@ def main():
         # Also show overall at the end
         print_overall_comparison(reports)
     else:
-        print_comparison_chart(reports, test_type)
+        print_comparison_chart(reports, args.test)
         
         # Print summary
         print("\n  Summary:")
@@ -335,15 +322,15 @@ def main():
         best_mean = float('inf')
         
         for impl_name, tests in reports.items():
-            if test_type in tests and 'stats' in tests[test_type]:
-                mean = tests[test_type]['stats'].get('import_mean', float('inf'))
+            if args.test in tests and 'stats' in tests[args.test]:
+                mean = tests[args.test]['stats'].get('import_mean', float('inf'))
                 if mean < best_mean:
                     best_mean = mean
                     best_impl = impl_name
         
         if best_impl:
             lang = IMPLEMENTATION_LANGUAGES.get(best_impl, 'Unknown')
-            print(f"  Best performer ({test_type}): {best_impl} ({lang}) - {format_time(best_mean)}")
+            print(f"  Best performer ({args.test}): {best_impl} ({lang}) - {format_time(best_mean)}")
         
         print("\n  Tip: Use --overall to see average performance across all tests")
         print("       Use --help for more options")
