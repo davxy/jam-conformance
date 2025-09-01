@@ -9,7 +9,7 @@
 | polkajam_perf_int | 10.967015 |
 | polkajam | 11.912311 |
 | jamzig | 24.822119 |
-| boka | 37.758449999999996 |
+| boka | 35.567635 |
 | turbojam | 45.347895 |
 | tsjam | 51.222202 |
 | jamixir | 52.910592 |
@@ -32,8 +32,8 @@
 | jamzig | 10.239863610000004 |
 | tsjam | 15.904948829999997 |
 | jamixir | 18.33378602 |
+| boka | 18.766697419999993 |
 | jamzilla | 19.111224579999988 |
-| boka | 20.036414049999994 |
 | jamduna | 31.260823809999998 |
 | fastroll | 39.37822296000001 |
 | pyjamaz | 62.741711160000015 |
@@ -56,7 +56,7 @@
 | polkajam | 1.193171 |
 | pyjamaz | 4.019587 |
 | jamzilla | 4.994669999999999 |
-| boka | 5.411527 |
+| boka | 5.112369999999999 |
 | vinwolf | 49.277724 |
 | jampy | 67.273689 |
 
@@ -73,7 +73,7 @@
 | tsjam | 11.997 |
 | jamzilla | 14.525 |
 | jamixir | 17.621 |
-| boka | 20.391 |
+| boka | 18.977 |
 | jamduna | 52.156 |
 | fastroll | 53.258 |
 | pyjamaz | 53.576 |
@@ -93,7 +93,7 @@
 | tsjam | 21.398 |
 | jamzilla | 23.12 |
 | jamixir | 24.623 |
-| boka | 27.621 |
+| boka | 25.632 |
 | jamduna | 53.669 |
 | fastroll | 62.75 |
 | pyjamaz | 101.723 |
@@ -111,8 +111,8 @@
 | turbojam | 16.917 |
 | jamzig | 22.872 |
 | tsjam | 30.138 |
+| boka | 30.26 |
 | jamzilla | 30.664 |
-| boka | 31.285 |
 | jamixir | 31.42 |
 | jamduna | 54.718 |
 | fastroll | 71.581 |
@@ -129,7 +129,7 @@
 | polkajam_perf_int | 10.393 |
 | polkajam | 10.924 |
 | jamzig | 24.667 |
-| boka | 34.879 |
+| boka | 34.769 |
 | turbojam | 44.864 |
 | tsjam | 50.891 |
 | jamixir | 52.283 |
@@ -148,7 +148,7 @@
 | javajam | 1.9550708161262713 |
 | polkajam_perf_int | 3.784634226417493 |
 | polkajam | 3.8642061848377662 |
-| boka | 8.9559725946125 |
+| boka | 8.77174474668602 |
 | jamzig | 9.04621995341156 |
 | turbojam | 12.114459183928611 |
 | jamixir | 14.008614355525307 |
