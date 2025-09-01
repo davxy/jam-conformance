@@ -2,8 +2,9 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Change to the script's directory
-cd "$(dirname "${BASH_SOURCE[0]}")"
+cd $SCRIPT_DIR
 
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
 DEFAULT_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
@@ -355,8 +356,21 @@ run() {
     local target_dir="targets/$target/latest"
     if [ ! -d "$target_dir" ]; then
         echo "Error: Target dir not found: $target_dir"
-        echo "Get the target first with: get $target"
-        exit 1
+        # Try to find the newest directory as fallback
+        local base_dir="targets/$target"
+        if [ -d "$base_dir" ]; then
+            local newest_dir=$(find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
+            if [ -n "$newest_dir" ] && [ -d "$newest_dir" ]; then
+                echo "Using newest available directory: $newest_dir"
+                target_dir="$newest_dir"
+            else
+                echo "Get the target first with: get $target"
+                exit 1
+            fi
+        else
+            echo "Get the target first with: get $target"
+            exit 1
+        fi
     fi
     echo "Run $target on $target_dir"
 
