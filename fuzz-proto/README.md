@@ -53,7 +53,7 @@ The fuzzer communicates with target implementations using a synchronous
 
 #### Protocol Messages
 
-Schema file: [fuzz.asn](./fuzz.asn)
+Schema file: [fuzz-v1](./fuzz-v1.asn)
 
 **Note**: The `Header` included in the `SetState` message may be eventually
 used - via its hash - to reference the associated state. It is conceptually
