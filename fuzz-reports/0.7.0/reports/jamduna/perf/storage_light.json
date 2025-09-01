@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "jam-duna-target-0.7.0.3",
+    "name": "jam-duna-target-0.7.0.4",
     "app_version": {
       "major": 0,
       "minor": 7,
@@ -16,13 +16,13 @@
     "steps": 100,
     "imported": 100,
     "import_max_step": 60,
-    "import_min": 0.0,
-    "import_max": 42.515369,
-    "import_mean": 8.765221259999999,
-    "import_p50": 5.323,
-    "import_p75": 11.645,
-    "import_p90": 25.064,
-    "import_p99": 37.462,
-    "import_std_dev": 10.87501345506387
+    "import_min": 2.40956,
+    "import_max": 36.520619999999994,
+    "import_mean": 9.84218683,
+    "import_p50": 8.355,
+    "import_p75": 11.049,
+    "import_p90": 19.832,
+    "import_p99": 33.14,
+    "import_std_dev": 8.105679877217009
   }
 }
