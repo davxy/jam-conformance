@@ -3,10 +3,13 @@
 FuzzProtocol DEFINITIONS ::= BEGIN
 
 -- `Block` and `Header` as defined by the gray paper
+-- `WorkReport` and `SegmentRootLookup`  as defined by gray paper 
+
 -- Refer to jam-types.asn in the jam-test-vectors repo
 
 U8 ::= INTEGER (0..255)
 U32 ::= INTEGER (0..4294967295)
+CoreIndex ::= INTEGER (0..65535)
 
 Hash ::= OCTET STRING (SIZE(32))
 HeaderHash ::= Hash
@@ -19,6 +22,7 @@ Features ::= U32
 -- Feature bit constants
 feature-block-ancestry INTEGER ::= 1      -- 2^0
 feature-simple-forking INTEGER ::= 2      -- 2^1
+feature-bundle-refinement INTEGER ::= 3   -- 2^2
 feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
 
 Version ::= SEQUENCE {
@@ -56,6 +60,20 @@ SetState ::= SEQUENCE {
     state State
 }
 
+RefineBundle ::= SEQUENCE {
+    bundle WorkPackageBundle,
+    segment-root-mappings  SegmentRootLookup,
+}
+
+Segment ::= OCTET STRING (SIZE(4104))
+
+WorkPackageBundle ::= SEQUENCE {
+  work-package     WorkPackage,                        
+  extrinsics       SEQUENCE OF OCTET STRING,            
+  import-segments  SEQUENCE OF SEQUENCE OF Segment, 
+  justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
+}
+
 GetState ::= HeaderHash
 
 StateRoot ::= StateRootHash
@@ -66,7 +84,9 @@ Message ::= CHOICE {
     set-state    [2] SetState,
     get-state    [3] GetState,
     state        [4] State,
-    state-root   [5] StateRoot
+    state-root   [5] StateRoot,
+    refine-bundle [6] RefineBundle,
+    work-report   [7] WorkReport
 }
 
 END
