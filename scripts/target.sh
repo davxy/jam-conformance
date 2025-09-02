@@ -29,12 +29,8 @@ TARGETS[jamzig.cmd.macos]="${TARGETS[jamzig.file.macos]}"
 TARGETS[jamzig.cmd.args]="--socket $DEFAULT_SOCK"
 
 # === PYJAMAZ ===
-TARGETS[pyjamaz.repo]="jamdottech/pyjamaz-conformance-releases"
-TARGETS[pyjamaz.clone]=1
-TARGETS[pyjamaz.file.linux]="gp-0.7.0/pyjamaz-0.1.5-linux-x86_64.zip"
-TARGETS[pyjamaz.file.macos]="gp-0.7.0/pyjamaz-0.1.5-macos-aarch64.zip"
-TARGETS[pyjamaz.cmd]="pyjamaz"
-TARGETS[pyjamaz.cmd.args]="fuzzer target --socket-path $DEFAULT_SOCK"
+TARGETS[pyjamaz.image]="jamdottech/pyjamaz:latest"
+TARGETS[pyjamaz.cmd]="fuzzer target --socket-path $DEFAULT_SOCK"
 
 # === JAMPY ===
 TARGETS[jampy.repo]="dakk/jampy-releases"
