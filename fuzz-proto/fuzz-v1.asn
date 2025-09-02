@@ -2,8 +2,8 @@
 
 FuzzProtocol DEFINITIONS ::= BEGIN
 
--- `Block` and `Header` as defined by the gray paper
--- `WorkReport` and `SegmentRootLookup`  as defined by gray paper 
+-- `Block`, `Header`, `WorkReport`, `SegmentRootLookup` as defined by gray paper. 
+-- See also https://github.com/w3f/jamtestvectors/blob/master/lib/jam-types.asn
 
 -- Refer to jam-types.asn in the jam-test-vectors repo
 
@@ -22,7 +22,7 @@ Features ::= U32
 -- Feature bit constants
 feature-block-ancestry INTEGER ::= 1      -- 2^0
 feature-simple-forking INTEGER ::= 2      -- 2^1
-feature-bundle-refinement INTEGER ::= 3   -- 2^2
+feature-bundle-refinement INTEGER ::= 4   -- 2^2
 feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
 
 Version ::= SEQUENCE {
@@ -60,31 +60,35 @@ SetState ::= SEQUENCE {
     state State
 }
 
+GetState ::= HeaderHash
+
+StateRoot ::= StateRootHash
+
+--------------------------------------
+-- Refinement
+--------------------------------------
+
 RefineBundle ::= SEQUENCE {
     bundle WorkPackageBundle,
-    segment-root-mappings  SegmentRootLookup,
+    segment-root-mappings  SegmentRootLookup
 }
 
 Segment ::= OCTET STRING (SIZE(4104))
 
 WorkPackageBundle ::= SEQUENCE {
-  work-package     WorkPackage,                        
-  extrinsics       SEQUENCE OF OCTET STRING,            
-  import-segments  SEQUENCE OF SEQUENCE OF Segment, 
-  justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
+    work-package     WorkPackage,                        
+    extrinsics       SEQUENCE OF OCTET STRING,            
+    import-segments  SEQUENCE OF SEQUENCE OF Segment, 
+    justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
 }
 
-GetState ::= HeaderHash
-
-StateRoot ::= StateRootHash
-
 Message ::= CHOICE {
-    peer-info    [0] PeerInfo,
-    import-block [1] ImportBlock,
-    set-state    [2] SetState,
-    get-state    [3] GetState,
-    state        [4] State,
-    state-root   [5] StateRoot,
+    peer-info     [0] PeerInfo,
+    import-block  [1] ImportBlock,
+    set-state     [2] SetState,
+    get-state     [3] GetState,
+    state         [4] State,
+    state-root    [5] StateRoot,
     refine-bundle [6] RefineBundle,
     work-report   [7] WorkReport
 }
