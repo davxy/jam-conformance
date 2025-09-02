@@ -7,7 +7,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $SCRIPT_DIR
 
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
-DEFAULT_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
+TARGET_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
+
+# Used to run binaries when target is not provided as a docker image
+# SENSIBLE_DOCKER_IMAGE="debian:stable"
+SENSIBLE_DOCKER_IMAGE="debian:stable-slim"
 
 # Target configuration using associative array with dot notation
 declare -A TARGETS
@@ -17,7 +21,7 @@ TARGETS[vinwolf.repo]="bloppan/conformance_testing"
 TARGETS[vinwolf.clone]=1
 TARGETS[vinwolf.file.linux]="linux/tiny/x86_64/vinwolf-target"
 TARGETS[vinwolf.cmd.linux]="${TARGETS[vinwolf.file.linux]}"
-TARGETS[vinwolf.cmd.args]="--fuzz $DEFAULT_SOCK"
+TARGETS[vinwolf.cmd.args]="--fuzz $TARGET_SOCK"
 
 # === JAMZIG ===
 TARGETS[jamzig.repo]="jamzig/conformance-releases"
@@ -26,18 +30,18 @@ TARGETS[jamzig.file.linux]="tiny/linux/x86_64/jam_conformance_target"
 TARGETS[jamzig.file.macos]="tiny/linux/aarch64/jam_conformance_target"
 TARGETS[jamzig.cmd.linux]="${TARGETS[jamzig.file.linux]}"
 TARGETS[jamzig.cmd.macos]="${TARGETS[jamzig.file.macos]}"
-TARGETS[jamzig.cmd.args]="--socket $DEFAULT_SOCK"
+TARGETS[jamzig.cmd.args]="--socket $TARGET_SOCK"
 
 # === PYJAMAZ ===
 TARGETS[pyjamaz.image]="jamdottech/pyjamaz:latest"
-TARGETS[pyjamaz.cmd]="fuzzer target --socket-path $DEFAULT_SOCK"
+TARGETS[pyjamaz.cmd]="fuzzer target --db-path=/tmp/pyjamaz_fuzzer_db --socket-path $TARGET_SOCK"
 
 # === JAMPY ===
 TARGETS[jampy.repo]="dakk/jampy-releases"
 TARGETS[jampy.clone]=1
 TARGETS[jampy.file.linux]="dist/jampy-target-0.7.0_x86-64.zip"
 TARGETS[jampy.cmd]="jampy-target-0.7.0_x86-64/jampy-target-0.7.0_x86-64"
-TARGETS[jampy.cmd.args]="--socket-file $DEFAULT_SOCK"
+TARGETS[jampy.cmd.args]="--socket-file $TARGET_SOCK"
 
 # === JAMDUNA ===
 TARGETS[jamduna.repo]="jam-duna/jamtestnet"
@@ -45,19 +49,19 @@ TARGETS[jamduna.file.linux]="duna_target_linux"
 TARGETS[jamduna.file.macos]="duna_target_mac"
 TARGETS[jamduna.cmd.linux]="${TARGETS[jamduna.file.linux]}"
 TARGETS[jamduna.cmd.macos]="${TARGETS[jamduna.file.macos]}"
-TARGETS[jamduna.cmd.args]="-socket $DEFAULT_SOCK"
+TARGETS[jamduna.cmd.args]="-socket $TARGET_SOCK"
 
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.cmd]="jamixir"
-TARGETS[jamixir.cmd.args]="fuzzer --log warning --socket-path $DEFAULT_SOCK"
+TARGETS[jamixir.cmd.args]="fuzzer --log warning --socket-path $TARGET_SOCK"
 
 # === JAVAJAM ===
 TARGETS[javajam.repo]="javajamio/javajam-releases"
 TARGETS[javajam.file.linux]="javajam-linux-x86_64.zip"
 TARGETS[javajam.file.macos]="javajam-macos-aarch64.zip"
-TARGETS[javajam.cmd]="bin/javajam fuzz $DEFAULT_SOCK"
+TARGETS[javajam.cmd]="bin/javajam fuzz $TARGET_SOCK"
 
 # === JAMZILLA ===
 TARGETS[jamzilla.repo]="ascrivener/jamzilla-conformance-releases"
@@ -65,31 +69,31 @@ TARGETS[jamzilla.file.linux]="fuzzserver-tiny-amd64-linux"
 TARGETS[jamzilla.file.macos]="fuzzserver-tiny-arm64-darwin"
 TARGETS[jamzilla.cmd.linux]="fuzzserver-tiny-amd64-linux"
 TARGETS[jamzilla.cmd.macos]="fuzzserver-tiny-arm64-darwin"
-TARGETS[jamzilla.cmd.args]="-socket $DEFAULT_SOCK"
+TARGETS[jamzilla.cmd.args]="-socket $TARGET_SOCK"
 
 # === SPACEJAM ===
 TARGETS[spacejam.repo]="spacejamapp/specjam"
 TARGETS[spacejam.file.linux]="spacejam-0.7.0-linux-amd64.tar.gz"
 TARGETS[spacejam.file.macos]="spacejam-0.7.0-macos-arm64.tar.gz"
-TARGETS[spacejam.cmd]="spacejam fuzz target $DEFAULT_SOCK"
+TARGETS[spacejam.cmd]="spacejam fuzz target $TARGET_SOCK"
 
 # === TSJAM ===
 TARGETS[tsjam.repo]="vekexasia/tsjam-releases"
 TARGETS[tsjam.file.linux]="tsjam-fuzzer-target.tgz"
-TARGETS[tsjam.cmd]="tsjam-fuzzer-target/jam-fuzzer-target --socket $DEFAULT_SOCK"
+TARGETS[tsjam.cmd]="tsjam-fuzzer-target/jam-fuzzer-target --socket $TARGET_SOCK"
 TARGETS[tsjam.env]="JAM_CONSTANTS=tiny"
 
 # === BOKA ===
 TARGETS[boka.image]="acala/boka:latest"
-TARGETS[boka.cmd]="fuzz target --socket-path $DEFAULT_SOCK"
+TARGETS[boka.cmd]="fuzz target --socket-path $TARGET_SOCK"
 
 # === TURBOJAM ===
 TARGETS[turbojam.image]="r2rationality/turbojam-fuzz:latest"
-TARGETS[turbojam.cmd]="fuzzer-api $DEFAULT_SOCK"
+TARGETS[turbojam.cmd]="fuzzer-api $TARGET_SOCK"
 
 # === GRAYMATTER ===
 TARGETS[graymatter.image]="ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest"
-TARGETS[graymatter.cmd]="fuzz-m1-target --stay-open --listen $DEFAULT_SOCK"
+TARGETS[graymatter.cmd]="fuzz-m1-target --stay-open --listen $TARGET_SOCK"
 
 # === FASTROLL ===
 TARGETS[fastroll.repo]="fastroll-jam/fastroll-releases"
@@ -97,7 +101,7 @@ TARGETS[fastroll.file.linux]="fastroll-linux-x86_64-tiny"
 TARGETS[fastroll.file.macos]="fastroll-macos-aarch64-tiny"
 TARGETS[fastroll.cmd.linux]="${TARGETS[fastroll.file.linux]}"
 TARGETS[fastroll.cmd.macos]="${TARGETS[fastroll.file.macos]}"
-TARGETS[fastroll.cmd.args]="fuzz --socket $DEFAULT_SOCK"
+TARGETS[fastroll.cmd.args]="fuzz --socket $TARGET_SOCK"
 
 ### Auxiliary functions:
 
@@ -334,6 +338,87 @@ get_github_release() {
     post_actions "$target" "$os"
 }
 
+# Run the target in a performance optimized docker instance
+#
+# Performance optimization parameters:
+# - nice -n -20: Sets highest CPU priority for docker process (-20 is highest, 19 is lowest)
+# - ionice -c1 -n0: Sets real-time I/O scheduling class with highest priority (0)
+# - --cpuset-cpus="0-16": Restricts container to use only CPU cores 0-16
+# - --cpu-shares=2048: Sets relative CPU weight (default 1024), higher = more CPU priority
+# - --security-opt seccomp=unconfined: Disables seccomp filtering for better performance
+# - --security-opt apparmor=unconfined: Disables AppArmor restrictions for better performance
+# - --cap-add=SYS_NICE: Allows container to change process priorities
+# - --cap-add=SYS_RESOURCE: Allows container to modify resource limits
+# - --platform linux/amd64: Forces x86_64 architecture for consistency
+run_docker_image() {
+    local target=$1
+    local image="${TARGETS[$target.image]}"
+    local command="${TARGETS[$target.cmd]}"
+    local env="${TARGETS[$target.env]}"
+
+    echo "Running $target on docker image $image (command $command)"
+
+    if ! docker image inspect "$image" >/dev/null 2>&1; then
+        if [[ $image != $SENSIBLE_DOCKER_IMAGE ]]; then
+            echo "Error: Docker image '$image' not found locally."
+            echo "Please run: $0 get $target"
+            exit 1
+        fi
+    fi
+
+    cleanup_docker() {
+        echo "Cleaning up Docker container $target..."
+        docker kill "$target" 2>/dev/null || true
+        rm -f "$TARGET_SOCK"
+    }
+
+    trap cleanup_docker EXIT INT TERM
+
+    local env_args=""
+    if [ -n "$env" ]; then
+        env_args="-e $env"
+    fi
+
+    local wd_args=""
+    if [[ $image == $SENSIBLE_DOCKER_IMAGE ]]; then
+        wd_args="-w /jam"
+    fi
+    
+
+    sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-32 \
+    docker run \
+        --rm \
+        --name "$target" \
+        --user "$(id -u):$(id -g)" \
+        --platform linux/amd64 \
+        --cpuset-cpus="0-32" \
+        --cpu-shares=2048 \
+        --memory=8g \
+        --memory-swap=8g \
+        --oom-kill-disable \
+        --shm-size=1g \
+        --ulimit nofile=65536:65536 \
+        --ulimit nproc=32768:32768 \
+        --sysctl net.core.somaxconn=65535 \
+        --sysctl net.ipv4.tcp_tw_reuse=1 \
+        --security-opt seccomp=unconfined \
+        --security-opt apparmor=unconfined \
+        --cap-add=SYS_NICE \
+        --cap-add=SYS_RESOURCE \
+        --cap-add=IPC_LOCK \
+        -v /tmp:/tmp \
+        -v "$SCRIPT_DIR/targets/$target/latest":/jam \
+        $wd_args \
+        $env_args \
+        "$image" $command &
+
+    TARGET_PID=$!
+
+    sleep 1
+    echo "Waiting for target termination (pid=$TARGET_PID)"
+    wait $TARGET_PID
+}
+
 run() {
     local target=$1
     local os=$2
@@ -368,72 +453,11 @@ run() {
             exit 1
         fi
     fi
-    echo "Run $target on $target_dir"
 
-    # Set up trap to cleanup on exit
-    cleanup() {
-        # Prevent multiple cleanup calls
-        if [ "$CLEANUP_DONE" = "true" ]; then
-            return
-        fi
-        CLEANUP_DONE=true
-
-        echo "Cleaning up $target..."
-        if [ ! -z "$TARGET_PID" ]; then
-            echo "Killing target $TARGET_PID..."
-            kill -TERM $TARGET_PID 2>/dev/null || true
-            sleep 1
-            # Force kill if still running
-            kill -KILL $TARGET_PID 2>/dev/null || true
-        fi
-        rm -f "$DEFAULT_SOCK"
-    }
-
-    trap cleanup EXIT INT TERM
-
-    local env="${TARGETS[${target}.env]}"
-
-    # Export environment variables if specified
-    if [ ! -z "$env" ]; then
-        export $env
-    fi
-
-    pushd "$target_dir" > /dev/null
-    bash -c "./$command $args" &
-    TARGET_PID=$!
-    popd > /dev/null
-
-    echo "Waiting for target termination (pid=$TARGET_PID)"
-    wait $TARGET_PID
-}
-
-run_docker_image() {
-    local target=$1
-    local image="${TARGETS[$target.image]}"
-    local command="${TARGETS[$target.cmd]}"
-
-    echo "Run $target via Docker"
-
-    if ! docker image inspect "$image" >/dev/null 2>&1; then
-        echo "Error: Docker image '$image' not found locally."
-        echo "Please run: $0 get $target"
-        exit 1
-    fi
-
-    cleanup_docker() {
-        echo "Cleaning up Docker container $target..."
-        docker kill "$target" 2>/dev/null || true
-        rm -f "$DEFAULT_SOCK"
-    }
-
-    trap cleanup_docker EXIT INT TERM
-
-    docker run --rm --pull=never --platform linux/amd64 --name "$target" -v /tmp:/tmp --user "$(id -u):$(id -g)" "$image" $command &
-    TARGET_PID=$!
-
-    sleep 3
-    echo "Waiting for target termination (pid=$TARGET_PID)"
-    wait $TARGET_PID
+    # Overwrite target information and run it in a dedicated docker image
+    TARGETS[$target.image]="$SENSIBLE_DOCKER_IMAGE"
+    TARGETS[$target.cmd]="./$command $args"
+    run_docker_image "$target"
 }
 
 ### Main script logic
@@ -450,7 +474,6 @@ validate_os "$OS" || exit 1
 validate_target "$TARGET" || exit 1
 
 echo "Action: $ACTION, Target: $TARGET, OS: $OS"
-
 
 case "$ACTION" in
     "get")
