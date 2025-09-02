@@ -34,7 +34,7 @@ TARGETS[jamzig.cmd.args]="--socket $TARGET_SOCK"
 
 # === PYJAMAZ ===
 TARGETS[pyjamaz.image]="jamdottech/pyjamaz:latest"
-TARGETS[pyjamaz.cmd]="fuzzer target --socket-path $TARGET_SOCK"
+TARGETS[pyjamaz.cmd]="fuzzer target --db-path=/tmp/pyjamaz_fuzzer_db --socket-path $TARGET_SOCK"
 
 # === JAMPY ===
 TARGETS[jampy.repo]="dakk/jampy-releases"
