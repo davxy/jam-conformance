@@ -15,14 +15,14 @@
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 84,
-    "import_min": 7.2687289999999996,
-    "import_max": 61.683636,
-    "import_mean": 13.15126386,
-    "import_p50": 8.766,
-    "import_p75": 9.386,
-    "import_p90": 10.072,
-    "import_p99": 59.509,
-    "import_std_dev": 14.010019970897503
+    "import_max_step": 72,
+    "import_min": 7.6269,
+    "import_max": 63.604738999999995,
+    "import_mean": 13.534763029999999,
+    "import_p50": 8.856,
+    "import_p75": 9.314,
+    "import_p90": 10.7,
+    "import_p99": 61.396,
+    "import_std_dev": 14.737056219907632
   }
 }
