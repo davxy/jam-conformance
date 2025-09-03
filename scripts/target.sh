@@ -10,7 +10,6 @@ cd $SCRIPT_DIR
 TARGET_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
 
 # Used to run binaries when target is not provided as a docker image
-# SENSIBLE_DOCKER_IMAGE="debian:stable"
 SENSIBLE_DOCKER_IMAGE="debian:stable-slim"
 
 # Target configuration using associative array with dot notation
@@ -21,7 +20,7 @@ TARGETS[vinwolf.repo]="bloppan/conformance_testing"
 TARGETS[vinwolf.clone]=1
 TARGETS[vinwolf.file.linux]="linux/tiny/x86_64/vinwolf-target"
 TARGETS[vinwolf.cmd.linux]="${TARGETS[vinwolf.file.linux]}"
-TARGETS[vinwolf.cmd.args]="--fuzz $TARGET_SOCK"
+TARGETS[vinwolf.args]="--fuzz $TARGET_SOCK"
 
 # === JAMZIG ===
 TARGETS[jamzig.repo]="jamzig/conformance-releases"
@@ -30,7 +29,7 @@ TARGETS[jamzig.file.linux]="tiny/linux/x86_64/jam_conformance_target"
 TARGETS[jamzig.file.macos]="tiny/linux/aarch64/jam_conformance_target"
 TARGETS[jamzig.cmd.linux]="${TARGETS[jamzig.file.linux]}"
 TARGETS[jamzig.cmd.macos]="${TARGETS[jamzig.file.macos]}"
-TARGETS[jamzig.cmd.args]="--socket $TARGET_SOCK"
+TARGETS[jamzig.args]="--socket $TARGET_SOCK"
 
 # === PYJAMAZ ===
 TARGETS[pyjamaz.image]="jamdottech/pyjamaz:latest"
@@ -41,7 +40,7 @@ TARGETS[jampy.repo]="dakk/jampy-releases"
 TARGETS[jampy.clone]=1
 TARGETS[jampy.file.linux]="dist/jampy-target-0.7.0_x86-64.zip"
 TARGETS[jampy.cmd]="jampy-target-0.7.0_x86-64/jampy-target-0.7.0_x86-64"
-TARGETS[jampy.cmd.args]="--socket-file $TARGET_SOCK"
+TARGETS[jampy.args]="--socket-file $TARGET_SOCK"
 
 # === JAMDUNA ===
 TARGETS[jamduna.repo]="jam-duna/jamtestnet"
@@ -49,13 +48,13 @@ TARGETS[jamduna.file.linux]="duna_target_linux"
 TARGETS[jamduna.file.macos]="duna_target_mac"
 TARGETS[jamduna.cmd.linux]="${TARGETS[jamduna.file.linux]}"
 TARGETS[jamduna.cmd.macos]="${TARGETS[jamduna.file.macos]}"
-TARGETS[jamduna.cmd.args]="-socket $TARGET_SOCK"
+TARGETS[jamduna.args]="-socket $TARGET_SOCK"
 
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.cmd]="jamixir"
-TARGETS[jamixir.cmd.args]="fuzzer --log warning --socket-path $TARGET_SOCK"
+TARGETS[jamixir.args]="fuzzer --log warning --socket-path $TARGET_SOCK"
 
 # === JAVAJAM ===
 TARGETS[javajam.repo]="javajamio/javajam-releases"
@@ -69,7 +68,7 @@ TARGETS[jamzilla.file.linux]="fuzzserver-tiny-amd64-linux"
 TARGETS[jamzilla.file.macos]="fuzzserver-tiny-arm64-darwin"
 TARGETS[jamzilla.cmd.linux]="fuzzserver-tiny-amd64-linux"
 TARGETS[jamzilla.cmd.macos]="fuzzserver-tiny-arm64-darwin"
-TARGETS[jamzilla.cmd.args]="-socket $TARGET_SOCK"
+TARGETS[jamzilla.args]="-socket $TARGET_SOCK"
 
 # === SPACEJAM ===
 TARGETS[spacejam.repo]="spacejamapp/specjam"
@@ -101,7 +100,7 @@ TARGETS[fastroll.file.linux]="fastroll-linux-x86_64-tiny"
 TARGETS[fastroll.file.macos]="fastroll-macos-aarch64-tiny"
 TARGETS[fastroll.cmd.linux]="${TARGETS[fastroll.file.linux]}"
 TARGETS[fastroll.cmd.macos]="${TARGETS[fastroll.file.macos]}"
-TARGETS[fastroll.cmd.args]="fuzz --socket $TARGET_SOCK"
+TARGETS[fastroll.args]="fuzz --socket $TARGET_SOCK"
 
 ### Auxiliary functions:
 
@@ -353,10 +352,10 @@ get_github_release() {
 run_docker_image() {
     local target=$1
     local image="${TARGETS[$target.image]}"
-    local command="${TARGETS[$target.cmd]}"
+    local cmd="${TARGETS[$target.cmd]}"
     local env="${TARGETS[$target.env]}"
 
-    echo "Running $target on docker image $image (command $command)"
+    echo "Running $target on docker image $image (command $cmd)"
 
     if ! docker image inspect "$image" >/dev/null 2>&1; then
         if [[ $image != $SENSIBLE_DOCKER_IMAGE ]]; then
@@ -410,7 +409,7 @@ run_docker_image() {
         -v "$SCRIPT_DIR/targets/$target/latest":/jam \
         $wd_args \
         $env_args \
-        "$image" $command &
+        "$image" $cmd &
 
     TARGET_PID=$!
     echo "Waiting for target termination (pid=$TARGET_PID)"
@@ -421,7 +420,7 @@ run() {
     local target=$1
     local os=$2
     local command=""
-    local args="${TARGETS[${target}.cmd.args]}"
+    local args="${TARGETS[${target}.args]}"
     # Prefer os-specific command, fallback to generic
     if [[ -v TARGETS[${target}.cmd.${os}] ]]; then
         command="${TARGETS[${target}.cmd.${os}]}"
