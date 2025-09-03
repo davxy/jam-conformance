@@ -413,8 +413,6 @@ run_docker_image() {
         "$image" $command &
 
     TARGET_PID=$!
-
-    sleep 1
     echo "Waiting for target termination (pid=$TARGET_PID)"
     wait $TARGET_PID
 }
