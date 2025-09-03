@@ -1,4 +1,8 @@
-[03-09-25]
+### [03-09-25]
+
+Trace 1756792661 has been retired due to an invalid steps sequence. The trace
+contained a failing step caused by a malformed block where a successfull parent
+block step was expected instead.
 
 New traces batch for 0.7.0: https://github.com/davxy/jam-conformance/pull/52
 
@@ -7,7 +11,7 @@ Fuzzer protocol v1 proposal now open for review: https://github.com/davxy/jam-co
 The extension introduces fuzzer version and peer supported features during the session handshake. 
 Also proposes an extension for target refinement of WorkPackages.
 
-[29-08-25]
+### [29-08-25]
 
 Performance reports for protocol version 0.7.0 are now available for participating teams.
 These reports provide benchmarking data across different JAM test vectors traces categories.
@@ -18,7 +22,7 @@ as teams advance their JAM protocol implementations.
 
 All performance results were generated on an AMD Ryzen Threadripper 3970X 32-Core (64) @ 4.55 GHz running Linux.
 
-[23-08-25]
+### [23-08-25]
 
 The reports table has been updated to include results from the new Turbojam implementation.
 
@@ -27,11 +31,11 @@ Cleanup: All previously sorted traces have been removed from the reports table t
 This concludes the 0.6.7 fuzzing session regarding new trace generation. Progress tracking
 continues for teams that still need to address issues with previously delivered 0.6.7 traces.
 
-[21-08-25]
+### [21-08-25]
 
 Two new highly controversial reports: 1755796851 1755796995
 
-[20-08-25]
+### [20-08-25]
 
 README updated with [collaboration](https://github.com/davxy/jam-conformance?tab=readme-ov-file#collaboration) section.
 
@@ -45,7 +49,7 @@ JAM implementation conformance testing. This complements the existing GitHub iss
 and provides a more immediate communication channel for the community.
 Can be used to announce new interesting discussions happening on GH.
 
-[19-08-25]
+### [19-08-25]
 
 New traces have been submitted for evaluation under the `traces/TESTING` folder.
 The reports table has been updated with the results for these traces, and the
@@ -54,14 +58,14 @@ reports are stored in each team’s folder as usual.
 Retired traces: 1755530535, 1755530728 1755530896 1755531000 1755531081
 1755531179 1755531229 1755531322 1755531375 1755531419 1755531480
 
-[18-08-25]
+### [18-08-25]
 
 Updated the disputed reports table in `fuzz-reports/README.md` with additional  
 **highly controversial** trace reports. Please review them **carefully and critically**.  
 As often emphasized, GP is the single source of truth, avoid blindly matching against
 the fuzzer's expected results.
 
-[17-08-25]
+### [17-08-25]
 
 Added comprehensive Disputes table to fuzz-reports/README.md showing test results
 across all the fuzzed JAM implementations.
@@ -72,7 +76,7 @@ Enhanced README.md with "Notes on Reports, Requests, and Contributions" section
 to help set clear expectations for collaboration and support. This guidance aims
 to make interactions more effective for everyone while keeping the project sustainable.
 
-[15-08-25]
+### [15-08-25]
 
 Highly disputed report: 1755248982 - All teams affected.
 Possible reason: https://github.com/davxy/jam-conformance/issues/16#issuecomment-3190838048
@@ -87,7 +91,7 @@ to the archived report to help other teams and to speed up troubleshooting of
 potential regressions. I will double-check the fix before moving the report to
 the archive.
 
-[14-08-25]
+### [14-08-25]
 
 Archive of inter-team reports: [./fuzz-reports/archive]  
 Teams are encouraged to review and execute one another's reports.
