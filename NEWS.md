@@ -1,3 +1,12 @@
+[03-09-25]
+
+New traces batch for 0.7.0: https://github.com/davxy/jam-conformance/pull/52
+
+Fuzzer protocol v1 proposal now open for review: https://github.com/davxy/jam-conformance/pull/47
+
+The extension introduces fuzzer version and peer supported features during the session handshake. 
+Also proposes an extension for target refinement of WorkPackages.
+
 [29-08-25]
 
 Performance reports for protocol version 0.7.0 are now available for participating teams.
