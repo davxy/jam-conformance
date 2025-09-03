@@ -53,6 +53,7 @@ TARGETS[jamduna.args]="-socket $TARGET_SOCK"
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
+TARGETS[jamixir.file.macos]="jamixir_macos-arm64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.cmd]="jamixir"
 TARGETS[jamixir.args]="fuzzer --log info --socket-path $TARGET_SOCK"
 
