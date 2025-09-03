@@ -54,7 +54,7 @@ TARGETS[jamduna.args]="-socket $TARGET_SOCK"
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.cmd]="jamixir"
-TARGETS[jamixir.args]="fuzzer --log warning --socket-path $TARGET_SOCK"
+TARGETS[jamixir.args]="fuzzer --log info --socket-path $TARGET_SOCK"
 
 # === JAVAJAM ===
 TARGETS[javajam.repo]="javajamio/javajam-releases"
@@ -78,7 +78,7 @@ TARGETS[spacejam.cmd]="spacejam fuzz target $TARGET_SOCK"
 
 # === TSJAM ===
 TARGETS[tsjam.repo]="vekexasia/tsjam-releases"
-TARGETS[tsjam.file.linux]="tsjam-fuzzer-target.tgz"
+TARGETS[tsjam.file.linux]="tsjam-fuzzer-target.tgz.zip"
 TARGETS[tsjam.cmd]="tsjam-fuzzer-target/jam-fuzzer-target --socket $TARGET_SOCK"
 TARGETS[tsjam.env]="JAM_CONSTANTS=tiny"
 
@@ -207,24 +207,60 @@ post_actions() {
     pushd "targets/$target/latest"
     local post="${TARGETS[$target.post]}"
     if [ ! -z "$post" ]; then
-        pushd $target_dir_rev
         bash -c "$post"
-        popd
-    elif [[ "$file" == *.zip ]]; then
-        echo "Extracting zip archive: $file"
-        unzip "$file"
-        rm "$file"
-    elif [[ "$file" == *.tar.gz ]] || [[ "$file" == *.tgz ]]; then
-        echo "Extracting tar.gz archive: $file"
-        tar -xzf "$file"
-        rm "$file"
-    elif [[ "$file" == *.tar ]]; then
-        echo "Extracting tar archive: $file"
-        tar -xf "$file"
-        rm "$file"
     else
-        echo "Making file executable: $file"
-        chmod +x "$file"
+        # Extract nested archives by peeling off extensions
+        local current_file="$file"     
+        while [[ -f "$current_file" ]]; do
+            case "$current_file" in
+                *.zip)
+                    echo "Extracting zip archive: $current_file"
+                    unzip "$current_file" && rm "$current_file"
+                    current_file="${current_file%.zip}"
+                    ;;
+                *.tar.gz)
+                    echo "Extracting tar.gz archive: $current_file"
+                    tar -xzf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar.gz}"
+                    ;;
+                *.tgz)
+                    echo "Extracting tgz archive: $current_file"
+                    tar -xzf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tgz}"
+                    ;;
+                *.tar.bz2)
+                    echo "Extracting tar.bz2 archive: $current_file"
+                    tar -xjf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar.bz2}"
+                    ;;
+                *.tbz2)
+                    echo "Extracting tbz2 archive: $current_file"
+                    tar -xjf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tbz2}"
+                    ;;
+                *.tar.xz)
+                    echo "Extracting tar.xz archive: $current_file"
+                    tar -xJf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar.xz}"
+                    ;;
+                *.txz)
+                    echo "Extracting txz archive: $current_file"
+                    tar -xJf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.txz}"
+                    ;;
+                *.tar)
+                    echo "Extracting tar archive: $current_file"
+                    tar -xf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar}"
+                    ;;
+                *)
+                    # Not an archive, make it executable and stop
+                    echo "Making file executable: $current_file"
+                    chmod +x "$current_file"
+                    break
+                    ;;
+            esac
+        done
     fi
     popd
 
