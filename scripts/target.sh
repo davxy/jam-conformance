@@ -57,10 +57,8 @@ TARGETS[jamixir.cmd]="jamixir"
 TARGETS[jamixir.args]="fuzzer --log info --socket-path $TARGET_SOCK"
 
 # === JAVAJAM ===
-TARGETS[javajam.repo]="javajamio/javajam-releases"
-TARGETS[javajam.file.linux]="javajam-linux-x86_64.zip"
-TARGETS[javajam.file.macos]="javajam-macos-aarch64.zip"
-TARGETS[javajam.cmd]="bin/javajam fuzz $TARGET_SOCK"
+TARGETS[javajam.image]="ghcr.io/methodfive/javajam:latest-amd64"
+TARGETS[javajam.cmd]="fuzz $TARGET_SOCK"
 
 # === JAMZILLA ===
 TARGETS[jamzilla.repo]="ascrivener/jamzilla-conformance-releases"
