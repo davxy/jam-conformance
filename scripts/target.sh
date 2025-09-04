@@ -27,7 +27,7 @@ TARGETS[vinwolf.cmd.args]="--fuzz $TARGET_SOCK"
 TARGETS[jamzig.repo]="jamzig/conformance-releases"
 TARGETS[jamzig.clone]=1
 TARGETS[jamzig.file.linux]="tiny/linux/x86_64/jam_conformance_target"
-TARGETS[jamzig.file.macos]="tiny/linux/aarch64/jam_conformance_target"
+TARGETS[jamzig.file.macos]="tiny/macos/aarch64/jam_conformance_target"
 TARGETS[jamzig.cmd.linux]="${TARGETS[jamzig.file.linux]}"
 TARGETS[jamzig.cmd.macos]="${TARGETS[jamzig.file.macos]}"
 TARGETS[jamzig.cmd.args]="--socket $TARGET_SOCK"
@@ -54,6 +54,7 @@ TARGETS[jamduna.cmd.args]="-socket $TARGET_SOCK"
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
+TARGETS[jamixir.file.macos]="jamixir_macos-arm64_0.7.0_tiny.tar.gz" 
 TARGETS[jamixir.cmd]="jamixir"
 TARGETS[jamixir.cmd.args]="fuzzer --log warning --socket-path $TARGET_SOCK"
 
@@ -204,10 +205,11 @@ post_actions() {
     local target=$1
     local os=$2
     local file=$(get_target_file "$target" "$os")
-    echo "Performing post actions"
+    echo "Performing post actions for $file"
     pushd "targets/$target/latest"
     local post="${TARGETS[$target.post]}"
     if [ ! -z "$post" ]; then
+        echo "Post action defined"
         pushd $target_dir_rev
         bash -c "$post"
         popd
@@ -238,16 +240,20 @@ clone_github_repo() {
     local repo=$3
     local temp_dir=$(mktemp -d)
 
+    echo "Cloning GITHUB repo $repo"
+
     git clone "https://github.com/$repo" --depth 1 "$temp_dir"
     local commit_hash=$(cd "$temp_dir" && git rev-parse --short HEAD)
     echo "Cloning last revisin: $commit_hash"
     local target_dir="targets/$target"
     echo "Cloned to $target_dir"
 
+    echo "Copying files to $target_dir"
     mkdir -p "$target_dir"
     local target_dir_rev="$target_dir/$commit_hash"
     mv "$temp_dir" "$target_dir_rev"
 
+    echo "Removing latest"
     rm -f "$target_dir/latest"
     ln -s "$(realpath $target_dir_rev)" "$target_dir/latest"
 
@@ -385,13 +391,14 @@ run_docker_image() {
     fi
     
 
-    sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-32 \
+    # sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-32 \
     docker run \
+        -it \
         --rm \
         --name "$target" \
         --user "$(id -u):$(id -g)" \
         --platform linux/amd64 \
-        --cpuset-cpus="0-32" \
+        --cpuset-cpus="0-7" \
         --cpu-shares=2048 \
         --memory=8g \
         --memory-swap=8g \
@@ -451,11 +458,72 @@ run() {
             exit 1
         fi
     fi
+    echo "Run $target on $target_dir"
 
-    # Overwrite target information and run it in a dedicated docker image
-    TARGETS[$target.image]="$SENSIBLE_DOCKER_IMAGE"
-    TARGETS[$target.cmd]="./$command $args"
-    run_docker_image "$target"
+    # Set up trap to cleanup on exit
+    cleanup() {
+        # Prevent multiple cleanup calls
+        if [ "$CLEANUP_DONE" = "true" ]; then
+            return
+        fi
+        CLEANUP_DONE=true
+
+        echo "Cleaning up $target..."
+        if [ ! -z "$TARGET_PID" ]; then
+            echo "Killing target $TARGET_PID..."
+            kill -TERM $TARGET_PID 2>/dev/null || true
+            sleep 1
+            # Force kill if still running
+            kill -KILL $TARGET_PID 2>/dev/null || true
+        fi
+        rm -f "$DEFAULT_SOCK"
+    }
+
+    trap cleanup EXIT INT TERM
+
+    local env="${TARGETS[${target}.env]}"
+
+    # Export environment variables if specified
+    if [ ! -z "$env" ]; then
+        export $env
+    fi
+
+    pushd "$target_dir" > /dev/null
+    bash -c "./$command $args" &
+    TARGET_PID=$!
+    popd > /dev/null
+
+    echo "Waiting for target termination (pid=$TARGET_PID)"
+    wait $TARGET_PID
+}
+
+run_docker_image() {
+    local target=$1
+    local image="${TARGETS[$target.image]}"
+    local command="${TARGETS[$target.cmd]}"
+
+    echo "Run $target via Docker"
+
+    if ! docker image inspect "$image" >/dev/null 2>&1; then
+        echo "Error: Docker image '$image' not found locally."
+        echo "Please run: $0 get $target"
+        exit 1
+    fi
+
+    cleanup_docker() {
+        echo "Cleaning up Docker container $target..."
+        docker kill "$target" 2>/dev/null || true
+        rm -f "$DEFAULT_SOCK"
+    }
+
+    trap cleanup_docker EXIT INT TERM
+
+    docker run --rm --pull=never --platform linux/amd64 --name "$target" -v /tmp:/tmp --user "$(id -u):$(id -g)" "$image" $command &
+    TARGET_PID=$!
+
+    sleep 3
+    echo "Waiting for target termination (pid=$TARGET_PID)"
+    wait $TARGET_PID
 }
 
 ### Main script logic
@@ -466,6 +534,13 @@ fi
 
 ACTION="$1"
 TARGET="$2"
+# always use linux, since we are running in a fixed Debian Docker image.
+# OS="linux"
+# Ensure socket file doesn't exist before starting
+if [ -e "$TARGET_SOCK" ]; then
+    echo "Removing existing socket file: $TARGET_SOCK"
+    rm -f "$TARGET_SOCK" 2>/dev/null || true
+fi
 OS=$(get_os)
 
 validate_os "$OS" || exit 1
