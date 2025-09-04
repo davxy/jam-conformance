@@ -16,12 +16,15 @@ SENSIBLE_DOCKER_IMAGE="debian:stable-slim"
 # Target configuration using associative array with dot notation
 declare -A TARGETS
 
+# Maximum number of cores to use for docker containers
+MAX_CORES=${DOCKER_CORES:-32}
+
 # === VINWOLF ===
 TARGETS[vinwolf.repo]="bloppan/conformance_testing"
 TARGETS[vinwolf.clone]=1
 TARGETS[vinwolf.file.linux]="linux/tiny/x86_64/vinwolf-target"
 TARGETS[vinwolf.cmd.linux]="${TARGETS[vinwolf.file.linux]}"
-TARGETS[vinwolf.cmd.args]="--fuzz $TARGET_SOCK"
+TARGETS[vinwolf.args]="--fuzz $TARGET_SOCK"
 
 # === JAMZIG ===
 TARGETS[jamzig.repo]="jamzig/conformance-releases"
@@ -30,7 +33,7 @@ TARGETS[jamzig.file.linux]="tiny/linux/x86_64/jam_conformance_target"
 TARGETS[jamzig.file.macos]="tiny/macos/aarch64/jam_conformance_target"
 TARGETS[jamzig.cmd.linux]="${TARGETS[jamzig.file.linux]}"
 TARGETS[jamzig.cmd.macos]="${TARGETS[jamzig.file.macos]}"
-TARGETS[jamzig.cmd.args]="--socket $TARGET_SOCK"
+TARGETS[jamzig.args]="--socket $TARGET_SOCK"
 
 # === PYJAMAZ ===
 TARGETS[pyjamaz.image]="jamdottech/pyjamaz:latest"
@@ -41,7 +44,7 @@ TARGETS[jampy.repo]="dakk/jampy-releases"
 TARGETS[jampy.clone]=1
 TARGETS[jampy.file.linux]="dist/jampy-target-0.7.0_x86-64.zip"
 TARGETS[jampy.cmd]="jampy-target-0.7.0_x86-64/jampy-target-0.7.0_x86-64"
-TARGETS[jampy.cmd.args]="--socket-file $TARGET_SOCK"
+TARGETS[jampy.args]="--socket-file $TARGET_SOCK"
 
 # === JAMDUNA ===
 TARGETS[jamduna.repo]="jam-duna/jamtestnet"
@@ -49,14 +52,14 @@ TARGETS[jamduna.file.linux]="duna_target_linux"
 TARGETS[jamduna.file.macos]="duna_target_mac"
 TARGETS[jamduna.cmd.linux]="${TARGETS[jamduna.file.linux]}"
 TARGETS[jamduna.cmd.macos]="${TARGETS[jamduna.file.macos]}"
-TARGETS[jamduna.cmd.args]="-socket $TARGET_SOCK"
+TARGETS[jamduna.args]="-socket $TARGET_SOCK"
 
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.file.macos]="jamixir_macos-arm64_0.7.0_tiny.tar.gz" 
 TARGETS[jamixir.cmd]="jamixir"
-TARGETS[jamixir.cmd.args]="fuzzer --log warning --socket-path $TARGET_SOCK"
+TARGETS[jamixir.args]="fuzzer --log info --socket-path $TARGET_SOCK"
 
 # === JAVAJAM ===
 TARGETS[javajam.repo]="javajamio/javajam-releases"
@@ -80,7 +83,7 @@ TARGETS[spacejam.cmd]="spacejam fuzz target $TARGET_SOCK"
 
 # === TSJAM ===
 TARGETS[tsjam.repo]="vekexasia/tsjam-releases"
-TARGETS[tsjam.file.linux]="tsjam-fuzzer-target.tgz"
+TARGETS[tsjam.file.linux]="tsjam-fuzzer-target.tgz.zip"
 TARGETS[tsjam.cmd]="tsjam-fuzzer-target/jam-fuzzer-target --socket $TARGET_SOCK"
 TARGETS[tsjam.env]="JAM_CONSTANTS=tiny"
 
@@ -102,7 +105,7 @@ TARGETS[fastroll.file.linux]="fastroll-linux-x86_64-tiny"
 TARGETS[fastroll.file.macos]="fastroll-macos-aarch64-tiny"
 TARGETS[fastroll.cmd.linux]="${TARGETS[fastroll.file.linux]}"
 TARGETS[fastroll.cmd.macos]="${TARGETS[fastroll.file.macos]}"
-TARGETS[fastroll.cmd.args]="fuzz --socket $TARGET_SOCK"
+TARGETS[fastroll.args]="fuzz --socket $TARGET_SOCK"
 
 ### Auxiliary functions:
 
@@ -110,7 +113,7 @@ show_usage() {
     local script_name=$1
     echo "Usage: $script_name <get|run> <target>"
     echo "Available targets: ${AVAILABLE_TARGETS[*]} all"
-    echo "Available OSes: linux, macos"
+    echo "Supported OSes: linux, macos"
     echo "Default OS: linux (auto-detected)"
 }
 
@@ -183,7 +186,7 @@ target_supports_os() {
     return 1
 }
 
-# Function to get the correct file for a target and os
+# Gets the correct file for a target and os
 get_target_file() {
     local target=$1
     local os=$2
@@ -209,25 +212,58 @@ post_actions() {
     pushd "targets/$target/latest"
     local post="${TARGETS[$target.post]}"
     if [ ! -z "$post" ]; then
-        echo "Post action defined"
-        pushd $target_dir_rev
         bash -c "$post"
-        popd
-    elif [[ "$file" == *.zip ]]; then
-        echo "Extracting zip archive: $file"
-        unzip "$file"
-        rm "$file"
-    elif [[ "$file" == *.tar.gz ]] || [[ "$file" == *.tgz ]]; then
-        echo "Extracting tar.gz archive: $file"
-        tar -xzf "$file"
-        rm "$file"
-    elif [[ "$file" == *.tar ]]; then
-        echo "Extracting tar archive: $file"
-        tar -xf "$file"
-        rm "$file"
     else
-        echo "Making file executable: $file"
-        chmod +x "$file"
+        local current_file="$file"     
+        while [[ -f "$current_file" ]]; do
+            case "$current_file" in
+                *.zip)
+                    echo "Extracting zip archive: $current_file"
+                    unzip "$current_file" && rm "$current_file"
+                    current_file="${current_file%.zip}"
+                    ;;
+                *.tar.gz)
+                    echo "Extracting tar.gz archive: $current_file"
+                    tar -xzf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar.gz}"
+                    ;;
+                *.tgz)
+                    echo "Extracting tgz archive: $current_file"
+                    tar -xzf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tgz}"
+                    ;;
+                *.tar.bz2)
+                    echo "Extracting tar.bz2 archive: $current_file"
+                    tar -xjf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar.bz2}"
+                    ;;
+                *.tbz2)
+                    echo "Extracting tbz2 archive: $current_file"
+                    tar -xjf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tbz2}"
+                    ;;
+                *.tar.xz)
+                    echo "Extracting tar.xz archive: $current_file"
+                    tar -xJf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar.xz}"
+                    ;;
+                *.txz)
+                    echo "Extracting txz archive: $current_file"
+                    tar -xJf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.txz}"
+                    ;;
+                *.tar)
+                    echo "Extracting tar archive: $current_file"
+                    tar -xf "$current_file" && rm "$current_file"
+                    current_file="${current_file%.tar}"
+                    ;;
+                *)
+                    echo "Making file executable: $current_file"
+                    chmod +x "$current_file"
+                    break
+                    ;;
+            esac
+        done
     fi
     popd
 
@@ -240,7 +276,6 @@ clone_github_repo() {
     local repo=$3
     local temp_dir=$(mktemp -d)
 
-    echo "Cloning GITHUB repo $repo"
 
     git clone "https://github.com/$repo" --depth 1 "$temp_dir"
     local commit_hash=$(cd "$temp_dir" && git rev-parse --short HEAD)
@@ -248,12 +283,10 @@ clone_github_repo() {
     local target_dir="targets/$target"
     echo "Cloned to $target_dir"
 
-    echo "Copying files to $target_dir"
     mkdir -p "$target_dir"
     local target_dir_rev="$target_dir/$commit_hash"
     mv "$temp_dir" "$target_dir_rev"
 
-    echo "Removing latest"
     rm -f "$target_dir/latest"
     ln -s "$(realpath $target_dir_rev)" "$target_dir/latest"
 
@@ -359,10 +392,10 @@ get_github_release() {
 run_docker_image() {
     local target=$1
     local image="${TARGETS[$target.image]}"
-    local command="${TARGETS[$target.cmd]}"
+    local cmd="${TARGETS[$target.cmd]}"
     local env="${TARGETS[$target.env]}"
 
-    echo "Running $target on docker image $image (command $command)"
+    echo "Running $target on docker image $image (command $cmd)"
 
     if ! docker image inspect "$image" >/dev/null 2>&1; then
         if [[ $image != $SENSIBLE_DOCKER_IMAGE ]]; then
@@ -389,16 +422,20 @@ run_docker_image() {
     if [[ $image == $SENSIBLE_DOCKER_IMAGE ]]; then
         wd_args="-w /jam"
     fi
-    
 
-    # sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-32 \
+    if [ "$(get_os)" == "linux" ]; then
+        priority_args="sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-$MAX_CORES" 
+    else
+        priority_args=""
+    fi
+
+    $priority_args \
     docker run \
-        -it \
         --rm \
         --name "$target" \
         --user "$(id -u):$(id -g)" \
         --platform linux/amd64 \
-        --cpuset-cpus="0-7" \
+        --cpuset-cpus="0-$MAX_CORES" \
         --cpu-shares=2048 \
         --memory=8g \
         --memory-swap=8g \
@@ -417,7 +454,7 @@ run_docker_image() {
         -v "$SCRIPT_DIR/targets/$target/latest":/jam \
         $wd_args \
         $env_args \
-        "$image" $command &
+        "$image" $cmd &
 
     TARGET_PID=$!
     echo "Waiting for target termination (pid=$TARGET_PID)"
@@ -428,7 +465,7 @@ run() {
     local target=$1
     local os=$2
     local command=""
-    local args="${TARGETS[${target}.cmd.args]}"
+    local args="${TARGETS[${target}.args]}"
     # Prefer os-specific command, fallback to generic
     if [[ -v TARGETS[${target}.cmd.${os}] ]]; then
         command="${TARGETS[${target}.cmd.${os}]}"
@@ -458,74 +495,14 @@ run() {
             exit 1
         fi
     fi
-    echo "Run $target on $target_dir"
 
-    # Set up trap to cleanup on exit
-    cleanup() {
-        # Prevent multiple cleanup calls
-        if [ "$CLEANUP_DONE" = "true" ]; then
-            return
-        fi
-        CLEANUP_DONE=true
-
-        echo "Cleaning up $target..."
-        if [ ! -z "$TARGET_PID" ]; then
-            echo "Killing target $TARGET_PID..."
-            kill -TERM $TARGET_PID 2>/dev/null || true
-            sleep 1
-            # Force kill if still running
-            kill -KILL $TARGET_PID 2>/dev/null || true
-        fi
-        rm -f "$DEFAULT_SOCK"
-    }
-
-    trap cleanup EXIT INT TERM
-
-    local env="${TARGETS[${target}.env]}"
-
-    # Export environment variables if specified
-    if [ ! -z "$env" ]; then
-        export $env
-    fi
-
-    pushd "$target_dir" > /dev/null
-    bash -c "./$command $args" &
-    TARGET_PID=$!
-    popd > /dev/null
-
-    echo "Waiting for target termination (pid=$TARGET_PID)"
-    wait $TARGET_PID
+    # Overwrite target information and run it in a dedicated docker image
+    TARGETS[$target.image]="$SENSIBLE_DOCKER_IMAGE"
+    TARGETS[$target.cmd]="./$command $args"
+    run_docker_image "$target"
 }
 
-run_docker_image() {
-    local target=$1
-    local image="${TARGETS[$target.image]}"
-    local command="${TARGETS[$target.cmd]}"
-
-    echo "Run $target via Docker"
-
-    if ! docker image inspect "$image" >/dev/null 2>&1; then
-        echo "Error: Docker image '$image' not found locally."
-        echo "Please run: $0 get $target"
-        exit 1
-    fi
-
-    cleanup_docker() {
-        echo "Cleaning up Docker container $target..."
-        docker kill "$target" 2>/dev/null || true
-        rm -f "$DEFAULT_SOCK"
-    }
-
-    trap cleanup_docker EXIT INT TERM
-
-    docker run --rm --pull=never --platform linux/amd64 --name "$target" -v /tmp:/tmp --user "$(id -u):$(id -g)" "$image" $command &
-    TARGET_PID=$!
-
-    sleep 3
-    echo "Waiting for target termination (pid=$TARGET_PID)"
-    wait $TARGET_PID
-}
-
+ 
 ### Main script logic
 if [ $# -lt 2 ]; then
     show_usage "$0"
@@ -535,13 +512,8 @@ fi
 ACTION="$1"
 TARGET="$2"
 # always use linux, since we are running in a fixed Debian Docker image.
-# OS="linux"
-# Ensure socket file doesn't exist before starting
-if [ -e "$TARGET_SOCK" ]; then
-    echo "Removing existing socket file: $TARGET_SOCK"
-    rm -f "$TARGET_SOCK" 2>/dev/null || true
-fi
-OS=$(get_os)
+OS="linux"
+# OS=$(get_os)
 
 validate_os "$OS" || exit 1
 validate_target "$TARGET" || exit 1
