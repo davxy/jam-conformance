@@ -100,6 +100,14 @@ TARGETS[fastroll.cmd.linux]="${TARGETS[fastroll.file.linux]}"
 TARGETS[fastroll.cmd.macos]="${TARGETS[fastroll.file.macos]}"
 TARGETS[fastroll.args]="fuzz --socket $TARGET_SOCK"
 
+# === GOSSAMER ===
+TARGETS[gossamer.repo]="chainsafe/gossamer-jam-releases"
+TARGETS[gossamer.file.linux]="gossamer-jam-tiny-linux-amd64"
+TARGETS[gossamer.file.macos]="gossamer-jam-tiny-macos-arm64"
+TARGETS[gossamer.cmd.linux]="${TARGETS[gossamer.file.linux]}"
+TARGETS[gossamer.cmd.macos]="${TARGETS[gossamer.file.macos]}"
+TARGETS[gossamer.args]="target --socket $TARGET_SOCK"
+
 ### Auxiliary functions:
 
 show_usage() {
