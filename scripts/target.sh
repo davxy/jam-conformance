@@ -26,7 +26,6 @@ MAX_CORES=${DOCKER_CORES:-32}
 # connection issues. This option provides a workaround for such cases.
 RUN_DOCKER=${RUN_DOCKER:-1}
 
-
 # === VINWOLF ===
 TARGETS[vinwolf.repo]="bloppan/conformance_testing"
 TARGETS[vinwolf.clone]=1
@@ -284,7 +283,6 @@ clone_github_repo() {
     local repo=$3
     local temp_dir=$(mktemp -d)
 
-
     git clone "https://github.com/$repo" --depth 1 "$temp_dir"
     local commit_hash=$(cd "$temp_dir" && git rev-parse --short HEAD)
     echo "Cloning last revisin: $commit_hash"
@@ -534,7 +532,6 @@ else
     }
     trap cleanup EXIT INT TERM
     local env="${TARGETS[${target}.env]}"
-    # Overwrite target information and run it in a dedicated docker image
     if [ ! -z "$env" ]; then
         export $env
     fi
