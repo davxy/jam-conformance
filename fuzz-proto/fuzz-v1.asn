@@ -9,7 +9,6 @@ FuzzProtocol DEFINITIONS ::= BEGIN
 
 U8 ::= INTEGER (0..255)
 U32 ::= INTEGER (0..4294967295)
-CoreIndex ::= INTEGER (0..65535)
 
 Hash ::= OCTET STRING (SIZE(32))
 HeaderHash ::= Hash
@@ -23,6 +22,7 @@ Features ::= U32
 feature-block-ancestry INTEGER ::= 1      -- 2^0
 feature-simple-forking INTEGER ::= 2      -- 2^1
 feature-bundle-refinement INTEGER ::= 4   -- 2^2
+feature-exports INTEGER ::= 8             -- 2^3
 feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
 
 Version ::= SEQUENCE {
@@ -62,6 +62,8 @@ SetState ::= SEQUENCE {
 
 GetState ::= HeaderHash
 
+GetExports ::= OpaqueHash
+
 StateRoot ::= StateRootHash
 
 --------------------------------------
@@ -69,11 +71,16 @@ StateRoot ::= StateRootHash
 --------------------------------------
 
 RefineBundle ::= SEQUENCE {
+    core-index  CoreIndex,
     bundle WorkPackageBundle,
-    segment-root-mappings  SegmentRootLookup
+    segment-root-mappings  SegmentRootLookup,
+    auth-gas-used Gas,
+    auth-trace    ByteSequence
 }
 
 Segment ::= OCTET STRING (SIZE(4104))
+
+Exports ::= SEQUENCE of Segment
 
 WorkPackageBundle ::= SEQUENCE {
     work-package     WorkPackage,                        
@@ -90,7 +97,9 @@ Message ::= CHOICE {
     state         [4] State,
     state-root    [5] StateRoot,
     refine-bundle [6] RefineBundle,
-    work-report   [7] WorkReport
+    work-report   [7] WorkReport,
+    get-exports   [8] GetExports,
+    exports       [9] Exports
 }
 
 END
