@@ -1,0 +1,105 @@
+-- Specification for Fuzzer Protocol V1
+
+FuzzProtocol DEFINITIONS ::= BEGIN
+
+-- `Block`, `Header`, `WorkReport`, `SegmentRootLookup` as defined by gray paper. 
+-- See also https://github.com/w3f/jamtestvectors/blob/master/lib/jam-types.asn
+
+-- Refer to jam-types.asn in the jam-test-vectors repo
+
+U8 ::= INTEGER (0..255)
+U32 ::= INTEGER (0..4294967295)
+
+Hash ::= OCTET STRING (SIZE(32))
+HeaderHash ::= Hash
+StateRootHash ::= Hash
+
+-- Features is a u32 where the MSB (bit 31) is reserved for future extensions
+-- If MSB is 1, another u32 follows with more feature flags
+Features ::= U32
+
+-- Feature bit constants
+feature-block-ancestry INTEGER ::= 1      -- 2^0
+feature-simple-forking INTEGER ::= 2      -- 2^1
+feature-bundle-refinement INTEGER ::= 4   -- 2^2
+feature-exports INTEGER ::= 8             -- 2^3
+feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
+
+Version ::= SEQUENCE {
+    major U8,
+    minor U8,
+    patch U8
+}
+
+PeerInfo ::= SEQUENCE {
+    -- Fuzzer protocol version
+    fuzz-version U8,
+    -- Application version
+    app-version  Version,
+    -- JAM protocol version
+    jam-version  Version,
+    -- Supported features
+    features Features,
+    -- Application name
+    name UTF8String
+}
+
+TrieKey ::= OCTET STRING (SIZE(31))
+
+KeyValue ::= SEQUENCE {
+    key     TrieKey,
+    value   OCTET STRING
+}
+
+State ::= SEQUENCE OF KeyValue
+
+ImportBlock ::= Block
+
+SetState ::= SEQUENCE {
+    header Header,
+    state State
+}
+
+GetState ::= HeaderHash
+
+GetExports ::= OpaqueHash
+
+StateRoot ::= StateRootHash
+
+--------------------------------------
+-- Refinement
+--------------------------------------
+
+RefineBundle ::= SEQUENCE {
+    core-index  CoreIndex,
+    bundle WorkPackageBundle,
+    segment-root-mappings  SegmentRootLookup,
+    auth-gas-used Gas,
+    auth-trace    ByteSequence
+}
+
+Segment ::= OCTET STRING (SIZE(4104))
+
+Exports ::= SEQUENCE of Segment
+
+WorkPackageBundle ::= SEQUENCE {
+    work-package     WorkPackage,                        
+    extrinsics       SEQUENCE OF OCTET STRING,            
+    import-segments  SEQUENCE OF SEQUENCE OF Segment, 
+    justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
+}
+
+Message ::= CHOICE {
+    peer-info     [0] PeerInfo,
+    import-block  [1] ImportBlock,
+    set-state     [2] SetState,
+    get-state     [3] GetState,
+    state         [4] State,
+    state-root    [5] StateRoot,
+    refine-bundle [6] RefineBundle,
+    work-report   [7] WorkReport,
+    get-exports   [8] GetExports,
+    exports       [9] Exports
+}
+
+END
