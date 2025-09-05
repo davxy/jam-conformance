@@ -15,6 +15,17 @@ SENSIBLE_DOCKER_IMAGE="debian:stable-slim"
 # Target configuration using associative array with dot notation
 declare -A TARGETS
 
+# Maximum number of cores to use for docker containers
+MAX_CORES=${DOCKER_CORES:-32}
+
+# Whether to run targets in docker containers (1) or directly on host (0)
+# Running in Docker is preferable, for being more secure and allow for a linux
+# target in a macOS host. Since more teams target linux than other OSes, 
+# we get more exposure by running in a Docker container.
+# However, Docker currently presents difficulties in Mac setups, with inconsistent
+# connection issues. This option provides a workaround for such cases.
+RUN_DOCKER=${RUN_DOCKER:-1}
+
 # === VINWOLF ===
 TARGETS[vinwolf.repo]="bloppan/conformance_testing"
 TARGETS[vinwolf.clone]=1
@@ -26,7 +37,7 @@ TARGETS[vinwolf.args]="--fuzz $TARGET_SOCK"
 TARGETS[jamzig.repo]="jamzig/conformance-releases"
 TARGETS[jamzig.clone]=1
 TARGETS[jamzig.file.linux]="tiny/linux/x86_64/jam_conformance_target"
-TARGETS[jamzig.file.macos]="tiny/linux/aarch64/jam_conformance_target"
+TARGETS[jamzig.file.macos]="tiny/macos/aarch64/jam_conformance_target"
 TARGETS[jamzig.cmd.linux]="${TARGETS[jamzig.file.linux]}"
 TARGETS[jamzig.cmd.macos]="${TARGETS[jamzig.file.macos]}"
 TARGETS[jamzig.args]="--socket $TARGET_SOCK"
@@ -53,6 +64,7 @@ TARGETS[jamduna.args]="-socket $TARGET_SOCK"
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
+TARGETS[jamixir.file.macos]="jamixir_macos-arm64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.cmd]="jamixir"
 TARGETS[jamixir.args]="fuzzer --log info --socket-path $TARGET_SOCK"
 
@@ -114,7 +126,7 @@ show_usage() {
     local script_name=$1
     echo "Usage: $script_name <get|run> <target>"
     echo "Available targets: ${AVAILABLE_TARGETS[*]} all"
-    echo "Available OSes: linux, macos"
+    echo "Supported OSes: linux, macos"
     echo "Default OS: linux (auto-detected)"
 }
 
@@ -187,7 +199,7 @@ target_supports_os() {
     return 1
 }
 
-# Function to get the correct file for a target and os
+# Gets the correct file for a target and os
 get_target_file() {
     local target=$1
     local os=$2
@@ -209,7 +221,7 @@ post_actions() {
     local target=$1
     local os=$2
     local file=$(get_target_file "$target" "$os")
-    echo "Performing post actions"
+    echo "Performing post actions for $file"
     pushd "targets/$target/latest"
     local post="${TARGETS[$target.post]}"
     if [ ! -z "$post" ]; then
@@ -424,15 +436,20 @@ run_docker_image() {
     if [[ $image == $SENSIBLE_DOCKER_IMAGE ]]; then
         wd_args="-w /jam"
     fi
-    
 
-    sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-32 \
+    if [ "$(get_os)" == "linux" ]; then
+        priority_args="sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-$MAX_CORES" 
+    else
+        priority_args=""
+    fi
+
+    $priority_args \
     docker run \
         --rm \
         --name "$target" \
         --user "$(id -u):$(id -g)" \
         --platform linux/amd64 \
-        --cpuset-cpus="0-32" \
+        --cpuset-cpus="0-$MAX_CORES" \
         --cpu-shares=2048 \
         --memory=8g \
         --memory-swap=8g \
@@ -473,13 +490,19 @@ run() {
         return 1
     fi
 
+    if [ "$(get_os)" == "linux" ]; then
+        do_find="find"
+    else
+        do_find="gfind"
+    fi
+
     local target_dir="targets/$target/latest"
     if [ ! -d "$target_dir" ]; then
         echo "Error: Target dir not found: $target_dir"
         # Try to find the newest directory as fallback
         local base_dir="targets/$target"
         if [ -d "$base_dir" ]; then
-            local newest_dir=$(find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
+            local newest_dir=$($do_find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
             if [ -n "$newest_dir" ] && [ -d "$newest_dir" ]; then
                 echo "Using newest available directory: $newest_dir"
                 target_dir="$newest_dir"
@@ -493,10 +516,40 @@ run() {
         fi
     fi
 
+if [[ "$RUN_DOCKER" == "1" ]]; then
     # Overwrite target information and run it in a dedicated docker image
     TARGETS[$target.image]="$SENSIBLE_DOCKER_IMAGE"
     TARGETS[$target.cmd]="./$command $args"
     run_docker_image "$target"
+else 
+    # Set up trap to cleanup on exit
+    cleanup() {
+        if [ "$CLEANUP_DONE" = "true" ]; then
+            return
+        fi
+        CLEANUP_DONE=true
+
+        echo "Cleaning up $target..."
+        if [ ! -z "$TARGET_PID" ]; then
+            echo "Killing target $TARGET_PID..."
+            kill -TERM $TARGET_PID 2>/dev/null || true
+            sleep 1
+            kill -KILL $TARGET_PID 2>/dev/null || true
+        fi
+        rm -f "$DEFAULT_SOCK"
+    }
+    trap cleanup EXIT INT TERM
+    local env="${TARGETS[${target}.env]}"
+    if [ ! -z "$env" ]; then
+        export $env
+    fi
+    pushd "$target_dir" > /dev/null
+    bash -c "./$command $args" &
+    TARGET_PID=$!
+    popd > /dev/null
+    echo "Waiting for target termination (pid=$TARGET_PID)"
+    wait $TARGET_PID
+fi
 }
 
 ### Main script logic
@@ -507,7 +560,14 @@ fi
 
 ACTION="$1"
 TARGET="$2"
-OS=$(get_os)
+
+if [[ "$RUN_DOCKER" == "1" ]]; then
+    # use linux, since we are running in a fixed Debian Docker image.
+    OS="linux"
+else
+    OS=$(get_os)
+fi
+echo "Effective OS: $OS"
 
 validate_os "$OS" || exit 1
 validate_target "$TARGET" || exit 1
