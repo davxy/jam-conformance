@@ -10,7 +10,6 @@ cd $SCRIPT_DIR
 TARGET_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
 
 # Used to run binaries when target is not provided as a docker image
-# SENSIBLE_DOCKER_IMAGE="debian:stable"
 SENSIBLE_DOCKER_IMAGE="debian:stable-slim"
 
 # Target configuration using associative array with dot notation
@@ -66,15 +65,13 @@ TARGETS[jamduna.args]="-socket $TARGET_SOCK"
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
 TARGETS[jamixir.file.linux]="jamixir_linux-x86-64_0.7.0_tiny.tar.gz"
-TARGETS[jamixir.file.macos]="jamixir_macos-arm64_0.7.0_tiny.tar.gz" 
+TARGETS[jamixir.file.macos]="jamixir_macos-arm64_0.7.0_tiny.tar.gz"
 TARGETS[jamixir.cmd]="jamixir"
 TARGETS[jamixir.args]="fuzzer --log info --socket-path $TARGET_SOCK"
 
 # === JAVAJAM ===
-TARGETS[javajam.repo]="javajamio/javajam-releases"
-TARGETS[javajam.file.linux]="javajam-linux-x86_64.zip"
-TARGETS[javajam.file.macos]="javajam-macos-aarch64.zip"
-TARGETS[javajam.cmd]="bin/javajam fuzz $TARGET_SOCK"
+TARGETS[javajam.image]="ghcr.io/methodfive/javajam:latest-amd64"
+TARGETS[javajam.cmd]="fuzz $TARGET_SOCK"
 
 # === JAMZILLA ===
 TARGETS[jamzilla.repo]="ascrivener/jamzilla-conformance-releases"
@@ -82,7 +79,7 @@ TARGETS[jamzilla.file.linux]="fuzzserver-tiny-amd64-linux"
 TARGETS[jamzilla.file.macos]="fuzzserver-tiny-arm64-darwin"
 TARGETS[jamzilla.cmd.linux]="fuzzserver-tiny-amd64-linux"
 TARGETS[jamzilla.cmd.macos]="fuzzserver-tiny-arm64-darwin"
-TARGETS[jamzilla.cmd.args]="-socket $TARGET_SOCK"
+TARGETS[jamzilla.args]="-socket $TARGET_SOCK"
 
 # === SPACEJAM ===
 TARGETS[spacejam.repo]="spacejamapp/specjam"
@@ -223,6 +220,7 @@ post_actions() {
     if [ ! -z "$post" ]; then
         bash -c "$post"
     else
+        # Extract nested archives by peeling off extensions
         local current_file="$file"     
         while [[ -f "$current_file" ]]; do
             case "$current_file" in
@@ -267,6 +265,7 @@ post_actions() {
                     current_file="${current_file%.tar}"
                     ;;
                 *)
+                    # Not an archive, make it executable and stop
                     echo "Making file executable: $current_file"
                     chmod +x "$current_file"
                     break
