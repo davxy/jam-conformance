@@ -1,3 +1,7 @@
+### [05-09-25]
+
+Three new interesting traces have been added: 1757062927, 1757063641, and 1757092821.
+
 ### [03-09-25]
 
 Trace 1756792661 has been retired due to an invalid steps sequence. The trace
