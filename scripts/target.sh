@@ -120,6 +120,14 @@ TARGETS[gossamer.cmd.linux]="${TARGETS[gossamer.file.linux]}"
 TARGETS[gossamer.cmd.macos]="${TARGETS[gossamer.file.macos]}"
 TARGETS[gossamer.args]="target --socket $TARGET_SOCK"
 
+# === TESSERA ===
+TARGETS[tessera.repo]="Chainscore/tessera-releases"
+TARGETS[tessera.file.linux]="tessera-node-Linux-x64.tar.gz"
+TARGETS[tessera.file.macos]="tessera-node-Darwin-arm64.tar.gz"
+TARGETS[tessera.cmd]="tessera-node"
+TARGETS[tessara.args]="--fuzzer --socket $TARGET_SOCK"
+
+
 ### Auxiliary functions:
 
 show_usage() {
