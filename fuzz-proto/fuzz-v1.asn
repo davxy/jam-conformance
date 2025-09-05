@@ -23,6 +23,7 @@ feature-block-ancestry INTEGER ::= 1      -- 2^0
 feature-simple-forking INTEGER ::= 2      -- 2^1
 feature-bundle-refinement INTEGER ::= 4   -- 2^2
 feature-exports INTEGER ::= 8             -- 2^3
+feature-pvm-tracing INTEGER ::= 16        -- 2^4
 feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
 
 Version ::= SEQUENCE {
@@ -89,6 +90,50 @@ WorkPackageBundle ::= SEQUENCE {
     justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
 }
 
+--------------------------------------
+-- PVM Traces
+--------------------------------------
+
+GetPVMTrace ::= SEQUENCE {
+   filter-s   U32,
+   filter-wi  U8,
+   gas-used-ranges       SEQUENCE OF GasUsedRange
+}
+
+GasUsedRange := SEQUENCE {
+    gas-used-max U64,
+    gas-used-min U64
+}
+
+PVMTrace ::= SEQUENCE OF PVMStep
+
+PVMStep := SEQUENCE {
+    opcode    U8,
+    wi        U8,  
+    s         U32,
+    pc        U32,
+    gas       U64,
+    r0        U64,
+    r1        U64,
+    r2        U64,
+    r3        U64,
+    r4        U64,
+    r5        U64,
+    r6        U64,
+    r7        U64,
+    r8        U64,
+    r9        U64,
+    r10       U64,
+    r11       U64,
+    r12       U64,
+    reserved0 U16,
+    reserved1 U32
+}
+
+--------------------------------------
+-- Messages
+--------------------------------------
+
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,
     import-block  [1] ImportBlock,
@@ -99,7 +144,9 @@ Message ::= CHOICE {
     refine-bundle [6] RefineBundle,
     work-report   [7] WorkReport,
     get-exports   [8] GetExports,
-    exports       [9] Exports
+    exports       [9] Exports,
+    get-pvm-trace [10] GetPVMTrace,
+    pvm-trace     [11] PVMTrace
 }
 
 END
