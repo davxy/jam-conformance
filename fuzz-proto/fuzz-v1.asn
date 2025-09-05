@@ -71,10 +71,10 @@ StateRoot ::= StateRootHash
 --------------------------------------
 
 RefineBundle ::= SEQUENCE {
-    core-index  CoreIndex
+    core-index  CoreIndex,
     bundle WorkPackageBundle,
-    segment-root-mappings  SegmentRootLookup
-    auth-gas-used Gas
+    segment-root-mappings  SegmentRootLookup,
+    auth-gas-used Gas,
     auth-trace    ByteSequence
 }
 
@@ -99,7 +99,8 @@ Message ::= CHOICE {
     state-root    [5] StateRoot,
     refine-bundle [6] RefineBundle,
     work-report   [7] WorkReport,
-    exports       [8] Exports
+    get-exports   [8] GetExports,
+    exports       [9] Exports
 }
 
 END
