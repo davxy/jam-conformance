@@ -148,7 +148,6 @@ The protocol adheres to a strict request–response model with the following rul
 - **Full state retrieval:** The `GetState` request is issued only when a state
   root mismatch is detected.
 - **Refinement:** If work package bundle refinement is supported by the target (via `feature-bundle-refinement`), the fuzzer may send a `RefineBundle` and the fuzzer target must send a `WorkReport` in response.  Only refine should be invoked, however; the core `core-index`, authorization gas used `auth-gas-used` and authorization trace `auth-trace` is provided in the `RefineBundle` for inclusion in the `WorkReport` to represent a prior authorization.  The `service` and `code-hash` for each work item may be found in the previously transmitted states referenced by the Work package `context` by `anchor` or `lookup-anchor` (for historical lookup).  For purposes of bounding the number of states, only the last 600 states `SetState` should be considered.  See **Refinement Failures and Dispute Reporting** below for details.
-- **PVM Tracing:** If PVM Tracing is supported by the target (via `feature-pvm-tracing`), the fuzzer may attempt to resolve disputes in accumulation state root matches, work report matching, and authorization output with a `GetPVMTrace` message for which the target must respond with a `PVMTrace`, containing a subset of steps.  See  **PVM Tracing (experimental)** below for details.
 - **Error handling:** Receiving an unexpected or malformed message results in
   immediate session termination.
 - **Timeouts:** The fuzzer may impose time limits on the target’s responses.
@@ -189,11 +188,6 @@ The protocol adheres to a strict request–response model with the following rul
              |   | ----------------------> |   | Request exports by work package hash or segments root 
              |   |        Segments         |   |
              |   | <---------------------- |   | Return exported segments
-             |   +- PVM-TRACE(if supported)+   |
-             |   |       GetPVMTrace       |   |
-             |   | ----------------------> |   | Request subset of PVM Trace execution 
-             |   |        PVMTrace         |   |
-             |   | <---------------------- |   | Return PVM Trace steps
              |   |          ...            |   |            
              |   |                         |   |
              |   |      ImportBlock        |   |
@@ -222,28 +216,6 @@ Mismatches between fuzzer and target are reported by hashing the `WorkReport`.  
 - For differences in `ExportsRoot`, indicate mismatched exports obtained by the fuzzer from `GetExports` message
 - For differences in `ErasureRoot`, indicate that exports align but roots differ  
 
-Additionally, if the fuzzer and fuzzer target both support `features-pvm-tracing`, the report may include the exact step at which a fuzzer and target diverge.
-
 Fuzzers and fuzzer targets may have verbose logging to show erasure coding derivations step by step. 
 
 Because segments are **4104 bytes** and there may be as many as 3,072 per report, it may be impractical to share these reports.  It is more practical for fuzzer binaries and targets to be shared along with reports indicating which seed/payload resulted in a discrepancy instead.
-
-## PVM Tracing (experimental)
-
-Since PVM execution may involve as 3.5B gas to 5B gas, exhaustive PVM traces are impractical; however, a fuzzer may probe a target for a _subset_ of PVM execution, filtering on service and/or work item.    Simple binary search may be used to find the precise step at which the fuzzer and target differ and be include in dispute reports.  Note that this feature is not intended to provide perfect visibility into the VM state (specifically memory mutations and heap allocation changes), but to support rapid diagnosis of disputes between fuzzer and target for any of the 3 invocations.  
-
-Implementation Details:
-- A `GetPVMTrace` will only be used to reference the most recent `RefineBundle` or `GetState` message
-- The _total_ number of `PVMStep` in a target's `PVMTrace` response should not exceed 1048576 steps; if no `GasUsedRange` is supplied in `gas-used-ranges`, then the target should return the maximum possible of steps possible up to this limit.
-- `wi` is dependent on the invocation:
-  - in `refine` invocations, `wi` is the index of the work item  `i` (see [here](https://graypaper.fluffylabs.dev/#/1c979cb/2e3e022e3e02?v=0.7.1)) 
-  - in `accumulate`, `wi` is the lowest value of `i` in the invocation of parallel accumulation index `i` (see [here](https://graypaper.fluffylabs.dev/#/1c979cb/171f02171f02?v=0.7.1))
-  - in authorization: TBD
-- `GetPVMTrace` supports basic filtering by service via `filter-s` and filtering by work item or outer accumulation `filter-wi`:
-  - if `filter-s` is 0xFFFFFFFF then no service filter should be applied by the target; 
-  - if `filter-wi` is 0xFF then no `wi` filter is applied should be applied by the target;
-  - if both `filter-s` and `filter-wi` filter are specified, both filters should be applied by the target
-- `reserved0` and `reserved1` may be used to support additional logging in `PVMStep` and filtering criteria in `GetPVMTrace`
-- `GasUsedRange` is inclusive, e.g. 1_000_000 and 999_999 would be expected to have two PVMSteps
-
-
