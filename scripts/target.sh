@@ -19,6 +19,15 @@ declare -A TARGETS
 # Maximum number of cores to use for docker containers
 MAX_CORES=${DOCKER_CORES:-32}
 
+# Whether to run targets in docker containers (1) or directly on host (0)
+# Running in Docker is preferable, for being more secure and allow for a linux
+# target in a macOS host. Since more teams target linux than other OSes, 
+# we get more exposure by running in a Docker container.
+# However, Docker currently presents difficulties in Mac setups, with inconsistent
+# connection issues. This option provides a workaround for such cases.
+RUN_DOCKER=${RUN_DOCKER:-1}
+
+
 # === VINWOLF ===
 TARGETS[vinwolf.repo]="bloppan/conformance_testing"
 TARGETS[vinwolf.clone]=1
@@ -476,13 +485,19 @@ run() {
         return 1
     fi
 
+    if [ "$(get_os)" == "linux" ]; then
+        do_find="find"
+    else
+        do_find="gfind"
+    fi
+
     local target_dir="targets/$target/latest"
     if [ ! -d "$target_dir" ]; then
         echo "Error: Target dir not found: $target_dir"
         # Try to find the newest directory as fallback
         local base_dir="targets/$target"
         if [ -d "$base_dir" ]; then
-            local newest_dir=$(find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
+            local newest_dir=$($do_find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
             if [ -n "$newest_dir" ] && [ -d "$newest_dir" ]; then
                 echo "Using newest available directory: $newest_dir"
                 target_dir="$newest_dir"
@@ -496,13 +511,43 @@ run() {
         fi
     fi
 
+if [[ "$RUN_DOCKER" == "1" ]]; then
     # Overwrite target information and run it in a dedicated docker image
     TARGETS[$target.image]="$SENSIBLE_DOCKER_IMAGE"
     TARGETS[$target.cmd]="./$command $args"
     run_docker_image "$target"
+else 
+    # Set up trap to cleanup on exit
+    cleanup() {
+        if [ "$CLEANUP_DONE" = "true" ]; then
+            return
+        fi
+        CLEANUP_DONE=true
+
+        echo "Cleaning up $target..."
+        if [ ! -z "$TARGET_PID" ]; then
+            echo "Killing target $TARGET_PID..."
+            kill -TERM $TARGET_PID 2>/dev/null || true
+            sleep 1
+            kill -KILL $TARGET_PID 2>/dev/null || true
+        fi
+        rm -f "$DEFAULT_SOCK"
+    }
+    trap cleanup EXIT INT TERM
+    local env="${TARGETS[${target}.env]}"
+    # Overwrite target information and run it in a dedicated docker image
+    if [ ! -z "$env" ]; then
+        export $env
+    fi
+    pushd "$target_dir" > /dev/null
+    bash -c "./$command $args" &
+    TARGET_PID=$!
+    popd > /dev/null
+    echo "Waiting for target termination (pid=$TARGET_PID)"
+    wait $TARGET_PID
+fi
 }
 
- 
 ### Main script logic
 if [ $# -lt 2 ]; then
     show_usage "$0"
@@ -511,9 +556,14 @@ fi
 
 ACTION="$1"
 TARGET="$2"
-# always use linux, since we are running in a fixed Debian Docker image.
-OS="linux"
-# OS=$(get_os)
+
+if [[ "$RUN_DOCKER" == "1" ]]; then
+    # use linux, since we are running in a fixed Debian Docker image.
+    OS="linux"
+else
+    OS=$(get_os)
+fi
+echo "Effective OS: $OS"
 
 validate_os "$OS" || exit 1
 validate_target "$TARGET" || exit 1
