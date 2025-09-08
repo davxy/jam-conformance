@@ -6,19 +6,19 @@
 |------|-------|
 | polkajam | 2.9378699999999998 |
 | polkajam_perf_int | 11.334376 |
-| spacejam | 56.918054000000005 |
-| jamduna | 60.80225 |
-| turbojam | 70.600783 |
-| jamzig | 85.71292899999999 |
-| fastroll | 135.23265800000001 |
-| javajam | 176.216847 |
-| jamzilla | 193.22349599999998 |
-| vinwolf | 454.443411 |
-| tsjam | 931.495763 |
-| boka | 1311.517883 |
-| jamixir | 2963.42816 |
-| jampy | 10689.018919 |
-| pyjamaz | 11531.198978 |
+| jamduna | 20.705502 |
+| spacejam | 25.887226 |
+| turbojam | 28.162327 |
+| jamzig | 81.654337 |
+| jamzilla | 109.902191 |
+| vinwolf | 126.99534100000001 |
+| fastroll | 140.459319 |
+| javajam | 147.71849 |
+| boka | 334.95084 |
+| tsjam | 851.43444 |
+| jamixir | 2064.556588 |
+| jampy | 2671.9720119999997 |
+| pyjamaz | 10996.469577 |
 
 ## import_mean
 
@@ -26,19 +26,19 @@
 |------|-------|
 | polkajam | 1.6230902099999998 |
 | polkajam_perf_int | 4.185283149999998 |
-| turbojam | 12.522280880000002 |
-| spacejam | 15.138094800000001 |
-| jamduna | 16.700225020000012 |
-| jamzig | 24.765312759999997 |
-| fastroll | 37.10166700999998 |
-| javajam | 39.43486259999999 |
-| jamzilla | 59.122981200000005 |
-| vinwolf | 155.64313441000013 |
-| tsjam | 222.43776139000008 |
-| boka | 309.96676911 |
-| jamixir | 648.3514705299999 |
-| jampy | 2062.1695225999993 |
-| pyjamaz | 2693.00547882 |
+| spacejam | 7.145845359999999 |
+| turbojam | 8.027136159999998 |
+| jamduna | 8.056162650000001 |
+| vinwolf | 20.813957639999998 |
+| jamzig | 23.15990968 |
+| jamzilla | 27.641706680000002 |
+| javajam | 29.682830649999996 |
+| fastroll | 39.210263839999996 |
+| boka | 97.75606498000002 |
+| tsjam | 212.13964819000006 |
+| jamixir | 490.03111263999995 |
+| jampy | 565.2011415399999 |
+| pyjamaz | 2512.2301504999996 |
 
 ## import_min
 
@@ -46,19 +46,19 @@
 |------|-------|
 | polkajam_perf_int | 1.209322 |
 | polkajam | 1.2247009999999998 |
-| turbojam | 1.4799380000000002 |
-| spacejam | 1.772835 |
-| javajam | 2.0440490000000002 |
-| jamduna | 2.475056 |
-| jamzig | 2.7132929999999997 |
-| fastroll | 3.9529409999999996 |
-| tsjam | 6.616353 |
-| boka | 8.295721 |
-| pyjamaz | 8.99196 |
-| jampy | 9.098851 |
-| jamixir | 9.30464 |
-| jamzilla | 10.558926999999999 |
-| vinwolf | 50.511371 |
+| turbojam | 1.364866 |
+| spacejam | 1.405062 |
+| vinwolf | 1.941302 |
+| jamduna | 2.230251 |
+| jamzig | 2.617921 |
+| javajam | 2.870124 |
+| jamzilla | 3.693804 |
+| fastroll | 3.893934 |
+| tsjam | 6.432134 |
+| jampy | 7.927488 |
+| pyjamaz | 8.526733 |
+| jamixir | 9.643667 |
+| boka | 10.509773 |
 
 ## import_p50
 
@@ -66,19 +66,19 @@
 |------|-------|
 | polkajam | 1.615 |
 | polkajam_perf_int | 3.439 |
-| spacejam | 7.882 |
-| turbojam | 8.561 |
-| jamduna | 10.043 |
-| jamzig | 22.554 |
-| javajam | 23.924 |
-| fastroll | 33.977 |
-| jamzilla | 52.528 |
-| vinwolf | 107.565 |
-| tsjam | 112.668 |
-| boka | 145.454 |
-| jamixir | 279.241 |
-| jampy | 860.596 |
-| pyjamaz | 1210.005 |
+| spacejam | 3.848 |
+| turbojam | 4.994 |
+| jamduna | 7.887 |
+| vinwolf | 13.169 |
+| jamzig | 21.298 |
+| jamzilla | 22.522 |
+| javajam | 24.793 |
+| fastroll | 35.228 |
+| boka | 56.827 |
+| tsjam | 120.421 |
+| jamixir | 226.71 |
+| jampy | 243.516 |
+| pyjamaz | 1145.875 |
 
 ## import_p75
 
@@ -86,19 +86,19 @@
 |------|-------|
 | polkajam | 1.779 |
 | polkajam_perf_int | 6.228 |
-| turbojam | 15.018 |
-| spacejam | 24.822 |
-| jamduna | 27.088 |
-| jamzig | 37.016 |
-| fastroll | 53.955 |
-| javajam | 63.069 |
-| jamzilla | 84.867 |
-| vinwolf | 219.956 |
-| tsjam | 371.481 |
-| boka | 528.471 |
-| jamixir | 1081.19 |
-| jampy | 3394.596 |
-| pyjamaz | 4735.841 |
+| spacejam | 11.071 |
+| jamduna | 11.974 |
+| turbojam | 12.586 |
+| vinwolf | 24.319 |
+| jamzig | 34.37 |
+| jamzilla | 42.001 |
+| javajam | 45.015 |
+| fastroll | 57.579 |
+| boka | 153.561 |
+| tsjam | 350.44 |
+| jamixir | 829.403 |
+| jampy | 957.851 |
+| pyjamaz | 4375.281 |
 
 ## import_p90
 
@@ -106,19 +106,19 @@
 |------|-------|
 | polkajam | 1.939 |
 | polkajam_perf_int | 7.843 |
-| turbojam | 26.297 |
-| spacejam | 33.389 |
-| jamduna | 36.126 |
-| jamzig | 54.936 |
-| fastroll | 75.457 |
-| javajam | 90.265 |
-| jamzilla | 124.144 |
-| vinwolf | 302.56 |
-| tsjam | 491.89 |
-| boka | 691.367 |
-| jamixir | 1448.524 |
-| jampy | 5586.827 |
-| pyjamaz | 6417.947 |
+| jamduna | 13.674 |
+| spacejam | 14.399 |
+| turbojam | 16.964 |
+| vinwolf | 40.079 |
+| jamzig | 49.0 |
+| jamzilla | 57.012 |
+| javajam | 58.811 |
+| fastroll | 81.642 |
+| boka | 200.621 |
+| tsjam | 483.759 |
+| jamixir | 1138.61 |
+| jampy | 1414.034 |
+| pyjamaz | 5896.281 |
 
 ## import_p99
 
@@ -126,19 +126,19 @@
 |------|-------|
 | polkajam | 2.096 |
 | polkajam_perf_int | 10.088 |
-| jamduna | 47.134 |
-| spacejam | 49.073 |
-| turbojam | 50.338 |
-| jamzig | 82.357 |
-| fastroll | 112.004 |
-| javajam | 130.409 |
-| jamzilla | 184.049 |
-| vinwolf | 401.318 |
-| tsjam | 758.541 |
-| boka | 1066.703 |
-| jamixir | 2428.494 |
-| jampy | 8481.527 |
-| pyjamaz | 9993.95 |
+| jamduna | 18.391 |
+| spacejam | 22.065 |
+| turbojam | 25.186 |
+| jamzig | 74.338 |
+| javajam | 88.653 |
+| jamzilla | 92.395 |
+| vinwolf | 97.618 |
+| fastroll | 121.72 |
+| boka | 296.993 |
+| tsjam | 716.548 |
+| jamixir | 1772.076 |
+| jampy | 2277.203 |
+| pyjamaz | 9279.89 |
 
 ## import_std_dev
 
@@ -146,17 +146,17 @@
 |------|-------|
 | polkajam | 0.2812485794301559 |
 | polkajam_perf_int | 2.7987130051894957 |
-| jamduna | 14.335501363488664 |
-| turbojam | 14.510140533935168 |
-| spacejam | 14.662697218807299 |
-| jamzig | 22.240683212535608 |
-| fastroll | 32.585858014666584 |
-| javajam | 39.37390629711214 |
-| jamzilla | 47.72192306962362 |
-| vinwolf | 105.756127448382 |
-| tsjam | 230.8053013070457 |
-| boka | 326.2585845052384 |
-| jamixir | 725.2774727124178 |
-| jampy | 2455.316703843697 |
-| pyjamaz | 3033.553305993713 |
+| jamduna | 4.865391982310552 |
+| spacejam | 6.306296115033693 |
+| turbojam | 7.01986731302863 |
+| jamzig | 20.499315590051836 |
+| jamzilla | 24.495235194026392 |
+| vinwolf | 26.892193554448998 |
+| javajam | 27.19584829690794 |
+| fastroll | 34.964444993233705 |
+| boka | 86.03003213325523 |
+| tsjam | 219.81576967573568 |
+| jamixir | 535.6478880027987 |
+| jampy | 648.0106539362275 |
+| pyjamaz | 2829.001450825432 |
 
