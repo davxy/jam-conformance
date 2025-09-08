@@ -1,5 +1,8 @@
 ### [08-09-25]
 
+Protocol fix: on import failure the target must return the zero hash
+(i.e. an octet string of all zeros).
+
 1757063641 has been retired, see https://github.com/davxy/jam-conformance/discussions/66
 
 New targets: tessera (0.7.0) and gossamer (0.6.7)
