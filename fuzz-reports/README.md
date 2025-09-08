@@ -15,41 +15,49 @@
 * jamduna (go)
 * jamixir (elixir)
 * jampy (python)
-* tsjam (typescript)
 * jamzig (zig)
 * jamzilla (go)
 * javajam (java)
 * pyjamaz (python)
 * spacejam (rust)
+* tessera (python)
+* tsjam (typescript)
 * turbojam (c++)
 * vinwolf (rust)
 
 ## Disputes
 
-* ❌ := Fails with report
-* 💀 := Crash or fuzzer protocol failure
+* ❌ : Fails with report
+* 💀 : Crash or fuzzer protocol failure
+* 🕒 : Timeout (>30 sec)
 
 Empty cells indicate successful processing without disputes.
 Only disputed reports are shown in the table
 
 ### GP 0.7.0
 
-|            | boka | fastroll | jamduna | jamixir | jampy | jamzig | jamzilla | javajam | pyjamaz | spacejam | tsjam | turbojam | vinwolf |
-|------------|------|----------|---------|---------|-------|--------|----------|---------|---------|----------|-------|----------|---------|
-| 1756548459 |      |          |   ❌    |   💀    |       |   ❌   |          |         |         |          |  ❌   |          |         |
-| 1756548583 |  ❌  |          |   ❌    |         |       |        |          |         |         |          |  💀   |    ❌    |         |
-| 1756548667 |  ❌  |          |         |         |       |        |          |         |         |    ❌    |  ❌   |          |         |
-| 1756548706 |  ❌  |          |   ❌    |   ❌    |       |   ❌   |    ❌    |         |   ❌    |    ❌    |  ❌   |    ❌    |         |
-| 1756548741 |      |          |   ❌    |         |       |   ❌   |          |         |         |          |  ❌   |    ❌    |         |
-| 1756548767 |      |          |         |         |       |        |          |         |   ❌    |    ❌    |  ❌   |          |         |
-| 1756548796 |  ❌  |          |         |         |       |        |          |         |         |    ❌    |  ❌   |          |         |
-| 1756548916 |      |          |   ❌    |   ❌    |       |   ❌   |          |         |   ❌    |    ❌    |  ❌   |    ❌    |         |
-| 1756572122 |  ❌  |          |         |         |       |   ❌   |          |         |   💀    |    ❌    |  ❌   |    ❌    |         |
-
+|            | boka | fastroll | jamduna | jamixir | jampy | jamzig | jamzilla | javajam | pyjamaz | spacejam | tessera |tsjam | turbojam | vinwolf |
+|------------|------|----------|---------|---------|-------|--------|----------|---------|---------|----------|---------|------|----------|---------|
+| 1756548459 |      |          |   ❌    |         |       |        |          |         |         |          |         |      |          |         |
+| 1756548583 |  ❌  |          |         |         |       |        |          |         |         |          |         |      |    ❌    |         |
+| 1756548667 |      |          |         |         |       |        |          |         |         |          |   ❌    |      |          |         |
+| 1756548706 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1756548741 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1756548767 |      |          |         |         |       |        |          |         |         |          |   ❌    |      |          |         |
+| 1756548796 |      |          |         |         |       |        |          |         |         |          |   ❌    |      |          |         | 
+| 1756548916 |      |          |         |         |       |        |          |         |         |          |   ❌    |      |          |         | 
+| 1756572122 |      |          |         |         |       |        |          |         |         |    ❌    |         |      |    ❌    |         |
+| 1756790723 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1756791458 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1756814312 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1756832925 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1757062927 |      |          |         |         |       |        |          |         |    ❌   |          |   ❌    |      |          |   ❌    |
+| 1757063641 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1757092821 |      |          |         |   ❌    |       |        |          |         |    ❌   |          |         |  ❌  |          |         |
 
 ### GP 0.6.7
 
-Archived total traces: 33
+Total archived traces: 33
 
 ## Performance Reports
 

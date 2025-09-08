@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "tsjam-0.7.0-tiny",
+    "name": "tsjam-0.7.0-tiny-6f54dbba",
     "app_version": {
       "major": 0,
       "minor": 7,
@@ -15,14 +15,14 @@
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 84,
-    "import_min": 0.47944,
-    "import_max": 51.222202,
-    "import_mean": 15.904948829999997,
-    "import_p50": 11.997,
-    "import_p75": 21.398,
-    "import_p90": 30.138,
-    "import_p99": 50.891,
-    "import_std_dev": 14.535440254101868
+    "import_max_step": 48,
+    "import_min": 4.903061999999999,
+    "import_max": 55.958033,
+    "import_mean": 20.447951630000006,
+    "import_p50": 15.818,
+    "import_p75": 25.735,
+    "import_p90": 35.372,
+    "import_p99": 55.64,
+    "import_std_dev": 14.681474316577573
   }
 }
