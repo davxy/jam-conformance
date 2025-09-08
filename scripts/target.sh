@@ -59,7 +59,7 @@ TARGETS[jamduna.file.linux]="duna_target_linux"
 TARGETS[jamduna.file.macos]="duna_target_mac"
 TARGETS[jamduna.cmd.linux]="${TARGETS[jamduna.file.linux]}"
 TARGETS[jamduna.cmd.macos]="${TARGETS[jamduna.file.macos]}"
-TARGETS[jamduna.args]="-socket $TARGET_SOCK"
+TARGETS[jamduna.args]="--socket $TARGET_SOCK"
 
 # === JAMIXIR ===
 TARGETS[jamixir.repo]="jamixir/jamixir-releases"
@@ -125,7 +125,7 @@ TARGETS[tessera.repo]="Chainscore/tessera-releases"
 TARGETS[tessera.file.linux]="tessera-node-Linux-x64.tar.gz"
 TARGETS[tessera.file.macos]="tessera-node-Darwin-arm64.tar.gz"
 TARGETS[tessera.cmd]="tessera-node"
-TARGETS[tessara.args]="--fuzzer --socket $TARGET_SOCK"
+TARGETS[tessera.args]="--fuzzer --socket $TARGET_SOCK"
 
 
 ### Auxiliary functions:
