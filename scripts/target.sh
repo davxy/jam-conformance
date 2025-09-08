@@ -575,7 +575,6 @@ if [[ "$RUN_DOCKER" == "1" ]]; then
 else
     OS=$(get_os)
 fi
-echo "Effective OS: $OS"
 
 validate_os "$OS" || exit 1
 validate_target "$TARGET" || exit 1
