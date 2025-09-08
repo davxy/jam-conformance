@@ -35,8 +35,6 @@ Only disputed reports are shown in the table
 
 ### GP 0.7.0
 
-Total traces: 13
-
 |            | boka | fastroll | jamduna | jamixir | jampy | jamzig | jamzilla | javajam | pyjamaz | spacejam | tessera |tsjam | turbojam | vinwolf |
 |------------|------|----------|---------|---------|-------|--------|----------|---------|---------|----------|---------|------|----------|---------|
 | 1756548459 |      |          |   ❌    |         |       |        |          |         |         |          |    🕒   |      |          |         |
@@ -44,7 +42,7 @@ Total traces: 13
 | 1756548667 |      |          |         |         |       |        |          |         |         |          |    ❌   |      |          |         |
 | 1756548706 |      |          |         |         |       |        |          |         |         |    ❌    |         |      |          |         |
 | 1756548741 |      |          |         |         |       |        |          |         |         |    ❌    |         |      |          |         |
-| 1756548767 |      |          |         |         |       |        |          |         |         |          |         |      |          |         |
+| 1756548767 |      |          |         |         |       |        |          |         |         |          |    ❌   |      |          |         |
 | 1756548796 |      |          |         |         |       |        |          |         |         |          |    ❌   |      |          |         | 
 | 1756548916 |      |          |         |         |       |        |          |         |         |    ❌    |    ❌   |      |          |         | 
 | 1756572122 |      |          |         |         |       |        |          |         |         |          |         |      |    ❌    |         |
@@ -58,7 +56,7 @@ Total traces: 13
 
 ### GP 0.6.7
 
-Total traces: 33 (archived)
+Total archived traces: 33
 
 ## Performance Reports
 

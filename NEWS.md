@@ -1,3 +1,9 @@
+### [08-09-25]
+
+1757063641 has been retired, see https://github.com/davxy/jam-conformance/discussions/66
+
+New targets: tessera (0.7.0) and gossamer (0.6.7)
+
 ### [05-09-25]
 
 Three new interesting traces have been added: 1757062927, 1757063641, and 1757092821.
