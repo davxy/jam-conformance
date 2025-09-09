@@ -67,13 +67,17 @@ GetExports ::= OpaqueHash
 
 StateRoot ::= StateRootHash
 
+-- The variant doesn't convey any extra information
+Error ::= NULL
+
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,
     import-block  [1] ImportBlock,
     set-state     [2] SetState,
     get-state     [3] GetState,
     state         [4] State,
-    state-root    [5] StateRoot
+    state-root    [5] StateRoot,
+    error         [255] Error
 }
 
 END

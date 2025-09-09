@@ -143,9 +143,9 @@ fuzzer or the target should simply close the connection without sending an
 An `Error` message is only meaningful when the session continues, since it
 triggers a specific reaction from the fuzzer.
 
-| Request        | Error Response Reason |
-|----------------|-----------------------|
-| `ImportBlock`  | Import block failure |
+| Request        | Response | Description |
+|----------------|----------|-------------|
+| `ImportBlock`  | `Error`  | Import block failure |
 
 ### General Rules
 
@@ -192,19 +192,19 @@ The protocol adheres to a strict **request–response** model with the following
              +---+--- INITIALIZATION ------+---+
              |   |      SetState           |   |
              |   | ----------------------> |   | Initialize state
-             |   |      StateRoot          |   |
+             |   |   StateRoot (or Error)  |   |
   Check root |   | <---------------------- |   | Return head state root
              +---+-------------------------+---+
                  |                         |
              +---+--- BLOCK PROCESSING ----+---+
              |   |      ImportBlock        |   |
              |   | ----------------------> |   | Process block #1
-             |   |      StateRoot          |   |
+             |   |   StateRoot (or Error)  |   |
   Check root |   | <---------------------- |   | Return head state root
              |   |          ...            |   |            
              |   |      ImportBlock        |   |
              |   | ----------------------> |   | Process block #n
-             |   |      StateRoot          |   |
+             |   |   StateRoot (or Error)  |   |
              |   | <---------------------- |   | Return head state root
              |   |          ...            |   |
              +---+-------------------------+---+
