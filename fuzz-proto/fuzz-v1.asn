@@ -2,7 +2,7 @@
 
 FuzzProtocol DEFINITIONS ::= BEGIN
 
--- `Block`, `Header`, `WorkReport`, `SegmentRootLookup` as defined by gray paper. 
+-- `Block`, `Header` as defined by gray paper. 
 -- See also https://github.com/w3f/jamtestvectors/blob/master/lib/jam-types.asn
 
 -- Refer to jam-types.asn in the jam-test-vectors repo
@@ -25,10 +25,6 @@ Features ::= U32
 feature-ancestry INTEGER ::= 1  -- 2^0
 -- Simple forking: forks are supported but always limited to a maximum depth of 1.
 feature-fork INTEGER     ::= 2  -- 2^1
--- Target support for work package refinement.
-feature-refine INTEGER   ::= 4  -- 2^2
--- Target support for exports fetch.
-feature-exports INTEGER  ::= 8  -- 2^3
 -- Reserved for future extensions.
 feature-reserved INTEGER ::= 2147483648   -- 2^31
 
@@ -71,40 +67,13 @@ GetExports ::= OpaqueHash
 
 StateRoot ::= StateRootHash
 
---------------------------------------
--- Refinement
---------------------------------------
-
-RefineBundle ::= SEQUENCE {
-    core-index  CoreIndex,
-    bundle WorkPackageBundle,
-    segment-root-mappings  SegmentRootLookup,
-    auth-gas-used Gas,
-    auth-trace    ByteSequence
-}
-
-Segment ::= OCTET STRING (SIZE(4104))
-
-Exports ::= SEQUENCE of Segment
-
-WorkPackageBundle ::= SEQUENCE {
-    work-package     WorkPackage,                        
-    extrinsics       SEQUENCE OF OCTET STRING,            
-    import-segments  SEQUENCE OF SEQUENCE OF Segment, 
-    justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
-}
-
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,
     import-block  [1] ImportBlock,
     set-state     [2] SetState,
     get-state     [3] GetState,
     state         [4] State,
-    state-root    [5] StateRoot,
-    refine-bundle [6] RefineBundle,
-    work-report   [7] WorkReportHash,
-    get-exports   [8] GetExports,
-    exports       [9] Exports
+    state-root    [5] StateRoot
 }
 
 END
