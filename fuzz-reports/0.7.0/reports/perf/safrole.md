@@ -9,7 +9,7 @@
 | spacejam | 10.910901 |
 | javajam | 16.718888 |
 | turbojam | 23.819419 |
-| jamzig | 29.146110999999998 |
+| jamzig | 26.467162 |
 | boka | 38.872448 |
 | fastroll | 52.393048 |
 | pyjamaz | 55.080766000000004 |
@@ -29,9 +29,9 @@
 | spacejam | 5.242354860000003 |
 | jamduna | 6.088117850000001 |
 | javajam | 6.284093590000002 |
+| jamzig | 8.177671069999999 |
 | turbojam | 8.79646119 |
 | vinwolf | 13.024361810000002 |
-| jamzig | 13.735183220000001 |
 | fastroll | 14.254425989999996 |
 | jamzilla | 16.471652169999995 |
 | tsjam | 20.447951630000006 |
@@ -44,6 +44,7 @@
 
 | Team | Value |
 |------|-------|
+| jamzig | 0.90519 |
 | polkajam_perf_int | 1.061998 |
 | polkajam | 1.078632 |
 | turbojam | 1.082324 |
@@ -52,7 +53,6 @@
 | vinwolf | 1.7114509999999998 |
 | jamixir | 2.3115959999999998 |
 | javajam | 2.366037 |
-| jamzig | 2.5058860000000003 |
 | jamzilla | 2.887117 |
 | fastroll | 3.855741 |
 | tsjam | 4.903061999999999 |
@@ -71,7 +71,7 @@
 | turbojam | 7.693 |
 | javajam | 7.775 |
 | vinwolf | 8.013 |
-| jamzig | 11.552 |
+| jamzig | 9.4 |
 | jamzilla | 11.834 |
 | fastroll | 11.937 |
 | tsjam | 15.818 |
@@ -90,9 +90,9 @@
 | jamduna | 8.242 |
 | vinwolf | 8.367 |
 | javajam | 8.389 |
+| jamzig | 10.83 |
 | turbojam | 14.489 |
 | fastroll | 15.527 |
-| jamzig | 19.559 |
 | jamzilla | 20.453 |
 | tsjam | 25.735 |
 | jamixir | 28.302 |
@@ -110,9 +110,9 @@
 | jamduna | 8.741 |
 | javajam | 8.957 |
 | vinwolf | 9.491 |
+| jamzig | 12.26 |
 | fastroll | 19.989 |
 | turbojam | 20.704 |
-| jamzig | 26.558 |
 | jamzilla | 27.934 |
 | boka | 33.985 |
 | tsjam | 35.372 |
@@ -130,7 +130,7 @@
 | jamduna | 10.047 |
 | javajam | 12.425 |
 | turbojam | 22.571 |
-| jamzig | 28.327 |
+| jamzig | 24.132 |
 | boka | 38.206 |
 | fastroll | 51.336 |
 | pyjamaz | 53.328 |
@@ -148,10 +148,10 @@
 | polkajam | 2.661701993014205 |
 | javajam | 3.1074293513305022 |
 | spacejam | 3.2630591859546074 |
+| jamzig | 6.33164616058218 |
 | jamduna | 6.487315306445241 |
 | turbojam | 7.667331559816568 |
 | boka | 8.75035809632747 |
-| jamzig | 9.240233792196644 |
 | fastroll | 12.339130778447505 |
 | jamzilla | 14.120221082937547 |
 | tsjam | 14.681474316577573 |

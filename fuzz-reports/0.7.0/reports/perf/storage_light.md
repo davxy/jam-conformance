@@ -10,7 +10,7 @@
 | turbojam | 10.692103999999999 |
 | jamduna | 18.306918 |
 | javajam | 32.258544 |
-| jamzig | 50.221149 |
+| jamzig | 43.617960999999994 |
 | jamzilla | 80.01222600000001 |
 | fastroll | 91.182603 |
 | vinwolf | 109.327629 |
@@ -29,7 +29,7 @@
 | spacejam | 3.210148659999998 |
 | turbojam | 3.83106236 |
 | jamduna | 6.37750091 |
-| jamzig | 11.35080083 |
+| jamzig | 8.97447951 |
 | javajam | 13.317577229999992 |
 | vinwolf | 13.76607183 |
 | jamzilla | 14.7888476 |
@@ -44,6 +44,7 @@
 
 | Team | Value |
 |------|-------|
+| jamzig | 1.108409 |
 | polkajam_perf_int | 1.176588 |
 | polkajam | 1.20904 |
 | spacejam | 1.35779 |
@@ -51,7 +52,6 @@
 | vinwolf | 1.9555089999999997 |
 | jamduna | 2.1039280000000002 |
 | javajam | 2.54988 |
-| jamzig | 2.605117 |
 | jamzilla | 3.695588 |
 | fastroll | 3.882492 |
 | tsjam | 6.303407 |
@@ -69,8 +69,8 @@
 | polkajam_perf_int | 2.821 |
 | turbojam | 3.328 |
 | vinwolf | 6.061 |
+| jamzig | 6.597 |
 | jamduna | 6.76 |
-| jamzig | 8.763 |
 | jamzilla | 9.909 |
 | fastroll | 13.95 |
 | javajam | 14.838 |
@@ -90,7 +90,7 @@
 | turbojam | 4.523 |
 | jamduna | 8.123 |
 | vinwolf | 9.109 |
-| jamzig | 14.156 |
+| jamzig | 11.417 |
 | jamzilla | 15.892 |
 | javajam | 18.676 |
 | fastroll | 24.722 |
@@ -110,7 +110,7 @@
 | turbojam | 7.533 |
 | jamduna | 10.205 |
 | vinwolf | 15.503 |
-| jamzig | 24.183 |
+| jamzig | 20.5 |
 | javajam | 25.859 |
 | jamzilla | 27.076 |
 | fastroll | 41.8 |
@@ -129,8 +129,8 @@
 | spacejam | 8.917 |
 | turbojam | 9.772 |
 | jamduna | 14.443 |
+| jamzig | 30.122 |
 | javajam | 31.275 |
-| jamzig | 31.455 |
 | jamzilla | 59.233 |
 | fastroll | 60.84 |
 | vinwolf | 99.084 |
@@ -149,8 +149,8 @@
 | spacejam | 2.1044312757706733 |
 | turbojam | 2.452303701078165 |
 | jamduna | 3.5290793340593822 |
+| jamzig | 8.74420694311491 |
 | javajam | 9.344110724106587 |
-| jamzig | 9.525956436312443 |
 | jamzilla | 15.521675214384183 |
 | fastroll | 17.557079741556628 |
 | vinwolf | 25.685159043223173 |

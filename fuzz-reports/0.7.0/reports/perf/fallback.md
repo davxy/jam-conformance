@@ -9,8 +9,8 @@
 | turbojam | 3.844181 |
 | spacejam | 29.429225 |
 | javajam | 29.500584 |
+| jamzig | 30.259822 |
 | jampy | 32.787262999999996 |
-| jamzig | 34.622637 |
 | pyjamaz | 34.695306 |
 | boka | 35.840376 |
 | fastroll | 51.178377999999995 |
@@ -29,8 +29,8 @@
 | turbojam | 1.2569259400000001 |
 | spacejam | 1.7162159499999998 |
 | jamduna | 2.4961867400000006 |
+| jamzig | 2.973771669999999 |
 | javajam | 4.062531310000001 |
-| jamzig | 4.583860490000001 |
 | jamzilla | 7.357851330000001 |
 | jampy | 7.727909890000003 |
 | fastroll | 7.819163310000001 |
@@ -44,13 +44,13 @@
 
 | Team | Value |
 |------|-------|
+| jamzig | 0.780041 |
 | polkajam | 1.0259710000000002 |
 | polkajam_perf_int | 1.048123 |
 | turbojam | 1.084359 |
 | spacejam | 1.304829 |
 | jamduna | 1.525908 |
 | vinwolf | 1.6739490000000001 |
-| jamzig | 2.464978 |
 | javajam | 2.4673719999999997 |
 | jamzilla | 2.722221 |
 | fastroll | 3.734208 |
@@ -64,13 +64,13 @@
 
 | Team | Value |
 |------|-------|
+| jamzig | 1.08 |
 | polkajam | 1.143 |
 | turbojam | 1.175 |
 | polkajam_perf_int | 1.182 |
 | spacejam | 1.405 |
 | vinwolf | 1.824 |
 | jamduna | 1.849 |
-| jamzig | 2.78 |
 | jamzilla | 3.221 |
 | javajam | 3.34 |
 | fastroll | 4.055 |
@@ -84,13 +84,13 @@
 
 | Team | Value |
 |------|-------|
+| jamzig | 1.175 |
 | polkajam | 1.192 |
 | polkajam_perf_int | 1.226 |
 | turbojam | 1.326 |
 | spacejam | 1.471 |
 | vinwolf | 2.007 |
 | jamduna | 2.135 |
-| jamzig | 2.969 |
 | jamzilla | 3.591 |
 | javajam | 3.983 |
 | fastroll | 4.213 |
@@ -105,12 +105,12 @@
 | Team | Value |
 |------|-------|
 | polkajam | 1.254 |
+| jamzig | 1.293 |
 | polkajam_perf_int | 1.312 |
 | turbojam | 1.421 |
 | spacejam | 1.557 |
 | vinwolf | 2.345 |
 | jamduna | 2.372 |
-| jamzig | 3.256 |
 | jamzilla | 3.968 |
 | fastroll | 4.466 |
 | javajam | 5.182 |
@@ -131,7 +131,7 @@
 | jamduna | 2.735 |
 | javajam | 7.974 |
 | jampy | 12.205 |
-| jamzig | 25.019 |
+| jamzig | 25.535 |
 | boka | 29.971 |
 | pyjamaz | 32.521 |
 | fastroll | 50.887 |
@@ -152,8 +152,8 @@
 | jampy | 3.544291661399564 |
 | boka | 5.011440243025849 |
 | jamduna | 5.543728191554603 |
-| jamzig | 6.134097555092766 |
 | pyjamaz | 6.181946497714692 |
+| jamzig | 6.494160267451751 |
 | fastroll | 12.741568852677524 |
 | tsjam | 13.628553159944252 |
 | jamzilla | 13.864779614951013 |
