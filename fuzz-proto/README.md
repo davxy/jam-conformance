@@ -11,7 +11,7 @@ verifying its conformance with the protocol by comparing key elements
 In this case, the testing approach is strictly **black-box**, with no knowledge
 of or access to the internal structure of the system under test.
 
-### Workflow
+## Workflow
 
 The conformance testing process follows these steps:
 
@@ -35,7 +35,7 @@ The resulting report can be used to construct a precise, specialized test
 vector designed to immediately reproduce the discrepancy observed in the target
 implementation.
 
-### No Reference Implementation
+## No Reference Implementation
 
 As there will never be a reference implementation, and the Graypaper is the only
 authoritative specification, treating the local fuzzer engine as a reference is
@@ -46,12 +46,12 @@ imply an issue with the target. In case of discrepancy, the resulting test
 vector should be reviewed, and the expected behavior verified against the
 Graypaper to resolve the inconsistency.
 
-### Communication Protocol
+## Communication Protocol
 
 The fuzzer communicates with target implementations using a synchronous
 **request-response** protocol over Unix domain sockets.
 
-#### Protocol Messages
+### Protocol Messages
 
 Schema file: [fuzz-v1](./fuzz-v1.asn)
 
@@ -61,7 +61,7 @@ similar to the genesis header: like the genesis header, its contents do not
 fully determine the state. In other words, the state must be accepted and
 stored exactly as provided, regardless of the header's content.
 
-#### Messages Codec
+### Messages Codec
 
 All messages are encoded according to the **JAM codec** format. Prior to
 transmission, each encoded message is prefixed with its length, represented as a
@@ -71,6 +71,7 @@ transmission, each encoded message is prefixed with its length, represented as a
 
 **PeerInfo**
 
+# TODO FIXME
 ```json
 {
   "peer_info" {
@@ -111,48 +112,70 @@ Encoded:
 
 #### Connection Setup
 
-1. **Target Setup**: The target implementation binds to and listens on a named
-   Unix socket (e.g., `/tmp/jam_target.sock`).
+1. **Target Setup**: The target implementation must bind to a named
+  `SOCK_STREAM` Unix domain socket and listen for connections
+   (e.g., `/tmp/jam_target.sock`).
 2. **Fuzzer Connection**: The fuzzer connects to the target's socket to
    establish the communication channel.
-3. **Handshake**: The two peers exchange `PeerInfo` messages to identify
-   themselves and negotiate protocol versions. The target waits to receive the
-   fuzzer's `PeerInfo` message first.
+3. **Handshake**: Both peers exchange `PeerInfo` messages to identify
+   themselves and negotiate protocol versions and supported features.
+   The target waits to receive the fuzzer's `PeerInfo` message before
+   sending its own.
 
-#### Message Types and Expected Responses
+### Message Types and Expected Responses
 
-| Request | Response | Purpose |
-|----------------|-------------------|---------|
-| `PeerInfo` | `PeerInfo` | Handshake and versioning exchange |
-| `SetState` | `StateRoot` | Initialize or reset target state |
-| `ImportBlock` | `StateRoot` | Process block and return resulting state root |
-| `GetState` | `State` | Retrieve posterior state associated to given header hash |
-| `RefineBundle` | `WorkReport` | Compute work report given work package bundle |
-| `GetExports` | `Segments` | Return Exported segments for Work Package Hash or Exported Segment Root |
+| Request        | Response     | Description |
+|----------------|--------------|-------------|
+| `PeerInfo`     | `PeerInfo`   | Handshake and versioning exchange |
+| `SetState`     | `StateRoot`  | Initialize or reset target state |
+| `ImportBlock`  | `StateRoot`  | Import block and return resulting state root |
+| `GetState`     | `State`      | Retrieve posterior state associated to given header hash |
 
-#### Message Flow
+The only exception is the `Error` message, which the target may return for
+certain requests when a protocol-defined error condition occurs.
+Any error condition not specified by the JAM protocol (e.g., out-of-consensus
+internal errors) **must not** be signaled with an `Error` message.
 
-The protocol adheres to a strict request–response model with the following rules:
+If such an out-of-protocol error requires terminating the session, either the
+fuzzer or the target should simply close the connection without sending an
+`Error` message, as outlined in the **General Rules** section.
 
-- **Request initiation:** Only the fuzzer sends requests; the target never
+An `Error` message is only meaningful when the session continues, since it
+triggers a specific reaction from the fuzzer.
+
+| Request        | Error Response Reason |
+|----------------|-----------------------|
+| `ImportBlock`  | Import block failure |
+
+### General Rules
+
+The protocol adheres to a strict **request–response** model with the following rules:
+
+- **Request initiation**. Only the fuzzer sends requests; the target never
   initiates communication.
-- **Sequential exchange:** The target must reply to each request before the next
+- **Sequential exchange**. The target must reply to each request before the next
   one is sent.
-- **Response requirements:** Every response must match the expected message type
-  for the corresponding request.
- **Import failures:** If a block import fails, the target must return a zero
-  hash (i.e. a 32 bytes octet string of all zeroes) and then wait for the next
-  block from the fuzzer as usual.
-- **State verification:** After each block import, state roots are compared to
-  detect inconsistencies.
-- **Full state retrieval:** The `GetState` request is issued only when a state
-  root mismatch is detected.
-- **Refinement:** If work package bundle refinement is supported by the target (via `feature-bundle-refinement`), the fuzzer may send a `RefineBundle` and the fuzzer target must send a `WorkReport` in response.  Only refine should be invoked, however; the core `core-index`, authorization gas used `auth-gas-used` and authorization trace `auth-trace` is provided in the `RefineBundle` for inclusion in the `WorkReport` to represent a prior authorization.  The `service` and `code-hash` for each work item may be found in the previously transmitted states referenced by the Work package `context` by `anchor` or `lookup-anchor` (for historical lookup).  For purposes of bounding the number of states, only the last 600 states `SetState` should be considered.  See **Refinement Failures and Dispute Reporting** below for details.
-- **Error handling:** Receiving an unexpected or malformed message results in
+- **Response requirements**. Every response must match the expected message type
+  for the corresponding request (or an Error message specified by the protocol).
+- **Unexpected errors**. Receiving an unexpected or malformed message results in
   immediate session termination.
-- **Timeouts:** The fuzzer may impose time limits on the target’s responses.
-- **Session termination:** The fuzzing session ends when the fuzzer closes the
+- **Timeouts**. The fuzzer may impose time limits on the target's responses.
+- **Session termination**. The fuzzing session ends when the fuzzer closes the
   connection; no explicit termination message is exchanged.
+
+### Block Importing
+
+- **Import success**. On success the posterior state root should be returned. 
+- **Import failure**. On failure, the target must return a zero hash
+  in place of the state root (i.e. a 32 bytes octet string of all zeroes)
+  and then wait for the next block from the fuzzer.
+- **State verification:** After each block import, state roots are compared by
+  the fuzzer to detect inconsistencies.
+- **Full state retrieval:** When a state root mismatch is detected the fuzzer
+  attempts to fetch the whole state from the target to produce a comprehensive
+  fuzz report.
+
+### Protocol Session
 
 **Typical Session Flow:**
 
@@ -178,18 +201,7 @@ The protocol adheres to a strict request–response model with the following rul
              |   | ----------------------> |   | Process block #1
              |   |      StateRoot          |   |
   Check root |   | <---------------------- |   | Return head state root
-                 +- REFINE (if supported) -+   |
-             |   |       RefineBundle      |   |
-             |   | ----------------------> |   | Process bundle 
-             |   |      WorkReport         |   |
-             |   | <---------------------- |   | Return work report
-             |   +- EXPORTS (if supported) -+  |
-             |   |       GetExports        |   |
-             |   | ----------------------> |   | Request exports by work package hash or segments root 
-             |   |        Segments         |   |
-             |   | <---------------------- |   | Return exported segments
              |   |          ...            |   |            
-             |   |                         |   |
              |   |      ImportBlock        |   |
              |   | ----------------------> |   | Process block #n
              |   |      StateRoot          |   |
@@ -206,16 +218,3 @@ The protocol adheres to a strict request–response model with the following rul
                  |                         |
 ```
 
-## Refinement Failures and Dispute Reporting
-
-If a work package bundle refinement fails, the target must return a work report regardless, and then wait for another block or refine bundle from the target as usual.  If the target supports the retrieval of exported segments (via `feature-exports`), the fuzzer may send a `GetExports` request with either the work package hash or the exported segment root and the target must send `Exports` in response.  The `GetExports` request is issued only when a work report mismatch is detected, and will reference only the most recently refined work package bundle.
-
-Mismatches between fuzzer and target are reported by hashing the `WorkReport`.  For resolving disputes, the fuzzer may generate a report showing differences in `WorkExecResult`, `ExportsRoot`, `ErasureRoot` and other attributes in the work report: 
-
-- For differences in `WorkExecResult`**, indicate mismatched outputs between success `ok` (raw output bytes) or failure categorization (`out-of-gas`, `panic`, `bad-exports`, `bad-code`, `code-oversize`) 
-- For differences in `ExportsRoot`, indicate mismatched exports obtained by the fuzzer from `GetExports` message
-- For differences in `ErasureRoot`, indicate that exports align but roots differ  
-
-Fuzzers and fuzzer targets may have verbose logging to show erasure coding derivations step by step. 
-
-Because segments are **4104 bytes** and there may be as many as 3,072 per report, it may be impractical to share these reports.  It is more practical for fuzzer binaries and targets to be shared along with reports indicating which seed/payload resulted in a discrepancy instead.

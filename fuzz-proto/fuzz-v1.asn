@@ -2,7 +2,7 @@
 
 FuzzProtocol DEFINITIONS ::= BEGIN
 
--- `Block`, `Header`, `WorkReport`, `SegmentRootLookup` as defined by gray paper. 
+-- `Block`, `Header` as defined by gray paper. 
 -- See also https://github.com/w3f/jamtestvectors/blob/master/lib/jam-types.asn
 
 -- Refer to jam-types.asn in the jam-test-vectors repo
@@ -14,16 +14,19 @@ Hash ::= OCTET STRING (SIZE(32))
 HeaderHash ::= Hash
 StateRootHash ::= Hash
 
--- Features is a u32 where the MSB (bit 31) is reserved for future extensions
--- If MSB is 1, another u32 follows with more feature flags
 Features ::= U32
 
 -- Feature bit constants
-feature-block-ancestry INTEGER ::= 1      -- 2^0
-feature-simple-forking INTEGER ::= 2      -- 2^1
-feature-bundle-refinement INTEGER ::= 4   -- 2^2
-feature-exports INTEGER ::= 8             -- 2^3
-feature-extension INTEGER ::= 2147483648  -- 2^31 = 0x80000000
+-- Post-handshake session features are determined by the intersection of the features
+-- listed in the `PeerInfo` message. If a party considers a specific feature mandatory
+-- but finds it missing, it may choose to abort the session.
+ 
+-- Target has access to block ancestry of up to L items, as defined by the GP.
+feature-ancestry INTEGER ::= 1  -- 2^0
+-- Simple forking: forks are supported but always limited to a maximum depth of 1.
+feature-fork INTEGER     ::= 2  -- 2^1
+-- Reserved for future extensions.
+feature-reserved INTEGER ::= 2147483648   -- 2^31
 
 Version ::= SEQUENCE {
     major U8,
@@ -34,20 +37,18 @@ Version ::= SEQUENCE {
 PeerInfo ::= SEQUENCE {
     -- Fuzzer protocol version
     fuzz-version U8,
+    -- Supported features
+    features     Features,
     -- Application version
     app-version  Version,
     -- JAM protocol version
     jam-version  Version,
-    -- Supported features
-    features Features,
     -- Application name
-    name UTF8String
+    name         UTF8String
 }
 
-TrieKey ::= OCTET STRING (SIZE(31))
-
 KeyValue ::= SEQUENCE {
-    key     TrieKey,
+    key     OCTET STRING (SIZE(31)),
     value   OCTET STRING
 }
 
@@ -66,40 +67,13 @@ GetExports ::= OpaqueHash
 
 StateRoot ::= StateRootHash
 
---------------------------------------
--- Refinement
---------------------------------------
-
-RefineBundle ::= SEQUENCE {
-    core-index  CoreIndex,
-    bundle WorkPackageBundle,
-    segment-root-mappings  SegmentRootLookup,
-    auth-gas-used Gas,
-    auth-trace    ByteSequence
-}
-
-Segment ::= OCTET STRING (SIZE(4104))
-
-Exports ::= SEQUENCE of Segment
-
-WorkPackageBundle ::= SEQUENCE {
-    work-package     WorkPackage,                        
-    extrinsics       SEQUENCE OF OCTET STRING,            
-    import-segments  SEQUENCE OF SEQUENCE OF Segment, 
-    justifications   SEQUENCE OF SEQUENCE OF SEQUENCE OF Hash
-}
-
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,
     import-block  [1] ImportBlock,
     set-state     [2] SetState,
     get-state     [3] GetState,
     state         [4] State,
-    state-root    [5] StateRoot,
-    refine-bundle [6] RefineBundle,
-    work-report   [7] WorkReport,
-    get-exports   [8] GetExports,
-    exports       [9] Exports
+    state-root    [5] StateRoot
 }
 
 END
