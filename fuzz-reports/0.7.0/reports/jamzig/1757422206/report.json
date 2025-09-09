@@ -1,0 +1,77 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "Empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 26.428257,
+        "import_max": 26.428257,
+        "import_mean": 26.428257,
+        "import_p50": 26.428257,
+        "import_p75": 0.0,
+        "import_p90": 26.428257,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "name": "jamzig-target",
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            }
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 20.334002,
+            "import_max": 20.334002,
+            "import_mean": 20.334002,
+            "import_p50": 20.334002,
+            "import_p75": 0.0,
+            "import_p90": 20.334002,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "diff": {
+        "roots": {
+            "exp": "0xcf6b66e9cc094c6dfb1bba59bfb000e801168b674115e882af99060d2841fea8",
+            "got": "0xc3026e094f9d7d62cf7bd511517e69acf23d26bd8f6efb6b8ccd1ef2c81add08"
+        },
+        "keyvals": [
+            {
+                "key": "0xf19af9701a0e55259c585b524dfe81a6988ef4ecee1beda1cc2c7be732edf9",
+                "diff": {
+                    "exp": "0x60000000000000003f72b36f023e0a26ba5e3bb25dccd8bc38055b9561f7ca61fecb0c957de7e577206cdcffffffffff00000000000000000a000000000000000a00000000000000127802000000000005000000ffffffffffffffff000000000800000000000000",
+                    "got": "0x60000000000000003f72b36f023e0a26ba5e3bb25dccd8bc38055b9561f7ca61fecb0c957de7e5778babddffffffffff00000000000000000a000000000000000a00000000000000127802000000000005000000ffffffffffffffff000000000800000000000000"
+                }
+            },
+            {
+                "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x3f72b36f023e0a26ba5e3bb25dccd8bc38055b9561f7ca61fecb0c957de7e577206cdcffffffffff0a000000000000000a000000000000001278020000000000ffffffffffffffff05000000000000000b00000000000000",
+                    "got": "0x3f72b36f023e0a26ba5e3bb25dccd8bc38055b9561f7ca61fecb0c957de7e5778babddffffffffff0a000000000000000a000000000000001278020000000000ffffffffffffffff05000000000000000b00000000000000"
+                }
+            }
+        ]
+    }
+}
