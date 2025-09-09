@@ -117,3 +117,11 @@ Performance reports are stored as JSON files with the following structure:
   - `import_std_dev`: Standard deviation of import times
 
 Example report structure can be seen in `fuzz-reports/0.7.0/reports/polkajam/perf/storage.json`.
+
+### Performance Dashboard
+
+This repository provides the benchmark artifacts used by the
+[JAM Conformance Dashboard](https://paritytech.github.io/jam-conformance-dashboard/).
+It contains latency and throughput metrics (p50, p90, p99, mean, stdev)
+for multiple JAM implementations, updated automatically for visualization
+and comparison on the dashboard.
