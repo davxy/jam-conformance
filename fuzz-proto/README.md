@@ -130,6 +130,8 @@ Encoded:
 | `SetState`     | `StateRoot`  | Initialize or reset target state |
 | `ImportBlock`  | `StateRoot`  | Import block and return resulting state root |
 | `GetState`     | `State`      | Retrieve posterior state associated to given header hash |
+| `RefineBundle` | `WorkReport` | Compute work report given work package bundle |
+| `GetExports`   | `Segments`   | Return exported segments for a work package or exported segment root |
 
 The only exception is the `Error` message, which the target may return for
 certain requests when a protocol-defined error condition occurs.
@@ -146,6 +148,8 @@ triggers a specific reaction from the fuzzer.
 | Request        | Error Response Reason |
 |----------------|-----------------------|
 | `ImportBlock`  | Import block failure |
+| `RefineBundle` | Refinement failed |
+| ?
 
 ### General Rules
 
@@ -175,6 +179,37 @@ The protocol adheres to a strict **request–response** model with the following
   attempts to fetch the whole state from the target to produce a comprehensive
   fuzz report.
 
+### Work Package Refinement
+
+- **Refinement**. If work package bundle refinement is supported by the target
+  (via `feature-refine`), the fuzzer may send a `RefineBundle` and the fuzzer
+  target must send a `WorkReport` in response. Only refine should be invoked,
+  however; the core `core-index`, authorization gas used `auth-gas-used` and
+  authorization trace `auth-trace` is provided in the `RefineBundle` for inclusion
+  in the `WorkReport` to represent a prior authorization. The `service` and
+  `code-hash` for each work item may be found in the previously transmitted
+  states referenced by the Work package `context` by `anchor` or `lookup-anchor`
+  (for historical lookup).  For purposes of bounding the number of states,
+  only the last 600 states `SetState` should be considered.
+- **Refine failures**. If a work package bundle refinement fails, the target must return
+  a work report regardless, and then wait for another block or refine bundle from
+  the target as usual.
+- **Exports retrieval**. If the target supports the retrieval of exported segments
+  (via `feature-exports`), the fuzzer may send a `GetExports` request with either
+  the work package hash or the exported segment root and the target must send
+  `Exports` in response. The request is issued only when a work report mismatch is
+  detected, and will reference only the most recently refined work package bundle.
+- **Report Verification**. Mismatches between fuzzer and target are detected by
+  hashing the `WorkReport`. For resolving disputes, the fuzzer may generate a report showing differences in `WorkExecResult`, `ExportsRoot`, `ErasureRoot` and other attributes in the work report: 
+
+- For differences in `WorkExecResult`**, indicate mismatched outputs between success `ok` (raw output bytes) or failure categorization (`out-of-gas`, `panic`, `bad-exports`, `bad-code`, `code-oversize`) 
+- For differences in `ExportsRoot`, indicate mismatched exports obtained by the fuzzer from `GetExports` message
+- For differences in `ErasureRoot`, indicate that exports align but roots differ  
+
+Fuzzers and fuzzer targets may have verbose logging to show erasure coding derivations step by step. 
+
+Because segments are **4104 bytes** and there may be as many as 3,072 per report, it may be impractical to share these reports.  It is more practical for fuzzer binaries and targets to be shared along with reports indicating which seed/payload resulted in a discrepancy instead.
+
 ### Protocol Session
 
 **Typical Session Flow:**
@@ -201,7 +236,18 @@ The protocol adheres to a strict **request–response** model with the following
              |   | ----------------------> |   | Process block #1
              |   |      StateRoot          |   |
   Check root |   | <---------------------- |   | Return head state root
+                 +- REFINE (if supported) -+   |
+             |   |       RefineBundle      |   |
+             |   | ----------------------> |   | Process bundle 
+             |   |      WorkReport         |   |
+             |   | <---------------------- |   | Return work report
+             |   +- EXPORTS (if supported) -+  |
+             |   |       GetExports        |   |
+             |   | ----------------------> |   | Request exports by work package hash or segments root 
+             |   |        Segments         |   |
+             |   | <---------------------- |   | Return exported segments
              |   |          ...            |   |            
+             |   |                         |   |
              |   |      ImportBlock        |   |
              |   | ----------------------> |   | Process block #n
              |   |      StateRoot          |   |
