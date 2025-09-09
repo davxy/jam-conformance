@@ -149,6 +149,7 @@ triggers a specific reaction from the fuzzer.
 |----------------|-----------------------|
 | `ImportBlock`  | Import block failure |
 | `RefineBundle` | Refinement failed |
+| ?
 
 ### General Rules
 
