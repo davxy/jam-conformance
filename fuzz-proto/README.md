@@ -133,22 +133,22 @@ Encoded:
 | `RefineBundle` | `WorkReport` | Compute work report given work package bundle |
 | `GetExports`   | `Segments`   | Return exported segments for a work package or exported segment root |
 
-The only exception is the `Error` message, which can be returned by the
-target for some of the requests when something wrong happens.
-For something wrong we mean anything which is "previsto" by the protocol.
-For errors that imply a session termination the fuzzer can just close the connection
-without sending out any Error.
-Errors are only useful when the session is continued and thus trigger some reaction
-on the fuzzer.
+The only exception is the `Error` message, which the target may return for
+certain requests when a protocol-defined error condition occurs.
+Any error condition not specified by the JAM protocol (e.g., out-of-consensus
+internal errors) **must not** be signaled with an `Error` message.
+
+If such an out-of-protocol error requires terminating the session, either the
+fuzzer or the target should simply close the connection without sending an
+`Error` message, as outlined in the **General Rules** section.
+
+An `Error` message is only meaningful when the session continues, since it
+triggers a specific reaction from the fuzzer.
 
 | Request        | Error Response Reason |
 |----------------|-----------------------|
-| `PeerInfo`     | Failure not contemplated |
-| `SetState`     | Failure is not contemplated |
 | `ImportBlock`  | Import block failure |
-| `GetState`     | The target doesn't support fetch of its entire state |
 | `RefineBundle` | Refinement failed |
-| `GetExports`   | ??? |
 
 ### General Rules
 
