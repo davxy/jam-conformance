@@ -16,9 +16,9 @@
 | vinwolf | 109.327629 |
 | boka | 133.925333 |
 | tsjam | 311.679664 |
-| jamixir | 668.1770620000001 |
-| jampy | 738.96216 |
-| pyjamaz | 3456.62429 |
+| jampy | 396.248194 |
+| jamixir | 639.78756 |
+| pyjamaz | 647.520799 |
 
 ## import_mean
 
@@ -36,9 +36,9 @@
 | fastroll | 19.031557909999997 |
 | boka | 45.495867329999975 |
 | tsjam | 79.54023778000001 |
-| jamixir | 161.73770707 |
-| jampy | 172.13428771 |
-| pyjamaz | 791.5055854700004 |
+| jampy | 100.30629316000002 |
+| jamixir | 149.33303142 |
+| pyjamaz | 174.6660407 |
 
 ## import_min
 
@@ -52,12 +52,12 @@
 | vinwolf | 1.9555089999999997 |
 | jamduna | 2.1039280000000002 |
 | javajam | 2.54988 |
+| jamixir | 2.9968920000000003 |
 | jamzilla | 3.695588 |
 | fastroll | 3.882492 |
 | tsjam | 6.303407 |
-| jamixir | 8.190357 |
-| jampy | 8.300282000000001 |
-| pyjamaz | 8.471325 |
+| pyjamaz | 7.333044 |
+| jampy | 8.431984 |
 | boka | 8.694353999999999 |
 
 ## import_p50
@@ -76,9 +76,9 @@
 | javajam | 14.838 |
 | boka | 37.916 |
 | tsjam | 61.368 |
-| jampy | 103.911 |
-| jamixir | 116.087 |
-| pyjamaz | 498.732 |
+| jampy | 62.711 |
+| jamixir | 94.173 |
+| pyjamaz | 126.07 |
 
 ## import_p75
 
@@ -96,9 +96,9 @@
 | fastroll | 24.722 |
 | boka | 58.236 |
 | tsjam | 105.219 |
-| jamixir | 210.925 |
-| jampy | 225.942 |
-| pyjamaz | 1066.39 |
+| jampy | 130.704 |
+| jamixir | 196.875 |
+| pyjamaz | 231.622 |
 
 ## import_p90
 
@@ -116,9 +116,9 @@
 | fastroll | 41.8 |
 | boka | 94.476 |
 | tsjam | 196.021 |
-| jamixir | 435.365 |
-| jampy | 487.107 |
-| pyjamaz | 2176.721 |
+| jampy | 266.604 |
+| jamixir | 429.365 |
+| pyjamaz | 461.104 |
 
 ## import_p99
 
@@ -136,9 +136,9 @@
 | vinwolf | 99.084 |
 | boka | 119.274 |
 | tsjam | 260.007 |
-| jamixir | 620.619 |
-| jampy | 683.962 |
-| pyjamaz | 3152.174 |
+| jampy | 375.999 |
+| jamixir | 614.277 |
+| pyjamaz | 617.157 |
 
 ## import_std_dev
 
@@ -156,7 +156,7 @@
 | vinwolf | 25.685159043223173 |
 | boka | 31.471491916652184 |
 | tsjam | 77.74618179804365 |
-| jamixir | 176.7991315688285 |
-| jampy | 199.262245970694 |
-| pyjamaz | 942.5205421975603 |
+| jampy | 109.1761429948721 |
+| jamixir | 177.61377277808214 |
+| pyjamaz | 183.977315090568 |
 
