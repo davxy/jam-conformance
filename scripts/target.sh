@@ -4,13 +4,13 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Change to the script's directory
-cd $SCRIPT_DIR
+cd "$SCRIPT_DIR"
 
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
 TARGET_SOCK=${DEFAULT_SOCK:-"/tmp/jam_target.sock"}
 
 # Used to run binaries when target is not provided as a docker image
-SENSIBLE_DOCKER_IMAGE="debian:stable-slim"
+DEFAULT_DOCKER_IMAGE="debian:stable-slim"
 
 # Target configuration using associative array with dot notation
 declare -A TARGETS
@@ -20,7 +20,7 @@ MAX_CORES=${DOCKER_CORES:-32}
 
 # Whether to run targets in docker containers (1) or directly on host (0)
 # Running in Docker is preferable, for being more secure and allow for a linux
-# target in a macOS host. Since more teams target linux than other OSes, 
+# target in a macOS host. Since more teams target linux than other OSes,
 # we get more exposure by running in a Docker container.
 # However, Docker currently presents difficulties in Mac setups, with inconsistent
 # connection issues. This option provides a workaround for such cases.
@@ -127,7 +127,6 @@ TARGETS[tessera.file.macos]="tessera-node-Darwin-arm64.tar.gz"
 TARGETS[tessera.cmd]="tessera-node"
 TARGETS[tessera.args]="--fuzzer --socket $TARGET_SOCK"
 
-
 ### Auxiliary functions:
 
 show_usage() {
@@ -149,9 +148,12 @@ validate_target() {
 
 get_os() {
     case "$(uname -s)" in
-        Linux) echo "linux" ;;
-        Darwin) echo "macos" ;;
-        *) echo "Unsupported OS: $UNAME_S" >&2; exit 1 ;;
+    Linux) echo "linux" ;;
+    Darwin) echo "macos" ;;
+    *)
+        echo "Unsupported OS: $UNAME_S" >&2
+        exit 1
+        ;;
     esac
 }
 
@@ -178,14 +180,15 @@ get_available_targets() {
     local targets=()
     for key in "${!TARGETS[@]}"; do
         local target_name="${key%%.*}"
-        if [[ ! " ${targets[@]} " =~ " ${target_name} " ]]; then
+        # Check if target_name is not already in the targets array to avoid duplicates
+        if [[ ! " ${targets[*]} " =~ $target_name ]]; then
             targets+=("$target_name")
         fi
     done
     printf '%s\n' "${targets[@]}" | sort
 }
 
-AVAILABLE_TARGETS=($(get_available_targets))
+mapfile -t AVAILABLE_TARGETS < <(get_available_targets)
 
 # Returns 0 if the target supports the given os, 1 otherwise
 target_supports_os() {
@@ -222,13 +225,14 @@ get_target_file() {
     echo "$file"
     return 0
 }
- 
+
 # Check if there is a defined "post" action.
 # If not check if file is an archive and extract it, or make it executable
 post_actions() {
     local target=$1
     local os=$2
-    local file=$(get_target_file "$target" "$os")
+    local file
+    file=$(get_target_file "$target" "$os")
     echo "Performing post actions for $file"
     pushd "targets/$target/latest"
     local post="${TARGETS[$target.post]}"
@@ -236,55 +240,55 @@ post_actions() {
         bash -c "$post"
     else
         # Extract nested archives by peeling off extensions
-        local current_file="$file"     
+        local current_file="$file"
         while [[ -f "$current_file" ]]; do
             case "$current_file" in
-                *.zip)
-                    echo "Extracting zip archive: $current_file"
-                    unzip "$current_file" && rm "$current_file"
-                    current_file="${current_file%.zip}"
-                    ;;
-                *.tar.gz)
-                    echo "Extracting tar.gz archive: $current_file"
-                    tar -xzf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.tar.gz}"
-                    ;;
-                *.tgz)
-                    echo "Extracting tgz archive: $current_file"
-                    tar -xzf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.tgz}"
-                    ;;
-                *.tar.bz2)
-                    echo "Extracting tar.bz2 archive: $current_file"
-                    tar -xjf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.tar.bz2}"
-                    ;;
-                *.tbz2)
-                    echo "Extracting tbz2 archive: $current_file"
-                    tar -xjf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.tbz2}"
-                    ;;
-                *.tar.xz)
-                    echo "Extracting tar.xz archive: $current_file"
-                    tar -xJf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.tar.xz}"
-                    ;;
-                *.txz)
-                    echo "Extracting txz archive: $current_file"
-                    tar -xJf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.txz}"
-                    ;;
-                *.tar)
-                    echo "Extracting tar archive: $current_file"
-                    tar -xf "$current_file" && rm "$current_file"
-                    current_file="${current_file%.tar}"
-                    ;;
-                *)
-                    # Not an archive, make it executable and stop
-                    echo "Making file executable: $current_file"
-                    chmod +x "$current_file"
-                    break
-                    ;;
+            *.zip)
+                echo "Extracting zip archive: $current_file"
+                unzip "$current_file" && rm "$current_file"
+                current_file="${current_file%.zip}"
+                ;;
+            *.tar.gz)
+                echo "Extracting tar.gz archive: $current_file"
+                tar -xzf "$current_file" && rm "$current_file"
+                current_file="${current_file%.tar.gz}"
+                ;;
+            *.tgz)
+                echo "Extracting tgz archive: $current_file"
+                tar -xzf "$current_file" && rm "$current_file"
+                current_file="${current_file%.tgz}"
+                ;;
+            *.tar.bz2)
+                echo "Extracting tar.bz2 archive: $current_file"
+                tar -xjf "$current_file" && rm "$current_file"
+                current_file="${current_file%.tar.bz2}"
+                ;;
+            *.tbz2)
+                echo "Extracting tbz2 archive: $current_file"
+                tar -xjf "$current_file" && rm "$current_file"
+                current_file="${current_file%.tbz2}"
+                ;;
+            *.tar.xz)
+                echo "Extracting tar.xz archive: $current_file"
+                tar -xJf "$current_file" && rm "$current_file"
+                current_file="${current_file%.tar.xz}"
+                ;;
+            *.txz)
+                echo "Extracting txz archive: $current_file"
+                tar -xJf "$current_file" && rm "$current_file"
+                current_file="${current_file%.txz}"
+                ;;
+            *.tar)
+                echo "Extracting tar archive: $current_file"
+                tar -xf "$current_file" && rm "$current_file"
+                current_file="${current_file%.tar}"
+                ;;
+            *)
+                # Not an archive, make it executable and stop
+                echo "Making file executable: $current_file"
+                chmod +x "$current_file"
+                break
+                ;;
             esac
         done
     fi
@@ -297,10 +301,12 @@ clone_github_repo() {
     local target=$1
     local os=$2
     local repo=$3
-    local temp_dir=$(mktemp -d)
+    local temp_dir
+    temp_dir=$(mktemp -d)
 
     git clone "https://github.com/$repo" --depth 1 "$temp_dir"
-    local commit_hash=$(cd "$temp_dir" && git rev-parse --short HEAD)
+    local commit_hash
+    commit_hash=$(cd "$temp_dir" && git rev-parse --short HEAD)
     echo "Cloning last revisin: $commit_hash"
     local target_dir="targets/$target"
     echo "Cloned to $target_dir"
@@ -310,10 +316,10 @@ clone_github_repo() {
     mv "$temp_dir" "$target_dir_rev"
 
     rm -f "$target_dir/latest"
-    ln -s "$(realpath $target_dir_rev)" "$target_dir/latest"
+    ln -s "$(realpath "$target_dir_rev")" "$target_dir/latest"
 
     post_actions "$target" "$os"
-   
+
     return 0
 }
 
@@ -328,12 +334,12 @@ get_docker_image() {
 
     echo "Pulling Docker image: $docker_image"
 
-    if ! command -v docker &> /dev/null; then
+    if ! command -v docker &>/dev/null; then
         echo "Error: Docker is not installed or not in PATH"
         return 1
     fi
 
-    if ! docker info &> /dev/null; then
+    if ! docker info &>/dev/null; then
         echo "Error: Docker daemon is not running or not accessible"
         echo "Please start Docker and try again"
         return 1
@@ -353,7 +359,8 @@ get_github_release() {
     local target=$1
     local os=$2
     local repo="${TARGETS[$target.repo]}"
-    local file=$(get_target_file "$target" "$os")
+    local file
+    file=$(get_target_file "$target" "$os")
     local clone="${TARGETS[$target.clone]}"
 
     if [ -z "$repo" ]; then
@@ -369,7 +376,8 @@ get_github_release() {
 
     # Get the latest release tag from GitHub API
     echo "Fetching latest release information..."
-    local latest_tag=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    local latest_tag
+    latest_tag=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     if [ -z "$latest_tag" ]; then
         echo "Error: Could not fetch latest release tag"
         return 1
@@ -381,8 +389,7 @@ get_github_release() {
     echo "Downloading from: $download_url"
 
     # Download the file
-    curl -L -o "$file" "$download_url"
-    if [ $? -ne 0 ]; then
+    if ! curl -L -o "$file" "$download_url"; then
         echo "Error: Download failed"
         return 1
     fi
@@ -394,7 +401,7 @@ get_github_release() {
     mv "$file" "$target_dir_rev/"
 
     rm -f "$target_dir/latest"
-    ln -s "$(realpath $target_dir_rev)" "$target_dir/latest"
+    ln -s "$(realpath "$target_dir_rev")" "$target_dir/latest"
 
     post_actions "$target" "$os"
 }
@@ -420,7 +427,7 @@ run_docker_image() {
     echo "Running $target on docker image $image (command $cmd)"
 
     if ! docker image inspect "$image" >/dev/null 2>&1; then
-        if [[ $image != $SENSIBLE_DOCKER_IMAGE ]]; then
+        if [[ $image != "$DEFAULT_DOCKER_IMAGE" ]]; then
             echo "Error: Docker image '$image' not found locally."
             echo "Please run: $0 get $target"
             exit 1
@@ -435,24 +442,23 @@ run_docker_image() {
 
     trap cleanup_docker EXIT INT TERM
 
-    local env_args=""
+    local env_args=()
     if [ -n "$env" ]; then
-        env_args="-e $env"
+        env_args=("-e $env")
     fi
 
-    local wd_args=""
-    if [[ $image == $SENSIBLE_DOCKER_IMAGE ]]; then
-        wd_args="-w /jam"
+    local wd_args=()
+    if [[ $image == "$DEFAULT_DOCKER_IMAGE" ]]; then
+        wd_args=("-w" "/jam")
     fi
 
+    local priority_args=()
     if [ "$(get_os)" == "linux" ]; then
-        priority_args="sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-$MAX_CORES" 
-    else
-        priority_args=""
+        priority_args=(sudo chrt -f 99 nice -n -20 ionice -c1 -n0 taskset -c 0-"$MAX_CORES")
     fi
 
-    $priority_args \
-    docker run \
+    "${priority_args[@]}" \
+        docker run \
         --rm \
         --name "$target" \
         --user "$(id -u):$(id -g)" \
@@ -474,8 +480,8 @@ run_docker_image() {
         --cap-add=IPC_LOCK \
         -v /tmp:/tmp \
         -v "$SCRIPT_DIR/targets/$target/latest":/jam \
-        $wd_args \
-        $env_args \
+        "${wd_args[@]}" \
+        "${env_args[@]}" \
         "$image" $cmd &
 
     TARGET_PID=$!
@@ -510,7 +516,8 @@ run() {
         # Try to find the newest directory as fallback
         local base_dir="targets/$target"
         if [ -d "$base_dir" ]; then
-            local newest_dir=$($do_find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
+            local newest_dir
+            newest_dir=$($do_find "$base_dir" -maxdepth 1 -type d ! -name "$(basename "$base_dir")" -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
             if [ -n "$newest_dir" ] && [ -d "$newest_dir" ]; then
                 echo "Using newest available directory: $newest_dir"
                 target_dir="$newest_dir"
@@ -524,40 +531,41 @@ run() {
         fi
     fi
 
-if [[ "$RUN_DOCKER" == "1" ]]; then
-    # Overwrite target information and run it in a dedicated docker image
-    TARGETS[$target.image]="$SENSIBLE_DOCKER_IMAGE"
-    TARGETS[$target.cmd]="./$command $args"
-    run_docker_image "$target"
-else 
-    # Set up trap to cleanup on exit
-    cleanup() {
-        if [ "$CLEANUP_DONE" = "true" ]; then
-            return
-        fi
-        CLEANUP_DONE=true
+    if [[ "$RUN_DOCKER" == "1" ]]; then
+        # Overwrite target information and run it in a dedicated docker image
+        TARGETS[$target.image]="$DEFAULT_DOCKER_IMAGE"
+        TARGETS[$target.cmd]="./$command $args"
+        run_docker_image "$target"
+    else
+        # Set up trap to cleanup on exit
+        cleanup() {
+            if [ "$CLEANUP_DONE" = "true" ]; then
+                return
+            fi
+            CLEANUP_DONE=true
 
-        echo "Cleaning up $target..."
-        if [ ! -z "$TARGET_PID" ]; then
-            echo "Killing target $TARGET_PID..."
-            kill -TERM $TARGET_PID 2>/dev/null || true
-            sleep 1
-            kill -KILL $TARGET_PID 2>/dev/null || true
+            echo "Cleaning up $target..."
+            if [ ! -z "$TARGET_PID" ]; then
+                echo "Killing target $TARGET_PID..."
+                kill -TERM "$TARGET_PID" 2>/dev/null || true
+                sleep 1
+                kill -KILL "$TARGET_PID" 2>/dev/null || true
+            fi
+            rm -f "$DEFAULT_SOCK"
+        }
+        trap cleanup EXIT INT TERM
+        local env="${TARGETS[${target}.env]}"
+        if [ ! -z "$env" ]; then
+            # Export all environment variables from the env string
+            eval "export $env"
         fi
-        rm -f "$DEFAULT_SOCK"
-    }
-    trap cleanup EXIT INT TERM
-    local env="${TARGETS[${target}.env]}"
-    if [ ! -z "$env" ]; then
-        export $env
+        pushd "$target_dir" >/dev/null
+        bash -c "./$command $args" &
+        TARGET_PID=$!
+        popd >/dev/null
+        echo "Waiting for target termination (pid=$TARGET_PID)"
+        wait $TARGET_PID
     fi
-    pushd "$target_dir" > /dev/null
-    bash -c "./$command $args" &
-    TARGET_PID=$!
-    popd > /dev/null
-    echo "Waiting for target termination (pid=$TARGET_PID)"
-    wait $TARGET_PID
-fi
 }
 
 ### Main script logic
@@ -582,68 +590,68 @@ validate_target "$TARGET" || exit 1
 echo "Action: $ACTION, Target: $TARGET, OS: $OS"
 
 case "$ACTION" in
-    "get")
-        if [ "$TARGET" = "all" ]; then
-            echo "Downloading all targets: ${AVAILABLE_TARGETS[*]}"
-            failed_targets=()
-            for TARGET in "${AVAILABLE_TARGETS[@]}"; do
-                echo "Downloading $TARGET for $OS..."
-                if is_repo_target; then
-                    if target_supports_os "$TARGET" "$OS"; then
-                        if ! get_github_release "$TARGET" "$OS"; then
-                            echo "Failed to download $TARGET"
-                            failed_targets+=("$TARGET")
-                        fi
-                    else
-                        echo "Skipping $TARGET: No $OS support available"
-                    fi
-                elif is_docker_target; then
-                    if ! get_docker_image "$TARGET"; then
-                        echo "Failed to pull Docker image for $TARGET"
+"get")
+    if [ "$TARGET" = "all" ]; then
+        echo "Downloading all targets: ${AVAILABLE_TARGETS[*]}"
+        failed_targets=()
+        for TARGET in "${AVAILABLE_TARGETS[@]}"; do
+            echo "Downloading $TARGET for $OS..."
+            if is_repo_target; then
+                if target_supports_os "$TARGET" "$OS"; then
+                    if ! get_github_release "$TARGET" "$OS"; then
+                        echo "Failed to download $TARGET"
                         failed_targets+=("$TARGET")
                     fi
                 else
-                    echo "Error: Unknown target type for $TARGET"
+                    echo "Skipping $TARGET: No $OS support available"
+                fi
+            elif is_docker_target; then
+                if ! get_docker_image "$TARGET"; then
+                    echo "Failed to pull Docker image for $TARGET"
                     failed_targets+=("$TARGET")
                 fi
-                echo ""
-            done
-            # Report summary
-            if [ ${#failed_targets[@]} -eq 0 ]; then
-                echo "All targets downloaded successfully!"
             else
-                echo "Failed to download the following targets: ${failed_targets[*]}"
-                echo "Successfully downloaded: $((${#AVAILABLE_TARGETS[@]} - ${#failed_targets[@]})) out of ${#AVAILABLE_TARGETS[@]} targets"
-                exit 1
+                echo "Error: Unknown target type for $TARGET"
+                failed_targets+=("$TARGET")
             fi
-        elif is_repo_target "$TARGET"; then
-            if target_supports_os "$TARGET" "$OS"; then
-                get_github_release "$TARGET" "$OS"
-            else
-                exit 1
-            fi
-        elif is_docker_target "$TARGET"; then
-            get_docker_image "$TARGET"
+            echo ""
+        done
+        # Report summary
+        if [ ${#failed_targets[@]} -eq 0 ]; then
+            echo "All targets downloaded successfully!"
         else
-            echo "Unknown target '$TARGET'"
-            echo "Available targets: ${AVAILABLE_TARGETS[*]} all"
+            echo "Failed to download the following targets: ${failed_targets[*]}"
+            echo "Successfully downloaded: $((${#AVAILABLE_TARGETS[@]} - ${#failed_targets[@]})) out of ${#AVAILABLE_TARGETS[@]} targets"
             exit 1
         fi
-        ;;
-    "run")
-        if is_docker_target "$TARGET"; then
-            run_docker_image "$TARGET"
-        elif is_repo_target "$TARGET"; then
-            run "$TARGET" "$OS"
+    elif is_repo_target "$TARGET"; then
+        if target_supports_os "$TARGET" "$OS"; then
+            get_github_release "$TARGET" "$OS"
         else
-            echo "Unknown target '$TARGET'"
-            echo "Available targets: ${AVAILABLE_TARGETS[*]}"
             exit 1
         fi
-        ;;
-    *)
-        echo "Unknown action '$ACTION'"
-        echo "Usage: $0 <get|run> <target>"
+    elif is_docker_target "$TARGET"; then
+        get_docker_image "$TARGET"
+    else
+        echo "Unknown target '$TARGET'"
+        echo "Available targets: ${AVAILABLE_TARGETS[*]} all"
         exit 1
-        ;;
+    fi
+    ;;
+"run")
+    if is_docker_target "$TARGET"; then
+        run_docker_image "$TARGET"
+    elif is_repo_target "$TARGET"; then
+        run "$TARGET" "$OS"
+    else
+        echo "Unknown target '$TARGET'"
+        echo "Available targets: ${AVAILABLE_TARGETS[*]}"
+        exit 1
+    fi
+    ;;
+*)
+    echo "Unknown action '$ACTION'"
+    echo "Usage: $0 <get|run> <target>"
+    exit 1
+    ;;
 esac
