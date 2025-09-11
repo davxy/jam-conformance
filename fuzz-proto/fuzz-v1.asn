@@ -56,9 +56,13 @@ State ::= SEQUENCE OF KeyValue
 
 ImportBlock ::= Block
 
+-- Empty when `feature-ancestry` is not supported by both parties
+Ancestry ::= SEQUENCE OF HeaderHash
+
 SetState ::= SEQUENCE {
     header Header,
-    state State
+    state State,
+    ancestry Ancestry
 }
 
 GetState ::= HeaderHash
