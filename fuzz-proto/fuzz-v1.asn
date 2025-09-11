@@ -59,9 +59,12 @@ ImportBlock ::= Block
 -- Empty when `feature-ancestry` is not supported by both parties
 Ancestry ::= SEQUENCE (SIZE(0..24)) OF HeaderHash
 
-SetState ::= SEQUENCE {
+Initialize ::= SEQUENCE {
+    -- "genesis-like" header whose hash can be used to reference `state` in the chain
     header Header,
-    state State,
+    -- Sequence of key-values
+    keyvals State,
+    -- Ancestry sequence (includes `header` hash)
     ancestry Ancestry
 }
 
@@ -76,11 +79,11 @@ Error ::= NULL
 
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,
-    import-block  [1] ImportBlock,
-    set-state     [2] SetState,
-    get-state     [3] GetState,
-    state         [4] State,
-    state-root    [5] StateRoot,
+    initialize    [1] Initialize,
+    state-root    [2] StateRoot,
+    import-block  [3] ImportBlock,
+    get-state     [4] GetState,
+    state         [5] State,
     error         [255] Error
 }
 

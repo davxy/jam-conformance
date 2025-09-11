@@ -55,7 +55,7 @@ The fuzzer communicates with target implementations using a synchronous
 
 Schema file: [fuzz-v1](./fuzz-v1.asn)
 
-**Note**: The `Header` included in the `SetState` message may be eventually
+**Note**: The `Header` included in the `Initialize` message may be eventually
 used - via its hash - to reference the associated state. It is conceptually
 similar to the genesis header: like the genesis header, its contents do not
 fully determine the state. In other words, the state must be accepted and
@@ -127,7 +127,7 @@ Encoded:
 | Request        | Response     | Description |
 |----------------|--------------|-------------|
 | `PeerInfo`     | `PeerInfo`   | Handshake and versioning exchange |
-| `SetState`     | `StateRoot`  | Initialize or reset target state |
+| `Initialize`   | `StateRoot`  | Initialize or reset target state |
 | `ImportBlock`  | `StateRoot`  | Import block and return resulting state root |
 | `GetState`     | `State`      | Retrieve posterior state associated to given header hash |
 
@@ -190,9 +190,9 @@ The protocol adheres to a strict **request–response** model with the following
              +---+-------------------------+---+
                  |                         |
              +---+--- INITIALIZATION ------+---+
-             |   |      SetState           |   |
-             |   | ----------------------> |   | Initialize state
-             |   |   StateRoot (or Error)  |   |
+             |   |       Initialize        |   |
+             |   | ----------------------> |   | Initialize target
+             |   |        StateRoot        |   |
   Check root |   | <---------------------- |   | Return head state root
              +---+-------------------------+---+
                  |                         |
@@ -231,7 +231,7 @@ Mandatory features are marked with the `[M1]` tag.
 
 ### Ancestry [M1]
 
-When `feature-ancestry` is enabled, the fuzzer includes in the `SetState`
+When `feature-ancestry` is enabled, the fuzzer includes in the `Initialize`
 message the list of ancestors for the block contained in the first step
 (i.e., the first block sent via `ImportBlock`).
 
