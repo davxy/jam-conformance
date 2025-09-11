@@ -164,8 +164,7 @@ The protocol adheres to a strict **request–response** model with the following
 ### Block Importing
 
 - **Import success**. On success the posterior state root should be returned. 
-- **Import failure**. On failure, the target must return a zero hash
-  in place of the state root (i.e. a 32 bytes octet string of all zeroes)
+- **Import failure**. On failure, the target must return an `Error` message
   and then wait for the next block from the fuzzer.
 - **State verification:** After each block import, state roots are compared by
   the fuzzer to detect inconsistencies.
