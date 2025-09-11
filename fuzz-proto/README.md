@@ -1,4 +1,4 @@
-# JAM Protocol Conformance Testing
+# JAM Conformance Testing Protocol
 
 The fuzzer can function as a JAM protocol conformance testing tool,
 enabling validation of third-party implementations (the "target") against
@@ -256,7 +256,7 @@ also be skipped.**
 
 When `feature-forks` is enabled, the fuzzer may generate simple forks.  
 
-### Typical Workflow
+#### Typical Workflow
 
 1. The fuzzer produces a new block and prepares several mutations.
 2. Each mutation is sent to the target using one `ImportBlock` message per mutation.
@@ -267,10 +267,10 @@ Importantly, the fuzzer does **not** require full arbitrary forking support.
 The chain is always extended from the **original block** — i.e.
 mutations are never used as parents for subsequent blocks.
 
-### Example Session
+#### Example Session
 
-- Let $i = 0$  
-- Increment $i$ and construct block $B_i$ with parent $B_{i-1}$  
-- Mutate $B_i$ into several variants: $B_{i1}$, $B_{i2}$, $B_{i3}$  
-- Import these variants in order: $B_{i1}$, $B_{i2}$, $B_{i3}$, and finally the original $B_i$  
-- Repeat from step 2  
+1. Let $i = 0$  
+2. Increment $i$ and construct block $B_i$ with parent $B_{i-1}$  
+3. Mutate $B_i$ into several variants: $B_{i1}$, $B_{i2}$, $B_{i3}$  
+4. Import these variants in order: $B_{i1}$, $B_{i2}$, $B_{i3}$, and finally the original $B_i$  
+5. Repeat from step 2  
