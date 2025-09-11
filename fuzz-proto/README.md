@@ -46,7 +46,7 @@ imply an issue with the target. In case of discrepancy, the resulting test
 vector should be reviewed, and the expected behavior verified against the
 Graypaper to resolve the inconsistency.
 
-## Communication Protocol
+## Protocol
 
 The fuzzer communicates with target implementations using a synchronous
 **request-response** protocol over Unix domain sockets.
@@ -218,3 +218,59 @@ The protocol adheres to a strict **request–response** model with the following
                  |                         |
 ```
 
+## Features
+
+Supported features are negotiated during the initial handshake via the `PeerInfo` message.
+
+Session features are determined by the intersection (bitwise-and) of the features
+listed in the `PeerInfo` message. If a party considers a specific feature mandatory
+but finds it missing, it may choose to immediately terminate the session.
+
+**Note:** During official M1 conformance testing, support for certain features is **mandatory**.  
+Mandatory features are marked with the `[M1]` tag.
+
+### Ancestry [M1]
+
+When `feature-ancestry` is enabled, the fuzzer includes in the `SetState`
+message the list of ancestors for the block contained in the first step
+(i.e., the first block sent via `ImportBlock`).
+
+This feature is necessary to support a GP-required check:  
+the lookup anchor of each report in the guarantees extrinsic ($G_A$) must be  
+part of the last $L$ imported headers in the chain  
+([GP reference](https://graypaper.fluffylabs.dev/#/1c979cb/150203150203?v=0.7.1)).  
+
+According to the GP specification, **L = 14,400**.  
+Assuming 6-second slots with no skipped slots, this corresponds to **24 hours**.  
+
+However, when fuzzing with `tiny` specs, we prefer a much smaller **L**.  
+Using the same full/tiny ratio as the one used preimage expunge period  
+(19,200 / 32 = 600), we scale L accordingly:  `L = 14,400 / 32 = 24`.
+
+In short, for the `tiny` spec, the maximum ancestry length **A** is set to **24**.
+
+**When this feature is disabled, the check described in the GP reference should
+also be skipped.**
+
+### Forking [M1]
+
+When `feature-forks` is enabled, the fuzzer may generate simple forks.  
+
+### Typical Workflow
+
+1. The fuzzer produces a new block and prepares several mutations.
+2. Each mutation is sent to the target using one `ImportBlock` message per mutation.
+3. Some mutations may be invalid and therefore ignored.  
+   Valid mutations that get imported result in a fork.
+
+Importantly, the fuzzer does **not** require full arbitrary forking support.  
+The chain is always extended from the **original block** — i.e.
+mutations are never used as parents for subsequent blocks.
+
+### Example Session
+
+- Let $i = 0$  
+- Increment $i$ and construct block $B_i$ with parent $B_{i-1}$  
+- Mutate $B_i$ into several variants: $B_{i1}$, $B_{i2}$, $B_{i3}$  
+- Import these variants in order: $B_{i1}$, $B_{i2}$, $B_{i3}$, and finally the original $B_i$  
+- Repeat from step 2  
