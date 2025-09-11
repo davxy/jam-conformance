@@ -71,29 +71,28 @@ transmission, each encoded message is prefixed with its length, represented as a
 
 **PeerInfo**
 
-# TODO FIXME
 ```json
 {
-  "peer_info" {
-    "name": "fuzzer",
-    "version": {
-      "major": 0,
-      "minor": 1,
-      "patch": 23
-    }
-    "protocol_version": {
-      "major": 0,
-      "minor": 6,
-      "patch": 6
-    }
-  }
+  "fuzz_version": 1,
+  "features": 2,
+  "app_version": {
+    "major": 0,
+    "minor": 1,
+    "patch": 23
+  },
+  "jam_version": {
+    "major": 0,
+    "minor": 7,
+    "patch": 0
+  },
+  "name": "fuzzer"
 }
 ```
 
 Encoded:
+
 ```
-0x0e000000 0x000666757a7a6572000117000606
-^ length   ^ encoded-message
+0x0001020000000001190007000666757a7a6572
 ```
 
 **StateRoot**
@@ -106,8 +105,7 @@ Encoded:
 
 Encoded:
 ```
-0x21000000 0x054559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe
-^ length   ^ encoded-message
+0x024559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe
 ```
 
 #### Connection Setup
