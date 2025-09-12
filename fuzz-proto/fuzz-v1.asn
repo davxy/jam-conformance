@@ -80,8 +80,8 @@ GetExports ::= OpaqueHash
 
 StateRoot ::= StateRootHash
 
--- The variant doesn't convey any extra information
-Error ::= NULL
+-- Error with some optional message
+Error ::= UTF8String
 
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,

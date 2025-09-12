@@ -152,6 +152,8 @@ certain requests when a protocol-defined error condition occurs.
 Any error condition not specified by the JAM protocol (e.g., out-of-consensus
 internal errors) **must not** be signaled with an `Error` message.
 
+The `Error` message may convey some extra information for debugging purposes.
+
 If such an out-of-protocol error requires terminating the session, either the
 fuzzer or the target should simply close the connection without sending an
 `Error` message, as outlined in the **General Rules** section.
