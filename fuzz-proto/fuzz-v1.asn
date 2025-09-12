@@ -37,15 +37,15 @@ Version ::= SEQUENCE {
 
 PeerInfo ::= SEQUENCE {
     -- Fuzzer protocol version
-    fuzz-version U8,
-    -- Supported features
-    features     Features,
-    -- Application version
-    app-version  Version,
+    fuzz-version  U8,
+    -- Fuzzer supported features
+    fuzz-features Features,
     -- JAM protocol version
-    jam-version  Version,
+    jam-version   Version,
+    -- Application version
+    app-version   Version,
     -- Application name
-    name         UTF8String
+    app-name      UTF8String
 }
 
 KeyValue ::= SEQUENCE {

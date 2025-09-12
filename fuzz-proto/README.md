@@ -75,18 +75,18 @@ transmission, each encoded message is prefixed with its length, represented as a
 {
   "peer_info": {
       "fuzz_version": 1,
-      "features": 2,
-      "app_version": {
-        "major": 0,
-        "minor": 1,
-        "patch": 25
-      },
+      "fuzz_features": 2,
       "jam_version": {
         "major": 0,
         "minor": 7,
         "patch": 0
       },
-      "name": "fuzzer"
+      "app_version": {
+        "major": 0,
+        "minor": 1,
+        "patch": 25
+      },
+      "app_name": "fuzzer"
     }
   }
 }
@@ -95,15 +95,15 @@ transmission, each encoded message is prefixed with its length, represented as a
 Encoded:
 
 ```
-0x0001020000000001190007000666757a7a6572
+0x0001020000000007000001190666757a7a6572
 ```
 
 - 00: message variant discriminator
 - 01: fuzz version
-- 02000000: features
-- 000119: app_version
+- 02000000: fuzz_features
 - 000700: jam_version
-- 06 66757a7a6572: namelen ++ name
+- 000119: app_version
+- 06 66757a7a6572: app_name (with len prefix)
 
 **StateRoot**
 
