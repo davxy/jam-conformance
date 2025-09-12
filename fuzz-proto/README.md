@@ -73,19 +73,22 @@ transmission, each encoded message is prefixed with its length, represented as a
 
 ```json
 {
-  "fuzz_version": 1,
-  "features": 2,
-  "app_version": {
-    "major": 0,
-    "minor": 1,
-    "patch": 23
-  },
-  "jam_version": {
-    "major": 0,
-    "minor": 7,
-    "patch": 0
-  },
-  "name": "fuzzer"
+  "peer_info": {
+      "fuzz_version": 1,
+      "features": 2,
+      "app_version": {
+        "major": 0,
+        "minor": 1,
+        "patch": 25
+      },
+      "jam_version": {
+        "major": 0,
+        "minor": 7,
+        "patch": 0
+      },
+      "name": "fuzzer"
+    }
+  }
 }
 ```
 
@@ -95,11 +98,20 @@ Encoded:
 0x0001020000000001190007000666757a7a6572
 ```
 
+- 00: message variant discriminator
+- 01: fuzz version
+- 02000000: features
+- 000119: app_version
+- 000700: jam_version
+- 06 66757a7a6572: namelen ++ name
+
 **StateRoot**
 
 ```json
 {
-  "state_root": "0x4559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe"
+  "state_root": {
+    "state_root": "0x4559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe"
+  }
 }
 ```
 
@@ -107,6 +119,9 @@ Encoded:
 ```
 0x024559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe
 ```
+
+- 02: message variant discriminator
+- 45..fe: state_root
 
 #### Connection Setup
 
@@ -232,17 +247,17 @@ When `feature-ancestry` is enabled, the fuzzer includes in the `Initialize`
 message the list of ancestors for the block contained in the first step
 (i.e., the first block sent via `ImportBlock`).
 
-This feature is necessary to support a GP-required check:  
-the lookup anchor of each report in the guarantees extrinsic ($G_A$) must be  
-part of the last $L$ imported headers in the chain  
-([GP reference](https://graypaper.fluffylabs.dev/#/1c979cb/150203150203?v=0.7.1)).  
+This feature is required to support a **GP-mandated check**:  
+the lookup anchor of each report in the guarantees extrinsic ($G_A$)  
+must be included within the last $L$ imported headers in the chain  
+([GP reference](https://graypaper.fluffylabs.dev/#/1c979cb/150203150203?v=0.7.1)).
 
-According to the GP specification, **L = 14,400**.  
+According to the GP specification, $L = 14400$.
 Assuming 6-second slots with no skipped slots, this corresponds to **24 hours**.  
 
-However, when fuzzing with `tiny` specs, we prefer a much smaller **L**.  
-Using the same full/tiny ratio as the one used preimage expunge period  
-(19,200 / 32 = 600), we scale L accordingly:  `L = 14,400 / 32 = 24`.
+However, when fuzzing with _tiny_ specs, we prefer a much smaller **L**.  
+Using the same full/tiny ratio as the one used for preimage expunge period  
+($19,200 / 32 = 600$), we scale $L$ accordingly: $L = 14,400 / 600 = 24$.
 
 In short, for the `tiny` spec, the maximum ancestry length **A** is set to **24**.
 
