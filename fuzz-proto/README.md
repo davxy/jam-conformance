@@ -101,20 +101,19 @@ Encoded:
 0x0001020000000007000001190666757a7a6572
 ```
 
-- 00: message variant discriminator
-- 01: fuzz version
-- 02000000: fuzz_features
-- 000700: jam_version
-- 000119: app_version
-- 06 66757a7a6572: app_name (with len prefix)
+- `00`: message variant discriminant (`peer_info`)
+- `01`: fuzzer version
+- `02000000`: fuzzer features
+- `000700`: jam version
+- `000119`: application version
+- `06`: application name length
+- `66757a7a6572`: application name
 
 **StateRoot**
 
 ```json
 {
-  "state_root": {
-    "state_root": "0x4559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe"
-  }
+  "state_root": "0x4559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe"
 }
 ```
 
@@ -123,8 +122,25 @@ Encoded:
 0x024559342d3a32a8cbc3c46399a80753abff8bf785aa9d6f623e0de045ba6701fe
 ```
 
-- 02: message variant discriminator
-- 45..fe: state_root
+- `02`: message variant discriminant (`state_root`)
+- `45..fe`: state root
+
+**Error**
+
+```json
+{
+    "error": "Chain error: block execution failure: preimages error: preimage not required"
+}
+```
+
+Encoded:
+```
+0xff4c436861696e206572726f723a20626c6f636b20657865637574696f6e206661696c7572653a20707265696d61676573206572726f723a20707265696d616765206e6f74207265717569726564
+```
+
+- `ff`: message variant discriminant (`error`)
+- `4c`: message length
+- `43..64`: message
 
 #### Connection Setup
 

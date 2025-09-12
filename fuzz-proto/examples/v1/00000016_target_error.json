@@ -1,3 +1,3 @@
 {
-    "Error": "Chain error: block execution failure: preimages error: preimage not required"
+    "error": "Chain error: block execution failure: preimages error: preimage not required"
 }
