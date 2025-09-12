@@ -1,22 +1,31 @@
--- Block and Header as defined by the gray paper
+FuzzProtocol DEFINITIONS ::= BEGIN
 
-TrieKey ::= OCTET STRING (SIZE(31))
+-- `Block` and `Header` as defined by the gray paper
+-- Refer to jam-types.asn in the jam-test-vectors repo
+
+U8 ::= INTEGER (0..255)
+U32 ::= INTEGER (0..4294967295)
 
 Hash ::= OCTET STRING (SIZE(32))
 HeaderHash ::= Hash
 StateRootHash ::= Hash
 
 Version ::= SEQUENCE {
-    major INTEGER (0..255),
-    minor INTEGER (0..255),
-    patch INTEGER (0..255)
+    major U8,
+    minor U8,
+    patch U8
 }
 
 PeerInfo ::= SEQUENCE {
-    name         UTF8String,
+    -- Application version
     app-version  Version,
-    jam-version  Version
+    -- JAM protocol version
+    jam-version  Version,
+    -- Application name
+    name UTF8String
 }
+
+TrieKey ::= OCTET STRING (SIZE(31))
 
 KeyValue ::= SEQUENCE {
     key     TrieKey,
@@ -28,8 +37,8 @@ State ::= SEQUENCE OF KeyValue
 ImportBlock ::= Block
 
 SetState ::= SEQUENCE {
-    header  Header,
-    state   State
+    header Header,
+    state State
 }
 
 GetState ::= HeaderHash
@@ -44,3 +53,5 @@ Message ::= CHOICE {
     state        [4] State,
     state-root   [5] StateRoot
 }
+
+END
