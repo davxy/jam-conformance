@@ -67,7 +67,10 @@ All messages are encoded according to the **JAM codec** format. Prior to
 transmission, each encoded message is prefixed with its length, represented as a
 32-bit little-endian integer.
 
-##### Message Encoding Examples
+#### Encoding Examples
+
+Here are a couple of encoding examples.  
+For a complete set of examples from an actual session, see the [examples](./examples) directory.
 
 **PeerInfo**
 
