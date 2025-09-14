@@ -121,5 +121,10 @@
       "macos": "tessera-node-Darwin-arm64.tar.gz"
     },
     "cmd": "tessera-node --fuzzer --socket {TARGET_SOCK}"
+  },
+  "typeberry": {
+    "image": "ghcr.io/fluffylabs/typeberry:latest",
+    "cmd": "--version=1 fuzz-target {TARGET_SOCK}",
+    "env": "JAM_LOG=log"
   }
 }
