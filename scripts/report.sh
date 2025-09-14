@@ -33,7 +33,7 @@ find "$FOLDER" -name "report.bin" -type f | while read -r report_bin; do
     output_dir="output/$subfolder_name"
     mkdir -p "$output_dir"
     
-    jam-decode "$report_bin" > "$output_dir/report.json"
+    jam-decode -f "$report_bin" > "$output_dir/report.json"
     
     cp "$report_bin" "$output_dir/"
     

@@ -538,8 +538,6 @@ def run_docker_image(target: str) -> None:
         "IPC_LOCK",
         "-v",
         "/tmp:/tmp",
-        "-v",
-        f"{Path(__file__).parent}/targets/{target}/latest:/jam",
     ]
 
     if env:
@@ -547,13 +545,14 @@ def run_docker_image(target: str) -> None:
 
     if image == DEFAULT_DOCKER_IMAGE:
         docker_cmd.extend(["-w", "/jam"])
+        docker_cmd.extend(["-e", "HOME=/jam"])
+        docker_cmd.extend(["-v", f"{Path(__file__).parent}/targets/{target}/latest:/jam"])
 
     docker_cmd.append(image)
 
     # Handle cmd as string
     if cmd:
         import shlex
-
         docker_cmd.extend(shlex.split(cmd))
 
     # Add priority args for Linux

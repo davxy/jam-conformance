@@ -1,3 +1,16 @@
+### [14-09-25]
+
+Retire 1756548916. Invalidated by `tiny` L parameter change.
+The maximum age of the lookup anchor (L in GP) is set to 24 when using the tiny configuration.
+
+
+### [12-09-25]
+
+Fuzzer Protocol v1 specification has been released.  
+Refer to the [PR](https://github.com/davxy/jam-conformance/pull/47) for details on the changes.  
+
+The examples folder has been updated with a sample session using the new message format.
+
 ### [09-09-25]
 
 Interesting traces batch and reports

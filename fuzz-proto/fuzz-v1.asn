@@ -1,0 +1,96 @@
+-- Specification for Fuzzer Protocol V1
+
+FuzzProtocol DEFINITIONS ::= BEGIN
+
+-- `Block`, `Header` as defined by gray paper. 
+-- See also https://github.com/w3f/jamtestvectors/blob/master/lib/jam-types.asn
+
+-- Refer to jam-types.asn in the jam-test-vectors repo
+
+U8 ::= INTEGER (0..255)
+U32 ::= INTEGER (0..4294967295)
+
+Hash ::= OCTET STRING (SIZE(32))
+HeaderHash ::= Hash
+StateRootHash ::= Hash
+TimeSlot ::= U32
+
+Features ::= U32
+
+-- Feature bit constants
+-- Post-handshake session features are determined by the intersection of the features
+-- listed in the `PeerInfo` message. If a party considers a specific feature mandatory
+-- but finds it missing, it may choose to abort the session.
+ 
+-- Target has access to block ancestry of up to L items, as defined by the GP.
+feature-ancestry INTEGER ::= 1  -- 2^0
+-- Simple forking: forks are supported but always limited to a maximum depth of 1.
+feature-fork INTEGER     ::= 2  -- 2^1
+-- Reserved for future extensions.
+feature-reserved INTEGER ::= 2147483648   -- 2^31
+
+Version ::= SEQUENCE {
+    major U8,
+    minor U8,
+    patch U8
+}
+
+PeerInfo ::= SEQUENCE {
+    -- Fuzzer protocol version
+    fuzz-version  U8,
+    -- Fuzzer supported features
+    fuzz-features Features,
+    -- JAM protocol version
+    jam-version   Version,
+    -- Application version
+    app-version   Version,
+    -- Application name
+    app-name      UTF8String
+}
+
+KeyValue ::= SEQUENCE {
+    key     OCTET STRING (SIZE(31)),
+    value   OCTET STRING
+}
+
+State ::= SEQUENCE OF KeyValue
+
+ImportBlock ::= Block
+
+AncestryItem ::= SEQUENCE {
+    slot TimeSlot,
+    header-hash HeaderHash
+}
+
+-- Empty when `feature-ancestry` is not supported by both parties
+Ancestry ::= SEQUENCE (SIZE(0..24)) OF AncestryItem
+
+Initialize ::= SEQUENCE {
+    -- "genesis-like" header whose hash can be used to reference `state` in the chain
+    header Header,
+    -- Sequence of key-values
+    keyvals State,
+    -- Ancestry sequence (includes `header` hash)
+    ancestry Ancestry
+}
+
+GetState ::= HeaderHash
+
+GetExports ::= OpaqueHash
+
+StateRoot ::= StateRootHash
+
+-- Error with some optional message
+Error ::= UTF8String
+
+Message ::= CHOICE {
+    peer-info     [0] PeerInfo,
+    initialize    [1] Initialize,
+    state-root    [2] StateRoot,
+    import-block  [3] ImportBlock,
+    get-state     [4] GetState,
+    state         [5] State,
+    error         [255] Error
+}
+
+END
