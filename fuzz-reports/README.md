@@ -13,7 +13,7 @@
 
 * jamduna (go)
 * javajam (java)
-* spacejam (rust) (fails on docker)
+* spacejam (rust)
 * tsjam (ts)
 
 ### V0.7.0 (fuzz proto v0)
