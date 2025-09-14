@@ -1,6 +1,8 @@
 ### [14-09-25]
 
-Retire 1756548916. Invalidated by `tiny` L parameter change (now set to 24).
+Retire 1756548916. Invalidated by `tiny` L parameter change.
+The maximum age of the lookup anchor (L in GP) is set to 24 when using the tiny configuration.
+
 
 ### [12-09-25]
 
