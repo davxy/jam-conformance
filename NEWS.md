@@ -1,3 +1,7 @@
+### [14-09-25]
+
+Retire 1756548916. Invalidated by `tiny` L parameter change (now set to 24).
+
 ### [12-09-25]
 
 Fuzzer Protocol v1 specification has been released.  
