@@ -1,7 +1,11 @@
 ### [14-09-25]
 
-Retire 1756548916. Invalidated by `tiny` L parameter change.
-The maximum age of the lookup anchor (L in GP) is set to 24 when using the tiny configuration.
+New batch of challenging traces and reports released.
+These traces are tested only with targets implementing fuzzer protocol v1.
+
+Trace 1756548916 has been retired due to invalidation by the `tiny` L parameter change.
+Note: The maximum age of the lookup anchor (L in GP) is now set to 24 when using the
+tiny configuration.
 
 
 ### [12-09-25]
