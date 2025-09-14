@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 9.777928,
+        "import_max": 9.777928,
+        "import_mean": 9.777928,
+        "import_p50": 9.777928,
+        "import_p75": 0.0,
+        "import_p90": 9.777928,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 11
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 2.017595,
+            "import_max": 2.017595,
+            "import_mean": 2.017595,
+            "import_p50": 2.017595,
+            "import_p75": 0.0,
+            "import_p90": 2.017595,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xfdbf55afd043fe200d17b7c8beaab0dad4d97872939c79fa95360e24a4d70261",
+            "got": "0x64151d22acdf047cdba712349ffce471b188c56491397aec3b897fc66cad218d"
+        },
+        "keyvals": [
+            {
+                "key": "0x329a6370560ef7259c585b524dfe81a6988ef4ecee1beda1cc2c7be732edf9",
+                "diff": {
+                    "exp": "0x8f00000000000000015aefa7aaab0728282f13de404c03134acca97de4e156d65c2c9a4c8b27d66553000000000000000000000000000000000000000000000000000000000000000057886ee9846202110d800f6e26d89aaef535c59b4ec1151cf39732bcccd864de7c53d8a9859e4e73b79fe3e082d0899b44844b618d3d66b1245a57d67f8bab38e0809698000007417574683d3c3e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "got": "0x8f00000000000000015aefa7aaab0728282f13de404c03134acca97de4e156d65c2c9a4c8b27d66553fc2340aaf8fed32b7b9a33f485a3b40a78aaef41799d57a0ea477022720ee7b957886ee9846202110d800f6e26d89aaef535c59b4ec1151cf39732bcccd864de7c53d8a9859e4e73b79fe3e082d0899b44844b618d3d66b1245a57d67f8bab38e0809698000007417574683d3c3e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
