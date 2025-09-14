@@ -1,0 +1,44 @@
+{
+    "target": {
+        "name": "fuzzer",
+        "app_version": {
+            "major": 0,
+            "minor": 1,
+            "patch": 24
+        },
+        "jam_version": {
+            "major": 0,
+            "minor": 6,
+            "patch": 7
+        }
+    },
+    "config": {
+        "seed": "42",
+        "profile": {
+            "Empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.0,
+        "max_mutations": 3,
+        "max_steps": 100
+    },
+    "fuzz_state": {
+        "step": 1,
+        "slot": 8
+    },
+    "roots": {
+        "exp": "0x813488782effa725f0cbcb45751d98dbadc72842cdcc9bed170236625adea99a",
+        "got": "0x06e10805f5a42195eab74503d82d39a9e4072870e8b85e05bcf2e44f3c562b58"
+    },
+    "keyvals": [
+        {
+            "key": "0x24aee92248b78e20bf1a9725550eb96552e50871880934505186f756724e42",
+            "diff": {
+                "exp": "0x00",
+                "got": "0x"
+            }
+        }
+    ]
+}
