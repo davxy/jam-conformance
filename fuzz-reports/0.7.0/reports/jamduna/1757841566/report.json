@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 7.946009,
+        "import_max": 7.946009,
+        "import_mean": 7.946009,
+        "import_p50": 7.946009,
+        "import_p75": 0.0,
+        "import_p90": 7.946009,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 2,
+                "patch": 11
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_name": "jam-duna-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 54.815771,
+            "import_max": 54.815771,
+            "import_mean": 54.815771,
+            "import_p50": 54.815771,
+            "import_p75": 0.0,
+            "import_p90": 54.815771,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xb5405a5c4e1f3c7e4b95a6e61e7849ebb9de7a357f509e70d95e7a923a357fc8",
+            "got": "0xea9642e6e35a03985f936a79f4a675f88b1a6ab61e7aae7b65e2db0c841f8ef9"
+        },
+        "keyvals": [
+            {
+                "key": "0x2467e96548a08ee5edc25e7fce8d1bc2bb6db4dd5f96490fe7a66751d4c9df",
+                "diff": {
+                    "exp": "0x1a000000",
+                    "got": "0x1b000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
