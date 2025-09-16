@@ -90,24 +90,14 @@ def main():
     
     # Find all binary files containing "fuzzer" in the name
     fuzzer_files = []
+    target_files = []
     for file_path in trace_dir.glob('*.bin'):
         if 'fuzzer' in file_path.name:
             fuzzer_files.append(file_path)
-    if not fuzzer_files:
-        print(f"No fuzzer binary files found in '{trace_dir}'")
-        sys.exit(1)
-    fuzzer_files.sort()
-
-    target_files = []
-    for file_path in trace_dir.glob('*.bin'):
-        if 'target' in file_path.name:
+        elif 'target' in file_path.name:
             target_files.append(file_path)
-    if not target_files:
-        print(f"No target binary files found in '{trace_dir}'")
-        sys.exit(1)
+    fuzzer_files.sort()
     target_files.sort()
-
-    # Check that target_files and fuzzer_files sequences have the same length
     if len(target_files) != len(fuzzer_files):
         print(f"Error: Mismatch in file counts - {len(fuzzer_files)} fuzzer files but {len(target_files)} target files")
         sys.exit(1)
