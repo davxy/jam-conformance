@@ -76,6 +76,8 @@ def main():
                        help='Verbose output (default: false)')
     parser.add_argument('--target-sock', default='/tmp/jam_target.sock',
                        help='Target socket path (default: /tmp/jam_target.sock)')
+    parser.add_argument('--stop-after', type=int, default=10,
+                       help='Stop after processing this many file pairs (default: 10)')
 
     args = parser.parse_args()
 
@@ -123,6 +125,9 @@ def main():
     
     try:
         for i, (fuzzer_file, target_file) in enumerate(zip(fuzzer_files, target_files)):
+            if i >= args.stop_after:
+                print(f"\nStopping after {args.stop_after} file pairs as requested")
+                break
             print("\n==========================================================================")
             print(f"Processing pair {i+1}: {fuzzer_file.name} -> {target_file.name}")
             
