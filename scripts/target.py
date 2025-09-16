@@ -26,6 +26,8 @@ MAX_CORES = int(os.environ.get("DOCKER_CORES", "16"))
 # Whether to run targets in docker containers (1) or directly on host (0)
 RUN_DOCKER = int(os.environ.get("RUN_DOCKER", "1"))
 
+# Forces a platform for docker commands (run, pull, etc)
+DOCKER_PLATFORM = "linux/amd64"
 
 @dataclass
 class Target:
@@ -393,7 +395,7 @@ def get_docker_image(target: str) -> bool:
         return False
 
     try:
-        subprocess.run(["docker", "pull", docker_image], check=True)
+        subprocess.run(["docker", "pull", "--platform", DOCKER_PLATFORM, docker_image], check=True)
         print(f"Successfully pulled Docker image: {docker_image}")
         return True
     except subprocess.CalledProcessError:
@@ -507,7 +509,7 @@ def run_docker_image(target: str) -> None:
         "--user",
         f"{os.getuid()}:{os.getgid()}",
         "--platform",
-        "linux/amd64",
+        DOCKER_PLATFORM,
         "--cpuset-cpus",
         f"0-{MAX_CORES}",
         "--cpu-shares",
