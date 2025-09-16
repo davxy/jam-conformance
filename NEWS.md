@@ -5,6 +5,10 @@ This lightweight fuzzing tool allows teams to replay pre-constructed message seq
 against their JAM implementations for testing and debugging purposes of their fuzzer
 protocol implementation.
 
+Updated `fuzz-proto/README.md` with a new "Preliminary Self-Testing" section.
+Teams are now strongly encouraged to perform self-testing using the `minifuzz` tool
+before submitting their target implementations for fuzzy testing.
+
 ### [14-09-25]
 
 New batch of challenging traces and reports released.

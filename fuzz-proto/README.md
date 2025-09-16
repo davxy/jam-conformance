@@ -307,3 +307,30 @@ mutations are never used as parents for subsequent blocks.
 3. Mutate $B_i$ into several variants: $B_{i1}$, $B_{i2}$, $B_{i3}$  
 4. Import these variants in order: $B_{i1}$, $B_{i2}$, $B_{i3}$, and finally the original $B_i$  
 5. Repeat from step 2  
+
+---
+
+## Preliminary Self-Testing
+
+Before submitting your target implementation for official conformance testing,
+teams are **strongly encouraged** to perform preliminary self-testing using the
+[`minifuzz`](minifuzz/minifuzz.py) tool.
+
+### Testing Requirements
+
+- **Targets supporting forks**: Must pass all fuzzer traces in the
+  [`examples/v1/forks`](examples/v1/forks) folder
+- **Targets not supporting forks**: Must at least pass all traces in the
+  [`examples/v1/no_forks`](examples/v1/no_forks) folder
+
+### Running Self-Tests
+
+Use the minifuzz tool to validate your implementation against the precomputed traces:
+
+```bash
+# For targets supporting forks
+python minifuzz/minifuzz.py -d examples/v1/forks --target-sock /tmp/jam_target.sock
+
+# For targets not supporting forks  
+python minifuzz/minifuzz.py -d examples/v1/no_forks --target-sock /tmp/jam_target.sock
+```
