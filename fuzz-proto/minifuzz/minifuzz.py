@@ -76,8 +76,8 @@ def main():
                        help='Verbose output (default: false)')
     parser.add_argument('--target-sock', default='/tmp/jam_target.sock',
                        help='Target socket path (default: /tmp/jam_target.sock)')
-    parser.add_argument('--stop-after', type=int, default=10,
-                       help='Stop after processing this many file pairs (default: 10)')
+    parser.add_argument('--stop-after', type=int, default=1000,
+                       help='Stop after processing this many file pairs (default: 1000)')
 
     args = parser.parse_args()
 
