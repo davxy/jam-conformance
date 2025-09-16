@@ -26,6 +26,8 @@ Features ::= U32
 feature-ancestry INTEGER ::= 1  -- 2^0
 -- Simple forking: forks are supported but always limited to a maximum depth of 1.
 feature-fork INTEGER     ::= 2  -- 2^1
+feature-pvm-tracing INTEGER ::= 4 -- 2^2
+
 -- Reserved for future extensions.
 feature-reserved INTEGER ::= 2147483648   -- 2^31
 
@@ -83,6 +85,54 @@ StateRoot ::= StateRootHash
 -- Error with some optional message
 Error ::= UTF8String
 
+GetExecutionTrace ::= SEQUENCE {
+   filter-s   U32,
+   filter-wi  U8,
+   gas-used-ranges       SEQUENCE OF GasUsedRange
+}
+
+GasUsedRange := SEQUENCE {
+    gas-used-max U64,
+    gas-used-min U64
+}
+
+RegisterValue ::= U64
+GasRemainingValue ::= I64
+ByteSequence ::= OCTET STRING (SIZE(31)),
+AddressValue ::= U32
+ByteSequence ::= OCTET STRING
+
+InstructionTrace := SEQUENCE {
+    code      U8,
+    wi        U8,  
+    s         ServiceID,
+    newPC     AddressValue,
+    newGas    GasRemainingValue,
+    r0        RegisterValue,
+    r1        RegisterValue,
+    r2        RegisterValue,
+    r3        RegisterValue,
+    r4        RegisterValue,
+    r5        RegisterValue,
+    r6        RegisterValue,
+    r7        RegisterValue,
+    r8        RegisterValue,
+    r9        RegisterValue,
+    r10       RegisterValue,
+    r11       RegisterValue,
+    r12       RegisterValue,
+    address   AddressValue,
+    bytes     ByteSequence,
+    bytesLen  U8,
+    reserved0 U8,
+    reserved1 U32,
+    reserved2 U32,
+    reserved3 U64
+}
+
+ExecutionTrace ::= SEQUENCE OF InstructionTrace
+
+
 Message ::= CHOICE {
     peer-info     [0] PeerInfo,
     initialize    [1] Initialize,
@@ -90,6 +140,8 @@ Message ::= CHOICE {
     import-block  [3] ImportBlock,
     get-state     [4] GetState,
     state         [5] State,
+    get-pvm-trace [6] GetExecutionTrace,
+    pvm-trace     [7] ExecutionTrace,
     error         [255] Error
 }
 
