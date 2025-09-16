@@ -15,18 +15,56 @@ def raw_to_json(data):
     decoded = FuzzerMessage(data=scale_bytes).decode()
     return decoded
 
-def response_check(reponse, precomputed):
-    pass    
+def response_check(response, precomputed) -> bool:
+    expected_kind = next(iter(precomputed.keys()), None)
+    message_kind = next(iter(response.keys()), None)
+
+    if expected_kind != message_kind:
+        print(f"Unexpected message kind {message_kind}, expected {expected_kind}")
+        return False
+
+    if message_kind == "error":
+        # Error messages are out of spec and custom
+        return True
+
+    if message_kind == "peer_info":
+        # Check Fuzz version
+        fuzz_version_got = response.get("peer_info", {}).get("fuzz_version")
+        fuzz_version_exp = precomputed.get("peer_info", {}).get("fuzz_version")
+        if fuzz_version_exp != fuzz_version_got:
+            print(f"Unexpected Fuzzer protocol version. Expected: {fuzz_version_exp}, Got: {fuzz_version_got}")
+            return False
+        # Check JAM version
+        jam_version_got = response.get("peer_info", {}).get("jam_version")
+        jam_version_exp = precomputed.get("peer_info", {}).get("jam_version")
+        if jam_version_exp != jam_version_got:
+            print(f"Unexpected JAM protocol version. Expected: {jam_version_exp}, Got: {jam_version_got}")
+            return False
+        return True
+
+    # All other messages must match
+    is_matching = response == precomputed
+    if not is_matching:
+        print("Unexpected target response")
+        print("--------------------------")
+        print("Expected:")
+        print(json.dumps(precomputed, indent=4))
+        print("---")
+        print("Returned:")
+        print(json.dumps(response, indent=4))
+    return is_matching
+
 
 def print_message(json_obj, is_fuzzer, verbose):
-    first_key = next(iter(json_obj.keys()), None)
+    message_kind = next(iter(json_obj.keys()), None)
     if is_fuzzer:
         pre = "TX"
     else:
         pre = "RX"
-    print(f"{pre}: {first_key}")
+    print(f"{pre}: {message_kind}")
     if verbose:
         print(json.dumps(json_obj, indent=2))
+
 
 def main():
     parser = argparse.ArgumentParser(description='Minifuzz - Send fuzzer messages to target socket')
@@ -156,8 +194,8 @@ def main():
                 print(f"Error reading precomputed target file '{target_file}': {e}")
                 break
 
-            response_check(response_msg, precomputed_response_msg)
-                
+            if not response_check(response_msg, precomputed_response_msg):
+                break               
     
     finally:
         sock.close()
