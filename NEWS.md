@@ -1,5 +1,9 @@
 ### [16-09-25]
 
+Fuzzing is **temporarily on hold** for targets that cannot correctly process the
+`minifuzz` test session: tessera, fastroll, jamixir, pyjamaz, boka, jamzilla,
+jamduna, jamixir, jamzig.
+
 New `minifuzz` tool available at `fuzz-proto/minifuzz/minifuzz.py`.
 This lightweight fuzzing tool allows teams to replay pre-constructed message sequences
 against their JAM implementations for testing and debugging purposes of their fuzzer
