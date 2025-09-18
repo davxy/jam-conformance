@@ -20,6 +20,7 @@
 | jampy | 1280.7570070000002 |
 | jamixir | 1817.3041859999998 |
 | pyjamaz | 1921.7915830000002 |
+| typeberry | 7548.84725 |
 
 ## import_mean
 
@@ -41,6 +42,7 @@
 | tessera | 340.1557127699999 |
 | jamixir | 433.10264724999996 |
 | pyjamaz | 475.42301325999995 |
+| typeberry | 946.5207282599995 |
 
 ## import_min
 
@@ -62,6 +64,7 @@
 | jampy | 9.785573000000001 |
 | boka | 10.509773 |
 | tessera | 15.520216999999999 |
+| typeberry | 536.720148 |
 
 ## import_p50
 
@@ -83,6 +86,7 @@
 | jamixir | 190.512 |
 | tessera | 219.457 |
 | pyjamaz | 229.79 |
+| typeberry | 809.288 |
 
 ## import_p75
 
@@ -104,6 +108,7 @@
 | tessera | 559.958 |
 | jamixir | 731.154 |
 | pyjamaz | 813.786 |
+| typeberry | 1080.066 |
 
 ## import_p90
 
@@ -125,6 +130,7 @@
 | tessera | 795.107 |
 | jamixir | 1033.427 |
 | pyjamaz | 1112.119 |
+| typeberry | 1353.99 |
 
 ## import_p99
 
@@ -145,6 +151,7 @@
 | tessera | 1116.106 |
 | jampy | 1199.237 |
 | jamixir | 1611.505 |
+| typeberry | 1708.698 |
 | pyjamaz | 1712.569 |
 
 ## import_std_dev
@@ -167,4 +174,5 @@
 | jampy | 340.6659776813213 |
 | jamixir | 486.2645093260827 |
 | pyjamaz | 518.6669989865325 |
+| typeberry | 741.6131892063329 |
 

@@ -20,6 +20,7 @@
 | tsjam | 55.719723 |
 | tessera | 63.082716 |
 | vinwolf | 96.032753 |
+| typeberry | 7539.959946 |
 
 ## import_mean
 
@@ -41,6 +42,7 @@
 | jampy | 10.082996369999996 |
 | boka | 14.156452060000001 |
 | tessera | 14.318370499999995 |
+| typeberry | 667.9550094499999 |
 
 ## import_min
 
@@ -62,6 +64,7 @@
 | boka | 7.7941080000000005 |
 | jampy | 7.827420999999999 |
 | tessera | 8.398754 |
+| typeberry | 555.1563980000001 |
 
 ## import_p50
 
@@ -83,6 +86,7 @@
 | tessera | 9.452 |
 | jampy | 9.879 |
 | boka | 13.674 |
+| typeberry | 576.403 |
 
 ## import_p75
 
@@ -104,6 +108,7 @@
 | jampy | 10.314 |
 | tessera | 10.398 |
 | boka | 15.172 |
+| typeberry | 581.554 |
 
 ## import_p90
 
@@ -125,6 +130,7 @@
 | jampy | 11.093 |
 | tessera | 11.248 |
 | boka | 17.709 |
+| typeberry | 592.946 |
 
 ## import_p99
 
@@ -146,6 +152,7 @@
 | tsjam | 53.917 |
 | tessera | 61.493 |
 | vinwolf | 95.118 |
+| typeberry | 859.056 |
 
 ## import_std_dev
 
@@ -167,4 +174,5 @@
 | tsjam | 13.583631980589168 |
 | tessera | 14.750230871298621 |
 | vinwolf | 25.165956446410046 |
+| typeberry | 698.3735809103741 |
 
