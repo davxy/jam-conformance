@@ -30,12 +30,12 @@
             "fuzz_features": 2,
             "jam_version": {
                 "major": 0,
-                "minor": 1,
+                "minor": 7,
                 "patch": 0
             },
             "app_version": {
                 "major": 0,
-                "minor": 7,
+                "minor": 1,
                 "patch": 0
             },
             "app_name": "jamzilla"
