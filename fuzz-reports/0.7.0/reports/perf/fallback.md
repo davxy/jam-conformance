@@ -7,7 +7,7 @@
 | polkajam_perf_int | 1.4018920000000001 |
 | polkajam | 1.4882369999999998 |
 | spacejam | 1.598381 |
-| turbojam | 3.844181 |
+| turbojam | 3.30956 |
 | jampy | 17.577196999999998 |
 | javajam | 22.314693 |
 | jamzig | 23.332513 |
@@ -17,9 +17,9 @@
 | jamduna | 50.044146 |
 | fastroll | 51.248401 |
 | jamzilla | 51.405189 |
-| tsjam | 59.454930000000004 |
+| tsjam | 55.719723 |
 | tessera | 63.082716 |
-| vinwolf | 96.550497 |
+| vinwolf | 96.032753 |
 
 ## import_mean
 
@@ -28,17 +28,17 @@
 | spacejam | 0.9159242799999999 |
 | polkajam | 1.1620922599999997 |
 | polkajam_perf_int | 1.1957809699999997 |
-| turbojam | 1.2569259400000001 |
+| turbojam | 1.2320479100000004 |
 | jamzig | 2.3554309499999997 |
 | javajam | 2.601281199999999 |
 | jamduna | 2.7263871100000006 |
 | jamixir | 3.725577560000001 |
 | jamzilla | 6.114477260000003 |
 | fastroll | 7.711426829999998 |
+| tsjam | 8.17538497 |
 | pyjamaz | 8.445346689999997 |
-| vinwolf | 9.338241720000001 |
+| vinwolf | 9.588069810000004 |
 | jampy | 10.082996369999996 |
-| tsjam | 10.213620060000007 |
 | boka | 14.156452060000001 |
 | tessera | 14.318370499999995 |
 
@@ -50,14 +50,14 @@
 | spacejam | 0.752587 |
 | polkajam | 1.0259710000000002 |
 | polkajam_perf_int | 1.048123 |
-| turbojam | 1.084359 |
-| vinwolf | 1.6739490000000001 |
+| turbojam | 1.066708 |
 | jamduna | 1.73276 |
 | javajam | 1.817076 |
+| vinwolf | 1.890744 |
 | jamzilla | 1.974465 |
 | jamixir | 2.297764 |
+| tsjam | 3.382922 |
 | fastroll | 3.709609 |
-| tsjam | 4.997604 |
 | pyjamaz | 6.074539000000001 |
 | boka | 7.7941080000000005 |
 | jampy | 7.827420999999999 |
@@ -70,15 +70,15 @@
 | jamzig | 0.801 |
 | spacejam | 0.88 |
 | polkajam | 1.143 |
-| turbojam | 1.175 |
+| turbojam | 1.154 |
 | polkajam_perf_int | 1.182 |
-| vinwolf | 1.824 |
+| vinwolf | 2.092 |
 | jamduna | 2.137 |
 | javajam | 2.3 |
 | jamzilla | 2.327 |
 | jamixir | 2.744 |
 | fastroll | 3.929 |
-| tsjam | 5.901 |
+| tsjam | 3.985 |
 | pyjamaz | 6.679 |
 | tessera | 9.452 |
 | jampy | 9.879 |
@@ -92,14 +92,14 @@
 | spacejam | 0.95 |
 | polkajam | 1.192 |
 | polkajam_perf_int | 1.226 |
-| turbojam | 1.326 |
-| vinwolf | 2.007 |
+| turbojam | 1.243 |
 | jamduna | 2.44 |
+| vinwolf | 2.496 |
 | jamzilla | 2.586 |
 | javajam | 2.6 |
 | jamixir | 2.89 |
 | fastroll | 4.065 |
-| tsjam | 6.622 |
+| tsjam | 4.756 |
 | pyjamaz | 7.202 |
 | jampy | 10.314 |
 | tessera | 10.398 |
@@ -113,15 +113,15 @@
 | spacejam | 1.06 |
 | polkajam | 1.254 |
 | polkajam_perf_int | 1.312 |
-| turbojam | 1.421 |
-| vinwolf | 2.345 |
+| turbojam | 1.423 |
 | jamduna | 2.724 |
+| vinwolf | 2.817 |
 | javajam | 2.927 |
 | jamixir | 3.057 |
 | jamzilla | 3.079 |
 | fastroll | 4.367 |
+| tsjam | 5.772 |
 | pyjamaz | 8.38 |
-| tsjam | 9.299 |
 | jampy | 11.093 |
 | tessera | 11.248 |
 | boka | 17.709 |
@@ -133,7 +133,7 @@
 | polkajam | 1.338 |
 | polkajam_perf_int | 1.368 |
 | spacejam | 1.418 |
-| turbojam | 1.546 |
+| turbojam | 1.691 |
 | jamduna | 3.214 |
 | javajam | 3.529 |
 | jamixir | 5.667 |
@@ -143,9 +143,9 @@
 | boka | 29.971 |
 | jamzilla | 48.981 |
 | fastroll | 50.868 |
-| tsjam | 56.02 |
+| tsjam | 53.917 |
 | tessera | 61.493 |
-| vinwolf | 95.303 |
+| vinwolf | 95.118 |
 
 ## import_std_dev
 
@@ -154,7 +154,7 @@
 | polkajam_perf_int | 0.07669294441182085 |
 | polkajam | 0.07736365116492418 |
 | spacejam | 0.14769295371257576 |
-| turbojam | 0.2908123392985576 |
+| turbojam | 0.25134245244983366 |
 | jampy | 1.303784551362273 |
 | javajam | 2.0397044090358287 |
 | jamduna | 4.792486543947417 |
@@ -164,7 +164,7 @@
 | jamixir | 6.587765134222726 |
 | jamzilla | 12.720396836831865 |
 | fastroll | 12.75276977582936 |
-| tsjam | 13.628553159944252 |
+| tsjam | 13.583631980589168 |
 | tessera | 14.750230871298621 |
-| vinwolf | 25.395365685519995 |
+| vinwolf | 25.165956446410046 |
 

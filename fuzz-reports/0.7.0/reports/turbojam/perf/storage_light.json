@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "turbojam",
-    "app_version": {
-      "major": 0,
-      "minor": 1,
-      "patch": 3
-    },
+    "fuzz_version": 1,
+    "fuzz_features": 0,
     "jam_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
-    }
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 4
+    },
+    "app_name": "turbojam"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 56,
-    "import_min": 1.3926699999999999,
-    "import_max": 10.692103999999999,
-    "import_mean": 3.83106236,
-    "import_p50": 3.328,
-    "import_p75": 4.523,
-    "import_p90": 7.533,
-    "import_p99": 9.772,
-    "import_std_dev": 2.452303701078165
+    "import_min": 1.38621,
+    "import_max": 9.887175,
+    "import_mean": 3.718200489999999,
+    "import_p50": 3.107,
+    "import_p75": 4.479,
+    "import_p90": 7.301,
+    "import_p99": 9.428,
+    "import_std_dev": 2.361358704318785
   }
 }
