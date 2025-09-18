@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "jam-duna-target",
-    "app_version": {
-      "major": 0,
-      "minor": 1,
-      "patch": 8
-    },
+    "fuzz_version": 1,
+    "fuzz_features": 2,
     "jam_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
-    }
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 2,
+      "patch": 12
+    },
+    "app_name": "duna-target"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 1,
-    "import_min": 1.525908,
-    "import_max": 57.301145,
-    "import_mean": 2.4961867400000006,
-    "import_p50": 1.849,
-    "import_p75": 2.135,
-    "import_p90": 2.372,
-    "import_p99": 2.735,
-    "import_std_dev": 5.543728191554603
+    "import_min": 1.73276,
+    "import_max": 50.044146,
+    "import_mean": 2.7263871100000006,
+    "import_p50": 2.137,
+    "import_p75": 2.44,
+    "import_p90": 2.724,
+    "import_p99": 3.214,
+    "import_std_dev": 4.792486543947417
   }
 }

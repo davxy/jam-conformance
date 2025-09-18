@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "Jamixir",
+    "fuzz_version": 1,
+    "fuzz_features": 0,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
     "app_version": {
       "major": 0,
       "minor": 2,
       "patch": 6
     },
-    "jam_version": {
-      "major": 0,
-      "minor": 7,
-      "patch": 0
-    }
+    "app_name": "Jamixir"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 12,
-    "import_min": 2.386471,
-    "import_max": 49.138152,
-    "import_mean": 3.7294063299999998,
-    "import_p50": 2.755,
-    "import_p75": 2.938,
-    "import_p90": 3.11,
-    "import_p99": 6.03,
-    "import_std_dev": 6.426326430426713
+    "import_min": 2.297764,
+    "import_max": 49.667958,
+    "import_mean": 3.725577560000001,
+    "import_p50": 2.744,
+    "import_p75": 2.89,
+    "import_p90": 3.057,
+    "import_p99": 5.667,
+    "import_std_dev": 6.587765134222726
   }
 }
