@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "JavaJAM",
-    "app_version": {
-      "major": 0,
-      "minor": 2,
-      "patch": 19
-    },
+    "fuzz_version": 1,
+    "fuzz_features": 2,
     "jam_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
-    }
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 2,
+      "patch": 30
+    },
+    "app_name": "JavaJAM"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 4,
-    "import_min": 2.870124,
-    "import_max": 147.71849,
-    "import_mean": 29.682830649999996,
-    "import_p50": 24.793,
-    "import_p75": 45.015,
-    "import_p90": 58.811,
-    "import_p99": 88.653,
-    "import_std_dev": 27.19584829690794
+    "import_min": 1.8534059999999999,
+    "import_max": 141.948351,
+    "import_mean": 23.821980869999994,
+    "import_p50": 16.886,
+    "import_p75": 36.574,
+    "import_p90": 53.267,
+    "import_p99": 70.286,
+    "import_std_dev": 23.641447998067658
   }
 }

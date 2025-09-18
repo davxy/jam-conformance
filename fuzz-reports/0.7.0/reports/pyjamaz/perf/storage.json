@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "PyJAMaz",
-    "app_version": {
-      "major": 0,
-      "minor": 1,
-      "patch": 10
-    },
+    "fuzz_version": 1,
+    "fuzz_features": 2,
     "jam_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
-    }
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 14
+    },
+    "app_name": "PyJAMaz"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 8,
-    "import_min": 7.7393030000000005,
-    "import_max": 2004.7696689999998,
-    "import_mean": 489.8109181299999,
-    "import_p50": 237.014,
-    "import_p75": 836.782,
-    "import_p90": 1169.248,
-    "import_p99": 1737.936,
-    "import_std_dev": 529.2231277052842
+    "import_min": 7.315722999999999,
+    "import_max": 1921.7915830000002,
+    "import_mean": 475.42301325999995,
+    "import_p50": 229.79,
+    "import_p75": 813.786,
+    "import_p90": 1112.119,
+    "import_p99": 1712.569,
+    "import_std_dev": 518.6669989865325
   }
 }
