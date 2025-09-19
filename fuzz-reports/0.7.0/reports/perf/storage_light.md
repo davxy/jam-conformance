@@ -5,8 +5,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 1.4899740000000001 |
-| polkajam | 2.7919 |
-| polkajam_perf_int | 5.435371 |
+| polkajam | 2.572464 |
+| polkajam_perf_int | 4.7640590000000005 |
 | turbojam | 9.887175 |
 | jamduna | 15.598601 |
 | javajam | 32.260663 |
@@ -27,8 +27,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 1.0470760700000001 |
-| polkajam | 1.52940825 |
-| polkajam_perf_int | 2.6880987800000002 |
+| polkajam | 1.1805891300000002 |
+| polkajam_perf_int | 2.2393457999999997 |
 | turbojam | 3.718200489999999 |
 | jamduna | 4.810072599999999 |
 | jamzig | 6.8537838700000036 |
@@ -48,10 +48,10 @@
 
 | Team | Value |
 |------|-------|
+| polkajam | 0.77743 |
+| polkajam_perf_int | 0.8128080000000001 |
 | spacejam | 0.825136 |
 | jamzig | 0.943686 |
-| polkajam_perf_int | 1.176588 |
-| polkajam | 1.20904 |
 | turbojam | 1.38621 |
 | javajam | 1.797548 |
 | vinwolf | 2.17633 |
@@ -71,8 +71,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 0.986 |
-| polkajam | 1.539 |
-| polkajam_perf_int | 2.821 |
+| polkajam | 1.182 |
+| polkajam_perf_int | 2.401 |
 | turbojam | 3.107 |
 | jamduna | 4.26 |
 | jamzig | 5.066 |
@@ -93,8 +93,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 1.135 |
-| polkajam | 1.646 |
-| polkajam_perf_int | 3.319 |
+| polkajam | 1.311 |
+| polkajam_perf_int | 2.851 |
 | turbojam | 4.479 |
 | jamduna | 5.462 |
 | jamzig | 8.478 |
@@ -115,8 +115,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 1.262 |
-| polkajam | 1.697 |
-| polkajam_perf_int | 4.423 |
+| polkajam | 1.41 |
+| polkajam_perf_int | 3.83 |
 | turbojam | 7.301 |
 | jamduna | 7.505 |
 | jamzilla | 12.747 |
@@ -137,8 +137,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 1.468 |
-| polkajam | 1.903 |
-| polkajam_perf_int | 5.088 |
+| polkajam | 1.807 |
+| polkajam_perf_int | 4.533 |
 | turbojam | 9.428 |
 | jamduna | 12.85 |
 | jamzig | 23.941 |
@@ -159,8 +159,8 @@
 | Team | Value |
 |------|-------|
 | spacejam | 0.16543294698477 |
-| polkajam | 0.2053711842074127 |
-| polkajam_perf_int | 1.2816033028435851 |
+| polkajam | 0.27097423899030854 |
+| polkajam_perf_int | 1.1709955565644115 |
 | turbojam | 2.361358704318785 |
 | jamduna | 2.5686724975816366 |
 | jamzig | 6.718252215553052 |

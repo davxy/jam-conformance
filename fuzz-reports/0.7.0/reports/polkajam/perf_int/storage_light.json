@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "polkajam",
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
     "app_version": {
       "major": 0,
       "minor": 1,
       "patch": 25
     },
-    "jam_version": {
-      "major": 0,
-      "minor": 7,
-      "patch": 0
-    }
+    "app_name": "polkajam"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 4,
-    "import_min": 1.176588,
-    "import_max": 5.435371,
-    "import_mean": 2.6880987800000002,
-    "import_p50": 2.821,
-    "import_p75": 3.319,
-    "import_p90": 4.423,
-    "import_p99": 5.088,
-    "import_std_dev": 1.2816033028435851
+    "import_max_step": 56,
+    "import_min": 0.8128080000000001,
+    "import_max": 4.7640590000000005,
+    "import_mean": 2.2393457999999997,
+    "import_p50": 2.401,
+    "import_p75": 2.851,
+    "import_p90": 3.83,
+    "import_p99": 4.533,
+    "import_std_dev": 1.1709955565644115
   }
 }

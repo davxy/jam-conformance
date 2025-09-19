@@ -1,4 +1,11 @@
 {
+  "polkajam": {
+    "repo": "none",
+    "file": "polkajam-fuzz",
+    "cmd": "polkajam-fuzz",
+    "args": "--source remote --step-period 0 --target-sock {TARGET_SOCK}",
+    "env": "RUST_LOG=off"
+  },
   "vinwolf": {
     "repo": "bloppan/conformance_testing",
     "clone": 1,
