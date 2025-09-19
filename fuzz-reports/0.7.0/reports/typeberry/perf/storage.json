@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 0,
+      "patch": 5
+    },
+    "app_name": "@typeberry/jam"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 1,
+    "import_min": 536.720148,
+    "import_max": 7548.84725,
+    "import_mean": 946.5207282599995,
+    "import_p50": 809.288,
+    "import_p75": 1080.066,
+    "import_p90": 1353.99,
+    "import_p99": 1708.698,
+    "import_std_dev": 741.6131892063329
+  }
+}

@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "tsjam-0.7.0-tiny-6f54dbba",
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
     "app_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
     },
-    "jam_version": {
-      "major": 0,
-      "minor": 7,
-      "patch": 0
-    }
+    "app_name": "tsjam-0.7.0-tiny-9ec9da1f"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 60,
-    "import_min": 6.303407,
-    "import_max": 311.679664,
-    "import_mean": 79.54023778000001,
-    "import_p50": 61.368,
-    "import_p75": 105.219,
-    "import_p90": 196.021,
-    "import_p99": 260.007,
-    "import_std_dev": 77.74618179804365
+    "import_min": 3.757959,
+    "import_max": 183.46651699999998,
+    "import_mean": 44.42708277000002,
+    "import_p50": 36.655,
+    "import_p75": 55.751,
+    "import_p90": 105.502,
+    "import_p99": 142.954,
+    "import_std_dev": 41.12954676831602
   }
 }

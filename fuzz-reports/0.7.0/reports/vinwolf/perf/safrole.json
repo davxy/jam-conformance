@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "vinwolf-target",
-    "app_version": {
-      "major": 0,
-      "minor": 2,
-      "patch": 8
-    },
+    "fuzz_version": 1,
+    "fuzz_features": 2,
     "jam_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
-    }
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 2,
+      "patch": 14
+    },
+    "app_name": "vinwolf-target"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 60,
-    "import_min": 1.7114509999999998,
-    "import_max": 95.09935399999999,
-    "import_mean": 13.024361810000002,
-    "import_p50": 8.013,
-    "import_p75": 8.367,
-    "import_p90": 9.491,
-    "import_p99": 94.6,
-    "import_std_dev": 24.326218226258067
+    "import_max_step": 36,
+    "import_min": 1.896585,
+    "import_max": 94.45543400000001,
+    "import_mean": 13.26106291,
+    "import_p50": 8.263,
+    "import_p75": 8.728,
+    "import_p90": 10.197,
+    "import_p99": 94.438,
+    "import_std_dev": 24.205666179160925
   }
 }

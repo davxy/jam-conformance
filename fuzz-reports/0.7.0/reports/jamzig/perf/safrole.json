@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "jamzig-target",
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
     "app_version": {
       "major": 0,
       "minor": 1,
       "patch": 0
     },
-    "jam_version": {
-      "major": 0,
-      "minor": 7,
-      "patch": 0
-    }
+    "app_name": "jamzig-target"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 24,
-    "import_min": 0.90519,
-    "import_max": 26.467162,
-    "import_mean": 8.177671069999999,
-    "import_p50": 9.4,
-    "import_p75": 10.83,
-    "import_p90": 12.26,
-    "import_p99": 24.132,
-    "import_std_dev": 6.33164616058218
+    "import_max_step": 72,
+    "import_min": 0.679808,
+    "import_max": 24.979369000000002,
+    "import_mean": 7.538428499999998,
+    "import_p50": 8.744,
+    "import_p75": 10.372,
+    "import_p90": 11.757,
+    "import_p99": 20.782,
+    "import_std_dev": 5.835477566586894
   }
 }

@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "jamzilla",
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
     "app_version": {
       "major": 0,
       "minor": 1,
       "patch": 0
     },
-    "jam_version": {
-      "major": 0,
-      "minor": 7,
-      "patch": 0
-    }
+    "app_name": "jamzilla"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 96,
-    "import_min": 2.722221,
-    "import_max": 55.06815,
-    "import_mean": 7.357851330000001,
-    "import_p50": 3.221,
-    "import_p75": 3.591,
-    "import_p90": 3.968,
-    "import_p99": 54.451,
-    "import_std_dev": 13.864779614951013
+    "import_min": 1.974465,
+    "import_max": 51.405189,
+    "import_mean": 6.114477260000003,
+    "import_p50": 2.327,
+    "import_p75": 2.586,
+    "import_p90": 3.079,
+    "import_p99": 48.981,
+    "import_std_dev": 12.720396836831865
   }
 }

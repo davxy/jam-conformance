@@ -1,28 +1,30 @@
 {
   "info": {
-    "name": "jampy",
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
     "app_version": {
       "major": 0,
       "minor": 7,
       "patch": 0
     },
-    "jam_version": {
-      "major": 0,
-      "minor": 7,
-      "patch": 0
-    }
+    "app_name": "jampy"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 14,
-    "import_min": 7.900723999999999,
-    "import_max": 1498.969441,
-    "import_mean": 326.0529730599999,
-    "import_p50": 136.181,
-    "import_p75": 566.633,
-    "import_p90": 841.355,
-    "import_p99": 1314.423,
-    "import_std_dev": 371.01871019970315
+    "import_max_step": 8,
+    "import_min": 9.785573000000001,
+    "import_max": 1280.7570070000002,
+    "import_mean": 314.49920011999995,
+    "import_p50": 137.714,
+    "import_p75": 529.14,
+    "import_p90": 701.476,
+    "import_p99": 1199.237,
+    "import_std_dev": 340.6659776813213
   }
 }
