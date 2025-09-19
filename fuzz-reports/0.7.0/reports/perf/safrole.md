@@ -4,8 +4,8 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 6.800185 |
-| polkajam | 7.260857 |
+| polkajam_perf_int | 8.820932 |
+| polkajam | 9.055292 |
 | spacejam | 10.993454 |
 | javajam | 12.319226 |
 | turbojam | 22.930543 |
@@ -26,8 +26,8 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 4.19351686 |
-| polkajam | 4.205142919999998 |
+| polkajam_perf_int | 3.9164883699999997 |
+| polkajam | 4.038670270000001 |
 | spacejam | 4.809893010000001 |
 | javajam | 4.9595393199999975 |
 | jamduna | 6.0478809100000035 |
@@ -49,9 +49,9 @@
 | Team | Value |
 |------|-------|
 | jamzig | 0.679808 |
+| polkajam_perf_int | 0.682369 |
+| polkajam | 0.706886 |
 | spacejam | 0.777545 |
-| polkajam_perf_int | 1.061998 |
-| polkajam | 1.078632 |
 | turbojam | 1.08868 |
 | javajam | 1.681826 |
 | jamduna | 1.763279 |
@@ -70,8 +70,8 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 6.333 |
-| polkajam | 6.349 |
+| polkajam_perf_int | 5.762 |
+| polkajam | 5.912 |
 | javajam | 6.515 |
 | spacejam | 6.72 |
 | jamduna | 7.399 |
@@ -92,8 +92,8 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 6.452 |
-| polkajam | 6.5 |
+| polkajam_perf_int | 6.091 |
+| polkajam | 6.267 |
 | javajam | 6.868 |
 | spacejam | 7.541 |
 | jamduna | 7.954 |
@@ -114,8 +114,8 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 6.552 |
-| polkajam | 6.601 |
+| polkajam_perf_int | 6.318 |
+| polkajam | 6.724 |
 | javajam | 7.659 |
 | jamduna | 8.277 |
 | spacejam | 8.399 |
@@ -136,8 +136,8 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 6.718 |
-| polkajam | 6.777 |
+| polkajam_perf_int | 7.608 |
+| polkajam | 7.676 |
 | javajam | 9.5 |
 | spacejam | 9.847 |
 | jamduna | 10.926 |
@@ -158,9 +158,9 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 2.6349896808848827 |
-| polkajam | 2.661701993014205 |
 | javajam | 2.7183267246874343 |
+| polkajam_perf_int | 2.7471621541177953 |
+| polkajam | 2.7977114315766265 |
 | spacejam | 3.4545225677688887 |
 | jamzig | 5.835477566586894 |
 | jamduna | 5.934561090142221 |
