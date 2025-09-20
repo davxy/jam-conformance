@@ -10,21 +10,21 @@
     "app_version": {
       "major": 0,
       "minor": 2,
-      "patch": 30
+      "patch": 34
     },
     "app_name": "JavaJAM"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 61,
-    "import_min": 1.797548,
-    "import_max": 32.260663,
-    "import_mean": 10.018787480000002,
-    "import_p50": 9.772,
-    "import_p75": 13.128,
-    "import_p90": 21.332,
-    "import_p99": 27.211,
-    "import_std_dev": 7.832313533358528
+    "import_max_step": 60,
+    "import_min": 1.549514,
+    "import_max": 25.969523000000002,
+    "import_mean": 7.755411859999999,
+    "import_p50": 6.155,
+    "import_p75": 9.923,
+    "import_p90": 13.427,
+    "import_p99": 22.729,
+    "import_std_dev": 5.852652059391653
   }
 }
