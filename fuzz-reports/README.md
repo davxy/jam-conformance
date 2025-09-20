@@ -113,7 +113,7 @@ especially important since the fuzzer will run for a significant number of steps
 (currently exact number is undefined) and we cannot wait indefinitely for
 targets to complete execution.
 
-### Testing Setup
+### Testing Environment
 
 Current performance testing is conducted on the following platform:
 - **CPU**: AMD Ryzen Threadripper 3970X 32-Core (64 threads) @ 4.55 GHz
@@ -139,7 +139,33 @@ Additional tweaks:
 - Disable CPU boost (turbo) functionality:
   `echo 0 > /sys/devices/system/cpu/cpufreq/boost`
 
-Docker parameters: See `scripts/target.py`
+Targets that are not already provided as a Docker image, are run in a vanilla
+debian-slim container started with parameters optimized for benchmarking
+
+Docker parameters:
+
+- `--cpuset-cpus 16-31`: Pin container to isolated CPU cores
+- `--cpu-shares 2048`: High CPU priority (default is 1024)
+- `--cpu-quota -1`: No CPU time limits (unlimited CPU usage)
+- `--memory 8g`: Set memory limit to 8GB
+- `--memory-swap 8g`: Set swap limit equal to memory (no additional swap)
+- `--shm-size 1g`: Shared memory size for IPC operations
+- `--ulimit nofile=65536:65536`: Increase file descriptor limit
+- `--ulimit nproc=32768:32768`: Increase process/thread limit
+- `--sysctl net.core.somaxconn=65535`: Increase socket connection backlog
+- `--sysctl net.ipv4.tcp_tw_reuse=1`: Enable TCP TIME_WAIT socket reuse
+- `--security-opt seccomp=unconfined`: Disable seccomp filtering for performance
+- `--security-opt apparmor=unconfined`: Disable AppArmor restrictions
+- `--cap-add SYS_NICE`: Allow process priority changes
+- `--cap-add SYS_RESOURCE`: Allow resource limit modifications
+- `--cap-add IPC_LOCK`: Allow memory locking (prevents swapping)
+
+Docker process itself is run with the following priority related environment:
+
+- `chrt -f 99`: Set real-time FIFO scheduling with highest priority (99)
+- `nice -n -20`: Set highest CPU priority (-20 is highest nice value)
+- `ionice -c1 -n0`: Set real-time I/O scheduling class with highest priority (0)
+- `taskset -c 16-31`: Pin Docker process to isolated CPU cores (16-31)
 
 ### Report Categories
 
