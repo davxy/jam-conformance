@@ -18,7 +18,7 @@
 | tsjam | 548.589105 |
 | jampy | 1632.4490649999998 |
 | tessera | 1646.0130080000001 |
-| jamixir | 2280.3388130000003 |
+| jamixir | 2257.3232270000003 |
 | pyjamaz | 2633.1721850000004 |
 | typeberry | 12672.486217 |
 
@@ -41,7 +41,7 @@
 | jampy | 397.52744541 |
 | tessera | 450.08304491 |
 | typeberry | 518.6334786099997 |
-| jamixir | 526.52479616 |
+| jamixir | 530.2285852599999 |
 | pyjamaz | 645.8621734999998 |
 
 ## import_min
@@ -57,7 +57,7 @@
 | vinwolf | 2.369743 |
 | jamduna | 2.585651 |
 | jamzilla | 3.020773 |
-| jamixir | 3.2257219999999998 |
+| jamixir | 3.679941 |
 | fastroll | 4.460745999999999 |
 | tsjam | 5.266489 |
 | pyjamaz | 9.438399 |
@@ -83,7 +83,7 @@
 | boka | 56.827 |
 | tsjam | 84.041 |
 | jampy | 178.142 |
-| jamixir | 242.139 |
+| jamixir | 225.489 |
 | tessera | 274.449 |
 | pyjamaz | 300.949 |
 | typeberry | 390.747 |
@@ -107,7 +107,7 @@
 | typeberry | 604.828 |
 | jampy | 700.18 |
 | tessera | 734.911 |
-| jamixir | 911.331 |
+| jamixir | 902.723 |
 | pyjamaz | 1088.399 |
 
 ## import_p90
@@ -129,7 +129,7 @@
 | typeberry | 810.071 |
 | jampy | 885.472 |
 | tessera | 1014.69 |
-| jamixir | 1253.287 |
+| jamixir | 1306.267 |
 | pyjamaz | 1509.273 |
 
 ## import_p99
@@ -151,7 +151,7 @@
 | typeberry | 1369.524 |
 | jampy | 1413.543 |
 | tessera | 1444.65 |
-| jamixir | 1975.171 |
+| jamixir | 1973.427 |
 | pyjamaz | 2331.621 |
 
 ## import_std_dev
@@ -172,7 +172,7 @@
 | tsjam | 138.22359045930864 |
 | jampy | 428.373532307132 |
 | tessera | 435.14990160685494 |
-| jamixir | 598.8289211666806 |
+| jamixir | 598.2230877915975 |
 | pyjamaz | 695.4830018248333 |
 | typeberry | 1273.757148263053 |
 

@@ -4,13 +4,13 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 3.5131680000000003 |
 | polkajam_perf_int | 19.671273 |
 | polkajam | 19.751769 |
 | spacejam | 23.315153000000002 |
 | javajam | 23.675330000000002 |
 | turbojam | 26.708786000000003 |
 | jamduna | 27.960046 |
+| jamixir | 29.489556999999998 |
 | boka | 38.872448 |
 | fastroll | 60.374706 |
 | tsjam | 63.740024000000005 |
@@ -26,13 +26,13 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 2.6539450400000004 |
 | polkajam | 7.8811389599999995 |
 | polkajam_perf_int | 8.085622039999999 |
 | javajam | 9.170021000000004 |
 | spacejam | 9.820205259999998 |
 | jamduna | 10.106080180000001 |
 | turbojam | 10.283988209999999 |
+| jamixir | 11.888681989999997 |
 | jamzilla | 16.37473925 |
 | vinwolf | 19.477534339999995 |
 | fastroll | 20.16880506 |
@@ -56,7 +56,7 @@
 | spacejam | 1.617876 |
 | jamduna | 1.9328990000000001 |
 | vinwolf | 2.1172690000000003 |
-| jamixir | 2.2559009999999997 |
+| jamixir | 2.476866 |
 | jamzilla | 2.643445 |
 | tsjam | 3.510344 |
 | fastroll | 4.130928 |
@@ -70,13 +70,13 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 2.616 |
 | polkajam | 7.366 |
 | polkajam_perf_int | 7.568 |
 | javajam | 8.02 |
 | jamduna | 8.752 |
 | spacejam | 9.002 |
 | turbojam | 9.753 |
+| jamixir | 10.925 |
 | vinwolf | 12.35 |
 | fastroll | 13.938 |
 | jamzilla | 14.308 |
@@ -92,7 +92,6 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 2.793 |
 | polkajam | 13.248 |
 | polkajam_perf_int | 13.855 |
 | javajam | 15.254 |
@@ -100,6 +99,7 @@
 | spacejam | 15.935 |
 | turbojam | 17.554 |
 | vinwolf | 17.991 |
+| jamixir | 18.563 |
 | jamzilla | 19.344 |
 | jamzig | 24.086 |
 | fastroll | 25.563 |
@@ -114,7 +114,6 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 2.935 |
 | polkajam | 17.932 |
 | polkajam_perf_int | 18.265 |
 | javajam | 21.241 |
@@ -122,6 +121,7 @@
 | spacejam | 21.761 |
 | turbojam | 24.247 |
 | vinwolf | 25.071 |
+| jamixir | 25.866 |
 | jamzilla | 26.593 |
 | boka | 33.985 |
 | jamzig | 34.078 |
@@ -136,13 +136,13 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 3.198 |
 | polkajam | 19.395 |
 | polkajam_perf_int | 19.475 |
 | jamduna | 23.053 |
 | spacejam | 23.177 |
 | javajam | 23.242 |
 | turbojam | 25.429 |
+| jamixir | 26.219 |
 | boka | 38.206 |
 | jamzilla | 58.279 |
 | fastroll | 59.628 |
@@ -158,12 +158,12 @@
 
 | Team | Value |
 |------|-------|
-| jamixir | 0.2441123707428514 |
 | polkajam | 6.666438131837047 |
 | polkajam_perf_int | 6.8312404635091335 |
 | jamduna | 7.664647942969819 |
 | spacejam | 7.755745665235105 |
 | javajam | 7.889860996946658 |
+| jamixir | 8.724725837296198 |
 | boka | 8.75035809632747 |
 | turbojam | 8.941947232711614 |
 | jamzilla | 15.039636851254357 |

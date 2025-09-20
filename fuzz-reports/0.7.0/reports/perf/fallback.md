@@ -8,10 +8,10 @@
 | polkajam_perf_int | 1.48831 |
 | turbojam | 1.7381 |
 | spacejam | 2.293106 |
-| jamixir | 3.819449 |
 | javajam | 4.934321000000001 |
 | jamduna | 8.735420000000001 |
 | boka | 35.840376 |
+| jamixir | 58.292531000000004 |
 | fastroll | 63.319959999999995 |
 | jamzilla | 66.053313 |
 | tsjam | 69.706263 |
@@ -31,8 +31,8 @@
 | turbojam | 1.2240042400000009 |
 | javajam | 1.3437695900000002 |
 | spacejam | 1.86148147 |
-| jamixir | 2.6522912999999995 |
 | jamduna | 2.8294412799999984 |
+| jamixir | 4.40800034 |
 | jamzilla | 7.640915260000001 |
 | fastroll | 9.01008924 |
 | jamzig | 10.264388300000002 |
@@ -56,8 +56,8 @@
 | spacejam | 1.590594 |
 | jamduna | 1.943911 |
 | vinwolf | 2.0877719999999997 |
-| jamixir | 2.215332 |
 | jamzilla | 2.512215 |
+| jamixir | 2.735644 |
 | tsjam | 3.559448 |
 | fastroll | 4.171296 |
 | pyjamaz | 7.4592160000000005 |
@@ -78,8 +78,8 @@
 | spacejam | 1.706 |
 | vinwolf | 2.193 |
 | jamduna | 2.305 |
-| jamixir | 2.562 |
 | jamzilla | 2.979 |
+| jamixir | 3.214 |
 | fastroll | 4.355 |
 | tsjam | 5.618 |
 | pyjamaz | 7.751 |
@@ -100,8 +100,8 @@
 | spacejam | 2.111 |
 | vinwolf | 2.543 |
 | jamduna | 2.579 |
-| jamixir | 2.82 |
 | jamzilla | 3.299 |
+| jamixir | 3.437 |
 | fastroll | 4.92 |
 | tsjam | 7.357 |
 | pyjamaz | 8.292 |
@@ -121,7 +121,7 @@
 | jamzig | 1.627 |
 | spacejam | 2.217 |
 | vinwolf | 2.819 |
-| jamixir | 3.065 |
+| jamixir | 3.653 |
 | jamduna | 4.56 |
 | fastroll | 5.159 |
 | jamzilla | 6.012 |
@@ -140,8 +140,8 @@
 | polkajam_perf_int | 1.301 |
 | turbojam | 1.634 |
 | spacejam | 2.251 |
-| jamixir | 3.622 |
 | javajam | 4.198 |
+| jamixir | 7.861 |
 | jamduna | 8.545 |
 | jampy | 16.823 |
 | boka | 29.971 |
@@ -162,10 +162,10 @@
 | polkajam_perf_int | 0.12086167795306418 |
 | turbojam | 0.1719050923360122 |
 | spacejam | 0.24891058452207357 |
-| jamixir | 0.3589289326202179 |
 | javajam | 0.6649228259868095 |
 | jamduna | 1.560044018143551 |
 | boka | 5.011440243025849 |
+| jamixir | 7.704035561067756 |
 | fastroll | 15.182704044291652 |
 | jamzilla | 15.295143380184953 |
 | jampy | 15.742606290807256 |
