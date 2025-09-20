@@ -1,3 +1,10 @@
+### [20-09-25]
+
+Updated "Testing Setup" section in fuzz-reports/README.md with comprehensive
+performance testing configuration details. The documentation now includes
+detailed kernel parameters, CPU frequency settings, and Docker configuration
+used for benchmarking.
+
 ### [16-09-25]
 
 Fuzzing is **temporarily on hold** for targets that cannot correctly process the
