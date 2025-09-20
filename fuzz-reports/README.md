@@ -115,9 +115,25 @@ targets to complete execution.
 
 ### Testing Setup
 
-Current performance testing is conducted on the following platform
+Current performance testing is conducted on the following platform:
 - **CPU**: AMD Ryzen Threadripper 3970X 32-Core (64 threads) @ 4.55 GHz
 - **OS**: Linux
+
+Kernel parameters:
+- `amd_pstate=passive`: CPU frequency is controlled explicitly by the governor.
+- `cpufreq.default_governor=performance`: forces full-speed operation.
+- `processor.max_cstate=1`: prevents deep C-states, so CPU doesn’t sleep in ways
+  that add latency.
+- `idle=poll`: forces busy-polling instead of halting for minimal latency.
+- `isolcpus=16-31`: cores isolated from the scheduler for dedicated benchmarking.
+- `nohz_full=16-31`: full tickless mode on isolated cores; minimizes kernel timer interrupts.
+- rcu_nocbs=16-31 → prevents RCU callbacks from running on isolated cores.
+- irqaffinity=0-16 → pins interrupts to cores, leaving isolated cores mostly free of OS noise.
+- tsc=reliable → ensures the Time Stamp Counter (TSC) is monotonic and stable for
+  precise timing measurements.
+- mitigations=off → disables Spectre/Meltdown mitigations. Good for raw performance,
+  but unsafe for untrusted workloads. Perfect for controlled benchmarking.
+
 
 Note: Small differences of a few milliseconds are not significant as this is not
 a dedicated machine nor long-running tests were run.
@@ -139,9 +155,11 @@ Current categories:
 Performance reports are stored as JSON files with the following structure:
 
 - `info`: Implementation metadata
-  - `name`: Application name
-  - `app_version`: Application version (major, minor, patch)
+  - `fuzz_version`: Fuzzer protocol version
+  - `fuzz_features`: Fuzzer protocol features
   - `jam_version`: JAM protocol version (major, minor, patch)
+  - `app_version`: Application version (major, minor, patch)
+  - `app_name`: Application name
 - `stats`: Performance statistics
   - `steps`: Total number of fuzzer steps
   - `imported`: Number of successfully imported blocks
