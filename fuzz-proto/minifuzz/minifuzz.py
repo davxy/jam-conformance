@@ -6,7 +6,7 @@ import struct
 import sys
 import json
 from pathlib import Path
-from jam_types.fuzzer import FuzzerMessage
+from jam_types.fuzzer import FuzzerMessage, FEATURES_MASK, FEATURE_ANCESTRY, FEATURE_FORKS
 from jam_types import ScaleBytes, spec
 
 
@@ -27,16 +27,29 @@ def response_check(response, precomputed) -> bool:
         # Error messages are out of spec and custom
         return True
 
-    if message_kind == "peer_info":
+    if message_kind == "peer_info":      
+        target_peer_info = response["peer_info"]
+        precomputed_peer_info = precomputed.get("peer_info", {})
+
+        # Check features
+        features_got = target_peer_info.get("fuzz_features")
+        if features_got & ~FEATURES_MASK != 0:
+            print(f"Unexpected Fuzzer features enabled: 0x{features_got:08x}")
+            print("Valid features:")
+            print(f"- Ancestry: 0x{FEATURE_ANCESTRY:08x}")
+            print(f"- Forks: 0x{FEATURE_FORKS:08x}")
+            return False
+            
+        
         # Check Fuzz version
-        fuzz_version_got = response.get("peer_info", {}).get("fuzz_version")
-        fuzz_version_exp = precomputed.get("peer_info", {}).get("fuzz_version")
+        fuzz_version_got = target_peer_info.get("fuzz_version")
+        fuzz_version_exp = precomputed_peer_info.get("fuzz_version")
         if fuzz_version_exp != fuzz_version_got:
             print(f"Unexpected Fuzzer protocol version. Expected: {fuzz_version_exp}, Got: {fuzz_version_got}")
             return False
         # Check JAM version
-        jam_version_got = response.get("peer_info", {}).get("jam_version")
-        jam_version_exp = precomputed.get("peer_info", {}).get("jam_version")
+        jam_version_got = target_peer_info.get("jam_version")
+        jam_version_exp = precomputed_peer_info.get("jam_version")
         if jam_version_exp != jam_version_got:
             print(f"Unexpected JAM protocol version. Expected: {jam_version_exp}, Got: {jam_version_got}")
             return False
