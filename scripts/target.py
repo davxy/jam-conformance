@@ -21,7 +21,7 @@ TARGET_SOCK = os.environ.get("DEFAULT_SOCK", "/tmp/jam_target.sock")
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
 
 # Maximum number of cores to use for docker containers
-MAX_CORES = int(os.environ.get("DOCKER_CORES", "16"))
+DOCKER_CPU_SET = os.environ.get("DOCKER_CPU_SET", "16-32")
 
 # Whether to run targets in docker containers (1) or directly on host (0)
 RUN_DOCKER = int(os.environ.get("RUN_DOCKER", "1"))
@@ -511,9 +511,11 @@ def run_docker_image(target: str) -> None:
         "--platform",
         DOCKER_PLATFORM,
         "--cpuset-cpus",
-        f"0-{MAX_CORES}",
+        f"{DOCKER_CPU_SET}",
         "--cpu-shares",
         "2048",
+        "--cpu-quota",
+        "-1",
         "--memory",
         "8g",
         "--memory-swap",
@@ -573,7 +575,7 @@ def run_docker_image(target: str) -> None:
             "-n0",
             "taskset",
             "-c",
-            f"0-{MAX_CORES}",
+            f"{DOCKER_CPU_SET}",
         ]
         docker_cmd = priority_cmd + docker_cmd
 

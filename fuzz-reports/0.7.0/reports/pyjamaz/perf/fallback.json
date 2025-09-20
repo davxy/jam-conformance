@@ -10,21 +10,21 @@
     "app_version": {
       "major": 0,
       "minor": 1,
-      "patch": 14
+      "patch": 15
     },
     "app_name": "PyJAMaz"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 36,
-    "import_min": 6.074539000000001,
-    "import_max": 28.448685,
-    "import_mean": 8.445346689999997,
-    "import_p50": 6.679,
-    "import_p75": 7.202,
-    "import_p90": 8.38,
-    "import_p99": 27.905,
-    "import_std_dev": 5.607342126345003
+    "import_max_step": 84,
+    "import_min": 7.4592160000000005,
+    "import_max": 158.72556600000001,
+    "import_mean": 18.356778830000003,
+    "import_p50": 7.751,
+    "import_p75": 8.292,
+    "import_p90": 8.678,
+    "import_p99": 151.862,
+    "import_std_dev": 35.78807528191423
   }
 }

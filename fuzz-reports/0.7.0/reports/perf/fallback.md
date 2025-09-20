@@ -4,175 +4,175 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 1.2082270000000002 |
-| polkajam | 1.447576 |
-| spacejam | 1.598381 |
-| turbojam | 3.30956 |
-| jampy | 17.577196999999998 |
-| javajam | 22.314693 |
-| jamzig | 23.332513 |
-| pyjamaz | 28.448685 |
+| polkajam | 1.396979 |
+| polkajam_perf_int | 1.48831 |
+| turbojam | 1.7381 |
+| spacejam | 2.293106 |
+| javajam | 4.934321000000001 |
+| jamduna | 8.735420000000001 |
 | boka | 35.840376 |
-| jamixir | 49.667958 |
-| jamduna | 50.044146 |
-| fastroll | 51.248401 |
-| jamzilla | 51.405189 |
-| tsjam | 55.719723 |
-| tessera | 63.082716 |
-| vinwolf | 96.032753 |
-| typeberry | 7539.959946 |
+| jamixir | 58.292531000000004 |
+| fastroll | 63.319959999999995 |
+| jamzilla | 66.053313 |
+| tsjam | 69.706263 |
+| tessera | 72.915507 |
+| vinwolf | 119.014439 |
+| jampy | 134.521072 |
+| jamzig | 140.070682 |
+| pyjamaz | 158.72556600000001 |
+| typeberry | 12050.371491 |
 
 ## import_mean
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.7992301900000001 |
-| polkajam | 0.8244015299999999 |
-| spacejam | 0.9159242799999999 |
-| turbojam | 1.2320479100000004 |
-| jamzig | 2.3554309499999997 |
-| javajam | 2.601281199999999 |
-| jamduna | 2.7263871100000006 |
-| jamixir | 3.725577560000001 |
-| jamzilla | 6.114477260000003 |
-| fastroll | 7.711426829999998 |
-| tsjam | 8.17538497 |
-| pyjamaz | 8.445346689999997 |
-| vinwolf | 9.588069810000004 |
-| jampy | 10.082996369999996 |
+| polkajam | 0.9918784799999999 |
+| polkajam_perf_int | 1.03057719 |
+| turbojam | 1.2240042400000009 |
+| javajam | 1.3437695900000002 |
+| spacejam | 1.86148147 |
+| jamduna | 2.8294412799999984 |
+| jamixir | 4.40800034 |
+| jamzilla | 7.640915260000001 |
+| fastroll | 9.01008924 |
+| jamzig | 10.264388300000002 |
+| tsjam | 10.793226099999998 |
+| vinwolf | 11.067009030000001 |
+| jampy | 13.477167549999995 |
 | boka | 14.156452060000001 |
-| tessera | 14.318370499999995 |
-| typeberry | 667.9550094499999 |
+| tessera | 16.222271310000004 |
+| pyjamaz | 18.356778830000003 |
+| typeberry | 187.05160125000003 |
 
 ## import_min
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.642462 |
-| jamzig | 0.660922 |
-| polkajam | 0.666648 |
-| spacejam | 0.752587 |
-| turbojam | 1.066708 |
-| jamduna | 1.73276 |
-| javajam | 1.817076 |
-| vinwolf | 1.890744 |
-| jamzilla | 1.974465 |
-| jamixir | 2.297764 |
-| tsjam | 3.382922 |
-| fastroll | 3.709609 |
-| pyjamaz | 6.074539000000001 |
+| polkajam | 0.862414 |
+| polkajam_perf_int | 0.872858 |
+| javajam | 0.979388 |
+| turbojam | 1.052477 |
+| jamzig | 1.205324 |
+| spacejam | 1.590594 |
+| jamduna | 1.943911 |
+| vinwolf | 2.0877719999999997 |
+| jamzilla | 2.512215 |
+| jamixir | 2.735644 |
+| tsjam | 3.559448 |
+| fastroll | 4.171296 |
+| pyjamaz | 7.4592160000000005 |
 | boka | 7.7941080000000005 |
-| jampy | 7.827420999999999 |
-| tessera | 8.398754 |
-| typeberry | 555.1563980000001 |
+| jampy | 8.85492 |
+| tessera | 10.237934000000001 |
+| typeberry | 26.369305999999998 |
 
 ## import_p50
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.785 |
-| polkajam | 0.799 |
-| jamzig | 0.801 |
-| spacejam | 0.88 |
-| turbojam | 1.154 |
-| vinwolf | 2.092 |
-| jamduna | 2.137 |
-| javajam | 2.3 |
-| jamzilla | 2.327 |
-| jamixir | 2.744 |
-| fastroll | 3.929 |
-| tsjam | 3.985 |
-| pyjamaz | 6.679 |
-| tessera | 9.452 |
-| jampy | 9.879 |
+| polkajam | 0.947 |
+| polkajam_perf_int | 0.983 |
+| turbojam | 1.124 |
+| javajam | 1.162 |
+| jamzig | 1.274 |
+| spacejam | 1.706 |
+| vinwolf | 2.193 |
+| jamduna | 2.305 |
+| jamzilla | 2.979 |
+| jamixir | 3.214 |
+| fastroll | 4.355 |
+| tsjam | 5.618 |
+| pyjamaz | 7.751 |
+| tessera | 10.845 |
+| jampy | 11.307 |
 | boka | 13.674 |
-| typeberry | 576.403 |
+| typeberry | 33.523 |
 
 ## import_p75
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.829 |
-| polkajam | 0.84 |
-| jamzig | 0.861 |
-| spacejam | 0.95 |
-| turbojam | 1.243 |
-| jamduna | 2.44 |
-| vinwolf | 2.496 |
-| jamzilla | 2.586 |
-| javajam | 2.6 |
-| jamixir | 2.89 |
-| fastroll | 4.065 |
-| tsjam | 4.756 |
-| pyjamaz | 7.202 |
-| jampy | 10.314 |
-| tessera | 10.398 |
+| polkajam | 1.046 |
+| polkajam_perf_int | 1.087 |
+| turbojam | 1.31 |
+| javajam | 1.349 |
+| jamzig | 1.362 |
+| spacejam | 2.111 |
+| vinwolf | 2.543 |
+| jamduna | 2.579 |
+| jamzilla | 3.299 |
+| jamixir | 3.437 |
+| fastroll | 4.92 |
+| tsjam | 7.357 |
+| pyjamaz | 8.292 |
+| tessera | 11.431 |
+| jampy | 11.539 |
 | boka | 15.172 |
-| typeberry | 581.554 |
+| typeberry | 45.547 |
 
 ## import_p90
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.864 |
-| polkajam | 0.883 |
-| jamzig | 1.053 |
-| spacejam | 1.06 |
-| turbojam | 1.423 |
-| jamduna | 2.724 |
-| vinwolf | 2.817 |
-| javajam | 2.927 |
-| jamixir | 3.057 |
-| jamzilla | 3.079 |
-| fastroll | 4.367 |
-| tsjam | 5.772 |
-| pyjamaz | 8.38 |
-| jampy | 11.093 |
-| tessera | 11.248 |
+| polkajam | 1.11 |
+| polkajam_perf_int | 1.166 |
+| turbojam | 1.469 |
+| javajam | 1.55 |
+| jamzig | 1.627 |
+| spacejam | 2.217 |
+| vinwolf | 2.819 |
+| jamixir | 3.653 |
+| jamduna | 4.56 |
+| fastroll | 5.159 |
+| jamzilla | 6.012 |
+| pyjamaz | 8.678 |
+| jampy | 11.771 |
+| tessera | 12.542 |
+| tsjam | 12.784 |
 | boka | 17.709 |
-| typeberry | 592.946 |
+| typeberry | 62.566 |
 
 ## import_p99
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.999 |
-| polkajam | 1.108 |
-| spacejam | 1.418 |
-| turbojam | 1.691 |
-| jamduna | 3.214 |
-| javajam | 3.529 |
-| jamixir | 5.667 |
-| jampy | 12.022 |
-| jamzig | 20.057 |
-| pyjamaz | 27.905 |
+| polkajam | 1.273 |
+| polkajam_perf_int | 1.301 |
+| turbojam | 1.634 |
+| spacejam | 2.251 |
+| javajam | 4.198 |
+| jamixir | 7.861 |
+| jamduna | 8.545 |
+| jampy | 16.823 |
 | boka | 29.971 |
-| jamzilla | 48.981 |
-| fastroll | 50.868 |
-| tsjam | 53.917 |
-| tessera | 61.493 |
-| vinwolf | 95.118 |
-| typeberry | 859.056 |
+| jamzilla | 58.666 |
+| fastroll | 60.241 |
+| tsjam | 67.111 |
+| tessera | 71.652 |
+| vinwolf | 111.392 |
+| jamzig | 121.788 |
+| pyjamaz | 151.862 |
+| typeberry | 445.243 |
 
 ## import_std_dev
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.07953953376319584 |
-| polkajam | 0.0961692732443821 |
-| spacejam | 0.14769295371257576 |
-| turbojam | 0.25134245244983366 |
-| jampy | 1.303784551362273 |
-| javajam | 2.0397044090358287 |
-| jamduna | 4.792486543947417 |
+| polkajam | 0.10731167986130939 |
+| polkajam_perf_int | 0.12086167795306418 |
+| turbojam | 0.1719050923360122 |
+| spacejam | 0.24891058452207357 |
+| javajam | 0.6649228259868095 |
+| jamduna | 1.560044018143551 |
 | boka | 5.011440243025849 |
-| jamzig | 5.302066263122388 |
-| pyjamaz | 5.607342126345003 |
-| jamixir | 6.587765134222726 |
-| jamzilla | 12.720396836831865 |
-| fastroll | 12.75276977582936 |
-| tsjam | 13.583631980589168 |
-| tessera | 14.750230871298621 |
-| vinwolf | 25.165956446410046 |
-| typeberry | 698.3735809103741 |
+| jamixir | 7.704035561067756 |
+| fastroll | 15.182704044291652 |
+| jamzilla | 15.295143380184953 |
+| jampy | 15.742606290807256 |
+| tsjam | 16.347362008810293 |
+| tessera | 16.715594332128507 |
+| vinwolf | 29.893927244536126 |
+| jamzig | 30.941239017314416 |
+| pyjamaz | 35.78807528191423 |
+| typeberry | 1202.855453288247 |
 
