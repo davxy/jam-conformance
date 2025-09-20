@@ -29,6 +29,12 @@ RUN_DOCKER = int(os.environ.get("RUN_DOCKER", "1"))
 # Forces a platform for docker commands (run, pull, etc)
 DOCKER_PLATFORM = "linux/amd64"
 
+# Set directory variables
+CURRENT_DIR = os.getcwd()
+TARGETS_DIR = os.environ.get("TARGETS_DIR", f"{CURRENT_DIR}/targets")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+TARGETS_FILE = os.environ.get("TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
+
 @dataclass
 class Target:
     name: str
@@ -80,13 +86,11 @@ class Target:
 
 def load_targets() -> Dict[str, Target]:
     """Load target configuration from JSON file and convert to Target instances."""
-    targets_file = Path(__file__).parent / "targets.json"
-
     try:
-        with open(targets_file, "r") as f:
+        with open(TARGETS_FILE, "r") as f:
             targets_data = json.load(f)
     except FileNotFoundError:
-        print(f"Error: targets.json not found at {targets_file}")
+        print(f"Error: targets.json not found at {TARGETS_FILE}")
         sys.exit(1)
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON in targets.json: {e}")
@@ -222,6 +226,18 @@ Use 'info all' to see available targets.
         help='Target to show info for (or "all" for all targets)',
     )
 
+    # Clean subcommand
+    clean_parser = subparsers.add_parser("clean", help="Clean target files")
+    clean_parser.add_argument(
+        "target",
+        choices=available_targets + ["all"],
+        metavar="TARGET",
+        help='Target to clean (or "all" for all targets)',
+    )
+
+    # List subcommand
+    subparsers.add_parser("list", help="List all available targets")
+
     return parser
 
 
@@ -275,7 +291,7 @@ def post_actions(target_name: str, os_name: str) -> bool:
         return False
 
     print(f"Performing post actions for {file}")
-    target_dir = Path(f"targets/{target_name}/latest")
+    target_dir = Path(f"{TARGETS_DIR}/{target_name}/latest")
     os.chdir(target_dir)
 
     if target.post:
@@ -330,7 +346,7 @@ def post_actions(target_name: str, os_name: str) -> bool:
                 current_file.chmod(0o755)
                 break
 
-    os.chdir(Path(__file__).parent)
+    os.chdir(CURRENT_DIR)
     return True
 
 
@@ -351,7 +367,7 @@ def clone_github_repo(target: str, os_name: str, repo: str) -> bool:
         commit_hash = result.stdout.strip()
         print(f"Cloning last revision: {commit_hash}")
 
-        target_dir = Path(f"targets/{target}")
+        target_dir = Path(f"{TARGETS_DIR}/{target}")
         print(f"Cloned to {target_dir}")
 
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -447,7 +463,7 @@ def get_github_release(target: str, os_name: str) -> bool:
         print(f"Error: Download failed: {e}")
         return False
 
-    target_dir = Path(f"targets/{target}")
+    target_dir = Path(f"{TARGETS_DIR}/{target}")
     target_dir_rev = target_dir / latest_tag
 
     target_dir_rev.mkdir(parents=True, exist_ok=True)
@@ -550,7 +566,7 @@ def run_docker_image(target: str) -> None:
     if image == DEFAULT_DOCKER_IMAGE:
         docker_cmd.extend(["-w", "/jam"])
         docker_cmd.extend(["-e", "HOME=/jam"])
-        docker_cmd.extend(["-v", f"{Path(__file__).parent}/targets/{target}/latest:/jam"])
+        docker_cmd.extend(["-v", f"{TARGETS_DIR}/{target}/latest:/jam"])
 
     docker_cmd.append(image)
 
@@ -608,7 +624,7 @@ def print_target_info(target: Target, os_name: str) -> None:
     print(f"Type: {', '.join(target_type)}")
 
     # Check if target is downloaded/available
-    target_dir = Path(f"targets/{target.name}/latest")
+    target_dir = Path(f"{TARGETS_DIR}/{target.name}/latest")
     if target_dir.exists():
         print(f"Status: Downloaded (available at {target_dir})")
     elif target.is_docker_target():
@@ -709,6 +725,39 @@ def handle_get_action(target: str, os_name: str) -> bool:
         return False
 
 
+def handle_list_action() -> bool:
+    """Handle the list action to show all available targets."""
+    available_targets = get_available_targets()
+    for target in available_targets:
+        print(target)
+    return True
+
+
+def handle_clean_action(target: str) -> bool:
+    """Handle the clean action for a target or all targets."""
+    if target == "all":
+        targets_dir = Path(f"{TARGETS_DIR}")
+        if targets_dir.exists():
+            print("Cleaning all target files...")
+            for item in targets_dir.iterdir():
+                if item.is_dir():
+                    print(f"Removing {item}")
+                    shutil.rmtree(item)
+            print("All target files cleaned successfully!")
+        else:
+            print("No target files to clean.")
+        return True
+    else:
+        target_dir = Path(f"{TARGETS_DIR}/{target}")
+        if target_dir.exists():
+            print(f"Cleaning target {target}...")
+            shutil.rmtree(target_dir)
+            print(f"Target {target} cleaned successfully!")
+        else:
+            print(f"Target {target} not found or already clean.")
+        return True
+
+
 def handle_run_action(target: str, os_name: str) -> bool:
     """Handle the run action for a target."""
     if is_docker_target(target):
@@ -736,7 +785,7 @@ def run_target(target: str, os_name: str) -> None:
         print(f"Error: No run command specified for {target} on {os_name}")
         return
 
-    target_dir = Path(f"targets/{target}/latest")
+    target_dir = Path(f"{TARGETS_DIR}/{target}/latest")
     if not target_dir.exists():
         print(f"Error: Target dir not found: {target_dir}")
         # Try to find the newest directory as fallback
@@ -772,6 +821,7 @@ def run_target(target: str, os_name: str) -> None:
         target_pid = None
 
         def cleanup():
+            os.chdir(CURRENT_DIR)
             nonlocal cleanup_done, target_pid
             if cleanup_done:
                 return
@@ -808,7 +858,6 @@ def run_target(target: str, os_name: str) -> None:
                     os.environ[key] = value
 
         try:
-            print("TARGET DIR: ", target_dir)
             os.chdir(target_dir)
             process = subprocess.Popen(full_command, shell=True)
             target_pid = process.pid
@@ -825,7 +874,7 @@ def main():
     args = parser.parse_args()
 
     action = args.action
-    target = args.target
+    target = getattr(args, 'target', None)
 
     # Handle Docker override from command line (only for run action)
     if action == "run":
@@ -855,6 +904,10 @@ def main():
         success = handle_get_action(target, os_name)
     elif action == "run":
         success = handle_run_action(target, os_name)
+    elif action == "clean":
+        success = handle_clean_action(target)
+    elif action == "list":
+        success = handle_list_action()
 
     if not success:
         sys.exit(1)
