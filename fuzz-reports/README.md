@@ -127,16 +127,19 @@ Kernel parameters:
 - `idle=poll`: forces busy-polling instead of halting for minimal latency.
 - `isolcpus=16-31`: cores isolated from the scheduler for dedicated benchmarking.
 - `nohz_full=16-31`: full tickless mode on isolated cores; minimizes kernel timer interrupts.
-- rcu_nocbs=16-31 → prevents RCU callbacks from running on isolated cores.
-- irqaffinity=0-16 → pins interrupts to cores, leaving isolated cores mostly free of OS noise.
-- tsc=reliable → ensures the Time Stamp Counter (TSC) is monotonic and stable for
+- `rcu_nocbs=16-31`: prevents RCU callbacks from running on isolated cores.
+- `irqaffinity=0-16`: pins interrupts to cores, leaving isolated cores mostly free of OS noise.
+- `tsc=reliable`: ensures the Time Stamp Counter (TSC) is monotonic and stable for
   precise timing measurements.
-- mitigations=off → disables Spectre/Meltdown mitigations. Good for raw performance,
-  but unsafe for untrusted workloads. Perfect for controlled benchmarking.
+- `mitigations=off`: disables Spectre/Meltdown mitigations. Good for raw performance.
 
+Additional tweaks:
+- Pin CPU frequency to exactly the nominal frequency of workstation CPU:
+  `cpupower frequency-set --min 3700MHz --max 3700MHz`
+- Disable CPU boost (turbo) functionality:
+  `echo 0 > /sys/devices/system/cpu/cpufreq/boost`
 
-Note: Small differences of a few milliseconds are not significant as this is not
-a dedicated machine nor long-running tests were run.
+Docker parameters: See `scripts/target.py`
 
 ### Report Categories
 

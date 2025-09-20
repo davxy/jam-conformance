@@ -514,6 +514,8 @@ def run_docker_image(target: str) -> None:
         f"{DOCKER_CPU_SET}",
         "--cpu-shares",
         "2048",
+        "--cpu-quota",
+        "-1",
         "--memory",
         "8g",
         "--memory-swap",
