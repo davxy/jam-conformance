@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 7.367424,
+        "import_max": 7.367424,
+        "import_mean": 7.367424,
+        "import_p50": 7.367424,
+        "import_p75": 0.0,
+        "import_p90": 7.367424,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 0,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 12
+            },
+            "app_name": "FastRoll"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 12.433798,
+            "import_max": 12.433798,
+            "import_mean": 12.433798,
+            "import_p50": 12.433798,
+            "import_p75": 0.0,
+            "import_p90": 12.433798,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0x8d83579142ef1de71c25aff40f55c59ea270ddfbeb6e10d5e3038e564b502e6e",
+            "got": "0xf1ad2213492e8b1f80c822b4902ec08f7c652b7457b394d9aaba5d4063787fdf"
+        },
+        "keyvals": [
+            {
+                "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x000000000000000000000000b371f99900",
+                    "got": "0x0000000000000000000000000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
