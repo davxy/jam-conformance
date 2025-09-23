@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 7.275417,
+        "import_max": 7.275417,
+        "import_mean": 7.275417,
+        "import_p50": 7.275417,
+        "import_p75": 0.0,
+        "import_p90": 7.275417,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 1
+            },
+            "app_name": "@typeberry/jam"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 140.19509399999998,
+            "import_max": 140.19509399999998,
+            "import_mean": 140.19509399999998,
+            "import_p50": 140.19509399999998,
+            "import_p75": 0.0,
+            "import_p90": 140.19509399999998,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0x97d5f18d46ac1e030b8e08e5a3a368cee39f44ba3f0a48ed372d69e6b31864f6",
+            "got": "0x23061d54861ae5b47ba79ecc3a81f9902454e9bda4811ed7d0521e76a4c3c8c2"
+        },
+        "keyvals": [
+            {
+                "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x0000000000000000000000000000000000",
+                    "got": "0x0000000000000000000000001511c85e00"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}

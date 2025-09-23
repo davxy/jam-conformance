@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 6.579499,
+        "import_max": 6.579499,
+        "import_mean": 6.579499,
+        "import_p50": 6.579499,
+        "import_p75": 0.0,
+        "import_p90": 6.579499,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_name": "tsjam-0.7.0-tiny-9ec9da1f"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 44.650192999999994,
+            "import_max": 44.650192999999994,
+            "import_mean": 44.650192999999994,
+            "import_p50": 44.650192999999994,
+            "import_p75": 0.0,
+            "import_p90": 44.650192999999994,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xab42cedd70188201febd41e39bf4f4f4239e8d3ca2d9aee70e6da48ecf1f2736",
+            "got": "0xbd7371036ea32a47f22b12e5585def7add93ce9127457af530808271a9f4b787"
+        },
+        "keyvals": [
+            {
+                "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x00000000000000000000000007ac876100",
+                    "got": "0x0000000000000000000000003e8539b000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
