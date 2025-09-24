@@ -1,0 +1,80 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 170.37885,
+        "import_max": 170.37885,
+        "import_mean": 170.37885,
+        "import_p50": 170.37885,
+        "import_p75": 0.0,
+        "import_p90": 170.37885,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 0,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 4
+            },
+            "app_name": "turbojam"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 17.360779,
+            "import_max": 17.360779,
+            "import_mean": 17.360779,
+            "import_p50": 17.360779,
+            "import_p75": 0.0,
+            "import_p90": 17.360779,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xea4c3c24a3eefa2c582e031d1e76e613d9efeba214d34988dedaf03da950ca1c",
+            "got": "0x400044d634bc54dbecabc6ec1ebf40eac7f31ca5bf598f7c4b9d161f97f4236d"
+        },
+        "keyvals": [
+            {
+                "key": "0xf86aa2aebfa32bb8c876e335de632eac1b2705f8a5476ffb5c0499d95bd432",
+                "diff": {
+                    "exp": "0x083c8249f46f2346",
+                    "got": "0xa729f4c032475ec9"
+                }
+            },
+            {
+                "key": "0xfff800a200bf002b0000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0xa0915744b3e657f5159df1a482195bef028bbcfd8b5b5bae134114378109f4dd7dab01000000000010270000000000001027000000000000916701000000000000000000000000000700000089030000be03000000000000",
+                    "got": "0xa0915744b3e657f5159df1a482195bef028bbcfd8b5b5bae134114378109f4dd770d02000000000010270000000000001027000000000000916701000000000000000000000000000700000089030000be03000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}

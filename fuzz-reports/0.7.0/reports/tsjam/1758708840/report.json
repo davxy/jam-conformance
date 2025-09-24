@@ -1,0 +1,80 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 177.544069,
+        "import_max": 177.544069,
+        "import_mean": 177.544069,
+        "import_p50": 177.544069,
+        "import_p75": 0.0,
+        "import_p90": 177.544069,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_name": "tsjam-0.7.0-tiny-9ec9da1f"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 185.61688800000002,
+            "import_max": 185.61688800000002,
+            "import_mean": 185.61688800000002,
+            "import_p50": 185.61688800000002,
+            "import_p75": 0.0,
+            "import_p90": 185.61688800000002,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xea4c3c24a3eefa2c582e031d1e76e613d9efeba214d34988dedaf03da950ca1c",
+            "got": "0x5a662fc6f5cd58528b4fbec33bd16915a4f2d1a29eae2564e0c7a96694b517aa"
+        },
+        "keyvals": [
+            {
+                "key": "0xf86aa2aebfa32bb8c876e335de632eac1b2705f8a5476ffb5c0499d95bd432",
+                "diff": {
+                    "exp": "0x083c8249f46f2346",
+                    "got": "0x3277ae6ae4f9ee4b"
+                }
+            },
+            {
+                "key": "0xfff800a200bf002b0000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0xa0915744b3e657f5159df1a482195bef028bbcfd8b5b5bae134114378109f4dd7dab01000000000010270000000000001027000000000000916701000000000000000000000000000700000089030000be03000000000000",
+                    "got": "0xa0915744b3e657f5159df1a482195bef028bbcfd8b5b5bae134114378109f4dd770d02000000000010270000000000001027000000000000916701000000000000000000000000000700000089030000be03000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
