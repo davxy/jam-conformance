@@ -1,3 +1,9 @@
+### [23-09-25]
+
+New batch of **highly controversial** traces and reports released, primarily
+targeting transfer and designate hostcalls. All teams are strongly encouraged to
+review these reports carefully and critically.
+
 ### [20-09-25]
 
 Updated "Testing Setup" section in fuzz-reports/README.md with comprehensive

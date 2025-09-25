@@ -1,0 +1,87 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 6.3738,
+        "import_max": 6.3738,
+        "import_mean": 6.3738,
+        "import_p50": 6.3738,
+        "import_p75": 0.0,
+        "import_p90": 6.3738,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 2,
+                "patch": 12
+            },
+            "app_name": "duna-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 56.664182000000004,
+            "import_max": 56.664182000000004,
+            "import_mean": 56.664182000000004,
+            "import_p50": 56.664182000000004,
+            "import_p75": 0.0,
+            "import_p90": 56.664182000000004,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xe0c84e51639670bcbc25422f4ca1fa4e6473f0a0f08116698e02afeced73bb1d",
+            "got": "0xdd2666e429c0d44b07c2a2144e997f805c701ef5b096edb23dc4937b0e313af8"
+        },
+        "keyvals": [
+            {
+                "key": "0x0abf4880cec4d315a6de0d53b81f75fb91e9487af71c623599e8ecb38e7204",
+                "diff": {
+                    "exp": "0x",
+                    "got": "0x01000000"
+                }
+            },
+            {
+                "key": "0x0af848e9cec6d3d9d891b7f383ca393e9934e324cd5c2fa0a6dade41413612",
+                "diff": {
+                    "exp": "0x",
+                    "got": "0x07dc8c0ed50a48ced3c8bdc738000000006f315556dbdd0e14b6ad3dbb"
+                }
+            },
+            {
+                "key": "0xff0a004800ce00d30000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x6c322032f9ffb452de811d2db63f5b654aefeeff6195f50f19c2c8598d0b8ae5c0c2020000000000102700000000000010270000000000005d67010000000000000000000000000004000000050000002100000000000000",
+                    "got": "0x6c322032f9ffb452de811d2db63f5b654aefeeff6195f50f19c2c8598d0b8ae5c0c202000000000010270000000000001027000000000000c667010000000000000000000000000006000000050000002100000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
