@@ -1,0 +1,87 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 15.976398999999999,
+        "import_max": 15.976398999999999,
+        "import_mean": 15.976398999999999,
+        "import_p50": 15.976398999999999,
+        "import_p75": 0.0,
+        "import_p90": 15.976398999999999,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_name": "tsjam-0.7.0-tiny-f5cf7082"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 138.536862,
+            "import_max": 138.536862,
+            "import_mean": 138.536862,
+            "import_p50": 138.536862,
+            "import_p75": 0.0,
+            "import_p90": 138.536862,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0x5fb14c2160b3d874a2942d1894282b33d0660b6602d68c3d577480a1843d1ac6",
+            "got": "0x00a2ee2b774159836ec6d4c153fba105a69fda0a563417e645a1ceb39cabc51a"
+        },
+        "keyvals": [
+            {
+                "key": "0xe33cce917555a614fa4b2c41f04992f0aedaad11a4b7d8b348c7a5a2da4133",
+                "diff": {
+                    "exp": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                    "got": "0x"
+                }
+            },
+            {
+                "key": "0xe388ce08750ca6d17da6526a44928f12ff6ba5fddfb76b29d0e4d2569858fc",
+                "diff": {
+                    "exp": "0x0202020202020202020202020202020202020202020202020202020202020202",
+                    "got": "0x"
+                }
+            },
+            {
+                "key": "0xe3a2ce1975a8a67811dbad15e26c4ee35f98495a539321d76024213f325f43",
+                "diff": {
+                    "exp": "0x0505050505050505050505050505050505050505050505050505050505050505",
+                    "got": "0x"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
