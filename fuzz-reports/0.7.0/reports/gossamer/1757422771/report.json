@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 2,
+        "import_max_step": 1,
+        "import_min": 8.726839,
+        "import_max": 9.588928,
+        "import_mean": 9.1578835,
+        "import_p50": 8.726,
+        "import_p75": 8.726,
+        "import_p90": 8.726,
+        "import_p99": 8.726,
+        "import_std_dev": 0.6095889778863296
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 0,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 1
+            },
+            "app_name": "gossamer-jam"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 783.110129,
+            "import_max": 783.110129,
+            "import_mean": 783.110129,
+            "import_p50": 783.110129,
+            "import_p75": 0.0,
+            "import_p90": 783.110129,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": null,
+    "import_diff": {
+        "exp": "ok",
+        "got": "timeslot must be strictly monotonic (current slot: 27, new slot: 27)"
+    }
+}
