@@ -595,12 +595,17 @@ def run_docker_image(target: str) -> None:
         ]
         docker_cmd = priority_cmd + docker_cmd
 
-    try:
-        process = subprocess.Popen(docker_cmd)
-        print(f"Waiting for target termination (pid={process.pid})")
-        process.wait()
-    finally:
-        cleanup_docker()
+    exit_code = 1
+    while exit_code != 0:
+        try:
+            process = subprocess.Popen(docker_cmd)
+            print(f"Waiting for target termination (pid={process.pid})")
+            exit_code = process.wait()
+            print(f"Target process exited with status: {exit_code}")
+        finally:
+            cleanup_docker()
+        if exit_code != 0:
+            print("Process failed, restarting...")
 
 
 def print_target_info(target: Target, os_name: str) -> None:
@@ -764,9 +769,7 @@ def handle_run_action(target: str, os_name: str) -> bool:
         run_docker_image(target)
         return True
     elif is_repo_target(target):
-        while True:
-            run_target(target, os_name)
-            print("Target unexpectedly stopped, restarting...")
+        run_target(target, os_name)
         return True
     else:
         available_targets = get_available_targets()
