@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 9.493406,
+        "import_max": 9.493406,
+        "import_mean": 9.493406,
+        "import_p50": 9.493406,
+        "import_p75": 0.0,
+        "import_p90": 9.493406,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "jamzilla"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 20.761955,
+            "import_max": 20.761955,
+            "import_mean": 20.761955,
+            "import_p50": 20.761955,
+            "import_p75": 0.0,
+            "import_p90": 20.761955,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xae5dabfcb21d2acd4da6ea0663fec0cae2ae461b4c57bce32b2e410ff6c3a8e6",
+            "got": "0x7a852c75e4a064b9471f818fef7e69bbad5ff37387cf40c74f34f5c22dd6a433"
+        },
+        "keyvals": [
+            {
+                "key": "0xff5a007900ab004d0000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x6c322032f9ffb452de811d2db63f5b654aefeeff6195f50f19c2c8598d0b8ae56744020000000000102700000000000010270000000000003567010000000000000000000000000003000000090000000000000000000000",
+                    "got": "0x6c322032f9ffb452de811d2db63f5b654aefeeff6195f50f19c2c8598d0b8ae56744020000000000102700000000000010270000000000008566010000000000000000000000000002000000090000000000000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}

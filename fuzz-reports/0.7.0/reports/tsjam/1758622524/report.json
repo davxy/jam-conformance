@@ -15,12 +15,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 6.579499,
-        "import_max": 6.579499,
-        "import_mean": 6.579499,
-        "import_p50": 6.579499,
+        "import_min": 9.164254,
+        "import_max": 9.164254,
+        "import_mean": 9.164254,
+        "import_p50": 9.164254,
         "import_p75": 0.0,
-        "import_p90": 6.579499,
+        "import_p90": 9.164254,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,18 +38,18 @@
                 "minor": 7,
                 "patch": 0
             },
-            "app_name": "tsjam-0.7.0-tiny-9ec9da1f"
+            "app_name": "tsjam-0.7.0-tiny-f5cf7082"
         },
         "stats": {
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 44.650192999999994,
-            "import_max": 44.650192999999994,
-            "import_mean": 44.650192999999994,
-            "import_p50": 44.650192999999994,
+            "import_min": 55.91819,
+            "import_max": 55.91819,
+            "import_mean": 55.91819,
+            "import_p50": 55.91819,
             "import_p75": 0.0,
-            "import_p90": 44.650192999999994,
+            "import_p90": 55.91819,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

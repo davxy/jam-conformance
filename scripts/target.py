@@ -595,12 +595,17 @@ def run_docker_image(target: str) -> None:
         ]
         docker_cmd = priority_cmd + docker_cmd
 
-    try:
-        process = subprocess.Popen(docker_cmd)
-        print(f"Waiting for target termination (pid={process.pid})")
-        process.wait()
-    finally:
-        cleanup_docker()
+    exit_code = 1
+    while exit_code != 0:
+        try:
+            process = subprocess.Popen(docker_cmd)
+            print(f"Waiting for target termination (pid={process.pid})")
+            exit_code = process.wait()
+            print(f"Target process exited with status: {exit_code}")
+        finally:
+            cleanup_docker()
+        if exit_code != 0:
+            print("Process failed, restarting...")
 
 
 def print_target_info(target: Target, os_name: str) -> None:
