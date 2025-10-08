@@ -764,7 +764,9 @@ def handle_run_action(target: str, os_name: str) -> bool:
         run_docker_image(target)
         return True
     elif is_repo_target(target):
-        run_target(target, os_name)
+        while True:
+            run_target(target, os_name)
+            print("Target unexpectedly stopped, restarting...")
         return True
     else:
         available_targets = get_available_targets()
