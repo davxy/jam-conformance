@@ -12,17 +12,17 @@
         "max_steps": 10000
     },
     "stats": {
-        "steps": 2,
-        "imported": 2,
+        "steps": 1,
+        "imported": 1,
         "import_max_step": 1,
-        "import_min": 10.564888999999999,
-        "import_max": 10.726289,
-        "import_mean": 10.645589,
-        "import_p50": 10.564,
-        "import_p75": 10.564,
-        "import_p90": 10.564,
-        "import_p99": 10.564,
-        "import_std_dev": 0.11412703448350908
+        "import_min": 10.904491,
+        "import_max": 10.904491,
+        "import_mean": 10.904491,
+        "import_p50": 10.904491,
+        "import_p75": 0.0,
+        "import_p90": 10.904491,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -41,15 +41,15 @@
             "app_name": "turbojam"
         },
         "stats": {
-            "steps": 2,
-            "imported": 1,
-            "import_max_step": 1,
-            "import_min": 19.220366,
-            "import_max": 19.220366,
-            "import_mean": 19.220366,
-            "import_p50": 19.220366,
+            "steps": 1,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 19.220366,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -57,6 +57,6 @@
     "state_diff": null,
     "import_diff": {
         "exp": "ok",
-        "got": "err_bad_slot_t"
+        "got": "err_preimage_unneeded_t"
     }
 }
