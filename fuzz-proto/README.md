@@ -207,6 +207,9 @@ The protocol adheres to a strict **request–response** model with the following
 - **Full state retrieval:** When a state root mismatch is detected the fuzzer
   attempts to fetch the whole state from the target to produce a comprehensive
   fuzz report.
+- **PVM Tracing:** If PVM Tracing is supported by the target (via `feature-pvm-tracing`),
+the fuzzer may attempt to resolve disputes in accumulation state root matches with a `GetExecutionTrace` message for which  the target must respond with a `ExecutionTrace`, containing a subset of steps. 
+See **PVM Tracing** below for details.
 
 ### Protocol Session
 
@@ -241,6 +244,11 @@ The protocol adheres to a strict **request–response** model with the following
              |   | <---------------------- |   | Return head state root
              |   |          ...            |   |
              +---+-------------------------+---+
+             |   +- PVM-TRACE(if supported)+   |
+             |   |   GetExecutionTrace     |   |
+             |   | ----------------------> |   | Request subset of Execution Trace 
+             |   |     ExecutionTrace      |   |
+             |   | <---------------------- |   | Return ExecutionTrace       
                  |                         |
              +---+--- ON ROOT MISMATCH ----+---+
              |   |      GetState           |   |
@@ -288,6 +296,27 @@ also be skipped.**
 ### Forking [M1]
 
 When `feature-forks` is enabled, the fuzzer may generate simple forks.  
+
+## PVM Tracing
+
+Since PVM execution may involve as 3.5B gas to 5B gas, exhaustive PVM traces are impractical; however, a fuzzer may probe a target for a _subset_ of PVM execution, filtering on service and/or work item.   
+
+Implementation Details:
+- A `GetExecutionTrace` will only be used to reference the most recent `GetState` message.  
+- The _total_ number of `InstructionTrace`s in a target's `ExecutionTrace` response must not exceed 1048576 steps, implying at maximum size response; if no `GasUsedRange` is supplied in `gas-used-ranges`, then the target should return the maximum possible of steps possible up to this limit.  
+- `i` is the lowest value of `i` in the invocation of parallel accumulation index `i` (see [here](https://graypaper.fluffylabs.dev/#/1c979cb/171f02171f02?v=0.7.1))
+- `GetExecutionTrace` supports basic filtering by service via `filter-s` and filtering by work item or outer accumulation `filter-wi`:
+  - if `filter-s` is 0xFFFFFFFF then no service filter should be applied by the target; 
+  - if `filter-wi` is 0xFF then no `wi` filter is applied should be applied by the target;
+  - if both `filter-s` and `filter-wi` filter are specified, both filters should be applied by the target
+- `address`, `bytes` and `bytesLen` should be used to support additional logging of memory chunks, of up to 32 bytes, for all memory reads and write opcodes; For host function calls or non-memory related opcodes, all these octets should be 0.
+- `GasUsedRange` is inclusive, e.g. 1_000_000 and 999_999 would be expected to have two PVMSteps
+- `reserved0`, ... `reserved3` may be used to support experimental and/or implementation-specific logging but otherwise should be 0.  They are included to support 176-byte `InstructionTrace` for 32-bit alignment but may have alternate semantics in the future.
+
+For sizeable PVM executions, a simple 2-step process may be used to rapidly find the precise step at which the fuzzer and target differ.   For example, at most 2 executions are required for a 5B refine:
+- Step 1: request samples every 5K steps (1MM steps)
+- Step 2: based on the first observed discrepancy, get up to 10K steps prior and compare the fuzzer and target.
+This is not absolutely perfect (because in between samples there could be any number of differences), but is hoped to cover the vast number of discrepancies.  However, the fuzzer protocol imposes no constraint on how the fuzzer can engage in a search procedure and this is intended as an illustration only.
 
 #### Typical Workflow
 
