@@ -140,5 +140,11 @@
     "image": "ghcr.io/fluffylabs/typeberry:latest",
     "cmd": "--version=1 fuzz-target {TARGET_SOCK}",
     "env": "JAM_LOG=log"
+  },
+    "strawberry": {
+    "repo": "eigerco/strawberry",
+    "file": "strawberry-linux-x86_64",
+    "cmd": "strawberry-linux-x86_64",
+    "args": "--socket {TARGET_SOCK}"
   }
 }
