@@ -4,7 +4,7 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 19.671273 |
+| polkajam_int | 19.671273 |
 | polkajam | 19.751769 |
 | spacejam | 23.315153000000002 |
 | javajam | 23.675330000000002 |
@@ -27,7 +27,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 7.8811389599999995 |
-| polkajam_perf_int | 8.085622039999999 |
+| polkajam_int | 8.085622039999999 |
 | javajam | 9.170021000000004 |
 | spacejam | 9.820205259999998 |
 | jamduna | 10.106080180000001 |
@@ -48,7 +48,7 @@
 
 | Team | Value |
 |------|-------|
-| polkajam_perf_int | 0.908967 |
+| polkajam_int | 0.908967 |
 | polkajam | 0.909635 |
 | javajam | 0.9844579999999999 |
 | turbojam | 1.050903 |
@@ -71,7 +71,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 7.366 |
-| polkajam_perf_int | 7.568 |
+| polkajam_int | 7.568 |
 | javajam | 8.02 |
 | jamduna | 8.752 |
 | spacejam | 9.002 |
@@ -93,7 +93,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 13.248 |
-| polkajam_perf_int | 13.855 |
+| polkajam_int | 13.855 |
 | javajam | 15.254 |
 | jamduna | 15.428 |
 | spacejam | 15.935 |
@@ -115,7 +115,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 17.932 |
-| polkajam_perf_int | 18.265 |
+| polkajam_int | 18.265 |
 | javajam | 21.241 |
 | jamduna | 21.53 |
 | spacejam | 21.761 |
@@ -137,7 +137,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 19.395 |
-| polkajam_perf_int | 19.475 |
+| polkajam_int | 19.475 |
 | jamduna | 23.053 |
 | spacejam | 23.177 |
 | javajam | 23.242 |
@@ -159,7 +159,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 6.666438131837047 |
-| polkajam_perf_int | 6.8312404635091335 |
+| polkajam_int | 6.8312404635091335 |
 | jamduna | 7.664647942969819 |
 | spacejam | 7.755745665235105 |
 | javajam | 7.889860996946658 |

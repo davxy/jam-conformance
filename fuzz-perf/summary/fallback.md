@@ -5,7 +5,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 1.396979 |
-| polkajam_perf_int | 1.48831 |
+| polkajam_int | 1.48831 |
 | turbojam | 1.7381 |
 | spacejam | 2.293106 |
 | javajam | 4.934321000000001 |
@@ -27,7 +27,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 0.9918784799999999 |
-| polkajam_perf_int | 1.03057719 |
+| polkajam_int | 1.03057719 |
 | turbojam | 1.2240042400000009 |
 | javajam | 1.3437695900000002 |
 | spacejam | 1.86148147 |
@@ -49,7 +49,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 0.862414 |
-| polkajam_perf_int | 0.872858 |
+| polkajam_int | 0.872858 |
 | javajam | 0.979388 |
 | turbojam | 1.052477 |
 | jamzig | 1.205324 |
@@ -71,7 +71,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 0.947 |
-| polkajam_perf_int | 0.983 |
+| polkajam_int | 0.983 |
 | turbojam | 1.124 |
 | javajam | 1.162 |
 | jamzig | 1.274 |
@@ -93,7 +93,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 1.046 |
-| polkajam_perf_int | 1.087 |
+| polkajam_int | 1.087 |
 | turbojam | 1.31 |
 | javajam | 1.349 |
 | jamzig | 1.362 |
@@ -115,7 +115,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 1.11 |
-| polkajam_perf_int | 1.166 |
+| polkajam_int | 1.166 |
 | turbojam | 1.469 |
 | javajam | 1.55 |
 | jamzig | 1.627 |
@@ -137,7 +137,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 1.273 |
-| polkajam_perf_int | 1.301 |
+| polkajam_int | 1.301 |
 | turbojam | 1.634 |
 | spacejam | 2.251 |
 | javajam | 4.198 |
@@ -159,7 +159,7 @@
 | Team | Value |
 |------|-------|
 | polkajam | 0.10731167986130939 |
-| polkajam_perf_int | 0.12086167795306418 |
+| polkajam_int | 0.12086167795306418 |
 | turbojam | 0.1719050923360122 |
 | spacejam | 0.24891058452207357 |
 | javajam | 0.6649228259868095 |

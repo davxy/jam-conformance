@@ -3,8 +3,10 @@
 # Performance table generator for JAM teams
 # Groups by test file name and creates tables sorted from fastest to slowest
 
-# Find all team perf directories (including perf_int - interpreted)
-PERF_DIRS=$(find . -type d \( -path "*/perf" -o -path "*/perf_int" -o -path "*/perf_compiled" \) | sort)
+OUTPUT_DIR="summary"
+
+# Find all team perf directories 
+PERF_DIRS=$(find . -type d -not -path "./summary" -not -path "." | sort)
 
 if [ -z "$PERF_DIRS" ]; then
     echo "No performance directories found"
@@ -25,11 +27,11 @@ for dir in $PERF_DIRS; do
 done
 
 # Create perf directory if it doesn't exist
-mkdir -p perf
+mkdir -p "$OUTPUT_DIR"
 
 # Process each test file
 for test_file in "${TEST_FILES[@]}"; do
-    output_file="perf/${test_file}.md"
+    output_file="$OUTPUT_DIR/${test_file}.md"
     
     # Start writing to the output file
     {
@@ -59,11 +61,7 @@ for test_file in "${TEST_FILES[@]}"; do
             declare -a team_data
             
             for dir in $PERF_DIRS; do
-                team_name=$(basename "$(dirname "$dir")")
-                perf_type=$(basename "$dir")
-                if [ "$perf_type" != "perf" ]; then
-                    team_name="${team_name}_${perf_type}"
-                fi
+                team_name=$(basename "$dir")
                 json_file="$dir/$test_file.json"
                 
                 if [ -f "$json_file" ]; then

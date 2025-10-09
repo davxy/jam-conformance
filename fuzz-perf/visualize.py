@@ -23,9 +23,11 @@ IMPLEMENTATION_LANGUAGES = {
     'spacejam': 'Rust',
     'turbojam': 'C++',
     'vinwolf': 'Rust',
+    'tessera': 'Python',
+    'typeberry': 'Go',
 }
 
-def load_json_reports(base_path: str = "fuzz-reports/0.7.0/reports") -> Dict[str, Dict[str, Any]]:
+def load_json_reports(base_path: str = ".") -> Dict[str, Dict[str, Any]]:
     """Load all performance JSON reports from the directory structure."""
     reports = {}
     base = Path(base_path)
@@ -35,32 +37,17 @@ def load_json_reports(base_path: str = "fuzz-reports/0.7.0/reports") -> Dict[str
         return {}
     
     for impl_dir in base.iterdir():
-        if impl_dir.is_dir():
-            impl_name = impl_dir.name
-            perf_dir = impl_dir / "perf"
-            
-            if perf_dir.exists():
-                reports[impl_name] = {}
-                for json_file in perf_dir.glob("*.json"):
-                    test_name = json_file.stem
-                    try:
-                        with open(json_file, 'r') as f:
-                            reports[impl_name][test_name] = json.load(f)
-                    except Exception as e:
-                        print(f"Error reading {json_file}: {e}")
-            
-            # Special case for polkajam's interpreted performance results
-            if impl_name == "polkajam":
-                perf_int_dir = impl_dir / "perf_int"
-                if perf_int_dir.exists():
-                    reports["polkajam_int"] = {}
-                    for json_file in perf_int_dir.glob("*.json"):
-                        test_name = json_file.stem
-                        try:
-                            with open(json_file, 'r') as f:
-                                reports["polkajam_int"][test_name] = json.load(f)
-                        except Exception as e:
-                            print(f"Error reading {json_file}: {e}")
+        if not impl_dir.is_dir():
+            continue
+        impl_name = impl_dir.name
+        reports[impl_name] = {}
+        for json_file in impl_dir.glob("*.json"):
+            test_name = json_file.stem
+            try:
+                with open(json_file, 'r') as f:
+                    reports[impl_name][test_name] = json.load(f)
+            except Exception as e:
+                print(f"Error reading {json_file}: {e}")
     
     return reports
 
