@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 0
+    },
+    "app_name": "jamzilla"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 36,
+    "import_min": 2.643445,
+    "import_max": 64.962395,
+    "import_mean": 16.37473925,
+    "import_p50": 14.308,
+    "import_p75": 19.344,
+    "import_p90": 26.593,
+    "import_p99": 58.279,
+    "import_std_dev": 15.039636851254357
+  }
+}

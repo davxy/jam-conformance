@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_name": "jampy"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 80,
+    "import_min": 8.775286,
+    "import_max": 139.673474,
+    "import_mean": 57.32019051999998,
+    "import_p50": 48.706,
+    "import_p75": 94.258,
+    "import_p90": 130.822,
+    "import_p99": 136.976,
+    "import_std_dev": 45.86233520180488
+  }
+}

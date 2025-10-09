@@ -1,0 +1,28 @@
+{
+  "info": {
+    "name": "boka-fuzzing-target",
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 0
+    },
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    }
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 89,
+    "import_min": 8.580395,
+    "import_max": 38.872448,
+    "import_mean": 22.50023257,
+    "import_p50": 21.98,
+    "import_p75": 29.893,
+    "import_p90": 33.985,
+    "import_p99": 38.206,
+    "import_std_dev": 8.75035809632747
+  }
+}

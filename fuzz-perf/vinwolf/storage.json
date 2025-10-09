@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 2,
+      "patch": 14
+    },
+    "app_name": "vinwolf-target"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 96,
+    "import_min": 2.369743,
+    "import_max": 151.33582900000002,
+    "import_mean": 24.903007880000004,
+    "import_p50": 15.896,
+    "import_p75": 28.75,
+    "import_p90": 50.063,
+    "import_p99": 114.86,
+    "import_std_dev": 31.81708376362941
+  }
+}

@@ -18,7 +18,8 @@ testing infrastructure.
 ## Repository Content
 
 - [fuzz-proto](./fuzz-proto) - Fuzzer protocol specification
-- [fuzz-reports](./fuzz-reports) - Fuzzing test reports
+- [fuzz-reports](./fuzz-reports) - Fuzzer reports
+- [fuzz-perf](./fuzz-perf) - Fuzzer performance reports
 - [pvm-traces](./pvm-traces) - PVM execution traces scratchpad
 
 ## Collaboration

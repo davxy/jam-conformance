@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 0
+    },
+    "app_name": "jamzig-target"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 24,
+    "import_min": 1.535091,
+    "import_max": 181.283467,
+    "import_mean": 17.204379909999993,
+    "import_p50": 6.487,
+    "import_p75": 10.578,
+    "import_p90": 18.878,
+    "import_p99": 141.292,
+    "import_std_dev": 36.03515543926609
+  }
+}
