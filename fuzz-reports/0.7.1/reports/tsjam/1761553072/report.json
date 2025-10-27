@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "fuzzy": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 8.15605,
+        "import_max": 8.15605,
+        "import_mean": 8.15605,
+        "import_p50": 8.15605,
+        "import_p75": 0.0,
+        "import_p90": 8.15605,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_name": "tsjam-0.7.1-tiny-a648e42d"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 48.97255,
+            "import_max": 48.97255,
+            "import_mean": 48.97255,
+            "import_p50": 48.97255,
+            "import_p75": 0.0,
+            "import_p90": 48.97255,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0xf11167d8876c442f8b69f6a36402cc130b7d003113d593ac2519231fe11fc2dc",
+            "got": "0xc9e924bd20d34adfd3cb7709d2d42058c7eac4a916ab1e01894d6e3e85e92ffc"
+        },
+        "keyvals": [
+            {
+                "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x0069076f38642f87e2037a88d4a583b03703c744af1f02bd0bbd7df93ce1ef8f6ca91cf4ffffffffff0a000000000000000a00000000000000151a020000000000ffffffffffffffff08000000000000000500000000000000",
+                    "got": "0x0069076f38642f87e2037a88d4a583b03703c744af1f02bd0bbd7df93ce1ef8f6cefcbf3ffffffffff0a000000000000000a00000000000000151a020000000000ffffffffffffffff08000000000000000500000000000000"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}
