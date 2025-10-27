@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 0
+    },
+    "app_name": "GrayMatter"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 60,
+    "import_min": 2.943907,
+    "import_max": 851.73758,
+    "import_mean": 185.08686982999993,
+    "import_p50": 126.731,
+    "import_p75": 256.93,
+    "import_p90": 448.948,
+    "import_p99": 700.422,
+    "import_std_dev": 198.8116068494673
+  }
+}

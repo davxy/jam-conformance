@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 0,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 13
+    },
+    "app_name": "FastRoll"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 96,
+    "import_min": 2.29221,
+    "import_max": 124.292449,
+    "import_mean": 28.8516414,
+    "import_p50": 23.659,
+    "import_p75": 45.055,
+    "import_p90": 62.607,
+    "import_p99": 91.671,
+    "import_std_dev": 27.170049450078444
+  }
+}

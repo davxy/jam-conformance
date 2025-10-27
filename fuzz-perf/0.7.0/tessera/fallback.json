@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 1,
+      "minor": 0,
+      "patch": 0
+    },
+    "app_name": "tessera-target"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 65,
+    "import_min": 10.953211,
+    "import_max": 41.966392,
+    "import_mean": 12.586672079999998,
+    "import_p50": 11.896,
+    "import_p75": 12.406,
+    "import_p90": 13.089,
+    "import_p99": 15.407,
+    "import_std_dev": 3.4386944786343987
+  }
+}

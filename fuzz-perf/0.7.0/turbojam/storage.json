@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 0,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 4
+    },
+    "app_name": "turbojam"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 8,
+    "import_min": 1.469916,
+    "import_max": 33.316889,
+    "import_mean": 9.582218659999999,
+    "import_p50": 5.828,
+    "import_p75": 15.548,
+    "import_p90": 20.11,
+    "import_p99": 31.65,
+    "import_std_dev": 8.433894268079436
+  }
+}
