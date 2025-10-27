@@ -12,19 +12,19 @@
       "minor": 7,
       "patch": 0
     },
-    "app_name": "tsjam-0.7.0-tiny-9ec9da1f"
+    "app_name": "tsjam-0.7.0-tiny-f5cf7082"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 8,
-    "import_min": 5.266489,
-    "import_max": 548.589105,
-    "import_mean": 142.00286124,
-    "import_p50": 84.041,
-    "import_p75": 225.503,
-    "import_p90": 323.683,
-    "import_p99": 465.932,
-    "import_std_dev": 138.22359045930864
+    "import_min": 5.339644,
+    "import_max": 586.0326729999999,
+    "import_mean": 152.35739681999996,
+    "import_p50": 94.642,
+    "import_p75": 242.227,
+    "import_p90": 348.651,
+    "import_p99": 490.376,
+    "import_std_dev": 149.35640256551133
   }
 }

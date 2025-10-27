@@ -10,21 +10,21 @@
     "app_version": {
       "major": 0,
       "minor": 1,
-      "patch": 0
+      "patch": 3
     },
     "app_name": "@typeberry/jam"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 1,
-    "import_min": 29.144489,
-    "import_max": 12142.7698,
-    "import_mean": 329.52799781999994,
-    "import_p50": 198.154,
-    "import_p75": 300.388,
-    "import_p90": 418.479,
-    "import_p99": 701.591,
-    "import_std_dev": 1204.2437519206533
+    "import_max_step": 60,
+    "import_min": 19.249484000000002,
+    "import_max": 617.6580200000001,
+    "import_mean": 108.62499913000002,
+    "import_p50": 65.781,
+    "import_p75": 132.863,
+    "import_p90": 226.097,
+    "import_p99": 447.926,
+    "import_std_dev": 122.2336811474927
   }
 }

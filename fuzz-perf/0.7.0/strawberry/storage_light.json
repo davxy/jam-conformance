@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 0
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 0,
+      "patch": 1
+    },
+    "app_name": "strawberry"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 60,
+    "import_min": 6.216191,
+    "import_max": 1506.3803839999998,
+    "import_mean": 365.00935955999967,
+    "import_p50": 214.44,
+    "import_p75": 463.502,
+    "import_p90": 1034.74,
+    "import_p99": 1462.475,
+    "import_std_dev": 420.6361585066856
+  }
+}

@@ -9,22 +9,22 @@
     },
     "app_version": {
       "major": 0,
-      "minor": 7,
+      "minor": 1,
       "patch": 0
     },
-    "app_name": "jampy"
+    "app_name": "GrayMatter"
   },
   "stats": {
     "steps": 100,
     "imported": 100,
     "import_max_step": 12,
-    "import_min": 9.574462,
-    "import_max": 171.038499,
-    "import_mean": 14.811402479999996,
-    "import_p50": 12.26,
-    "import_p75": 12.45,
-    "import_p90": 12.577,
-    "import_p99": 17.838,
-    "import_std_dev": 19.05386897481348
+    "import_min": 2.077338,
+    "import_max": 301.50132099999996,
+    "import_mean": 26.748376009999998,
+    "import_p50": 2.66,
+    "import_p75": 2.991,
+    "import_p90": 3.822,
+    "import_p99": 287.635,
+    "import_std_dev": 77.16397954696006
   }
 }
