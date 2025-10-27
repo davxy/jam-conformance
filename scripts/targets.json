@@ -39,8 +39,8 @@
   "jampy": {
     "repo": "dakk/jampy-releases",
     "clone": 1,
-    "file": "dist/jampy-target-0.7.0_x86-64.zip",
-    "cmd": "jampy-target-0.7.0_x86-64/jampy-target-0.7.0_x86-64 --socket-file {TARGET_SOCK}"
+    "file": "dist/jampy-target-0.7.1_x86-64.zip",
+    "cmd": "jampy-target-0.7.1_x86-64/jampy-target-0.7.1_x86-64 --socket-file {TARGET_SOCK}"
   },
   "jamduna": {
     "repo": "jam-duna/jamtestnet",
@@ -81,8 +81,8 @@
   "spacejam": {
     "repo": "spacejamapp/specjam",
     "file": {
-      "linux": "spacejam-0.7.0-linux-amd64.tar.gz",
-      "macos": "spacejam-0.7.0-macos-arm64.tar.gz"
+      "linux": "spacejam-0.7.1-linux-amd64.tar.gz",
+      "macos": "spacejam-0.7.1-macos-arm64.tar.gz"
     },
     "cmd": "spacejam fuzz target {TARGET_SOCK}"
   },
