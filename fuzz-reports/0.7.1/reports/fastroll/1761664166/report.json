@@ -2,25 +2,25 @@
     "config": {
         "seed": "42",
         "profile": {
-            "full": null
+            "fuzzy": null
         },
         "safrole": false,
-        "max_work_items": 3,
+        "max_work_items": 1,
         "max_service_keys": 10,
-        "mutation_ratio": 0.0,
+        "mutation_ratio": 0.1,
         "max_mutations": 0,
-        "max_steps": 4294967295
+        "max_steps": 10000
     },
     "stats": {
         "steps": 5,
         "imported": 1,
         "import_max_step": 5,
-        "import_min": 7.848624999999999,
-        "import_max": 7.848624999999999,
-        "import_mean": 7.848624999999999,
-        "import_p50": 7.848624999999999,
+        "import_min": 5.614249,
+        "import_max": 5.614249,
+        "import_mean": 5.614249,
+        "import_p50": 5.614249,
         "import_p75": 0.0,
-        "import_p90": 7.848624999999999,
+        "import_p90": 5.614249,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
