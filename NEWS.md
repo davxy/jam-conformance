@@ -1,3 +1,7 @@
+### [27-10-25]
+
+New traces batch targeting protocol version 0.7.1 has been released.
+
 ### [23-09-25]
 
 New batch of **highly controversial** traces and reports released, primarily
