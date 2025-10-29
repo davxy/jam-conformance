@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "full": null
+        },
+        "safrole": false,
+        "max_work_items": 3,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0,
+        "max_steps": 4294967295
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 14.23975,
+        "import_max": 14.23975,
+        "import_mean": 14.23975,
+        "import_p50": 14.23975,
+        "import_p75": 0.0,
+        "import_p90": 14.23975,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 18
+            },
+            "app_name": "FastRoll"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": null,
+    "import_diff": {
+        "exp": "ok",
+        "got": "Block header contains invalid xt hash. Found in block: 9c77b4f519b38c68a7dca3cbefb4bc959ad6b025a434363d6b4492e1e261248a, calculated: 8ca29cd8f74ea92ff9331203cc7b84c9e42daabe9f121ad489bedfc9fd35b71f"
+    }
+}
