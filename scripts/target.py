@@ -477,6 +477,25 @@ def get_github_release(target: str, os_name: str) -> bool:
     return post_actions(target, os_name)
 
 
+def print_docker_image_info(image):
+    result = subprocess.run(
+        ["docker", "inspect", image, "--format", "{{.Id}}\n{{.Created}}"],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+    lines = result.stdout.strip().split('\n')
+    image_id = lines[0]
+    created = lines[1] if len(lines) > 1 else "Unknown"
+    # Strip "sha256:" prefix if present
+    if image_id.startswith("sha256:"):
+        image_id = image_id[7:]
+    image_id = image_id[:12]  # Short ID
+    print(f"Image: {image}")
+    print(f"Image ID: {image_id}")
+    print(f"Created: {created}")
+
+
 def run_docker_image(target: str) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
@@ -487,18 +506,15 @@ def run_docker_image(target: str) -> None:
     cmd = target_obj.cmd
     env = target_obj.env
 
-    print(f"Running {target} on docker image {image} (command {cmd})")
+    print(f"Running {target} on docker image")
+    print(f"Command: {cmd}")
 
-    # Check if image exists locally
     try:
-        subprocess.run(
-            ["docker", "image", "inspect", image], check=True, capture_output=True
-        )
-    except subprocess.CalledProcessError:
-        if image != DEFAULT_DOCKER_IMAGE:
-            print(f"Error: Docker image '{image}' not found locally.")
-            print(f"Please run: {sys.argv[0]} get {target}")
-            sys.exit(1)
+        print_docker_image_info(image)
+    except (subprocess.CalledProcessError, IndexError, ValueError):
+        print(f"Error: Docker image '{image}' not found locally.")
+        print(f"Please run: {sys.argv[0]} get {target}")
+        sys.exit(1)
 
     def cleanup_docker():
         print(f"Cleaning up Docker container {target}...")
@@ -603,6 +619,7 @@ def run_docker_image(target: str) -> None:
     finally:
         cleanup_docker()
 
+
 def print_target_info(target: Target, os_name: str) -> None:
     """Print detailed information about a target."""
     print(f"\n=== {target.name.upper()} ===")
@@ -625,27 +642,18 @@ def print_target_info(target: Target, os_name: str) -> None:
 
     # Check if target is downloaded/available
     target_dir = Path(f"{TARGETS_DIR}/{target.name}/latest")
-    if target_dir.exists():
-        print(f"Status: Downloaded (available at {target_dir})")
+    if target.is_repo_target():
+        print(f"Repository: https://github.com/{target.repo}")
+        if target_dir.exists():
+            print(f"Downloaded: {target_dir}")
     elif target.is_docker_target():
         # Check if Docker image exists locally
         try:
-            subprocess.run(
-                ["docker", "image", "inspect", target.image],
-                check=True,
-                capture_output=True,
-            )
-            print("Status: Docker image available locally")
+            print_docker_image_info(target.image)
         except (subprocess.CalledProcessError, FileNotFoundError):
             print("Status: Not downloaded (Docker image not found locally)")
     else:
         print("Status: Not downloaded")
-
-    if target.repo:
-        print(f"Repository: https://github.com/{target.repo}")
-
-    if target.image:
-        print(f"Docker Image: {target.image}")
 
     if target.clone:
         print(f"Clone Mode: {'Yes' if target.clone == 1 else 'No'}")
