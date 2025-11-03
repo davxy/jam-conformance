@@ -463,11 +463,14 @@ def get_github_release(target: str, os_name: str) -> bool:
         print(f"Error: Download failed: {e}")
         return False
 
+    print(f"Downloading target to file: {file}")
     target_dir = Path(f"{TARGETS_DIR}/{target}")
     target_dir_rev = target_dir / latest_tag
 
     target_dir_rev.mkdir(parents=True, exist_ok=True)
     shutil.move(file, target_dir_rev / file)
+    print(f"* Target downloaded to: {target_dir_rev}")
+
 
     latest_link = target_dir / "latest"
     if latest_link.exists() or latest_link.is_symlink():
