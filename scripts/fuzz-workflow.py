@@ -306,7 +306,6 @@ def run_fuzzer_local_mode(args, log_file):
         str(args.max_mutations),
         "--verbosity",
         VERBOSITY,
-        "--stop-on-error",
         "--pvm-interpreter-backend",
     ]
 
@@ -360,7 +359,6 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
         TARGET_SOCK,
         "--verbosity",
         VERBOSITY,
-        "--stop-on-error",
         "--pvm-interpreter-backend",
         "--trace-traces",
     ]
