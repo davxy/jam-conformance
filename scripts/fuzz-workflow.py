@@ -742,6 +742,8 @@ def run_trace_workflow(args, target):
     if not os.path.exists(source_traces_dir):
         print(f"No traces available in {source_traces_dir}. Exiting.")
         exit(1)
+        
+    print(f"* Using source traces from: {source_traces_dir}")
 
     make_dir(SESSION_LOGS_DIR)
     make_dir(SESSION_FAILED_TRACES_DIR)
