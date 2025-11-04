@@ -1,26 +1,29 @@
 {
     "config": {
         "seed": "42",
-        "profile": {
-            "fuzzy": null
-        },
+        "max_steps": 4294967295,
         "safrole": false,
-        "max_work_items": 1,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
         "max_service_keys": 10,
-        "mutation_ratio": 0.1,
-        "max_mutations": 0,
-        "max_steps": 10000
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 9.383169,
-        "import_max": 9.383169,
-        "import_mean": 9.383169,
-        "import_p50": 9.383169,
+        "import_min": 9.295713000000001,
+        "import_max": 9.295713000000001,
+        "import_mean": 9.295713000000001,
+        "import_p50": 9.295713000000001,
         "import_p75": 0.0,
-        "import_p90": 9.383169,
+        "import_p90": 9.295713000000001,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -31,7 +34,7 @@
             "jam_version": {
                 "major": 0,
                 "minor": 7,
-                "patch": 2
+                "patch": 1
             },
             "app_version": {
                 "major": 0,
@@ -54,9 +57,10 @@
             "import_std_dev": 0.0
         }
     },
-    "state_diff": null,
-    "import_diff": {
-        "exp": "ok",
-        "got": "Chain error: block execution failure: Invalid extrinsic hash"
+    "diff": {
+        "result": {
+            "exp": "ok",
+            "got": "Chain error: block execution failure: Invalid extrinsic hash"
+        }
     }
 }

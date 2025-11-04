@@ -1,31 +1,61 @@
 {
     "config": {
         "seed": "42",
-        "max_steps": 10000,
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
         "max_work_items": 3,
-        "max_service_keys": 3,
-        "mutation_ratio": 0.1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.0,
         "max_mutations": 0
     },
     "stats": {
         "steps": 2,
         "imported": 1,
         "import_max_step": 2,
-        "import_min": 32.788257,
-        "import_max": 32.788257,
-        "import_mean": 32.788257,
-        "import_p50": 32.788257,
+        "import_min": 29.691431,
+        "import_max": 29.691431,
+        "import_mean": 29.691431,
+        "import_p50": 29.691431,
         "import_p75": 0.0,
-        "import_p90": 32.788257,
+        "import_p90": 29.691431,
         "import_p99": 0.0,
         "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 14
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 22.595965999999997,
+            "import_max": 22.595965999999997,
+            "import_mean": 22.595965999999997,
+            "import_p50": 22.595965999999997,
+            "import_p75": 0.0,
+            "import_p90": 22.595965999999997,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
     },
     "diff": {
         "state": {
@@ -49,36 +79,6 @@
                     }
                 }
             ]
-        }
-    },
-    "target": {
-        "info": {
-            "fuzz_version": 1,
-            "fuzz_features": 2,
-            "jam_version": {
-                "major": 0,
-                "minor": 7,
-                "patch": 1
-            },
-            "app_version": {
-                "major": 0,
-                "minor": 0,
-                "patch": 14
-            },
-            "app_name": "spacejam"
-        },
-        "stats": {
-            "steps": 2,
-            "imported": 1,
-            "import_max_step": 2,
-            "import_min": 1.755725,
-            "import_max": 1.755725,
-            "import_mean": 1.755725,
-            "import_p50": 1.755725,
-            "import_p75": 0.0,
-            "import_p90": 1.755725,
-            "import_p99": 0.0,
-            "import_std_dev": 0.0
         }
     }
 }
