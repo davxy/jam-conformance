@@ -2,25 +2,25 @@
     "config": {
         "seed": "42",
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "safrole": false,
-        "max_work_items": 1,
+        "max_work_items": 3,
         "max_service_keys": 10,
-        "mutation_ratio": 0.1,
+        "mutation_ratio": 0.0,
         "max_mutations": 0,
-        "max_steps": 10000
+        "max_steps": 4294967295
     },
     "stats": {
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 8.872748999999999,
-        "import_max": 8.872748999999999,
-        "import_mean": 8.872748999999999,
-        "import_p50": 8.872748999999999,
+        "import_min": 5.941399,
+        "import_max": 5.941399,
+        "import_mean": 5.941399,
+        "import_p50": 5.941399,
         "import_p75": 0.0,
-        "import_p90": 8.872748999999999,
+        "import_p90": 5.941399,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -36,7 +36,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 1,
-                "patch": 18
+                "patch": 19
             },
             "app_name": "FastRoll"
         },
