@@ -1,15 +1,18 @@
 {
     "config": {
         "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
         "profile": {
             "full": null
         },
-        "safrole": false,
+        "fuzzy_profile": {
+            "full": null
+        },
         "max_work_items": 3,
         "max_service_keys": 10,
         "mutation_ratio": 0.0,
-        "max_mutations": 0,
-        "max_steps": 4294967295
+        "max_mutations": 0
     },
     "stats": {
         "steps": 1,
@@ -44,19 +47,20 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 15.725666999999998,
-            "import_max": 15.725666999999998,
-            "import_mean": 15.725666999999998,
-            "import_p50": 15.725666999999998,
+            "import_min": 8.450092,
+            "import_max": 8.450092,
+            "import_mean": 8.450092,
+            "import_p50": 8.450092,
             "import_p75": 0.0,
-            "import_p90": 15.725666999999998,
+            "import_p90": 8.450092,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
-    "state_diff": null,
-    "import_diff": {
-        "exp": "Local chain error: block execution failure: reports error: not sorted or unique guarantees",
-        "got": "ok"
+    "diff": {
+        "result": {
+            "exp": "Local chain error: block execution failure: reports error: not sorted or unique guarantees",
+            "got": "ok"
+        }
     }
 }

@@ -57,8 +57,8 @@
   "jamixir": {
     "repo": "jamixir/jamixir-releases",
     "file": {
-      "linux": "jamixir_linux-x86-64_0.7.2_tiny.tar.gz",
-      "macos": "jamixir_macos-arm64_0.7.2_tiny.tar.gz"
+      "linux": "jamixir_linux-x86-64_0.7.1_tiny.tar.gz",
+      "macos": "jamixir_macos-arm64_0.7.1_tiny.tar.gz"
     },
     "cmd": "jamixir fuzzer --log error --socket-path {TARGET_SOCK}"
   },

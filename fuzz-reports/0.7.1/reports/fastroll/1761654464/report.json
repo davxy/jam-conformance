@@ -1,26 +1,29 @@
 {
     "config": {
         "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
         "profile": {
             "full": null
         },
-        "safrole": false,
+        "fuzzy_profile": {
+            "full": null
+        },
         "max_work_items": 3,
         "max_service_keys": 10,
         "mutation_ratio": 0.0,
-        "max_mutations": 0,
-        "max_steps": 4294967295
+        "max_mutations": 0
     },
     "stats": {
         "steps": 4,
         "imported": 1,
         "import_max_step": 4,
-        "import_min": 8.596417,
-        "import_max": 8.596417,
-        "import_mean": 8.596417,
-        "import_p50": 8.596417,
+        "import_min": 4.956524,
+        "import_max": 4.956524,
+        "import_mean": 4.956524,
+        "import_p50": 4.956524,
         "import_p75": 0.0,
-        "import_p90": 8.596417,
+        "import_p90": 4.956524,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -36,7 +39,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 1,
-                "patch": 18
+                "patch": 20
             },
             "app_name": "FastRoll"
         },
@@ -54,9 +57,10 @@
             "import_std_dev": 0.0
         }
     },
-    "state_diff": null,
-    "import_diff": {
-        "exp": "ok",
-        "got": "Block header contains invalid xt hash. Found in block: 137110143ee457231eae416f17f72dd224be4f12904bb94ea896d5678b3a5278, calculated: ba8e43539f14eb6880cb6123d22d65e259f724148de593b414f896819aec3457"
+    "diff": {
+        "result": {
+            "exp": "ok",
+            "got": "Block header contains invalid xt hash. Found in block: 137110143ee457231eae416f17f72dd224be4f12904bb94ea896d5678b3a5278, calculated: ba8e43539f14eb6880cb6123d22d65e259f724148de593b414f896819aec3457"
+        }
     }
 }
