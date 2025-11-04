@@ -27,12 +27,6 @@
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
-    "diff": {
-        "result": {
-            "exp": "Local chain error: block header verification failure: SafroleInitializationFailed",
-            "got": "ok"
-        }
-    },
     "target": {
         "info": {
             "fuzz_version": 1,
@@ -53,14 +47,20 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 2.917224,
-            "import_max": 2.917224,
-            "import_mean": 2.917224,
-            "import_p50": 2.917224,
+            "import_min": 2.88543,
+            "import_max": 2.88543,
+            "import_mean": 2.88543,
+            "import_p50": 2.88543,
             "import_p75": 0.0,
-            "import_p90": 2.917224,
+            "import_p90": 2.88543,
             "import_p99": 0.0,
             "import_std_dev": 0.0
+        }
+    },
+    "diff": {
+        "result": {
+            "exp": "Local chain error: block header verification failure: SafroleInitializationFailed",
+            "got": "ok"
         }
     }
 }

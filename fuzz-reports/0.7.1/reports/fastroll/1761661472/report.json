@@ -18,20 +18,14 @@
         "steps": 2,
         "imported": 1,
         "import_max_step": 2,
-        "import_min": 12.987858999999998,
-        "import_max": 12.987858999999998,
-        "import_mean": 12.987858999999998,
-        "import_p50": 12.987858999999998,
+        "import_min": 12.871459999999999,
+        "import_max": 12.871459999999999,
+        "import_mean": 12.871459999999999,
+        "import_p50": 12.871459999999999,
         "import_p75": 0.0,
-        "import_p90": 12.987858999999998,
+        "import_p90": 12.871459999999999,
         "import_p99": 0.0,
         "import_std_dev": 0.0
-    },
-    "diff": {
-        "result": {
-            "exp": "ok",
-            "got": "Block header contains invalid xt hash. Found in block: eb9d86bb6f8cd619fe75412ffc47a565b0cbcc1eef130cb2a1f52dd4ccc5b899, calculated: 5c2aaf4b4ba19cc5571d1506adfb7de72ab084fbb15e580d9c0eed316c255e57"
-        }
     },
     "target": {
         "info": {
@@ -61,6 +55,12 @@
             "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
+        }
+    },
+    "diff": {
+        "result": {
+            "exp": "ok",
+            "got": "Block header contains invalid xt hash. Found in block: eb9d86bb6f8cd619fe75412ffc47a565b0cbcc1eef130cb2a1f52dd4ccc5b899, calculated: 5c2aaf4b4ba19cc5571d1506adfb7de72ab084fbb15e580d9c0eed316c255e57"
         }
     }
 }
