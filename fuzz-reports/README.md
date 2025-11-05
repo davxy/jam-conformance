@@ -22,10 +22,10 @@ Only disputed reports are shown in the table
 * fastroll (rust)
 * jamduna (go)
 * jamixir (elixir)
-* jampy (python)    - FuzzyFail
+* jampy (python)
 * javajam (java)
-* pyjamaz (python)  - StartupFail
-* spacejam (rust)   - FuzzyFail
+* pyjamaz (python)
+* spacejam (rust)
 * tsjam (ts)
 * typeberry (ts)
 * vinwolf (rust)
