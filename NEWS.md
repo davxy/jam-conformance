@@ -1,3 +1,7 @@
+### [10-11-25]
+
+Added comprehensive ed25519 consensus critical test vectors with generator tool.
+
 ### [27-10-25]
 
 New traces batch targeting protocol version 0.7.1 has been released.
