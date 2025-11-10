@@ -85,9 +85,9 @@ ZIP 215 specifies explicit validation for consensus-critical applications:
 4. Cofactor-8 verification equation `[8][s]B = [8]R + [8][k]A` required
 
 Compliant implementations:
-- `ed25519-zebra` (Rust)
-- `ed25519-consensus` (Rust)
-- `ed25519consensus` (Go)
+- [`ed25519-zebra`](https://github.com/ZcashFoundation/ed25519-zebra) (Rust)
+- [`ed25519-consensus`](https://github.com/penumbra-zone/ed25519-consensus) (Rust)
+- [`ed25519consensus`](https://github.com/hdevalence/ed25519consensus) (Go)
 
 ## References
 
