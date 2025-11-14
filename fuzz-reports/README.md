@@ -30,6 +30,8 @@ Only disputed reports are shown in the table
 * typeberry (ts)
 * vinwolf (rust)
 
+#### Jam Test Vectors Traces
+
 |            | boka | fastroll | jamduna | jamixir | jampy | javajam | pyjamaz | spacejam | tsjam | typeberry | vinwolf |
 |------------|------|----------|---------|---------|-------|---------|---------|----------|-------|-----------|---------|
 | fallback   |      |          |         |         |       |         |         |          |       |           |         |
@@ -38,8 +40,13 @@ Only disputed reports are shown in the table
 |  ⤷ light   |      |          |         |         |       |         |         |          |       |           |         |
 | preimages  |      |          |         |         |       |         |         |          |       |           |         |
 |  ⤷ light   |      |          |         |         |       |         |         |          |       |           |         |
-| fuzzy      |      |          |         |         |       |         |         |          |       |           |         |
-|  ⤷ light   |      |          |         |         |       |         |         |          |       |           |         |
+| fuzzy      |      |          |         |         |       |         |         |    ❌    |       |    ❌     |         |
+|  ⤷ light   |      |          |         |         |       |         |         |    ❌    |       |           |         |
+
+#### Jam Conformance Traces
+
+|            | boka | fastroll | jamduna | jamixir | jampy | javajam | pyjamaz | spacejam | tsjam | typeberry | vinwolf |
+|------------|------|----------|---------|---------|-------|---------|---------|----------|-------|-----------|---------|
 | 1761552708 |      |          |         |         |       |         |         |    ❌    |       |    ❌     |         |
 | 1761552851 |      |          |         |         |       |         |         |    ❌    |       |    ❌     |         |
 | 1761553047 |      |          |         |         |       |         |         |    ❌    |       |           |         |
