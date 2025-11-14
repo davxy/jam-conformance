@@ -10,7 +10,6 @@
             "full": null
         },
         "max_work_items": 3,
-        "max_service_keys": 10,
         "mutation_ratio": 0.0,
         "max_mutations": 0
     },
@@ -47,19 +46,19 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 1.460839,
-            "import_max": 1.460839,
-            "import_mean": 1.460839,
-            "import_p50": 1.460839,
+            "import_min": 1.633925,
+            "import_max": 1.633925,
+            "import_mean": 1.633925,
+            "import_p50": 1.633925,
             "import_p75": 0.0,
-            "import_p90": 1.460839,
+            "import_p90": 1.633925,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "diff": {
         "result": {
-            "exp": "Local chain error: block header verification failure: SafroleInitializationFailed",
+            "exp": "Local chain error: block 0x48a870f6ea195d3e... is not part of the finalized chain",
             "got": "ok"
         }
     }
