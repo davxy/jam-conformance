@@ -10,7 +10,6 @@
             "full": null
         },
         "max_work_items": 3,
-        "max_service_keys": 10,
         "mutation_ratio": 0.0,
         "max_mutations": 0
     },
@@ -18,12 +17,12 @@
         "steps": 4,
         "imported": 1,
         "import_max_step": 4,
-        "import_min": 5.157469,
-        "import_max": 5.157469,
-        "import_mean": 5.157469,
-        "import_p50": 5.157469,
+        "import_min": 4.967061,
+        "import_max": 4.967061,
+        "import_mean": 4.967061,
+        "import_p50": 4.967061,
         "import_p75": 0.0,
-        "import_p90": 5.157469,
+        "import_p90": 4.967061,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },

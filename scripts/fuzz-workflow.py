@@ -796,7 +796,7 @@ def run_trace_workflow(args, target):
     # for an earlier session. That means we may have reports on file ready to publish,
     # even if we did not run the fuzzing process in this execution.
     if args.report_publish:
-        print("* Publishing failed reports to jam-conformance")
+        print("* Publishing reports to jam-conformance")
         # Overwrite the previous report if any. This always keeps the last example
         # of a target failing a particular trace.
         shutil.copytree(
