@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 11.166399,
-        "import_max": 11.166399,
-        "import_mean": 11.166399,
-        "import_p50": 11.166399,
+        "import_min": 12.310243999999999,
+        "import_max": 12.310243999999999,
+        "import_mean": 12.310243999999999,
+        "import_p50": 12.310243999999999,
         "import_p75": 0.0,
-        "import_p90": 11.166399,
+        "import_p90": 12.310243999999999,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -44,33 +44,22 @@
         },
         "stats": {
             "steps": 1,
-            "imported": 1,
-            "import_max_step": 1,
-            "import_min": 123.542316,
-            "import_max": 123.542316,
-            "import_mean": 123.542316,
-            "import_p50": 123.542316,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 123.542316,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "diff": {
-        "state": {
-            "roots": {
-                "exp": "0x4921c1cefe4d94453e08c770a2412f84810b4dab117b995eb00d0dcd5eff17c3",
-                "got": "0x20ee922a162988c135d7ba3d5a82b9d2ba46a7e2948a78fb2f21382fe7a13f4e"
-            },
-            "keyvals": [
-                {
-                    "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x000000000000000000000000000000000000000000",
-                        "got": "0x000000000000000000000000a1b7686e0000000000"
-                    }
-                }
-            ]
+        "result": {
+            "exp": "ok",
+            "got": "Chain error: block import failure: other(Blockchain.PreimagesError.preimageNotSolicited)"
         }
     }
 }
