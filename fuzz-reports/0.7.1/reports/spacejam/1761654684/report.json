@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 12.866545,
-        "import_max": 12.866545,
-        "import_mean": 12.866545,
-        "import_p50": 12.866545,
+        "import_min": 12.257863,
+        "import_max": 12.257863,
+        "import_mean": 12.257863,
+        "import_p50": 12.257863,
         "import_p75": 0.0,
-        "import_p90": 12.866545,
+        "import_p90": 12.257863,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 0,
-                "patch": 15
+                "patch": 16
             },
             "app_name": "spacejam"
         },
@@ -59,7 +59,7 @@
     "diff": {
         "result": {
             "exp": "ok",
-            "got": "ticket seal verification failed: Ietf signature verification failure, new_epoch=false"
+            "got": "ticket seal verification failed: Ietf signature verification failure, new_epoch=false, fallback=true"
         }
     }
 }
