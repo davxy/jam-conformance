@@ -1,0 +1,97 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 10.466823,
+        "import_max": 10.466823,
+        "import_mean": 10.466823,
+        "import_p50": 10.466823,
+        "import_p75": 0.0,
+        "import_p90": 10.466823,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 4
+            },
+            "app_name": "duna-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 65.882875,
+            "import_max": 65.882875,
+            "import_mean": 65.882875,
+            "import_p50": 65.882875,
+            "import_p75": 0.0,
+            "import_p90": 65.882875,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "diff": {
+        "state": {
+            "roots": {
+                "exp": "0x6fa1bcce8f0981ed4d17eee3cc502c70687f4c1b1244c6b501f5423cbea26eb0",
+                "got": "0xcd866d63fa1a3d7f09502f1c8f7f4606d8fc2bd48ac3160c884989541cdb6e13"
+            },
+            "keyvals": [
+                {
+                    "key": "0x004400b500a400aaa0d7f8eab5ca1cca4a0472988422febc68a6b6a944cabf",
+                    "diff": {
+                        "exp": "0x20c800e7",
+                        "got": "0x1fc800e7"
+                    }
+                },
+                {
+                    "key": "0x2072c80c0058e75f70a4d8a0d41f3e9195aacbf0f3dcb184274bd6d786c7f5",
+                    "diff": {
+                        "exp": "0x00",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xff1f00c8000000e70000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00828667638ae6f11aa6b7d77cf058a3bb6d46346701e914f18ab7015a0de171417a34060000000000102700000000000010270000000000008139020000000000000000000000000002000000540400000000000000000000",
+                        "got": "0x00828667638ae6f11aa6b7d77cf058a3bb6d46346701e914f18ab7015a0de17141fb030a0000000000102700000000000010270000000000008139020000000000000000000000000002000000540400000000000000000000"
+                    }
+                },
+                {
+                    "key": "0xff2000c8000000e70000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00828667638ae6f11aa6b7d77cf058a3bb6d46346701e914f18ab7015a0de171417a09060000000000102700000000000010270000000000008139020000000000000000000000000002000000540400000000000000000000",
+                        "got": "0x"
+                    }
+                }
+            ]
+        }
+    }
+}
