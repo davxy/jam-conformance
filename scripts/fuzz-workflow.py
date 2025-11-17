@@ -889,8 +889,8 @@ def is_timestamp(s):
 
 
 def is_step_file(f):
-    """Check if a file is a step file (8-digit .bin)"""
-    return re.match(r"^\d{8}\.bin$", f)
+    """Check if a file is a step file (8-digit .bin) or is genesis.bin"""
+    return re.match(r"^\d{8}\.bin$", f) or f == "genesis.bin"
 
 
 def main():
