@@ -246,6 +246,7 @@ def get_target(target):
     ]
     target_process = subprocess.Popen(
         target_command,
+        stdin=subprocess.DEVNULL,
         stderr=subprocess.STDOUT,
         text=True,
         env=env,
@@ -441,6 +442,7 @@ def run_target(target, log_file):
         env["TARGETS_DIR"] = TARGETS_DIR
         target_process = subprocess.Popen(
             target_command,
+            stdin=subprocess.DEVNULL,
             stdout=target_log,
             stderr=subprocess.STDOUT,
             text=True,
