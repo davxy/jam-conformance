@@ -79,7 +79,6 @@ SEED = os.environ.get("JAM_FUZZ_SEED", "42")
 MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "10000")
 STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
 MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
-MAX_SERVICE_KEYS = os.environ.get("JAM_FUZZ_MAX_SERVICE_KEYS", "10")
 SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
 SINGLE_STEP = os.environ.get("JAM_FUZZ_SINGLE_STEP", "false")
 VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
@@ -106,10 +105,10 @@ def parse_command_line_args():
         help="Target to fuzz. Can be 'all' if source==trace",
     )
     parser.add_argument(
-        "-p", "--profile", type=str, default="empty", help="Fuzzing profile to use"
+        "-p", "--profile", type=str, default="fuzzy", help="Fuzzing profile to use"
     )
     parser.add_argument(
-        "--fuzzy-profile", type=str, default="full", help="Fuzzy service profile to use"
+        "--fuzzy-profile", type=str, default="rand", help="Fuzzy service profile to use"
     )
     parser.add_argument(
         "-m",
@@ -288,8 +287,6 @@ def run_fuzzer_local_mode(args, log_file):
         SEED,
         "--max-work-items",
         MAX_WORK_ITEMS,
-        "--max-service-keys",
-        MAX_SERVICE_KEYS,
         "--single-step",
         SINGLE_STEP,
         "--profile",
@@ -541,6 +538,8 @@ def generate_report(report_depth, report_prune):
         input_file = os.path.join(SESSION_TRACES_DIR, f)
         print(f"* Processing: {input_file}")
 
+        shutil.copy(input_file, SESSION_REPORT_DIR)
+
         if f == "genesis.bin":
             type = "Genesis"
         else:
@@ -588,7 +587,6 @@ def generate_report(report_depth, report_prune):
 
         output_file = os.path.join(SESSION_REPORT_DIR, f"{f[:-4]}.json")
         shutil.copy(tmp_file, output_file)
-        shutil.copy(input_file, SESSION_REPORT_DIR)
 
         if head_ancestry_depth >= report_depth:
             break
