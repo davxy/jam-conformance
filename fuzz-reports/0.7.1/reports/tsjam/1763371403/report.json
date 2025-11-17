@@ -14,7 +14,7 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
+        "steps": 2,
         "imported": 0,
         "import_max_step": 0,
         "import_min": 0.0,
