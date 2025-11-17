@@ -1,3 +1,7 @@
+### [17-11-25]
+
+New traces batch targeting protocol version 0.7.1 has been released.
+
 ### [27-10-25]
 
 New traces batch targeting protocol version 0.7.1 has been released.
