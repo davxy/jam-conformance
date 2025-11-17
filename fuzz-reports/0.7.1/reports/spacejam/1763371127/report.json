@@ -15,14 +15,14 @@
     },
     "stats": {
         "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 11.70651,
+        "import_max": 11.70651,
+        "import_mean": 11.70651,
+        "import_p50": 11.70651,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 11.70651,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -44,22 +44,22 @@
         },
         "stats": {
             "steps": 1,
-            "imported": 1,
-            "import_max_step": 1,
-            "import_min": 1.745887,
-            "import_max": 1.745887,
-            "import_mean": 1.745887,
-            "import_p50": 1.745887,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 1.745887,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "diff": {
         "result": {
-            "exp": "Local chain error: block 0x48a870f6ea195d3e... is not part of the finalized chain",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Preimage lookup failed"
         }
     }
 }
