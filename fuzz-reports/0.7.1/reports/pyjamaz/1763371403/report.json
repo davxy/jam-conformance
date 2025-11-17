@@ -17,12 +17,12 @@
         "steps": 3,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 155.757918,
-        "import_max": 155.757918,
-        "import_mean": 155.757918,
-        "import_p50": 155.757918,
+        "import_min": 158.176614,
+        "import_max": 158.176614,
+        "import_mean": 158.176614,
+        "import_p50": 158.176614,
         "import_p75": 0.0,
-        "import_p90": 155.757918,
+        "import_p90": 158.176614,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -37,10 +37,10 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 2,
-                "patch": 6
+                "minor": 1,
+                "patch": 33
             },
-            "app_name": "Jamixir"
+            "app_name": "PyJAMaz"
         },
         "stats": {
             "steps": 3,
@@ -59,7 +59,7 @@
     "diff": {
         "result": {
             "exp": "ok",
-            "got": "Chain error: block execution failure: invalid_header_markers"
+            "got": "BlockValidationErrorCode.bad_offender_marker_data"
         }
     }
 }
