@@ -404,7 +404,7 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
 def wait_for_target_sock(target_process):
     # Detect if we terminated with an error and exit immediately if so
     # Wait up to 10 seconds for TARGET_SOCK to be created
-    socket_wait_timeout = 10
+    socket_wait_timeout = 20
     socket_wait_start = time.time()
     while not os.path.exists(TARGET_SOCK):
         if target_process.poll() is not None:
