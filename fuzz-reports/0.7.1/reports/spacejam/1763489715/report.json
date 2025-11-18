@@ -1,0 +1,31 @@
+{
+    "config": {
+        "seed": "ddd",
+        "max_steps": 10000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 27,
+        "imported": 27,
+        "import_max_step": 15,
+        "import_min": 1.481919,
+        "import_max": 15.498699,
+        "import_mean": 4.790476851851852,
+        "import_p50": 2.86,
+        "import_p75": 7.535,
+        "import_p90": 9.417,
+        "import_p99": 15.498,
+        "import_std_dev": 3.7157411135098117
+    },
+    "target": null,
+    "diff": null
+}

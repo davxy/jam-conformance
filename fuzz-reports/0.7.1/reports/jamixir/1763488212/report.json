@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "ddd",
+        "max_steps": 10000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 189,
+        "imported": 176,
+        "import_max_step": 85,
+        "import_min": 1.366358,
+        "import_max": 157.394583,
+        "import_mean": 7.8637788011363705,
+        "import_p50": 4.043,
+        "import_p75": 5.994,
+        "import_p90": 8.058,
+        "import_p99": 148.905,
+        "import_std_dev": 21.462370244215645
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 2,
+                "patch": 6
+            },
+            "app_name": "Jamixir"
+        },
+        "stats": {
+            "steps": 189,
+            "imported": 176,
+            "import_max_step": 71,
+            "import_min": 3.55512,
+            "import_max": 108.120531,
+            "import_mean": 17.85855047727274,
+            "import_p50": 13.348,
+            "import_p75": 22.356,
+            "import_p90": 31.799,
+            "import_p99": 73.715,
+            "import_std_dev": 14.510581046956462
+        }
+    },
+    "diff": {
+        "state": {
+            "roots": {
+                "exp": "0xb458d21016ebf6db3e88e80aa3b20c783ce614d8e32d8d935a33d0bb51c67b81",
+                "got": "0xbb6d2df0315d583cf2819e96593ae40caadfafea503df2c07075b657450ea17b"
+            },
+            "keyvals": [
+                {
+                    "key": "0x9fd75a45fab75cfec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x44b0533a085456ad",
+                        "got": "0xb9b678f6026f63c0"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "ddd",
+        "max_steps": 10000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 1
+    },
+    "stats": {
+        "steps": 128,
+        "imported": 87,
+        "import_max_step": 92,
+        "import_min": 1.441271,
+        "import_max": 160.03112,
+        "import_mean": 9.833118183908041,
+        "import_p50": 4.709,
+        "import_p75": 6.871,
+        "import_p90": 8.943,
+        "import_p99": 159.53,
+        "import_std_dev": 27.94401786653167
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 18
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 128,
+            "imported": 87,
+            "import_max_step": 77,
+            "import_min": 0.69526,
+            "import_max": 122.341809,
+            "import_mean": 9.217414379310345,
+            "import_p50": 4.194,
+            "import_p75": 6.546,
+            "import_p90": 11.405,
+            "import_p99": 121.165,
+            "import_std_dev": 21.608721640671135
+        }
+    },
+    "diff": {
+        "state": {
+            "roots": {
+                "exp": "0x63bee2e357710556fb4ca274ceff7aa94bab82fd1b6de47aca3e80b54cc9a5f7",
+                "got": "0xacbe324c4a3a27944e602bd6bc4845dd7b68e440fa73a69a0b67436e3ad90b6d"
+            },
+            "keyvals": [
+                {
+                    "key": "0x77d7604502b7a7fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x1a21324bf7ef13f1",
+                        "got": "0x3bef22f2c8697dca"
+                    }
+                }
+            ]
+        }
+    }
+}

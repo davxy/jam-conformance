@@ -531,6 +531,8 @@ def generate_report(report_depth, report_prune):
     parent_root = None
     head_ancestry_depth = 0
 
+    parent_hash = ""
+
     tmp_file_obj = tempfile.NamedTemporaryFile(mode="w+b", delete=False)
     tmp_file = tmp_file_obj.name
     tmp_file_obj.close()
@@ -563,29 +565,20 @@ def generate_report(report_depth, report_prune):
                 except Exception as e:
                     print(f"Error loading JSON from {tmp_file}: {e}")
                     continue
-            pre_root = data.get("pre_state", {}).get("state_root", "")
+
+            curr_parent_hash = data.get("block", {}).get("header", "{}").get("parent", "")
 
             # For the first file, initialize parent_root
-            if parent_root is None:
-                parent_root = pre_root
-                head_ancestry_depth = 1
-            else:
-                if report_prune and pre_root == parent_root:
+            if curr_parent_hash == parent_hash:
+                if report_prune:
                     print(f"Skipping sibling {f}")
                     continue
+            else:
+                head_ancestry_depth += 1
+                parent_hash = curr_parent_hash
 
-                with open(tmp_file, "r") as json_file:
-                    data = json.load(json_file)
-                post_root = data.get("post_state", {}).get("state_root", "")
-
-                # TODO: maybe it is better to include the file anyway as it may be a mutation with a different parent root
-                if post_root != parent_root:
-                    print(f"  Skipping file {f} (bad root)")
-                    continue
-
-                if pre_root != parent_root:
-                    head_ancestry_depth += 1
-                    parent_root = pre_root
+            with open(tmp_file, "r") as json_file:
+                data = json.load(json_file)
 
         output_file = os.path.join(SESSION_REPORT_DIR, f"{f[:-4]}.json")
         shutil.copy(tmp_file, output_file)
