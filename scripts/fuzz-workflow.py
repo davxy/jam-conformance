@@ -786,7 +786,8 @@ def run_trace_workflow(args, target):
     print("")
     print("===================================================")
     print("Summary of results:")
-    for target in results:
+    for i, target in enumerate(results):
+        print("---------------------------------------------------")
         for r in results[target]:
             print(f"{target.ljust(max_len_target)}:{r}")
     print("===================================================")
