@@ -528,9 +528,7 @@ def generate_report(report_depth, report_prune):
     if "genesis.bin" in os.listdir(SESSION_TRACES_DIR):
         step_files.append("genesis.bin")
 
-    parent_root = None
     head_ancestry_depth = 0
-
     parent_hash = ""
 
     tmp_file_obj = tempfile.NamedTemporaryFile(mode="w+b", delete=False)
