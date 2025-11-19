@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "ddd",
-        "max_steps": 10000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 1
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 117,
-        "imported": 79,
-        "import_max_step": 92,
-        "import_min": 1.4364320000000002,
-        "import_max": 163.102001,
-        "import_mean": 10.502443506329115,
-        "import_p50": 4.822,
-        "import_p75": 6.944,
-        "import_p90": 9.456,
-        "import_p99": 160.724,
-        "import_std_dev": 29.69867711206124
+        "steps": 2,
+        "imported": 2,
+        "import_max_step": 1,
+        "import_min": 5.538787,
+        "import_max": 6.036089,
+        "import_mean": 5.787438,
+        "import_p50": 6.036,
+        "import_p75": 6.036,
+        "import_p90": 6.036,
+        "import_p99": 6.036,
+        "import_std_dev": 0.3516456164976321
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "PyJAMaz"
         },
         "stats": {
-            "steps": 117,
-            "imported": 79,
-            "import_max_step": 5,
-            "import_min": 8.854358,
-            "import_max": 1062.0975740000001,
-            "import_mean": 157.04505660759492,
-            "import_p50": 127.223,
-            "import_p75": 250.609,
-            "import_p90": 349.411,
-            "import_p99": 648.855,
-            "import_std_dev": 174.114553904089
+            "steps": 2,
+            "imported": 2,
+            "import_max_step": 1,
+            "import_min": 121.437927,
+            "import_max": 1055.035632,
+            "import_mean": 588.2367795,
+            "import_p50": 1055.035,
+            "import_p75": 1055.035,
+            "import_p90": 1055.035,
+            "import_p99": 1055.035,
+            "import_std_dev": 660.153268105698
         }
     },
     "diff": {

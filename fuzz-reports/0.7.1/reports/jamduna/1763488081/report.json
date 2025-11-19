@@ -1,28 +1,28 @@
 {
     "config": {
-        "seed": "ddd",
-        "max_steps": 10000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 3
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
         "steps": 3,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 1.541133,
-        "import_max": 1.541133,
-        "import_mean": 1.541133,
-        "import_p50": 1.541133,
+        "import_min": 1.6526290000000001,
+        "import_max": 1.6526290000000001,
+        "import_mean": 1.6526290000000001,
+        "import_p50": 1.6526290000000001,
         "import_p75": 0.0,
-        "import_p90": 1.541133,
+        "import_p90": 1.6526290000000001,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -46,12 +46,12 @@
             "steps": 3,
             "imported": 1,
             "import_max_step": 3,
-            "import_min": 55.819344,
-            "import_max": 55.819344,
-            "import_mean": 55.819344,
-            "import_p50": 55.819344,
+            "import_min": 51.723293,
+            "import_max": 51.723293,
+            "import_mean": 51.723293,
+            "import_p50": 51.723293,
             "import_p75": 0.0,
-            "import_p90": 55.819344,
+            "import_p90": 51.723293,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "ddd",
-        "max_steps": 10000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 1
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 950,
-        "imported": 643,
-        "import_max_step": 85,
-        "import_min": 1.408028,
-        "import_max": 164.209213,
-        "import_mean": 6.381993346811822,
-        "import_p50": 4.581,
-        "import_p75": 6.353,
-        "import_p90": 8.429,
-        "import_p99": 91.789,
-        "import_std_dev": 14.40642523483718
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 11.231746000000001,
+        "import_max": 11.231746000000001,
+        "import_mean": 11.231746000000001,
+        "import_p50": 11.231746000000001,
+        "import_p75": 0.0,
+        "import_p90": 11.231746000000001,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "tsjam-0.7.1-tiny-0303d13f"
         },
         "stats": {
-            "steps": 950,
-            "imported": 643,
-            "import_max_step": 660,
-            "import_min": 7.198188,
-            "import_max": 817.423809,
-            "import_mean": 105.12865442301717,
-            "import_p50": 74.598,
-            "import_p75": 151.376,
-            "import_p90": 234.26,
-            "import_p99": 606.764,
-            "import_std_dev": 117.03014455199417
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 323.870746,
+            "import_max": 323.870746,
+            "import_mean": 323.870746,
+            "import_p50": 323.870746,
+            "import_p75": 0.0,
+            "import_p90": 323.870746,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "diff": {
