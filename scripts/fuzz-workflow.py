@@ -310,8 +310,6 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
         SEED,
         "--trace-dir",
         trace_dir,
-        "--single-step",
-        "false",
         "--target-sock",
         SESSION_TARGET_SOCK,
         "--verbosity",
@@ -652,9 +650,7 @@ def run_local_workflow(args, target):
 
 def run_trace_workflow(args, target):
     if args.skip_report:
-        print(
-            "Warning: Ignoring flag to skip report generation. This is not allowed in trace mode."
-        )
+        print("Warning: Ignoring flag to skip report generation.")
 
     source_traces_dir = os.path.join(
         JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION, "traces"
@@ -668,42 +664,25 @@ def run_trace_workflow(args, target):
     make_dir(SESSION_LOGS_DIR)
     make_dir(SESSION_FAILED_TRACES_DIR)
 
-    results = {}
-    max_len_target = max(len(t) for t in targets)
+    print("")
+    print("==================================================")
+    print(f"Running fuzzer trace workflow for {target}")
+    print("==================================================")
 
-    for each_target in targets:
-        # Trim any whitespace there may be
-        each_target = each_target.strip()
+    # List the traces in our source directory
+    trace_dirs = [
+        d
+        for d in os.listdir(source_traces_dir)
+        if os.path.isdir(os.path.join(source_traces_dir, d)) and is_timestamp(d)
+    ]
 
-        print("")
-        print("==================================================")
-        print(f"Running fuzzer trace workflow for {each_target}")
-        print("==================================================")
-
-        if not args.skip_run:
-            # List the traces in our source directory
-            trace_dirs = [
-                d
-                for d in os.listdir(source_traces_dir)
-                if os.path.isdir(os.path.join(source_traces_dir, d)) and is_timestamp(d)
-            ]
-
-            target_results = run_trace_for_target(
-                each_target, trace_dirs, source_traces_dir, args
-            )
-
-            results[each_target] = target_results
-
-        else:
-            print(f"Skipping running target and fuzzer: {each_target}")
+    results = run_trace_for_target(target, trace_dirs, source_traces_dir, args)
 
     print("")
     print("===================================================")
     print("Summary of results:")
-    for i, target in enumerate(results):
-        print("---------------------------------------------------")
-        for r in results[target]:
-            print(f"{target.ljust(max_len_target)}:{r}")
+    for r in results:
+        print(f"{target}: {r}")
     print("===================================================")
     print("")
 
@@ -711,7 +690,7 @@ def run_trace_workflow(args, target):
     # for an earlier session. That means we may have reports on file ready to publish,
     # even if we did not run the fuzzing process in this execution.
     if args.report_publish:
-        print("* Publishing reports to jam-conformance")
+        print("* Publishing report to jam-conformance")
         # Overwrite the previous report if any. This always keeps the last example
         # of a target failing a particular trace.
         shutil.copytree(
@@ -968,7 +947,7 @@ def main():
         if mode == "local":
             run_local_workflow(args, target)
         elif mode == "trace":
-            run_trace_workflow(args, targets)
+            run_trace_workflow(args, target)
     else:
         print("Skipping run")
 
