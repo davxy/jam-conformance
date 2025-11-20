@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 21,
+        "imported": 11,
+        "import_max_step": 10,
+        "import_min": 1.369993,
+        "import_max": 13.817417,
+        "import_mean": 4.572805636363636,
+        "import_p50": 2.989,
+        "import_p75": 6.753,
+        "import_p90": 7.456,
+        "import_p99": 13.817,
+        "import_std_dev": 3.7530445306179163
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 34
+            },
+            "app_name": "PyJAMaz"
+        },
+        "stats": {
+            "steps": 21,
+            "imported": 10,
+            "import_max_step": 10,
+            "import_min": 10.184267,
+            "import_max": 985.894935,
+            "import_mean": 139.28262730000003,
+            "import_p50": 66.428,
+            "import_p75": 77.851,
+            "import_p90": 130.391,
+            "import_p99": 985.894,
+            "import_std_dev": 300.19390807266376
+        }
+    },
+    "diff": {
+        "result": {
+            "exp": "ok",
+            "got": "ServicesErrorCode.preimage_unneeded"
+        }
+    }
+}

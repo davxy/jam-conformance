@@ -522,6 +522,7 @@ def run_docker_image(target: str) -> None:
     def cleanup_docker():
         print(f"Cleaning up Docker container {target}...")
         subprocess.run(["docker", "kill", target], capture_output=True)
+        subprocess.run(["docker", "rm", "-f", target], capture_output=True)
         try:
             os.unlink(TARGET_SOCK)
         except FileNotFoundError:
@@ -533,6 +534,10 @@ def run_docker_image(target: str) -> None:
 
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
+
+    # Pre-flight cleanup: remove any existing container with the same name
+    print(f"Ensuring no leftover container with name {target}...")
+    subprocess.run(["docker", "rm", "-f", target], capture_output=True)
 
     docker_cmd = [
         "docker",

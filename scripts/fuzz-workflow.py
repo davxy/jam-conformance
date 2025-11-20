@@ -246,6 +246,7 @@ def get_target(target):
     ]
     target_process = subprocess.Popen(
         target_command,
+        stdin=subprocess.DEVNULL,
         stderr=subprocess.STDOUT,
         text=True,
         env=env,
@@ -403,7 +404,7 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
 def wait_for_target_sock(target_process):
     # Detect if we terminated with an error and exit immediately if so
     # Wait up to 10 seconds for TARGET_SOCK to be created
-    socket_wait_timeout = 10
+    socket_wait_timeout = 20
     socket_wait_start = time.time()
     while not os.path.exists(TARGET_SOCK):
         if target_process.poll() is not None:
@@ -441,6 +442,7 @@ def run_target(target, log_file):
         env["TARGETS_DIR"] = TARGETS_DIR
         target_process = subprocess.Popen(
             target_command,
+            stdin=subprocess.DEVNULL,
             stdout=target_log,
             stderr=subprocess.STDOUT,
             text=True,
@@ -526,8 +528,8 @@ def generate_report(report_depth, report_prune):
     if "genesis.bin" in os.listdir(SESSION_TRACES_DIR):
         step_files.append("genesis.bin")
 
-    parent_root = None
     head_ancestry_depth = 0
+    parent_hash = ""
 
     tmp_file_obj = tempfile.NamedTemporaryFile(mode="w+b", delete=False)
     tmp_file = tmp_file_obj.name
@@ -561,29 +563,20 @@ def generate_report(report_depth, report_prune):
                 except Exception as e:
                     print(f"Error loading JSON from {tmp_file}: {e}")
                     continue
-            pre_root = data.get("pre_state", {}).get("state_root", "")
+
+            curr_parent_hash = data.get("block", {}).get("header", "{}").get("parent", "")
 
             # For the first file, initialize parent_root
-            if parent_root is None:
-                parent_root = pre_root
-                head_ancestry_depth = 1
-            else:
-                if report_prune and pre_root == parent_root:
+            if curr_parent_hash == parent_hash:
+                if report_prune:
                     print(f"Skipping sibling {f}")
                     continue
+            else:
+                head_ancestry_depth += 1
+                parent_hash = curr_parent_hash
 
-                with open(tmp_file, "r") as json_file:
-                    data = json.load(json_file)
-                post_root = data.get("post_state", {}).get("state_root", "")
-
-                # TODO: maybe it is better to include the file anyway as it may be a mutation with a different parent root
-                if post_root != parent_root:
-                    print(f"  Skipping file {f} (bad root)")
-                    continue
-
-                if pre_root != parent_root:
-                    head_ancestry_depth += 1
-                    parent_root = pre_root
+            with open(tmp_file, "r") as json_file:
+                data = json.load(json_file)
 
         output_file = os.path.join(SESSION_REPORT_DIR, f"{f[:-4]}.json")
         shutil.copy(tmp_file, output_file)
@@ -784,7 +777,8 @@ def run_trace_workflow(args, target):
     print("")
     print("===================================================")
     print("Summary of results:")
-    for target in results:
+    for i, target in enumerate(results):
+        print("---------------------------------------------------")
         for r in results[target]:
             print(f"{target.ljust(max_len_target)}:{r}")
     print("===================================================")
@@ -887,8 +881,8 @@ def is_timestamp(s):
 
 
 def is_step_file(f):
-    """Check if a file is a step file (8-digit .bin)"""
-    return re.match(r"^\d{8}\.bin$", f)
+    """Check if a file is a step file (8-digit .bin) or is genesis.bin"""
+    return re.match(r"^\d{8}\.bin$", f) or f == "genesis.bin"
 
 
 def main():

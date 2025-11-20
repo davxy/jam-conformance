@@ -17,12 +17,12 @@
         "steps": 3,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 40.264301,
-        "import_max": 40.264301,
-        "import_mean": 40.264301,
-        "import_p50": 40.264301,
+        "import_min": 40.961422999999996,
+        "import_max": 40.961422999999996,
+        "import_mean": 40.961422999999996,
+        "import_p50": 40.961422999999996,
         "import_p75": 0.0,
-        "import_p90": 40.264301,
+        "import_p90": 40.961422999999996,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 0,
-                "patch": 14
+                "patch": 15
             },
             "app_name": "spacejam"
         },
@@ -46,12 +46,12 @@
             "steps": 3,
             "imported": 1,
             "import_max_step": 3,
-            "import_min": 17.818503,
-            "import_max": 17.818503,
-            "import_mean": 17.818503,
-            "import_p50": 17.818503,
+            "import_min": 17.495249,
+            "import_max": 17.495249,
+            "import_mean": 17.495249,
+            "import_p50": 17.495249,
             "import_p75": 0.0,
-            "import_p90": 17.818503,
+            "import_p90": 17.495249,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

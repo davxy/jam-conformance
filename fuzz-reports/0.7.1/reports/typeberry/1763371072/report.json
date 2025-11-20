@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 10.092622,
+        "import_max": 10.092622,
+        "import_mean": 10.092622,
+        "import_p50": 10.092622,
+        "import_p75": 0.0,
+        "import_p90": 10.092622,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 4,
+                "patch": 0
+            },
+            "app_name": "@typeberry/jam"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 116.95396299999999,
+            "import_max": 116.95396299999999,
+            "import_mean": 116.95396299999999,
+            "import_p50": 116.95396299999999,
+            "import_p75": 0.0,
+            "import_p90": 116.95396299999999,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "diff": {
+        "state": {
+            "roots": {
+                "exp": "0x4921c1cefe4d94453e08c770a2412f84810b4dab117b995eb00d0dcd5eff17c3",
+                "got": "0x20ee922a162988c135d7ba3d5a82b9d2ba46a7e2948a78fb2f21382fe7a13f4e"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x000000000000000000000000000000000000000000",
+                        "got": "0x000000000000000000000000a1b7686e0000000000"
+                    }
+                }
+            ]
+        }
+    }
+}
