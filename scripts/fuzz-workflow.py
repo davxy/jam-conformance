@@ -879,11 +879,12 @@ def run_targets_recursively(targets, parallel=False, rand_seed=False):
         session_id = f"{int(time.time())}_{random.randint(1000, 9999)}"
         target_env = env.copy()
         target_env["JAM_FUZZ_SESSION_ID"] = session_id
+        target_env["JAM_FUZZ_VERBOSITY"] = "0"
 
         if rand_seed:
-            env["JAM_FUZZ_SEED"] = session_id
+            target_env["JAM_FUZZ_SEED"] = session_id
         else:
-            env["JAM_FUZZ_SEED"] = SEED
+            target_env["JAM_FUZZ_SEED"] = SEED
 
         cmd = [sys.executable, os.path.abspath(__file__), "-t", target] + base_args
         print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
@@ -895,17 +896,17 @@ def run_targets_recursively(targets, parallel=False, rand_seed=False):
             proc.wait()
 
     # Collect results (in parallel mode, this waits for all; in sequential mode, processes already completed)
-    results = {}
+    results = []
     for target, proc, session_id in processes:
         retcode = proc.wait()  # Returns immediately if already completed
-        results[target] = "Success" if retcode == 0 else f"Failed (exit {retcode})"
-        results[target] += f" (sid={session_id})"
+        result_string = "Success" if retcode == 0 else f"Failed (exit {retcode})"
+        results.append((target, session_id, result_string))
 
     # Print summary
     print("\n" + "="*50)
     print("Summary:")
-    for target, result in results.items():
-        print(f"  {target}: {result}")
+    for target, session_id, result in results:
+        print(f"  {target}: {result} (sid={session_id})")
     print("="*50)
     
 
