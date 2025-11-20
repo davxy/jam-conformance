@@ -14,8 +14,10 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
 
+DEFAULT_SOCK = "/tmp/jam_target.sock"
+
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
-TARGET_SOCK = os.environ.get("DEFAULT_SOCK", "/tmp/jam_target.sock")
+TARGET_SOCK = os.environ.get("TARGET_SOCK", DEFAULT_SOCK)
 
 # Used to run binaries when target is not provided as a docker image
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"

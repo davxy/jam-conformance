@@ -19,9 +19,11 @@
 
 import json
 import os
+import random
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -31,17 +33,6 @@ from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
 from platformdirs import user_cache_dir
 
 GP_VERSION = "0.7.1"
-
-# Detect if jam-conformance repo is defined, and quit with appropriate message if not
-if not os.environ.get("POLKAJAM_FUZZ_DIR"):
-    print("Error: POLKAJAM_FUZZ_DIR is not defined.")
-    exit(1)
-POLKAJAM_FUZZ_DIR = os.environ["POLKAJAM_FUZZ_DIR"]
-if not os.path.isdir(POLKAJAM_FUZZ_DIR):
-    print(
-        f"Error: POLKAJAM_FUZZ_DIR '{POLKAJAM_FUZZ_DIR}' is not a valid directory."
-    )
-    exit(1)
 
 CURRENT_DIR = os.getcwd()
 
@@ -58,12 +49,13 @@ os.makedirs(TARGETS_DIR, exist_ok=True)
 
 # Sessions run artifacts
 SESSIONS_DIR = os.environ.get("SESSIONS_DIR", f"{CURRENT_DIR}/sessions")
+
 # Fuzzing session id, defaults to unix timestamp
 SESSION_ID = os.environ.get("JAM_FUZZ_SESSION_ID", str(int(time.time())))
 # Session dir
 SESSION_DIR = os.path.join(SESSIONS_DIR, SESSION_ID)
 # The directory where we store the traces for one fuzzer session
-SESSION_TRACES_DIR = os.path.join(SESSION_DIR, "traces")
+SESSION_TRACE_DIR = os.path.join(SESSION_DIR, "trace")
 # The directory where we store generated report for one fuzzer session
 SESSION_REPORT_DIR = os.path.join(SESSION_DIR, "report")
 # The directory where we store generated logs for one fuzzer session
@@ -71,12 +63,12 @@ SESSION_LOGS_DIR = os.path.join(SESSION_DIR, "logs")
 # The directory where failed traces are stored
 SESSION_FAILED_TRACES_DIR = os.path.join(SESSION_DIR, "failed_traces_reports")
 
-# Target unix domain socket, default to /tmp/jam_target.sock
-TARGET_SOCK = os.environ.get("JAM_FUZZ_TARGET_SOCK", "/tmp/jam_target.sock")
+# Target unix domain socket
+SESSION_TARGET_SOCK = os.environ.get("JAM_FUZZ_TARGET_SOCK", f"/tmp/jam_fuzz_{SESSION_ID}.sock")
 
 # Global environment variables that affect the fuzzer.
 SEED = os.environ.get("JAM_FUZZ_SEED", "42")
-MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "10000")
+MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
 STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
 MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
 SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
@@ -99,10 +91,10 @@ def parse_command_line_args():
     parser = argparse.ArgumentParser(description="Fuzzing workflow script")
     parser.add_argument(
         "-t",
-        "--target",
+        "--targets",
         type=str,
         required=True,
-        help="Target to fuzz. Can be 'all' if source==trace",
+        help="Comma separated list of targets to fuzz.",
     )
     parser.add_argument(
         "-p", "--profile", type=str, default="fuzzy", help="Fuzzing profile to use"
@@ -206,76 +198,68 @@ def parse_command_line_args():
         help='In trace mode, ignore these traces. Specified as a list of ids, without spaces, e.g. "1234567890,1234567891"',
     )
 
+    parser.add_argument(
+        "--parallel",
+        action="store_true",
+        help="Run multiple targets in parallel by launching separate processes",
+    )
+
+    parser.add_argument(
+        "--rand-seed",
+        action="store_true",
+        help="Use a random fuzzer seed",
+    )
+
     args = parser.parse_args()
     return args
 
 
+def polkajam_fuzz_dir():
+    # Detect if jam-conformance repo is defined, and quit with appropriate message if not
+    if not os.environ.get("POLKAJAM_FUZZ_DIR"):
+        print("Error: POLKAJAM_FUZZ_DIR is not defined.")
+        exit(1)
+    polkajam_fuzz_dir = os.environ["POLKAJAM_FUZZ_DIR"]
+    if not os.path.isdir(polkajam_fuzz_dir):
+        print(f"Error: POLKAJAM_FUZZ_DIR '{polkajam_fuzz_dir}' is not a valid directory.")
+        exit(1)
+    return polkajam_fuzz_dir
+
 def build_fuzzer():
-    cargo_cmd = ["cargo", "build", "--release"]
-    return subprocess.run(cargo_cmd, cwd=POLKAJAM_FUZZ_DIR, check=False, text=True)
+    cargo_cmd = ["cargo", "build", "--release", "-p", "polkajam-fuzz"]
+    return subprocess.run(cargo_cmd, cwd=polkajam_fuzz_dir(), check=False, text=True)
 
+def fuzzer_run(args, log_file):
+    cargo_cmd = ["cargo", "run", "--release", "-p", "polkajam-fuzz", "--"] + args
 
-def get_target_list():
-    """Get the list of available targets"""
-    list_targets = subprocess.run(
-        [
-            os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
-            "list",
-        ],
-        capture_output=True,
+    print(f"Running cargo command: {' '.join(cargo_cmd)}")
+    # Run the command and redirect output to a log file
+    print(f"Fuzzer output will be written to: {log_file}")
+
+    log = open(log_file, "w")
+    return subprocess.run(
+        cargo_cmd,
+        cwd=polkajam_fuzz_dir(),
+        check=False,
         text=True,
-    )
-    if list_targets.returncode != 0:
-        print(f"Error: Unable to list targets: {list_targets}")
-        return []
-    targets = list_targets.stdout.splitlines()
-    # Remove first line, because target.py returns parameter info here.
-    return targets[1:]
-
-
-def get_target(target):
-    """Download the target if needed"""
-    print(f"* Downloading target: {target}")
-    env = os.environ.copy()
-    env["TARGETS_DIR"] = TARGETS_DIR
-
-    target_command = [
-        os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
-        "get",
-        target,
-    ]
-    target_process = subprocess.Popen(
-        target_command,
-        stdin=subprocess.DEVNULL,
+        stdout=log,
         stderr=subprocess.STDOUT,
-        text=True,
-        env=env,
     )
-    retcode = target_process.wait()
 
-    # Detect if we terminated with an error so we can exit or continue at top level if needed.
-    if retcode != 0:
-        print(f"Error: Unable to download target: {target}.")
-        return False
-    return True
+
 
 
 def run_fuzzer_local_mode(args, log_file):
     """
-    Run `cargo polkajam-fuzz` with the provided arguments.
-
-    Returns:
-        The completed process object with return code, stdout, stderr
+    Run `polkajam-fuzz` with local source with the provided arguments.
     """
 
-    # Build cargo command with all parameters
-    cargo_cmd = [
-        "cargo",
-        "run",
-        "--release",
-        "-p",
-        "polkajam-fuzz",
-        "--",
+    if args.rand_seed:
+        seed = format(random.randint(0, 2**64 - 1), 'x')
+    else:
+        seed = SEED
+
+    fuzzer_args = [
         "--source",
         args.source,
         "--max-steps",
@@ -285,7 +269,7 @@ def run_fuzzer_local_mode(args, log_file):
         "--safrole",
         SAFROLE,
         "--seed",
-        SEED,
+        seed,
         "--max-work-items",
         MAX_WORK_ITEMS,
         "--single-step",
@@ -295,9 +279,9 @@ def run_fuzzer_local_mode(args, log_file):
         "--fuzzy-profile",
         args.fuzzy_profile,
         "--trace-dir",
-        SESSION_TRACES_DIR,
+        SESSION_TRACE_DIR,
         "--target-sock",
-        TARGET_SOCK,
+        SESSION_TARGET_SOCK,
         "--mutation-ratio",
         str(args.mutation_ratio),
         "--max-mutations",
@@ -307,21 +291,7 @@ def run_fuzzer_local_mode(args, log_file):
         "--pvm-interpreter-backend",
     ]
 
-    print(f"Running cargo command: {' '.join(cargo_cmd)}")
-
-    # Run the command and redirect output to a log file
-    print(f"Fuzzer output will be written to: {log_file}")
-
-    with open(log_file, "w") as log:
-        result = subprocess.run(
-            cargo_cmd,
-            cwd=POLKAJAM_FUZZ_DIR,
-            check=False,
-            text=True,
-            stdout=log,
-            stderr=subprocess.STDOUT,  # Merge stderr into stdout
-        )
-
+    result = fuzzer_run(fuzzer_args, log_file)
     if result.returncode == 0:
         print("Fuzzer completed successfully.")
     else:
@@ -331,20 +301,9 @@ def run_fuzzer_local_mode(args, log_file):
 
 def run_fuzzer_trace_mode(target, trace_dir, log_file):
     """
-    Run `cargo polkajam-fuzz` with the provided arguments.
-
-    Returns:
-        The completed process object with return code, stdout, stderr
+    Run `cargo polkajam-fuzz` with 'trace' source.
     """
-
-    # Build cargo command with all parameters
-    cargo_cmd = [
-        "cargo",
-        "run",
-        "--release",
-        "-p",
-        "polkajam-fuzz",
-        "--",
+    fuzzer_args = [
         "--source",
         "trace",
         "--seed",
@@ -354,29 +313,17 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
         "--single-step",
         "false",
         "--target-sock",
-        TARGET_SOCK,
+        SESSION_TARGET_SOCK,
         "--verbosity",
         VERBOSITY,
         "--pvm-interpreter-backend",
         "--trace-traces",
     ]
 
-    print(f"Running cargo command: {' '.join(cargo_cmd)}")
-
-    # Run the command and redirect output to a log file
-    print(f"Fuzzer output will be written to: {log_file}")
     fuzzer_temp_folder = f"{trace_dir}_new"
     print(f"Using temporary directory in {fuzzer_temp_folder}")
 
-    with open(log_file, "w") as log:
-        result = subprocess.run(
-            cargo_cmd,
-            cwd=POLKAJAM_FUZZ_DIR,
-            check=False,
-            text=True,
-            stdout=log,
-            stderr=subprocess.STDOUT,  # Merge stderr into stdout
-        )
+    result = fuzzer_run(fuzzer_args, log_file)
 
     report_missing = False
     if result.returncode == 0:
@@ -406,13 +353,13 @@ def wait_for_target_sock(target_process):
     # Wait up to 10 seconds for TARGET_SOCK to be created
     socket_wait_timeout = 20
     socket_wait_start = time.time()
-    while not os.path.exists(TARGET_SOCK):
+    while not os.path.exists(SESSION_TARGET_SOCK):
         if target_process.poll() is not None:
             print("Error: Target process terminated before creating socket.")
             exit(1)
         if time.time() - socket_wait_start > socket_wait_timeout:
             print(
-                f"Error: Target socket {TARGET_SOCK} was not created within {socket_wait_timeout} seconds."
+                f"Error: Target socket {SESSION_TARGET_SOCK} was not created within {socket_wait_timeout} seconds."
             )
             exit(1)
         time.sleep(0.1)
@@ -422,9 +369,9 @@ def run_target(target, log_file):
     """Run the target"""
     print(f"* Running target: {target}")
 
-    if os.path.exists(TARGET_SOCK):
-        os.remove(TARGET_SOCK)
-        print(f"Removed existing socket: {TARGET_SOCK}")
+    if os.path.exists(SESSION_TARGET_SOCK):
+        os.remove(SESSION_TARGET_SOCK)
+        print(f"Removed existing socket: {SESSION_TARGET_SOCK}")
 
     target_command = [
         os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
@@ -440,6 +387,7 @@ def run_target(target, log_file):
         # Set up environment variables for the subprocess
         env = os.environ.copy()
         env["TARGETS_DIR"] = TARGETS_DIR
+        env["TARGET_SOCK"] = SESSION_TARGET_SOCK
         target_process = subprocess.Popen(
             target_command,
             stdin=subprocess.DEVNULL,
@@ -453,7 +401,7 @@ def run_target(target, log_file):
 
     wait_for_target_sock(target_process)
 
-    print(f"Target socket {TARGET_SOCK} is ready.")
+    print(f"Target socket {SESSION_TARGET_SOCK} is ready.")
     return [target_process, target_pid if target_process else None]
 
 
@@ -507,25 +455,25 @@ def decode_file_to_json(input_file, type, output_file):
 def generate_report(report_depth, report_prune):
     """Generate a report from the traces collected"""
 
-    if not os.path.exists(SESSION_TRACES_DIR):
-        print(f"Error: Traces directory does not exist: {SESSION_TRACES_DIR}")
+    if not os.path.exists(SESSION_TRACE_DIR):
+        print(f"Error: Traces directory does not exist: {SESSION_TRACE_DIR}")
         print("You may want to run the session first")
         exit(1)
 
     print("-----------------------------------------------")
     print("Generating report from traces...")
     print(f"* Report dir: {SESSION_REPORT_DIR}")
-    print(f"* Traces dir: {SESSION_TRACES_DIR}")
+    print(f"* Traces dir: {SESSION_TRACE_DIR}")
     print(f"  - depth {report_depth}")
     print(f"  - prune {report_prune}")
     print("-----------------------------------------------")
     print("")
 
     step_files = [
-        f for f in os.listdir(SESSION_TRACES_DIR) if re.match(r"\d{8}\.bin$", f)
+        f for f in os.listdir(SESSION_TRACE_DIR) if re.match(r"\d{8}\.bin$", f)
     ]
     step_files.sort(reverse=True)
-    if "genesis.bin" in os.listdir(SESSION_TRACES_DIR):
+    if "genesis.bin" in os.listdir(SESSION_TRACE_DIR):
         step_files.append("genesis.bin")
 
     head_ancestry_depth = 0
@@ -537,7 +485,7 @@ def generate_report(report_depth, report_prune):
 
     # Traverse the files from the most recent to the oldest.
     for f in step_files:
-        input_file = os.path.join(SESSION_TRACES_DIR, f)
+        input_file = os.path.join(SESSION_TRACE_DIR, f)
         print(f"* Processing: {input_file}")
 
         shutil.copy(input_file, SESSION_REPORT_DIR)
@@ -587,7 +535,7 @@ def generate_report(report_depth, report_prune):
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
 
-    process_report_file(SESSION_TRACES_DIR, SESSION_REPORT_DIR)
+    process_report_file(SESSION_TRACE_DIR, SESSION_REPORT_DIR)
 
 
 def process_report_file(source_dir, dest_dir):
@@ -642,6 +590,7 @@ def publish_report_report(dest_base, target):
 
 
 def publish_report(target):
+    print("* Publishing report")
     if not os.path.exists(SESSION_REPORT_DIR):
         print(f"Error: Traces directory does not exist: {SESSION_REPORT_DIR}")
         print("You may want to run the session first")
@@ -656,70 +605,50 @@ def run_local_workflow(args, target):
     print("==================================================")
     print(f"Running fuzzer local workflow for {target}")
     print("==================================================")
+    print("")
 
     if target == "all":
         print("Error: Can only use target 'all' when source is 'trace'.")
         exit(1)
 
-    if not args.skip_get:
-        if not get_target(target):
-            exit(1)
-    else:
-        print(f"Skipping download for target: {target}")
+    make_dir(SESSION_TRACE_DIR, remove=True)
+    make_dir(SESSION_LOGS_DIR)
 
-    if not args.skip_run:
-        make_dir(SESSION_TRACES_DIR, remove=True)
-        make_dir(SESSION_LOGS_DIR)
-
-        target_log_file = os.path.join(SESSION_LOGS_DIR, f"target_{target}.log")
-        fuzzer_log_file = os.path.join(SESSION_LOGS_DIR, f"fuzzer_{target}.log")
-        [target_process, target_pid] = run_target(target, target_log_file)
-        if target_process is None and target_pid == -1:
-            print(f"Error: Unable to start target: {target}.")
-            exit(1)
-        try:
-            run_fuzzer_local_mode(args, fuzzer_log_file)
-            clean_up(target_process, target_pid)
-        except Exception as e:
-            print(f"Cleaning up after error in local mode {e}")
-            clean_up(target_process, target_pid)
-            dump_logs(target_log_file)
-            dump_logs(fuzzer_log_file)
-            exit(1)
-    else:
-        print(f"Skipping running target and fuzzer: {target}")
+    target_log_file = os.path.join(SESSION_LOGS_DIR, f"target_{target}.log")
+    fuzzer_log_file = os.path.join(SESSION_LOGS_DIR, f"fuzzer_{target}.log")
+    [target_process, target_pid] = run_target(target, target_log_file)
+    if target_process is None and target_pid == -1:
+        print(f"Error: Unable to start target: {target}.")
+        exit(1)
+    try:
+        run_fuzzer_local_mode(args, fuzzer_log_file)
+        clean_up(target_process, target_pid)
+    except Exception as e:
+        print(f"Cleaning up after error in local mode {e}")
+        clean_up(target_process, target_pid)
+        dump_logs(target_log_file)
+        dump_logs(fuzzer_log_file)
+        exit(1)
 
     if not args.skip_report:
         make_dir(SESSION_REPORT_DIR)
         generate_report(args.report_depth, args.report_prune)
+        if args.report_publish:
+            publish_report(target)
     else:
         print("Skipping report generation")
 
-    if args.report_publish and not args.skip_report:
-        print("* Publishing report")
-        publish_report(target)
 
     if not args.omit_log_tail and not args.skip_run:
         print("")
         print("--------------------------------------------------")
-        print(f"fuzzer_{target}.log ends in... :")
+        print(f"fuzzer_{target}.log tail")
         print("--------------------------------------------------")
         dump_logs(fuzzer_log_file, tail=50)
         print("--------------------------------------------------\n")
-
+      
 
 def run_trace_workflow(args, target):
-    # Which targets to run
-    if target == "all":
-        default_targets = get_target_list()
-        env_targets = os.environ.get("JAM_FUZZ_TARGETS", "")
-        if env_targets == "":
-            targets = default_targets
-        else:
-            targets = env_targets.split(",")
-    else:
-        targets = [target]
-
     if args.skip_report:
         print(
             "Warning: Ignoring flag to skip report generation. This is not allowed in trace mode."
@@ -748,14 +677,6 @@ def run_trace_workflow(args, target):
         print("==================================================")
         print(f"Running fuzzer trace workflow for {each_target}")
         print("==================================================")
-
-        if not args.skip_get:
-            if not get_target(each_target):
-                print(f"Error downloading target, skipping this target: {each_target}")
-                results[each_target] = ["❌ Download error"]
-                continue
-        else:
-            print(f"Skipping download for target: {each_target}")
 
         if not args.skip_run:
             # List the traces in our source directory
@@ -885,27 +806,162 @@ def is_step_file(f):
     return re.match(r"^\d{8}\.bin$", f) or f == "genesis.bin"
 
 
+def get_full_target_list():
+    """Get the list of available targets"""
+    list_targets = subprocess.run(
+        [
+            os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+            "list",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if list_targets.returncode != 0:
+        print(f"Error: Unable to list targets: {list_targets}")
+        return []
+    targets = list_targets.stdout.splitlines()
+    # Remove first line, because target.py returns parameter info here.
+    return targets[1:]
+
+def get_selected_target_list(targets):
+    """Get the list of targets selected by the user"""
+    available_targets = get_full_target_list()
+    if targets == ["all"]:
+        return available_targets
+    valid_targets = []
+    for target in targets:
+        if target in available_targets:
+            valid_targets.append(target)
+        else:
+            print(f"❌ Warning: Target '{target}' is not available and will be skipped")
+    return valid_targets
+
+
+def run_targets_recursively(targets, original_args, parallel=False):
+    """
+    Run multiple targets by launching separate script processes for each target.
+    Each target gets its own subprocess with a unique session ID.
+
+    Args:
+        targets: List of target names to run
+        original_args: Original command-line arguments
+        parallel: If True, run all targets in parallel; if False, run sequentially
+    """
+    mode = "parallel" if parallel else "sequential"
+    print(f"Running workflow for {len(targets)} targets in {mode} mode...")
+
+    # Build arguments for recursive calls
+    base_args = []
+    skip_next = False
+    for i, arg in enumerate(sys.argv[1:]):
+        if skip_next:
+            skip_next = False
+            continue
+        # Skip the targets argument as we'll replace it
+        if arg in ["-t", "--targets"]:
+            skip_next = True
+            continue
+        # Skip --parallel flag to avoid confusion in child processes
+        if arg == "--parallel":
+            continue
+        base_args.append(arg)
+
+    # Set up environment
+    env = os.environ.copy()
+    env["JAM_FUZZ_SINGLE_TARGET"] = "1"  # Prevent recursive execution
+
+    # Launch processes for all targets
+    processes = []
+    for target in targets:
+        # Generate unique session ID for each target
+        session_id = f"{int(time.time())}_{random.randint(1000, 9999)}"
+        target_env = env.copy()
+        target_env["JAM_FUZZ_SESSION_ID"] = session_id
+
+        cmd = [sys.executable, os.path.abspath(__file__), "-t", target] + base_args
+        print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
+        proc = subprocess.Popen(cmd, env=target_env)
+        processes.append((target, proc))
+
+        # In sequential mode, wait for each process to complete before launching the next
+        if not parallel:
+            proc.wait()
+
+    # Collect results (in parallel mode, this waits for all; in sequential mode, processes already completed)
+    results = {}
+    for target, proc in processes:
+        retcode = proc.wait()  # Returns immediately if already completed
+        results[target] = "Success" if retcode == 0 else f"Failed (exit {retcode})"
+
+    # Print summary
+    print("\n" + "="*50)
+    print("Summary:")
+    for target, result in results.items():
+        print(f"  {target}: {result}")
+    print("="*50)
+    
+
+def get_target(target):
+    """Download the target if needed"""
+    print(f"* Downloading target: {target}")
+    env = os.environ.copy()
+    env["TARGETS_DIR"] = TARGETS_DIR
+
+    target_command = [
+        os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+        "get",
+        target,
+    ]
+    target_process = subprocess.Popen(
+        target_command,
+        stdin=subprocess.DEVNULL,
+        stderr=subprocess.STDOUT,
+        text=True,
+        env=env,
+    )
+    retcode = target_process.wait()
+    if retcode != 0:
+        exit(retcode)
+
+
 def main():
     args = parse_command_line_args()
 
-    print(f"Setting spec: {args.spec}")
+    print(f"Setting JAM spec: {args.spec}")
     spec.set_spec(args.spec)
 
-    target = args.target
     mode = args.source
+    targets = args.targets.split(",")
+    targets = get_selected_target_list(targets)
 
-    # If we will need the fuzzer, build it now before we branch the logic.
-    if not args.skip_run:
+    # If we will need the fuzzer, build it as soon as possible.
+    # Do not attempt building on recursive calls
+    if not args.skip_run and not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
         result = build_fuzzer()
         if result.returncode != 0:
-            print(f"Error building fuzzer because: {result.returncode}")
+            print(f"Error building fuzzer: {result.returncode}")
             exit(1)
 
-    if mode == "local":
-        run_local_workflow(args, target)
+    # Handle multiple targets with recursive execution
+    # (sequential by default, parallel if --parallel flag is set)
+    if len(targets) > 1 and not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
+        run_targets_recursively(targets, args, parallel=args.parallel)
+        return
 
-    elif mode == "trace":
-        run_trace_workflow(args, target)
+    target = targets[0]
+
+    if not args.skip_get:
+        get_target(target)
+    else:
+        print("Skipping get")
+
+    if not args.skip_run:
+        if mode == "local":
+            run_local_workflow(args, target)
+        elif mode == "trace":
+            run_trace_workflow(args, targets)
+    else:
+        print("Skipping run")
 
 
 if __name__ == "__main__":
