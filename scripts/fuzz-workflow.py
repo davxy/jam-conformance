@@ -225,9 +225,11 @@ def polkajam_fuzz_dir():
         exit(1)
     return polkajam_fuzz_dir
 
+
 def build_fuzzer():
     cargo_cmd = ["cargo", "build", "--release", "-p", "polkajam-fuzz"]
     return subprocess.run(cargo_cmd, cwd=polkajam_fuzz_dir(), check=False, text=True)
+
 
 def fuzzer_run(args, log_file):
     cargo_cmd = ["cargo", "run", "--release", "-p", "polkajam-fuzz", "--"] + args
@@ -245,8 +247,6 @@ def fuzzer_run(args, log_file):
         stdout=log,
         stderr=subprocess.STDOUT,
     )
-
-
 
 
 def run_fuzzer_local_mode(args, log_file):
@@ -377,6 +377,8 @@ def run_target(target, log_file):
         os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
         "run",
         target,
+        "--container-name",
+        f"{target}-{SESSION_ID}"
     ]
     print(f"Starting target with command: {' '.join(target_command)}")
 
@@ -837,7 +839,7 @@ def get_selected_target_list(targets):
     return valid_targets
 
 
-def run_targets_recursively(targets, original_args, parallel=False):
+def run_targets_recursively(targets, parallel=False, rand_seed=False):
     """
     Run multiple targets by launching separate script processes for each target.
     Each target gets its own subprocess with a unique session ID.
@@ -848,7 +850,7 @@ def run_targets_recursively(targets, original_args, parallel=False):
         parallel: If True, run all targets in parallel; if False, run sequentially
     """
     mode = "parallel" if parallel else "sequential"
-    print(f"Running workflow for {len(targets)} targets in {mode} mode...")
+    print(f"Running workflow for {len(targets)} targets in {mode} mode...")      
 
     # Build arguments for recursive calls
     base_args = []
@@ -861,8 +863,8 @@ def run_targets_recursively(targets, original_args, parallel=False):
         if arg in ["-t", "--targets"]:
             skip_next = True
             continue
-        # Skip --parallel flag to avoid confusion in child processes
-        if arg == "--parallel":
+        # Skip --parallel and --rand-seed to avoid confusion in child processes
+        if arg == "--parallel" or arg == "--rand-seed":
             continue
         base_args.append(arg)
 
@@ -878,10 +880,15 @@ def run_targets_recursively(targets, original_args, parallel=False):
         target_env = env.copy()
         target_env["JAM_FUZZ_SESSION_ID"] = session_id
 
+        if rand_seed:
+            env["JAM_FUZZ_SEED"] = session_id
+        else:
+            env["JAM_FUZZ_SEED"] = SEED
+
         cmd = [sys.executable, os.path.abspath(__file__), "-t", target] + base_args
         print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
         proc = subprocess.Popen(cmd, env=target_env)
-        processes.append((target, proc))
+        processes.append((target, proc, session_id))
 
         # In sequential mode, wait for each process to complete before launching the next
         if not parallel:
@@ -889,9 +896,10 @@ def run_targets_recursively(targets, original_args, parallel=False):
 
     # Collect results (in parallel mode, this waits for all; in sequential mode, processes already completed)
     results = {}
-    for target, proc in processes:
+    for target, proc, session_id in processes:
         retcode = proc.wait()  # Returns immediately if already completed
         results[target] = "Success" if retcode == 0 else f"Failed (exit {retcode})"
+        results[target] += f" (sid={session_id})"
 
     # Print summary
     print("\n" + "="*50)
@@ -945,7 +953,7 @@ def main():
     # Handle multiple targets with recursive execution
     # (sequential by default, parallel if --parallel flag is set)
     if len(targets) > 1 and not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
-        run_targets_recursively(targets, args, parallel=args.parallel)
+        run_targets_recursively(targets, parallel=args.parallel, rand_seed=args.rand_seed)
         return
 
     target = targets[0]
