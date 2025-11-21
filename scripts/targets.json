@@ -64,7 +64,7 @@
   },
   "javajam": {
     "image": "ghcr.io/methodfive/javajam:latest-amd64",
-    "cmd": "fuzz {TARGET_SOCK}"
+    "cmd": "-Dskip.warmup=true fuzz {TARGET_SOCK}"
   },
   "jamzilla": {
     "repo": "ascrivener/jamzilla-conformance-releases",
