@@ -1,3 +1,8 @@
+### [21-11-25]
+
+Retire 1763371531,1763489287 for v0.7.1 and 1758819527,1758708840 for v0.7.0.
+Empty prior and/or posterior state due to a fuzzer bug.
+
 ### [17-11-25]
 
 New traces batch targeting protocol version 0.7.1 has been released.
