@@ -260,7 +260,7 @@ def get_gp_version_from_fuzzer():
                 gp_version = match.group(1)
                 print(f"Detected GP version from polkajam-fuzz: {gp_version}")
                 return gp_version
-        print(f"Warning: Could not parse GP version from polkajam-fuzz --version output")
+        print("Warning: Could not parse GP version from polkajam-fuzz --version output")
     except Exception as e:
         print(f"Warning: Failed to get GP version from polkajam-fuzz: {e}")
 
