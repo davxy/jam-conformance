@@ -32,7 +32,9 @@ from jam_types import spec
 from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
 from platformdirs import user_cache_dir
 
-GP_VERSION = "0.7.1"
+DEFAULT_GP_VERSION = "0.7.1"
+# GP_VERSION will be determined from polkajam-fuzz --version or command line
+GP_VERSION = DEFAULT_GP_VERSION
 
 CURRENT_DIR = os.getcwd()
 
@@ -215,6 +217,13 @@ def parse_command_line_args():
         help="List all available targets and exit",
     )
 
+    parser.add_argument(
+        "--gp-version",
+        type=str,
+        default=None,
+        help=f"Gray Paper version to use (default: auto-detect from polkajam-fuzz, fallback to {DEFAULT_GP_VERSION})",
+    )
+
     args = parser.parse_args()
     return args
 
@@ -229,6 +238,34 @@ def polkajam_fuzz_dir():
         print(f"Error: POLKAJAM_FUZZ_DIR '{polkajam_fuzz_dir}' is not a valid directory.")
         exit(1)
     return polkajam_fuzz_dir
+
+
+def get_gp_version_from_fuzzer():
+    """Get GP version from polkajam-fuzz --version output.
+    Expected format: 'polkajam-fuzz 0.1.26 (GP 0.7.1)'
+    Returns the GP version or DEFAULT_GP_VERSION if parsing fails."""
+    try:
+        cargo_cmd = ["cargo", "run", "--release", "-p", "polkajam-fuzz", "--", "--version"]
+        result = subprocess.run(
+            cargo_cmd,
+            cwd=polkajam_fuzz_dir(),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode == 0:
+            # Try to extract GP version from output like "polkajam-fuzz 0.1.26 (GP 0.7.1)"
+            match = re.search(r'\(GP\s+([\d.]+)\)', result.stdout)
+            if match:
+                gp_version = match.group(1)
+                print(f"Detected GP version from polkajam-fuzz: {gp_version}")
+                return gp_version
+        print(f"Warning: Could not parse GP version from polkajam-fuzz --version output")
+    except Exception as e:
+        print(f"Warning: Failed to get GP version from polkajam-fuzz: {e}")
+
+    print(f"Using default GP version: {DEFAULT_GP_VERSION}")
+    return DEFAULT_GP_VERSION
 
 
 def build_fuzzer():
@@ -793,12 +830,16 @@ def is_step_file(f):
 
 
 def get_full_target_list():
-    """Get the list of available targets"""
+    """Get the list of available targets, optionally filtered by spec version"""
+    cmd = [
+        os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+        "list",
+        "--spec",
+        GP_VERSION
+    ]
+
     list_targets = subprocess.run(
-        [
-            os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
-            "list",
-        ],
+        cmd,
         capture_output=True,
         text=True,
     )
@@ -810,7 +851,7 @@ def get_full_target_list():
     return targets[1:]
 
 def get_selected_target_list(targets):
-    """Get the list of targets selected by the user"""
+    """Get the list of targets selected by the user, filtered by GP_VERSION"""
     available_targets = get_full_target_list()
     if targets == ["all"]:
         return available_targets
@@ -918,12 +959,21 @@ def get_target(target):
 
 
 def main():
+    global GP_VERSION
     args = parse_command_line_args()
+
+    # Determine GP version: use command line if provided, otherwise detect from fuzzer
+    if args.gp_version is not None:
+        # User explicitly specified a version
+        GP_VERSION = args.gp_version
+    else:
+        # Try to detect GP version from polkajam-fuzz
+        GP_VERSION = get_gp_version_from_fuzzer()
 
     # Handle --list-targets command
     if args.list_targets:
         targets = get_full_target_list()
-        print("Available targets:")
+        print(f"Available targets for GP version {GP_VERSION}:")
         for target in targets:
             print(f"  {target}")
         return
