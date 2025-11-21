@@ -93,7 +93,6 @@ def parse_command_line_args():
         "-t",
         "--targets",
         type=str,
-        required=True,
         help="Comma separated list of targets to fuzz.",
     )
     parser.add_argument(
@@ -208,6 +207,12 @@ def parse_command_line_args():
         "--rand-seed",
         action="store_true",
         help="Use a random fuzzer seed",
+    )
+
+    parser.add_argument(
+        "--list-targets",
+        action="store_true",
+        help="List all available targets and exit",
     )
 
     args = parser.parse_args()
@@ -915,12 +920,28 @@ def get_target(target):
 def main():
     args = parse_command_line_args()
 
+    # Handle --list-targets command
+    if args.list_targets:
+        targets = get_full_target_list()
+        print("Available targets:")
+        for target in targets:
+            print(f"  {target}")
+        return
+
+    # Validate that targets are specified when not listing
+    if not args.targets:
+        print("Error: -t/--targets is required unless using --list-targets")
+        exit(1)
+
     print(f"Setting JAM spec: {args.spec}")
     spec.set_spec(args.spec)
 
     mode = args.source
     targets = args.targets.split(",")
     targets = get_selected_target_list(targets)
+    if len(targets) == 0:
+        print("No targets to run")
+        exit(0)
 
     # If we will need the fuzzer, build it as soon as possible.
     # Do not attempt building on recursive calls
