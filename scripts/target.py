@@ -50,6 +50,7 @@ class Target:
     args: Optional[str] = None
     env: Optional[str] = None
     post: Optional[str] = None
+    spec: Optional[str] = None
 
     def get_file(self, os_name: str) -> Optional[str]:
         """Get the file for the given OS."""
@@ -252,7 +253,12 @@ Use 'info all' to see available targets.
     )
 
     # List subcommand
-    subparsers.add_parser("list", help="List all available targets")
+    list_parser = subparsers.add_parser("list", help="List all available targets")
+    list_parser.add_argument(
+        "--spec",
+        type=str,
+        help="Filter targets by spec version (e.g., 0.7.0, 0.7.1)",
+    )
 
     return parser
 
@@ -659,6 +665,10 @@ def print_target_info(target: Target, os_name: str) -> None:
     print(f"\n=== {target.name.upper()} ===")
     print(f"Name: {target.name}")
 
+    # Show spec version
+    if target.spec:
+        print(f"Spec: {target.spec}")
+
     # Show OS support
     supported_oses = []
     for os_check in ["linux", "macos"]:
@@ -767,11 +777,48 @@ def handle_get_action(target: str, os_name: str) -> bool:
         return False
 
 
-def handle_list_action() -> bool:
+def handle_list_action(spec: Optional[str] = None) -> bool:
     """Handle the list action to show all available targets."""
     available_targets = get_available_targets()
-    for target in available_targets:
-        print(target)
+
+    # Filter by spec if provided
+    if spec:
+        filtered_targets = []
+        for target_name in available_targets:
+            target = get_target(target_name)
+            if target and target.spec == spec:
+                filtered_targets.append(target_name)
+        available_targets = filtered_targets
+
+        if not available_targets:
+            print(f"No targets found for spec version: {spec}")
+            return True
+
+        for target in available_targets:
+            print(target)
+    else:
+        # Group targets by spec version
+        spec_groups = {}
+        for target_name in available_targets:
+            target = get_target(target_name)
+            if target:
+                target_spec = target.spec if target.spec else "unknown"
+                if target_spec not in spec_groups:
+                    spec_groups[target_spec] = []
+                spec_groups[target_spec].append(target_name)
+
+        # Sort spec versions in descending order (most recent first)
+        sorted_specs = sorted(spec_groups.keys(), reverse=True)
+
+        # Print targets grouped by spec
+        for i, spec_version in enumerate(sorted_specs):
+            if i > 0:
+                print()  # Add blank line between groups
+            print(spec_version)
+            print("=" * len(spec_version))
+            for target in sorted(spec_groups[spec_version]):
+                print(target)
+
     return True
 
 
@@ -937,8 +984,6 @@ def main():
             print("Unsupported OS", file=sys.stderr)
             sys.exit(1)
 
-    print(f"Action: {action}, Target: {target}, OS: {os_name}")
-
     success = False
     if action == "info":
         success = handle_info_action(target, os_name)
@@ -949,7 +994,8 @@ def main():
     elif action == "clean":
         success = handle_clean_action(target)
     elif action == "list":
-        success = handle_list_action()
+        spec = getattr(args, 'spec', None)
+        success = handle_list_action(spec)
 
     if not success:
         sys.exit(1)
