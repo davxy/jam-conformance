@@ -10,12 +10,16 @@ import urllib.request
 import signal
 import time
 import argparse
+import random
+import string
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
 
+DEFAULT_SOCK = "/tmp/jam_target.sock"
+
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
-TARGET_SOCK = os.environ.get("DEFAULT_SOCK", "/tmp/jam_target.sock")
+TARGET_SOCK = os.environ.get("TARGET_SOCK", DEFAULT_SOCK)
 
 # Used to run binaries when target is not provided as a docker image
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
@@ -215,6 +219,18 @@ Use 'info all' to see available targets.
         "--no-docker",
         action="store_true",
         help="Force host usage (overrides RUN_DOCKER env var)",
+    )
+
+    run_parser.add_argument(
+        "--container-name",
+        type=str,
+        help="Specify custom Docker container name (default: auto-generated with random suffix)",
+    )
+
+    run_parser.add_argument(
+        "--docker-elevate-priority",
+        action="store_true",
+        help="Elevate Docker container priority (Linux only, requires sudo)",
     )
 
     # Info subcommand
@@ -499,7 +515,7 @@ def print_docker_image_info(image):
     print(f"Created: {created}")
 
 
-def run_docker_image(target: str) -> None:
+def run_docker_image(target: str, args=None) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
         return
@@ -509,8 +525,17 @@ def run_docker_image(target: str) -> None:
     cmd = target_obj.cmd
     env = target_obj.env
 
-    print(f"Running {target} on docker image")
-    print(f"Command: {cmd}")
+    # Use custom container name if provided, otherwise generate unique name with random suffix
+    if args and hasattr(args, 'container_name') and args.container_name:
+        container_name = args.container_name
+    else:
+        # Generate unique container name with random suffix to allow parallel instances
+        random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
+        container_name = f"{target}-{random_suffix}"
+
+    print(f"Running '{target}' on docker image")
+    print(f"Command: '{cmd}'")
+    print(f"Container: '{container_name}'")
 
     try:
         print_docker_image_info(image)
@@ -519,10 +544,11 @@ def run_docker_image(target: str) -> None:
         print(f"Please run: {sys.argv[0]} get {target}")
         sys.exit(1)
 
+
     def cleanup_docker():
-        print(f"Cleaning up Docker container {target}...")
-        subprocess.run(["docker", "kill", target], capture_output=True)
-        subprocess.run(["docker", "rm", "-f", target], capture_output=True)
+        print(f"Cleaning up Docker container {container_name}...")
+        subprocess.run(["docker", "kill", container_name], capture_output=True)
+        subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
         try:
             os.unlink(TARGET_SOCK)
         except FileNotFoundError:
@@ -536,15 +562,15 @@ def run_docker_image(target: str) -> None:
     signal.signal(signal.SIGTERM, signal_handler)
 
     # Pre-flight cleanup: remove any existing container with the same name
-    print(f"Ensuring no leftover container with name {target}...")
-    subprocess.run(["docker", "rm", "-f", target], capture_output=True)
+    print(f"Ensuring no leftover container with name {container_name}...")
+    subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
 
     docker_cmd = [
         "docker",
         "run",
         "--rm",
         "--name",
-        target,
+        container_name,
         "--init",
         "--user",
         f"{os.getuid()}:{os.getgid()}",
@@ -599,9 +625,9 @@ def run_docker_image(target: str) -> None:
         import shlex
         docker_cmd.extend(shlex.split(cmd))
 
-    # Add priority args for Linux
+    # Add priority args for Linux if requested
     current_os = get_os()
-    if current_os == "linux":
+    if current_os == "linux" and args and getattr(args, "docker_elevate_priority", False):
         priority_cmd = [
             "sudo",
             "chrt",
@@ -774,13 +800,13 @@ def handle_clean_action(target: str) -> bool:
         return True
 
 
-def handle_run_action(target: str, os_name: str) -> bool:
+def handle_run_action(target: str, os_name: str, args=None) -> bool:
     """Handle the run action for a target."""
     if is_docker_target(target):
-        run_docker_image(target)
+        run_docker_image(target, args)
         return True
     elif is_repo_target(target):
-        run_target(target, os_name)
+        run_target(target, os_name, args)
         return True
     else:
         available_targets = get_available_targets()
@@ -789,7 +815,7 @@ def handle_run_action(target: str, os_name: str) -> bool:
         return False
 
 
-def run_target(target: str, os_name: str) -> None:
+def run_target(target: str, os_name: str, args=None) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
         return
@@ -831,7 +857,7 @@ def run_target(target: str, os_name: str) -> None:
         target_obj = TARGETS[target]
         target_obj.image = DEFAULT_DOCKER_IMAGE
         target_obj.cmd = full_command
-        run_docker_image(target)
+        run_docker_image(target, args)
     else:
         cleanup_done = False
         target_pid = None
@@ -919,7 +945,7 @@ def main():
     elif action == "get":
         success = handle_get_action(target, os_name)
     elif action == "run":
-        success = handle_run_action(target, os_name)
+        success = handle_run_action(target, os_name, args)
     elif action == "clean":
         success = handle_clean_action(target)
     elif action == "list":
