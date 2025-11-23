@@ -5,7 +5,7 @@
     "cmd": "polkajam-fuzz",
     "args": "--source remote --step-period 0 --target-sock {TARGET_SOCK}",
     "env": "RUST_LOG=off",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "polkajam_int": {
     "repo": "none",
@@ -13,14 +13,14 @@
     "cmd": "polkajam-fuzz",
     "args": "--source remote --step-period 0 --target-sock {TARGET_SOCK} --pvm-interpreter-backend",
     "env": "RUST_LOG=off",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "vinwolf": {
     "repo": "bloppan/conformance_testing",
     "clone": 1,
     "file": "linux/tiny/x86_64/vinwolf-target",
     "cmd": "linux/tiny/x86_64/vinwolf-target --fuzz {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "jamzig": {
     "repo": "jamzig/conformance-releases",
@@ -34,19 +34,19 @@
       "macos": "tiny/macos/aarch64/jam_conformance_target"
     },
     "args": "--socket={TARGET_SOCK}",
-    "spec": "0.7.0"
+    "gp_version": "0.7.0"
   },
   "pyjamaz": {
     "image": "jamdottech/pyjamaz:latest",
     "cmd": "fuzzer target --db-path=/tmp/pyjamaz_fuzzer_db --socket-path={TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "jampy": {
     "repo": "dakk/jampy-releases",
     "clone": 1,
     "file": "dist/jampy-target-0.7.1_x86-64.zip",
     "cmd": "jampy-target-0.7.1_x86-64/jampy-target-0.7.1_x86-64 --socket-file {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "jamduna": {
     "repo": "jam-duna/jamtestnet",
@@ -59,7 +59,7 @@
       "macos": "duna_target_mac"
     },
     "args": "--socket {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "jamixir": {
     "repo": "jamixir/jamixir-releases",
@@ -68,12 +68,12 @@
       "macos": "jamixir_macos-arm64_0.7.1_tiny.tar.gz"
     },
     "cmd": "jamixir fuzzer --log error --socket-path {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "javajam": {
     "image": "ghcr.io/methodfive/javajam:latest-amd64",
     "cmd": "-Dskip.warmup=true fuzz {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "jamzilla": {
     "repo": "ascrivener/jamzilla-conformance-releases",
@@ -86,7 +86,7 @@
       "macos": "fuzzserver-tiny-arm64-darwin"
     },
     "args": "-socket {TARGET_SOCK}",
-    "spec": "0.7.0"
+    "gp_version": "0.7.0"
   },
   "spacejam": {
     "repo": "spacejamapp/specjam",
@@ -95,29 +95,29 @@
       "macos": "spacejam-0.7.1-macos-arm64.tar.gz"
     },
     "cmd": "spacejam fuzz target {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "tsjam": {
     "repo": "vekexasia/tsjam-releases",
     "file": "tsjam-fuzzer-target.tgz",
     "cmd": "tsjam-fuzzer-target/jam-fuzzer-target --socket {TARGET_SOCK}",
     "env": "JAM_CONSTANTS=tiny",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "boka": {
     "image": "acala/boka:latest",
     "cmd": "fuzz target --socket-path {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "turbojam": {
     "image": "r2rationality/turbojam-fuzz:latest",
     "cmd": "fuzzer-api {TARGET_SOCK}",
-    "spec": "0.7.0"
+    "gp_version": "0.7.0"
   },
   "graymatter": {
     "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",
     "cmd": "fuzz-m1-target --stay-open --listen {TARGET_SOCK}",
-    "spec": "0.7.0"
+    "gp_version": "0.7.0"
   },
   "fastroll": {
     "repo": "fastroll-jam/fastroll-releases",
@@ -130,7 +130,7 @@
       "macos": "fastroll-macos-aarch64-tiny"
     },
     "args": "fuzz --socket {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "gossamer": {
     "repo": "chainsafe/gossamer-jam-releases",
@@ -143,7 +143,7 @@
       "macos": "gossamer-jam-tiny-macos-arm64"
     },
     "args": "target --socket {TARGET_SOCK}",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
   "tessera": {
     "repo": "Chainscore/tessera-releases",
@@ -152,19 +152,19 @@
       "macos": "tessera-node-Darwin-arm64.tar.gz"
     },
     "cmd": "tessera-node --fuzzer --socket {TARGET_SOCK}",
-    "spec": "0.7.0"
+    "gp_version": "0.7.0"
   },
   "typeberry": {
     "image": "ghcr.io/fluffylabs/typeberry:latest",
     "cmd": "--version=1 fuzz-target {TARGET_SOCK}",
     "env": "JAM_LOG=log",
-    "spec": "0.7.1"
+    "gp_version": "0.7.1"
   },
     "strawberry": {
     "repo": "eigerco/strawberry",
     "file": "strawberry-linux-x86_64",
     "cmd": "strawberry-linux-x86_64",
     "args": "--socket {TARGET_SOCK}",
-    "spec": "0.7.0"
+    "gp_version": "0.7.0"
   }
 }

@@ -50,7 +50,7 @@ class Target:
     args: Optional[str] = None
     env: Optional[str] = None
     post: Optional[str] = None
-    spec: Optional[str] = None
+    gp_version: Optional[str] = None
 
     def get_file(self, os_name: str) -> Optional[str]:
         """Get the file for the given OS."""
@@ -255,9 +255,9 @@ Use 'info all' to see available targets.
     # List subcommand
     list_parser = subparsers.add_parser("list", help="List all available targets")
     list_parser.add_argument(
-        "--spec",
+        "--gp-version",
         type=str,
-        help="Filter targets by spec version (e.g., 0.7.0, 0.7.1)",
+        help="Filter targets by gp-version (e.g., 0.7.0, 0.7.1)",
     )
 
     return parser
@@ -665,9 +665,9 @@ def print_target_info(target: Target, os_name: str) -> None:
     print(f"\n=== {target.name.upper()} ===")
     print(f"Name: {target.name}")
 
-    # Show spec version
-    if target.spec:
-        print(f"Spec: {target.spec}")
+    # Show gp_version
+    if target.gp_version:
+        print(f"GP Version: {target.gp_version}")
 
     # Show OS support
     supported_oses = []
@@ -777,46 +777,46 @@ def handle_get_action(target: str, os_name: str) -> bool:
         return False
 
 
-def handle_list_action(spec: Optional[str] = None) -> bool:
+def handle_list_action(gp_version: Optional[str] = None) -> bool:
     """Handle the list action to show all available targets."""
     available_targets = get_available_targets()
 
-    # Filter by spec if provided
-    if spec:
+    # Filter by gp_version if provided
+    if gp_version:
         filtered_targets = []
         for target_name in available_targets:
             target = get_target(target_name)
-            if target and target.spec == spec:
+            if target and target.gp_version == gp_version:
                 filtered_targets.append(target_name)
         available_targets = filtered_targets
 
         if not available_targets:
-            print(f"No targets found for spec version: {spec}")
+            print(f"No targets found for gp-version: {gp_version}")
             return True
 
         for target in available_targets:
             print(target)
     else:
-        # Group targets by spec version
-        spec_groups = {}
+        # Group targets by gp_version
+        gp_version_groups = {}
         for target_name in available_targets:
             target = get_target(target_name)
             if target:
-                target_spec = target.spec if target.spec else "unknown"
-                if target_spec not in spec_groups:
-                    spec_groups[target_spec] = []
-                spec_groups[target_spec].append(target_name)
+                target_gp_version = target.gp_version if target.gp_version else "unknown"
+                if target_gp_version not in gp_version_groups:
+                    gp_version_groups[target_gp_version] = []
+                gp_version_groups[target_gp_version].append(target_name)
 
-        # Sort spec versions in descending order (most recent first)
-        sorted_specs = sorted(spec_groups.keys(), reverse=True)
+        # Sort gp versions in descending order (most recent first)
+        sorted_gp_versions = sorted(gp_version_groups.keys(), reverse=True)
 
-        # Print targets grouped by spec
-        for i, spec_version in enumerate(sorted_specs):
+        # Print targets grouped by gp_version
+        for i, gp_ver in enumerate(sorted_gp_versions):
             if i > 0:
                 print()  # Add blank line between groups
-            print(spec_version)
-            print("=" * len(spec_version))
-            for target in sorted(spec_groups[spec_version]):
+            print(gp_ver)
+            print("=" * len(gp_ver))
+            for target in sorted(gp_version_groups[gp_ver]):
                 print(target)
 
     return True
@@ -994,8 +994,8 @@ def main():
     elif action == "clean":
         success = handle_clean_action(target)
     elif action == "list":
-        spec = getattr(args, 'spec', None)
-        success = handle_list_action(spec)
+        gp_version = getattr(args, 'gp_version', None)
+        success = handle_list_action(gp_version)
 
     if not success:
         sys.exit(1)

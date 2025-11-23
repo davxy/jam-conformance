@@ -77,6 +77,8 @@ SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
 SINGLE_STEP = os.environ.get("JAM_FUZZ_SINGLE_STEP", "false")
 VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
 
+FUZZER_LOG_TAIL_LENGTH = 100
+
 
 def make_dir(path, remove=True):
     """Helper function that optionally removes directory if it exists, then creates it"""
@@ -245,11 +247,11 @@ def get_gp_version_from_fuzzer():
     Expected format: 'polkajam-fuzz 0.1.26 (GP 0.7.1)'
     Returns the GP version or DEFAULT_GP_VERSION if parsing fails."""
     try:
+        print("Getting GP version from polkajam-fuzz")
         cargo_cmd = ["cargo", "run", "--release", "-p", "polkajam-fuzz", "--", "--version"]
         result = subprocess.run(
             cargo_cmd,
             cwd=polkajam_fuzz_dir(),
-            capture_output=True,
             text=True,
             check=False,
         )
@@ -269,6 +271,7 @@ def get_gp_version_from_fuzzer():
 
 
 def build_fuzzer():
+    print("Building polkajam-fuzz binary")
     cargo_cmd = ["cargo", "build", "--release", "-p", "polkajam-fuzz"]
     return subprocess.run(cargo_cmd, cwd=polkajam_fuzz_dir(), check=False, text=True)
 
@@ -686,7 +689,7 @@ def run_local_workflow(args, target):
         print("--------------------------------------------------")
         print(f"fuzzer_{target}.log tail")
         print("--------------------------------------------------")
-        dump_logs(fuzzer_log_file, tail=50)
+        dump_logs(fuzzer_log_file, tail=FUZZER_LOG_TAIL_LENGTH)
         print("--------------------------------------------------\n")
       
 
@@ -834,7 +837,7 @@ def get_full_target_list():
     cmd = [
         os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
         "list",
-        "--spec",
+        "--gp-version",
         GP_VERSION
     ]
 
@@ -847,8 +850,7 @@ def get_full_target_list():
         print(f"Error: Unable to list targets: {list_targets}")
         return []
     targets = list_targets.stdout.splitlines()
-    # Remove first line, because target.py returns parameter info here.
-    return targets[1:]
+    return targets
 
 def get_selected_target_list(targets):
     """Get the list of targets selected by the user, filtered by GP_VERSION"""
@@ -911,7 +913,7 @@ def run_targets_recursively(targets, parallel=False, rand_seed=False):
         else:
             target_env["JAM_FUZZ_SEED"] = SEED
 
-        cmd = [sys.executable, os.path.abspath(__file__), "-t", target] + base_args
+        cmd = [sys.executable, os.path.abspath(__file__), "--target", target, "--gp-version", GP_VERSION, "--skip-get"] + base_args
         print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
         proc = subprocess.Popen(cmd, env=target_env)
         processes.append((target, proc, session_id))
@@ -962,6 +964,14 @@ def main():
     global GP_VERSION
     args = parse_command_line_args()
 
+    # If we will need the fuzzer, build it as soon as possible.
+    # Do not attempt building on recursive calls
+    if not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
+        result = build_fuzzer()
+        if result.returncode != 0:
+            print(f"Error building fuzzer: {result.returncode}")
+            exit(1)
+
     # Determine GP version: use command line if provided, otherwise detect from fuzzer
     if args.gp_version is not None:
         # User explicitly specified a version
@@ -992,14 +1002,6 @@ def main():
     if len(targets) == 0:
         print("No targets to run")
         exit(0)
-
-    # If we will need the fuzzer, build it as soon as possible.
-    # Do not attempt building on recursive calls
-    if not args.skip_run and not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
-        result = build_fuzzer()
-        if result.returncode != 0:
-            print(f"Error building fuzzer: {result.returncode}")
-            exit(1)
 
     # Handle multiple targets with recursive execution
     # (sequential by default, parallel if --parallel flag is set)
