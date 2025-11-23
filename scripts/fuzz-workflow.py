@@ -960,6 +960,25 @@ def get_target(target):
         exit(retcode)
 
 
+def explode_target_args(targets):
+    targets = targets.split(",")
+    exploded = []
+    for target in targets:
+        target = target.strip()
+        # Check if target matches pattern: number + separator + name (e.g., "2xboka", "2*boka", "2Xboka")
+        import re
+        match = re.match(r'^(\d+)(.+)$', target)
+        if match:
+            count = int(match.group(1))
+            name = match.group(2)
+            # Insert the target 'count' times
+            exploded.extend([name] * count)
+        else:
+            exploded.append(target)
+    print(exploded)
+    return exploded
+    
+
 def main():
     global GP_VERSION
     args = parse_command_line_args()
@@ -997,7 +1016,8 @@ def main():
     spec.set_spec(args.spec)
 
     mode = args.source
-    targets = args.targets.split(",")
+
+    targets = explode_target_args(args.targets)
     targets = get_selected_target_list(targets)
     if len(targets) == 0:
         print("No targets to run")
