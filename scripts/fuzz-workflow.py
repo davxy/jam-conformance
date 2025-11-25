@@ -726,9 +726,19 @@ def run_trace_workflow(args, target):
     print("")
     print("===================================================")
     print("Summary of results:")
-    for r in results:
-        print(f"{target}: {r}")
+
+    summary_file = os.path.join(SESSION_DIR, f"summary_{target}.txt")
+    with open(summary_file, 'w') as f:
+        f.write(f"Summary of results for {target}\n")
+        f.write("=" * 50 + "\n")
+        for r in results:
+            line = f"{target}: {r}"
+            print(line)
+            f.write(line + "\n")
+        f.write("=" * 50 + "\n")
+
     print("===================================================")
+    print(f"Summary saved to: {summary_file}")
     print("")
 
     # We can override the SESSION_ID, which means it is possible to run the script
