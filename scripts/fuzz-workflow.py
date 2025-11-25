@@ -714,12 +714,7 @@ def run_trace_workflow(args, target):
     print(f"Running fuzzer trace workflow for {target}")
     print("==================================================")
 
-    # List the traces in our source directory
-    trace_dirs = [
-        d
-        for d in os.listdir(source_traces_dir)
-        if os.path.isdir(os.path.join(source_traces_dir, d)) and is_timestamp(d)
-    ]
+    trace_dirs = get_filtered_traces(source_traces_dir, args)
 
     results = run_trace_for_target(target, trace_dirs, source_traces_dir, args)
 
@@ -765,6 +760,22 @@ def check_trace_is_valid(source_traces_dir, trace, args):
         return None
     return full_trace_dir
 
+  
+def get_filtered_traces(traces_dir, args):
+    traces = []
+    files = os.listdir(traces_dir)
+    for file in files:
+        if not os.path.isdir(os.path.join(traces_dir, file)):
+            continue
+        if not re.match(r'^\d+', file):
+            continue
+        if args.first_trace and file < args.first_trace:
+            continue
+        if args.ignore_traces and file in args.ignore_traces:
+            continue
+        traces.append(file)
+    return traces
+
 
 def run_trace_for_target(target, trace_dirs, source_traces_dir, args):
     target_results = []
@@ -774,30 +785,22 @@ def run_trace_for_target(target, trace_dirs, source_traces_dir, args):
         if full_trace_dir is None:
             continue
 
-        trace_id = trace[-10:]
-        if args.first_trace and trace_id < args.first_trace:
-            # Skip this trace as it is excluded by the --first-trace argument
-            continue
-        if args.ignore_traces and trace_id in args.ignore_traces:
-            # Skipping this trace as it is in the ignore list
-            continue
-
         print("")
         print("--------------------------------------------------")
-        print(f"Importing trace {trace_id}")
+        print(f"Importing trace {trace}")
         print("--------------------------------------------------")
 
         target_log_file = os.path.join(
-            SESSION_LOGS_DIR, f"target_{target}_{trace_id}.log"
+            SESSION_LOGS_DIR, f"target_{target}_{trace}.log"
         )
         fuzzer_log_file = os.path.join(
-            SESSION_LOGS_DIR, f"fuzzer_{target}_{trace_id}.log"
+            SESSION_LOGS_DIR, f"fuzzer_{target}_{trace}.log"
         )
 
         [target_process, target_pid] = run_target(target, target_log_file)
         if target_process is None and target_pid == -1:
             print(f"Error: Unable to start target: {target}.")
-            target_results.append(f"💀 {trace_id}")
+            target_results.append(f"💀 {trace}")
 
         else:
             try:
@@ -805,12 +808,12 @@ def run_trace_for_target(target, trace_dirs, source_traces_dir, args):
                     target, full_trace_dir, fuzzer_log_file
                 )
                 if report_missing:
-                    target_results.append(f"💀 {trace_id}")
+                    target_results.append(f"💀 {trace}")
                 else:
                     if trace_result.returncode == 0:
-                        target_results.append(f"🟢 {trace_id}")
+                        target_results.append(f"🟢 {trace}")
                     else:
-                        target_results.append(f"🔴 {trace_id}")
+                        target_results.append(f"🔴 {trace}")
 
                 clean_up(target_process, target_pid)
                 if args.discard_logs:
@@ -828,11 +831,6 @@ def run_trace_for_target(target, trace_dirs, source_traces_dir, args):
         if args.trace_count > 0 and count_traces == args.trace_count:
             break
     return target_results
-
-
-def is_timestamp(s):
-    """Check if a string is an 8-digit timestamp"""
-    return re.match(r"^\d{10}$", s)
 
 
 def is_step_file(f):
