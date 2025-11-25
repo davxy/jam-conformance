@@ -732,10 +732,8 @@ def run_trace_workflow(args, target):
         f.write(f"Summary of results for {target}\n")
         f.write("=" * 50 + "\n")
         for r in results:
-            line = f"{target}: {r}"
-            print(line)
-            f.write(line + "\n")
-        f.write("=" * 50 + "\n")
+            print(f"{target}: {r}")
+            f.write(f"{r}" + "\n")
 
     print("===================================================")
     print(f"Summary saved to: {summary_file}")
