@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 12.033452,
-        "import_max": 12.033452,
-        "import_mean": 12.033452,
-        "import_p50": 12.033452,
+        "import_min": 18.897982,
+        "import_max": 18.897982,
+        "import_mean": 18.897982,
+        "import_p50": 18.897982,
         "import_p75": 0.0,
-        "import_p90": 12.033452,
+        "import_p90": 18.897982,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -56,8 +56,8 @@
             "import_std_dev": 0.0
         }
     },
-    "diff": {
-        "result": {
+    "error": {
+        "import_result_diff": {
             "exp": "ok",
             "got": "preimage_unneeded"
         }

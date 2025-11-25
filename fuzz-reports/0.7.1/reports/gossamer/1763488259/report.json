@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 28.031899,
-        "import_max": 28.031899,
-        "import_mean": 28.031899,
-        "import_p50": 28.031899,
+        "import_min": 28.632797,
+        "import_max": 28.632797,
+        "import_mean": 28.632797,
+        "import_p50": 28.632797,
         "import_p75": 0.0,
-        "import_p90": 28.031899,
+        "import_p90": 28.632797,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -46,18 +46,18 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 1055.094411,
-            "import_max": 1055.094411,
-            "import_mean": 1055.094411,
-            "import_p50": 1055.094411,
+            "import_min": 1239.260072,
+            "import_max": 1239.260072,
+            "import_mean": 1239.260072,
+            "import_p50": 1239.260072,
             "import_p75": 0.0,
-            "import_p90": 1055.094411,
+            "import_p90": 1239.260072,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
-    "diff": {
-        "state": {
+    "error": {
+        "state_diff": {
             "roots": {
                 "exp": "0xc3cebd09b2d393c7a84e32d277c9876582493b38f0816cf763ac15a16001a1b6",
                 "got": "0x5ae60cdc510c84650c47a77a7a0b086064298a43deddfe355171c0db2a697aa2"
