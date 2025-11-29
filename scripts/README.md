@@ -19,7 +19,54 @@ The following components are required to run the conformance test suite:
   conformance testing infrastructure (scripts, reports, traces)
 - **[polkajam-fuzz](https://github.com/paritytech/polkajam)**: Fuzzer based on the PolkaJam
   implementation
-- **platform_dirs**: Python library for platform-specific directory paths
+
+## Scripts Overview
+
+### target.py
+
+The `target.py` script is a target manager that handles downloading and running JAM implementation
+targets. It provides the following capabilities:
+
+- **Target Management**: Downloads JAM implementations from GitHub releases or Docker images
+- **Execution**: Runs targets either directly on the host or within Docker containers
+- **Configuration**: Targets are defined in `targets.json` with information about their source,
+  execution command, and platform support
+
+Key commands:
+```
+./target.py get <target>     # Download a target implementation
+./target.py run <target>     # Run a target implementation
+./target.py list             # List all available targets
+./target.py info <target>    # Show detailed information about a target
+./target.py clean <target>   # Clean downloaded target files
+```
+
+Targets are downloaded to a directory (default: `./targets` or `TARGETS_DIR` if set) and can be
+executed via Unix domain sockets for communication with the fuzzer. For details on the
+communication protocol between the fuzzer and targets, see the [fuzzer protocol
+documentation](../fuzz-proto/README.md).
+
+### fuzz-workflow.py
+
+The `fuzz-workflow.py` script orchestrates the complete fuzzing workflow by coordinating both the
+target implementation (via `target.py`) and the fuzzer (from `POLKAJAM_FUZZ_DIR`). It automates:
+
+- **Target Setup**: Downloads and prepares target implementations using `target.py`
+- **Fuzzer Execution**: Runs the fuzzer from the `polkajam-fuzz` crate located at
+  `POLKAJAM_FUZZ_DIR`
+- **Session Management**: Creates session directories with logs, traces, and reports
+- **Report Generation**: Converts binary traces to JSON format and publishes results
+
+The script operates in two primary modes:
+- **Local Mode**: Generates new traces by running a target against the fuzzer with block generation
+- **Trace Mode**: Replays existing traces against one or more targets to verify conformance
+
+In practice, `fuzz-workflow.py`:
+1. Uses `target.py` to download and launch the target implementation
+2. Starts the fuzzer from `POLKAJAM_FUZZ_DIR` via cargo
+3. Coordinates communication between them through Unix domain sockets
+4. Collects and processes the results into session directories
+5. Optionally publishes reports to the `fuzz-reports` directory
 
 ## Fuzzing and Conformance Tests
 
@@ -50,8 +97,8 @@ We describe these below.
 
 ## Creating a Test Vector
 
-This is done by running the Fuzzer in an exploratory manner. This amounts to running the Fuzzer
-in "local mode" against a single target. This means the Fuzzer will produce a new block at each
+This is done by running the Fuzzer in an **exploratory** manner. This amounts to running the Fuzzer
+in "local mode" against a target. This means the Fuzzer will produce a new block at each
 step and try to import it. It will also send the same block to the target, and receive its
 response. This process terminates either when the prescribed number of steps is reached, or the
 two implementations differ in their results.
@@ -95,9 +142,17 @@ The basic command is
 This downloads the target, executes a fuzzing session and stores the logs, trace and report in a
 new session directory.
 
+By default, the fuzzer uses a fixed seed for reproducibility. To generate different execution
+paths, you can use a random seed:
+```
+./fuzz-workflow.py --target <target> --rand-seed
+```
+
+The seed used for a particular run can be found in the report file, allowing you to reproduce the
+exact same execution by setting the `JAM_FUZZ_SEED` environment variable.
+
 If we further provide the switch `--report-publish`, the contents of the session's `report` are
 copied to `fuzz-reports`.
-
 
 It is usually more convenient to download the target only once and then use it for successive
 exploratory runs. This can be done by skipping all the main processing with
@@ -116,7 +171,7 @@ These are the potential outputs of a fuzzing session:
 A session directory, in `<current_directory>/sessions/<session_id>`. The session identifier is a
 Unix timestamp.
 - Fuzzer and target logs in `<session_directory>/logs`
-- Full execution trace in `<session_directory>/traces`
+- Full execution trace in `<session_directory>/trace`
 - Execution report in `<session_directory>/report`
 
 Published trace for use in a test battery, places in
@@ -133,12 +188,12 @@ A number of parameters can be changed to make the Fuzzing session exercise diffe
 or scenarios by using the following parameters:
 
 - `--profile`: defines the possible operations to include in a work-package to be executed by
-  the Bootstrap service during block authoring. One of the possible instructions is the creation
-  of instances of the Fuzzy service.
+  the *Bootstrap* service during block authoring. One of the possible instructions is the creation
+  of instances of the *Fuzzy* service.
 - `--fuzzy-profile`: defines the possible operations to include in a work-package to be executed
-  by the Fuzzy service during block authoring. Only active if `--profile` is set to `fuzzy`.
+  by the *Fuzzy* service during block authoring. Only active if `--profile` is set to `fuzzy`.
 - `--max-mutations` and `--mutation-ratio`: can be used to allow the Fuzzer to try to import
-  mutations (ie variations) of known good block. `--mutation-ratio` is only active if
+  mutations (i.e. variations) of known good block. `--mutation-ratio` is only active if
   `--max-mutations > 0`.
 
 Other parameters can also be changed by using environment variables:
@@ -165,10 +220,6 @@ the mutation or the service settings.
 
 ### Starting the Fuzzer in Trace Mode
 
-specified by the switch `--target <target>`, or a list of targets. This last option can be
-chosen by using `--target all` _and_ specifying an environment variable `JAM_FUZZ_TARGETS`
-beforehand with a list of targets separated by commas.
-
 The basic command to start this mode is:
 ```
 ./fuzz-workflow.py --target [<target>|all] --source trace --skip-get --report-publish
@@ -176,12 +227,16 @@ The basic command to start this mode is:
 
 An example with several, but not all targets:
 ```
-JAM_FUZZ_TARGETS="jamduna, gossamer, fastroll" ./fuzz-workflow.py -t all --skip-get \
-  --report-publish --source trace --omit-log-tail
+./fuzz-workflow.py -t jamduna,gossamer,fastroll --skip-get --report-publish --source trace --omit-log-tail
 ```
 
 The switch `--omit-log-tail` can be added to avoid printing the log excerpt at the end of each
 individual target/trace run.
+
+You can run multiple instances of the same target by adding an integer prefix to the target name:
+```
+./fuzz-workflow.py -t 3vinwolf,javajam,4tsjam --skip-get --report-publish --source trace --omit-log-tail
+```
 
 ### Generated Artifacts
 

@@ -86,7 +86,7 @@
       "macos": "fuzzserver-tiny-arm64-darwin"
     },
     "args": "-socket {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "spacejam": {
     "repo": "spacejamapp/specjam",

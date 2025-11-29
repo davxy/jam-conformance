@@ -30,7 +30,6 @@ import time
 from jam_types import ScaleBytes
 from jam_types import spec
 from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
-from platformdirs import user_cache_dir
 
 DEFAULT_GP_VERSION = "0.7.1"
 # GP_VERSION will be determined from polkajam-fuzz --version or command line
@@ -42,11 +41,8 @@ CURRENT_DIR = os.getcwd()
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 JAM_CONFORMANCE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
 
-# Cached targets dirs
-CACHE_DIR = user_cache_dir()  # Gives default cache dir, e.g. ~/.cache on Linux
-TARGETS_DIR = os.environ.get(
-    "TARGETS_DIR", os.path.join(CACHE_DIR, "jam-fuzz", "targets")
-)
+TARGETS_DIR = os.environ.get("TARGETS_DIR", f"{CURRENT_DIR}/targets")
+
 os.makedirs(TARGETS_DIR, exist_ok=True)
 
 # Sessions run artifacts
@@ -253,6 +249,7 @@ def get_gp_version_from_fuzzer():
             cargo_cmd,
             cwd=polkajam_fuzz_dir(),
             text=True,
+            capture_output=True,
             check=False,
         )
         if result.returncode == 0:
@@ -868,7 +865,7 @@ def get_selected_target_list(targets):
         if target in available_targets:
             valid_targets.append(target)
         else:
-            print(f"❌ Warning: Target '{target}' is not available and will be skipped")
+            print(f"⚠️ '{target}' is not available for the selected GP version and will be skipped")
     return valid_targets
 
 
