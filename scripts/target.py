@@ -19,25 +19,25 @@ from dataclasses import dataclass
 DEFAULT_SOCK = "/tmp/jam_target.sock"
 
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
-TARGET_SOCK = os.environ.get("TARGET_SOCK", DEFAULT_SOCK)
+TARGET_SOCK = os.environ.get("JAM_FUZZ_TARGET_SOCK", DEFAULT_SOCK)
 
 # Used to run binaries when target is not provided as a docker image
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
 
 # Maximum number of cores to use for docker containers
-DOCKER_CPU_SET = os.environ.get("DOCKER_CPU_SET", "16-32")
+DOCKER_CPU_SET = os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", "16-32")
 
 # Whether to run targets in docker containers (1) or directly on host (0)
-RUN_DOCKER = int(os.environ.get("RUN_DOCKER", "1"))
+RUN_DOCKER = int(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
 
 # Forces a platform for docker commands (run, pull, etc)
 DOCKER_PLATFORM = "linux/amd64"
 
 # Set directory variables
 CURRENT_DIR = os.getcwd()
-TARGETS_DIR = os.environ.get("TARGETS_DIR", f"{CURRENT_DIR}/targets")
+TARGETS_DIR = os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{CURRENT_DIR}/targets")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-TARGETS_FILE = os.environ.get("TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
+TARGETS_FILE = os.environ.get("JAM_FUZZ_TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
 
 @dataclass
 class Target:
@@ -179,9 +179,9 @@ Examples:
   %(prog)s info all                   # Show info for all targets
 
 Environment variables:
-  DEFAULT_SOCK    Socket path (default: /tmp/jam_target.sock)
-  RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
-  DOCKER_CORES    Max cores for Docker (default: 32)
+  JAM_FUZZ_TARGET_SOCK     Socket path (default: /tmp/jam_target.sock)
+  JAM_FUZZ_RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
+  JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: 16-32)
 
 Use 'info all' to see available targets.
         """,
@@ -214,12 +214,12 @@ Use 'info all' to see available targets.
     docker_group.add_argument(
         "--docker",
         action="store_true",
-        help="Force Docker usage (overrides RUN_DOCKER env var)",
+        help="Force Docker usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
     )
     docker_group.add_argument(
         "--no-docker",
         action="store_true",
-        help="Force host usage (overrides RUN_DOCKER env var)",
+        help="Force host usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
     )
 
     run_parser.add_argument(

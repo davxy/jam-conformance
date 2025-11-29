@@ -41,12 +41,12 @@ CURRENT_DIR = os.getcwd()
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 JAM_CONFORMANCE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
 
-TARGETS_DIR = os.environ.get("TARGETS_DIR", f"{CURRENT_DIR}/targets")
+TARGETS_DIR = os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{CURRENT_DIR}/targets")
 
 os.makedirs(TARGETS_DIR, exist_ok=True)
 
 # Sessions run artifacts
-SESSIONS_DIR = os.environ.get("SESSIONS_DIR", f"{CURRENT_DIR}/sessions")
+SESSIONS_DIR = os.environ.get("JAM_FUZZ_SESSIONS_DIR", f"{CURRENT_DIR}/sessions")
 
 # Fuzzing session id, defaults to unix timestamp
 SESSION_ID = os.environ.get("JAM_FUZZ_SESSION_ID", str(int(time.time())))
@@ -428,8 +428,8 @@ def run_target(target, log_file):
     with open(log_file, "w") as target_log:
         # Set up environment variables for the subprocess
         env = os.environ.copy()
-        env["TARGETS_DIR"] = TARGETS_DIR
-        env["TARGET_SOCK"] = SESSION_TARGET_SOCK
+        env["JAM_FUZZ_TARGETS_DIR"] = TARGETS_DIR
+        env["JAM_FUZZ_TARGET_SOCK"] = SESSION_TARGET_SOCK
         target_process = subprocess.Popen(
             target_command,
             stdin=subprocess.DEVNULL,
@@ -944,7 +944,7 @@ def get_target(target):
     """Download the target if needed"""
     print(f"* Downloading target: {target}")
     env = os.environ.copy()
-    env["TARGETS_DIR"] = TARGETS_DIR
+    env["JAM_FUZZ_TARGETS_DIR"] = TARGETS_DIR
 
     target_command = [
         os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),

@@ -95,6 +95,60 @@ candidate implementations and record their results.
 We can use the Fuzzer for both these phases, by essentially running it in two different modes.
 We describe these below.
 
+## Environment Variables
+
+Several environment variables control the behavior of the fuzzing workflow. Some are required,
+while others provide optional configuration.
+
+### Required Variables
+
+- `POLKAJAM_FUZZ_DIR` - Path to the `polkajam-fuzz` crate that hosts the Fuzzer code. This must be
+  set before running the fuzzing workflow.
+
+### Directory Configuration
+
+- `JAM_FUZZ_TARGETS_DIR` - Directory where target implementations are downloaded. Defaults to
+  `./targets` in the current working directory. Override this to use a shared cache location across
+  multiple projects.
+- `JAM_FUZZ_SESSIONS_DIR` - Directory where session artifacts are stored. Defaults to `./sessions`
+  in the current working directory.
+- `JAM_FUZZ_TARGETS_FILE` - Path to the targets configuration JSON file. Defaults to
+  `./scripts/targets.json`. Override this to use a custom targets configuration.
+
+### Target Execution Configuration
+
+- `JAM_FUZZ_TARGET_SOCK` - Unix domain socket path for communication between fuzzer and target.
+  Defaults to `/tmp/jam_target.sock`. Each session can override this to run multiple targets
+  concurrently.
+- `JAM_FUZZ_RUN_DOCKER` - Whether to run targets in Docker containers (`1`) or directly on the host
+  (`0`). Defaults to `1`. Can be overridden with `--docker` or `--no-docker` flags.
+- `JAM_FUZZ_DOCKER_CPU_SET` - CPU cores allocated to Docker containers (e.g., `16-32`). Defaults to
+  `16-32`. Useful for isolating fuzzing workloads on multi-core systems.
+
+### Session Configuration
+
+- `JAM_FUZZ_SESSION_ID` - Custom session identifier. Defaults to the current Unix timestamp. Use
+  this to create named sessions or overwrite existing session data.
+- `JAM_FUZZ_STEP_PERIOD` - Minimum time (in milliseconds) to wait between successive steps.
+  Defaults to `0` (no delay). Useful for rate-limiting or debugging.
+- `JAM_FUZZ_VERBOSITY` - Log verbosity level for the Fuzzer. Defaults to `1`. Higher values
+  produce more detailed logging output.
+
+### Fuzzing Behavior (Local Mode Only)
+
+These variables control how blocks are generated and imported during local mode fuzzing. They are
+ignored in trace mode since blocks are read from existing traces.
+
+- `JAM_FUZZ_MAX_STEPS` - Maximum number of steps to execute in a fuzzing session. Controls how
+  long the fuzzer runs before terminating.
+- `JAM_FUZZ_SEED` - Seed for all randomness used in the session. Using the same seed with the same
+  parameters ensures reproducible execution. The seed can be found in session reports to reproduce
+  specific runs.
+- `JAM_FUZZ_SAFROLE` - Whether to use Safrole to produce tickets for determining the next block
+  author. Affects consensus behavior during fuzzing.
+- `JAM_FUZZ_MAX_WORK_ITEMS` - Maximum number of work items in work packages. Affects the data
+  volume of various instructions executed by services.
+
 ## Creating a Test Vector
 
 This is done by running the Fuzzer in an **exploratory** manner. This amounts to running the Fuzzer
@@ -134,16 +188,50 @@ execution, as the randomness used is fixed by the parameters.
 
 ### Starting the Fuzzer in Local Mode
 
-The basic command is
+The basic command syntax is:
 ```
-./fuzz-workflow.py --target <target>
+./fuzz-workflow.py --target [[<count>]<target>[,...] | all]
 ```
 
-This downloads the target, executes a fuzzing session and stores the logs, trace and report in a
-new session directory.
+where:
+- `<count>` is an optional integer specifying the number of parallel instances (defaults to 1)
+- `<target>` is the target name
+- Multiple targets are comma-separated
+- `all` runs all available targets
+
+#### Basic Examples
+
+Run a single target:
+```
+./fuzz-workflow.py --target jamduna
+```
+
+Run multiple instances of the same target (e.g., 3 instances):
+```
+./fuzz-workflow.py --target 3jamduna
+```
+This downloads the target once and executes three parallel fuzzing sessions, storing logs, traces,
+and reports in separate session directories (one per instance).
+
+Run multiple different targets:
+```
+./fuzz-workflow.py --target jamduna,gossamer,fastroll
+```
+
+Run multiple targets with different instance counts:
+```
+./fuzz-workflow.py --target 3jamduna,2gossamer,fastroll
+```
+
+Run all available targets:
+```
+./fuzz-workflow.py --target all
+```
+
+#### Controlling Randomness
 
 By default, the fuzzer uses a fixed seed for reproducibility. To generate different execution
-paths, you can use a random seed:
+paths, use a random seed:
 ```
 ./fuzz-workflow.py --target <target> --rand-seed
 ```
@@ -151,16 +239,22 @@ paths, you can use a random seed:
 The seed used for a particular run can be found in the report file, allowing you to reproduce the
 exact same execution by setting the `JAM_FUZZ_SEED` environment variable.
 
-If we further provide the switch `--report-publish`, the contents of the session's `report` are
-copied to `fuzz-reports`.
+#### Publishing Reports
+
+To copy the session's report to `fuzz-reports`, add the `--report-publish` flag:
+```
+./fuzz-workflow.py --target <target> --report-publish
+```
+
+#### Optimizing Workflow
 
 It is usually more convenient to download the target only once and then use it for successive
-exploratory runs. This can be done by skipping all the main processing with
+exploratory runs. This can be done by skipping all the main processing:
 ```
 ./fuzz-workflow.py --target <target> --skip-run --skip-report
 ```
 
-To re-use the same target without downloading, we can instead run
+To re-use the same target without downloading:
 ```
 ./fuzz-workflow.py --target <target> --skip-get [--report-publish]
 ```
@@ -182,30 +276,27 @@ Graypaper that the implementations are meant to conform to.
 - `reports/<target>/<session_id>` - includes only the binary and textual report from the
   session's `report` directory.
 
-### Parameters
+### Local Mode Parameters
 
-A number of parameters can be changed to make the Fuzzing session exercise different behaviours
-or scenarios by using the following parameters:
+Several command-line parameters control block generation behavior during local mode fuzzing. These
+parameters are ignored in trace mode since blocks are read from existing traces.
 
-- `--profile`: defines the possible operations to include in a work-package to be executed by
+#### Block Generation Profiles
+- `--profile <name>` - Defines the possible operations to include in work packages executed by
   the *Bootstrap* service during block authoring. One of the possible instructions is the creation
   of instances of the *Fuzzy* service.
-- `--fuzzy-profile`: defines the possible operations to include in a work-package to be executed
+- `--fuzzy-profile <name>` - Defines the possible operations to include in work packages executed
   by the *Fuzzy* service during block authoring. Only active if `--profile` is set to `fuzzy`.
-- `--max-mutations` and `--mutation-ratio`: can be used to allow the Fuzzer to try to import
-  mutations (i.e. variations) of known good block. `--mutation-ratio` is only active if
+
+#### Mutation Testing
+- `--max-mutations <n>` - Maximum number of mutations per block. Mutations are variations of known
+  good blocks used to test fork handling and invalid block rejection.
+- `--mutation-ratio <ratio>` - Probability of generating mutations. Only active if
   `--max-mutations > 0`.
 
-Other parameters can also be changed by using environment variables:
-- `JAM_FUZZ_MAX_STEPS`: the maximum number of steps to execute in one fuzzing session.
-- `JAM_FUZZ_SEED`: the seed for all the randomness used in the session. Using the same seed in a
-  new execution will ensure the all the pseudo-random choices will be the same. Note that if
-  other parameters are different, this may cause the behaviour to change and different
-  pseudo-random queries to be made.
-- `JAM_FUZZ_SAFROLE`: whether we use Safrole to produce tickets to determine the next block
-  author.
-- `JAM_FUZZ_MAX_WORK_ITEMS` and `JAM_FUZZ_MAX_SERVICE_KEYS`: these affect the data of the
-  various instructions executed by the services.
+See the [Environment Variables](#environment-variables) section for additional configuration
+options including `JAM_FUZZ_MAX_STEPS`, `JAM_FUZZ_SEED`, `JAM_FUZZ_SAFROLE`, and
+`JAM_FUZZ_MAX_WORK_ITEMS`.
 
 ## Running a Test Battery
 
@@ -220,22 +311,43 @@ the mutation or the service settings.
 
 ### Starting the Fuzzer in Trace Mode
 
-The basic command to start this mode is:
+The basic command syntax is:
 ```
-./fuzz-workflow.py --target [<target>|all] --source trace --skip-get --report-publish
-```
-
-An example with several, but not all targets:
-```
-./fuzz-workflow.py -t jamduna,gossamer,fastroll --skip-get --report-publish --source trace --omit-log-tail
+./fuzz-workflow.py --target [[<count>]<target>[,...] | all] --source trace [--skip-get] [--report-publish]
 ```
 
-The switch `--omit-log-tail` can be added to avoid printing the log excerpt at the end of each
-individual target/trace run.
+where the target specification follows the same format as local mode:
+- `<count>` is an optional integer specifying the number of parallel instances (defaults to 1)
+- `<target>` is the target name
+- Multiple targets are comma-separated
+- `all` runs all available targets
 
-You can run multiple instances of the same target by adding an integer prefix to the target name:
+Common flags for trace mode:
+- `--source trace` - Required to enable trace mode
+- `--skip-get` - Skip downloading targets (use cached versions)
+- `--report-publish` - Publish results to `fuzz-reports`
+- `--omit-log-tail` - Suppress log excerpts at the end of each target/trace run
+
+#### Basic Examples
+
+Run a single target against all traces:
 ```
-./fuzz-workflow.py -t 3vinwolf,javajam,4tsjam --skip-get --report-publish --source trace --omit-log-tail
+./fuzz-workflow.py --target jamduna --source trace --skip-get --report-publish
+```
+
+Run multiple targets against all traces:
+```
+./fuzz-workflow.py --target jamduna,gossamer,fastroll --source trace --skip-get --report-publish
+```
+
+Run all available targets:
+```
+./fuzz-workflow.py --target all --source trace --skip-get --report-publish
+```
+
+Suppress log output for cleaner reports:
+```
+./fuzz-workflow.py --target jamduna,gossamer,fastroll --source trace --skip-get --report-publish --omit-log-tail
 ```
 
 ### Generated Artifacts
@@ -257,35 +369,43 @@ testing session, all the failing reports can be found easily under one root dire
 These reports are freshly generated by this session, and should be similar, but not necessarily
 equal, to a report generated for the same target/trace combination in local mode.
 
-### Parameters
+### Trace Mode Parameters
 
-The parameters that affect block production are ignored in this mode. But there are some others
-to make the tests more convenient.
+The parameters that affect block production (profiles, mutations, service settings) are ignored in
+trace mode since blocks are read from existing traces rather than generated. However, several
+parameters are available to control trace execution and filtering:
 
-- `--discard-logs`: Remove target and fuzzer logs in trace mode, to save space, unless an error
-  occurs.
-- `--first-trace`: Only process traces equal to or later than this trace.
-- `--trace-count`: Process this many traces (0 means all).
-- `--ignore-traces`: Ignore these traces. Specified as a list of identifiers, e.g.
-  "1234567890,1234567891"'
-- `--delete-bad-traces`: If the Fuzzer attempts to run a trace that is invalid (has fewer than
-  two steps) remove it from the battery.
+#### Trace Selection
+- `--first-trace <id>` - Only process traces equal to or later than this trace ID
+- `--trace-count <n>` - Process this many traces (0 means all, default: all)
+- `--ignore-traces <id1,id2,...>` - Skip specific traces by ID (e.g., "1234567890,1234567891")
+- `--delete-bad-traces` - Remove invalid traces (fewer than two steps) from the battery
 
-## Environment Variables
+#### Output Control
+- `--discard-logs` - Remove target and fuzzer logs to save space (retained if errors occur)
+- `--omit-log-tail` - Suppress log excerpts in output for cleaner reports
 
-A few variables must be defined before running the script. Others may modify the default
-behaviour.
+#### Examples
 
-- `POLKAJAM_FUZZ_DIR` [required]: pointer to the location of the `polkajam-fuzz` crate, that
-  hosts the Fuzzer code.
-- `TARGETS_DIR`: by default, targets are downloaded into a cache. If this is specified, that
-  location will be used and the cache can be ignored.
-- `SESSIONS_DIR`: by default, the `sessions` directory is created in the current directory. If
-  this is specified, that location can be overridden.
-- `JAM_FUZZ_SESSION_ID`: by default, the Fuzzer creates a session identified by the current Unix
-  timestamp. If this is specified, that name is used instead.
-- `JAM_FUZZ_STEP_PERIOD`: Minimum time (in ms) waited between successive steps. Defaults to 0.
-- `JAM_FUZZ_VERBOSITY`: The level of log messages written by the Fuzzer. Defaults to 1.
+Process only traces after a specific ID:
+```
+./fuzz-workflow.py --target all --source trace --first-trace 1234567890
+```
+
+Process only the first 10 traces:
+```
+./fuzz-workflow.py --target all --source trace --trace-count 10
+```
+
+Skip specific problematic traces:
+```
+./fuzz-workflow.py --target all --source trace --ignore-traces 1234567890,1234567891
+```
+
+Save disk space by discarding logs:
+```
+./fuzz-workflow.py --target all --source trace --discard-logs --omit-log-tail
+```
 
 # A Note on Fuzzer Mutations
 
