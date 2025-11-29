@@ -21,6 +21,20 @@ testing infrastructure.
 - [fuzz-reports](./fuzz-reports) - Fuzzer reports
 - [fuzz-perf](./fuzz-perf) - Fuzzer performance reports
 - [pvm-traces](./pvm-traces) - PVM execution traces scratchpad
+- [scripts](./scripts) - Conformance testing scripts and tools
+
+## Running Conformance Tests
+
+The [scripts](./scripts) directory contains the tooling needed to run conformance
+tests against JAM implementations. See [scripts/README.md](./scripts/README.md)
+for detailed documentation on:
+
+- Setting up the fuzzing environment and prerequisites
+- Using `target.py` to manage JAM implementation targets
+- Running `fuzz-workflow.py` to execute fuzzing sessions
+- Creating test vectors in exploratory/local mode
+- Running test batteries against multiple implementations in trace mode
+- Understanding generated artifacts and reports
 
 ## Collaboration
 
