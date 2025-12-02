@@ -13,34 +13,24 @@
 
 Empty cells indicate successful processing
 
-### GP 0.7.1
+### GP 0.7.2
 
-* boka (swift)
-* fastroll (rust)
-* gossamer (go)
 * jamduna (go)
 * jamixir (elixir)
 * jampy (python)
 * jamzilla (go)
 * javajam (java)
+* vinwolf (rust)
+
+### GP 0.7.1
+
+* boka (swift)
+* fastroll (rust)
+* gossamer (go)
 * pyjamaz (python)
 * spacejam (rust)
 * tsjam (ts)
 * typeberry (ts)
-* vinwolf (rust)
-
-#### Jam Test Vectors Traces
-
-|            | boka | fastroll | gossamer | jamduna | jamixir | jampy | jamzilla | javajam | pyjamaz | spacejam | tsjam | typeberry | vinwolf |
-|------------|------|----------|----------|---------|---------|-------|----------|---------|---------|----------|-------|-----------|---------|
-| fallback   |      |          |          |         |         |       |          |         |         |          |       |           |         |
-| safrole    |      |          |          |         |         |       |          |         |         |          |       |           |         |
-| storage    |      |          |          |         |         |       |          |         |         |          |       |           |         |
-|  ⤷ light   |      |          |          |         |         |       |          |         |         |          |       |           |         |
-| preimages  |      |          |          |         |         |       |          |         |         |          |       |           |         |
-|  ⤷ light   |      |          |          |         |         |       |          |         |         |          |       |           |         |
-| fuzzy      |      |          |          |         |         |       |          |         |         |          |       |    ❌     |         |
-|  ⤷ light   |      |          |          |         |         |       |          |         |         |          |       |           |         |
 
 #### Jam Conformance Traces
 

@@ -20,7 +20,7 @@
     "clone": 1,
     "file": "linux/tiny/x86_64/vinwolf-target",
     "cmd": "linux/tiny/x86_64/vinwolf-target --fuzz {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "jamzig": {
     "repo": "jamzig/conformance-releases",
@@ -59,7 +59,7 @@
       "macos": "duna_target_mac"
     },
     "args": "--socket {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "jamixir": {
     "repo": "jamixir/jamixir-releases",
@@ -73,7 +73,7 @@
   "javajam": {
     "image": "ghcr.io/methodfive/javajam:latest-amd64",
     "cmd": "-Dskip.warmup=true fuzz {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "jamzilla": {
     "repo": "ascrivener/jamzilla-conformance-releases",
