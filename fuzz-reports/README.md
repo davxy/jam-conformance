@@ -20,17 +20,17 @@ Empty cells indicate successful processing
 * jampy (python)
 * jamzilla (go)
 * javajam (java)
+* pyjamaz (python)
 * vinwolf (rust)
+* tsjam (ts)
+* typeberry (ts)
 
 ### GP 0.7.1
 
 * boka (swift)
 * fastroll (rust)
 * gossamer (go)
-* pyjamaz (python)
 * spacejam (rust)
-* tsjam (ts)
-* typeberry (ts)
 
 #### Jam Conformance Traces
 

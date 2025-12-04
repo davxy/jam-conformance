@@ -39,7 +39,7 @@
   "pyjamaz": {
     "image": "jamdottech/pyjamaz:latest",
     "cmd": "fuzzer target --db-path=/tmp/pyjamaz_fuzzer_db --socket-path={TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "jampy": {
     "repo": "dakk/jampy-releases",
@@ -102,7 +102,7 @@
     "file": "tsjam-fuzzer-target.tgz",
     "cmd": "tsjam-fuzzer-target/jam-fuzzer-target --socket {TARGET_SOCK}",
     "env": "JAM_CONSTANTS=tiny",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "boka": {
     "image": "acala/boka:latest",
@@ -158,7 +158,7 @@
     "image": "ghcr.io/fluffylabs/typeberry:latest",
     "cmd": "--version=1 fuzz-target {TARGET_SOCK}",
     "env": "JAM_LOG=log",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
     "strawberry": {
     "repo": "eigerco/strawberry",
