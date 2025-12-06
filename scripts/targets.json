@@ -160,11 +160,18 @@
     "env": "JAM_LOG=log",
     "gp_version": "0.7.2"
   },
-    "strawberry": {
+  "strawberry": {
     "repo": "eigerco/strawberry",
     "file": "strawberry-linux-x86_64",
     "cmd": "strawberry-linux-x86_64",
     "args": "--socket {TARGET_SOCK}",
+    "gp_version": "0.7.0"
+  },
+  "new_jamneration": {
+    "repo": "New-JAMneration/new-jamneration-release",
+    "file": "new-jamneration-target-linux-amd64-0.7.0.tar.gz",
+    "cmd": "new-jamneration-target {TARGET_SOCK}",
+    "env": "export USE_MINI_REDIS=true",
     "gp_version": "0.7.0"
   }
 }
