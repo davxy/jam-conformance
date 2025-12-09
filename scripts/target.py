@@ -10,30 +10,34 @@ import urllib.request
 import signal
 import time
 import argparse
+import random
+import string
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
 
+DEFAULT_SOCK = "/tmp/jam_target.sock"
+
 # Set DEFAULT_SOCK to /tmp/jam_target.sock if not already set
-TARGET_SOCK = os.environ.get("DEFAULT_SOCK", "/tmp/jam_target.sock")
+TARGET_SOCK = os.environ.get("JAM_FUZZ_TARGET_SOCK", DEFAULT_SOCK)
 
 # Used to run binaries when target is not provided as a docker image
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
 
 # Maximum number of cores to use for docker containers
-DOCKER_CPU_SET = os.environ.get("DOCKER_CPU_SET", "16-32")
+DOCKER_CPU_SET = os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", "16-32")
 
 # Whether to run targets in docker containers (1) or directly on host (0)
-RUN_DOCKER = int(os.environ.get("RUN_DOCKER", "1"))
+RUN_DOCKER = int(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
 
 # Forces a platform for docker commands (run, pull, etc)
 DOCKER_PLATFORM = "linux/amd64"
 
 # Set directory variables
 CURRENT_DIR = os.getcwd()
-TARGETS_DIR = os.environ.get("TARGETS_DIR", f"{CURRENT_DIR}/targets")
+TARGETS_DIR = os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{CURRENT_DIR}/targets")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-TARGETS_FILE = os.environ.get("TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
+TARGETS_FILE = os.environ.get("JAM_FUZZ_TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
 
 @dataclass
 class Target:
@@ -46,6 +50,7 @@ class Target:
     args: Optional[str] = None
     env: Optional[str] = None
     post: Optional[str] = None
+    gp_version: Optional[str] = None
 
     def get_file(self, os_name: str) -> Optional[str]:
         """Get the file for the given OS."""
@@ -174,9 +179,9 @@ Examples:
   %(prog)s info all                   # Show info for all targets
 
 Environment variables:
-  DEFAULT_SOCK    Socket path (default: /tmp/jam_target.sock)
-  RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
-  DOCKER_CORES    Max cores for Docker (default: 32)
+  JAM_FUZZ_TARGET_SOCK     Socket path (default: /tmp/jam_target.sock)
+  JAM_FUZZ_RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
+  JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: 16-32)
 
 Use 'info all' to see available targets.
         """,
@@ -209,12 +214,24 @@ Use 'info all' to see available targets.
     docker_group.add_argument(
         "--docker",
         action="store_true",
-        help="Force Docker usage (overrides RUN_DOCKER env var)",
+        help="Force Docker usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
     )
     docker_group.add_argument(
         "--no-docker",
         action="store_true",
-        help="Force host usage (overrides RUN_DOCKER env var)",
+        help="Force host usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
+    )
+
+    run_parser.add_argument(
+        "--container-name",
+        type=str,
+        help="Specify custom Docker container name (default: auto-generated with random suffix)",
+    )
+
+    run_parser.add_argument(
+        "--docker-elevate-priority",
+        action="store_true",
+        help="Elevate Docker container priority (Linux only, requires sudo)",
     )
 
     # Info subcommand
@@ -236,7 +253,12 @@ Use 'info all' to see available targets.
     )
 
     # List subcommand
-    subparsers.add_parser("list", help="List all available targets")
+    list_parser = subparsers.add_parser("list", help="List all available targets")
+    list_parser.add_argument(
+        "--gp-version",
+        type=str,
+        help="Filter targets by gp-version (e.g., 0.7.0, 0.7.1)",
+    )
 
     return parser
 
@@ -499,7 +521,7 @@ def print_docker_image_info(image):
     print(f"Created: {created}")
 
 
-def run_docker_image(target: str) -> None:
+def run_docker_image(target: str, args=None) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
         return
@@ -509,8 +531,17 @@ def run_docker_image(target: str) -> None:
     cmd = target_obj.cmd
     env = target_obj.env
 
-    print(f"Running {target} on docker image")
-    print(f"Command: {cmd}")
+    # Use custom container name if provided, otherwise generate unique name with random suffix
+    if args and hasattr(args, 'container_name') and args.container_name:
+        container_name = args.container_name
+    else:
+        # Generate unique container name with random suffix to allow parallel instances
+        random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
+        container_name = f"{target}-{random_suffix}"
+
+    print(f"Running '{target}' on docker image")
+    print(f"Command: '{cmd}'")
+    print(f"Container: '{container_name}'")
 
     try:
         print_docker_image_info(image)
@@ -519,9 +550,11 @@ def run_docker_image(target: str) -> None:
         print(f"Please run: {sys.argv[0]} get {target}")
         sys.exit(1)
 
+
     def cleanup_docker():
-        print(f"Cleaning up Docker container {target}...")
-        subprocess.run(["docker", "kill", target], capture_output=True)
+        print(f"Cleaning up Docker container {container_name}...")
+        subprocess.run(["docker", "kill", container_name], capture_output=True)
+        subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
         try:
             os.unlink(TARGET_SOCK)
         except FileNotFoundError:
@@ -534,12 +567,16 @@ def run_docker_image(target: str) -> None:
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
+    # Pre-flight cleanup: remove any existing container with the same name
+    print(f"Ensuring no leftover container with name {container_name}...")
+    subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
+
     docker_cmd = [
         "docker",
         "run",
         "--rm",
         "--name",
-        target,
+        container_name,
         "--init",
         "--user",
         f"{os.getuid()}:{os.getgid()}",
@@ -594,9 +631,9 @@ def run_docker_image(target: str) -> None:
         import shlex
         docker_cmd.extend(shlex.split(cmd))
 
-    # Add priority args for Linux
+    # Add priority args for Linux if requested
     current_os = get_os()
-    if current_os == "linux":
+    if current_os == "linux" and args and getattr(args, "docker_elevate_priority", False):
         priority_cmd = [
             "sudo",
             "chrt",
@@ -627,6 +664,10 @@ def print_target_info(target: Target, os_name: str) -> None:
     """Print detailed information about a target."""
     print(f"\n=== {target.name.upper()} ===")
     print(f"Name: {target.name}")
+
+    # Show gp_version
+    if target.gp_version:
+        print(f"GP Version: {target.gp_version}")
 
     # Show OS support
     supported_oses = []
@@ -736,11 +777,48 @@ def handle_get_action(target: str, os_name: str) -> bool:
         return False
 
 
-def handle_list_action() -> bool:
+def handle_list_action(gp_version: Optional[str] = None) -> bool:
     """Handle the list action to show all available targets."""
     available_targets = get_available_targets()
-    for target in available_targets:
-        print(target)
+
+    # Filter by gp_version if provided
+    if gp_version:
+        filtered_targets = []
+        for target_name in available_targets:
+            target = get_target(target_name)
+            if target and target.gp_version == gp_version:
+                filtered_targets.append(target_name)
+        available_targets = filtered_targets
+
+        if not available_targets:
+            print(f"No targets found for gp-version: {gp_version}")
+            return True
+
+        for target in available_targets:
+            print(target)
+    else:
+        # Group targets by gp_version
+        gp_version_groups = {}
+        for target_name in available_targets:
+            target = get_target(target_name)
+            if target:
+                target_gp_version = target.gp_version if target.gp_version else "unknown"
+                if target_gp_version not in gp_version_groups:
+                    gp_version_groups[target_gp_version] = []
+                gp_version_groups[target_gp_version].append(target_name)
+
+        # Sort gp versions in descending order (most recent first)
+        sorted_gp_versions = sorted(gp_version_groups.keys(), reverse=True)
+
+        # Print targets grouped by gp_version
+        for i, gp_ver in enumerate(sorted_gp_versions):
+            if i > 0:
+                print()  # Add blank line between groups
+            print(gp_ver)
+            print("=" * len(gp_ver))
+            for target in sorted(gp_version_groups[gp_ver]):
+                print(target)
+
     return True
 
 
@@ -769,13 +847,13 @@ def handle_clean_action(target: str) -> bool:
         return True
 
 
-def handle_run_action(target: str, os_name: str) -> bool:
+def handle_run_action(target: str, os_name: str, args=None) -> bool:
     """Handle the run action for a target."""
     if is_docker_target(target):
-        run_docker_image(target)
+        run_docker_image(target, args)
         return True
     elif is_repo_target(target):
-        run_target(target, os_name)
+        run_target(target, os_name, args)
         return True
     else:
         available_targets = get_available_targets()
@@ -784,7 +862,7 @@ def handle_run_action(target: str, os_name: str) -> bool:
         return False
 
 
-def run_target(target: str, os_name: str) -> None:
+def run_target(target: str, os_name: str, args=None) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
         return
@@ -826,7 +904,7 @@ def run_target(target: str, os_name: str) -> None:
         target_obj = TARGETS[target]
         target_obj.image = DEFAULT_DOCKER_IMAGE
         target_obj.cmd = full_command
-        run_docker_image(target)
+        run_docker_image(target, args)
     else:
         cleanup_done = False
         target_pid = None
@@ -906,19 +984,18 @@ def main():
             print("Unsupported OS", file=sys.stderr)
             sys.exit(1)
 
-    print(f"Action: {action}, Target: {target}, OS: {os_name}")
-
     success = False
     if action == "info":
         success = handle_info_action(target, os_name)
     elif action == "get":
         success = handle_get_action(target, os_name)
     elif action == "run":
-        success = handle_run_action(target, os_name)
+        success = handle_run_action(target, os_name, args)
     elif action == "clean":
         success = handle_clean_action(target)
     elif action == "list":
-        success = handle_list_action()
+        gp_version = getattr(args, 'gp_version', None)
+        success = handle_list_action(gp_version)
 
     if not success:
         sys.exit(1)
