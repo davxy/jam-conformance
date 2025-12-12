@@ -173,5 +173,10 @@
     "cmd": "new-jamneration-target {TARGET_SOCK}",
     "env": "export USE_MINI_REDIS=true",
     "gp_version": "0.7.0"
+  },
+  "jam-forge": {
+    "image": "ghcr.io/philoniare/jam-forge:latest",
+    "cmd": "--socket-path {TARGET_SOCK}",
+    "gp_version": "0.7.0"
   }
 }
