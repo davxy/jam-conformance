@@ -173,5 +173,11 @@
     "cmd": "new-jamneration-target {TARGET_SOCK}",
     "env": "export USE_MINI_REDIS=true",
     "gp_version": "0.7.0"
+  },
+  "jam4s": {
+    "image": "jamforscala/jam4s:amd64",
+    "cmd": " --fuzz --seed 0 --socket {TARGET_SOCK}",
+    "env": "CONFIG_FILE=app/config/node-dev.conf",
+    "gp_version": "0.7.2"
   }
 }
