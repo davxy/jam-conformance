@@ -916,7 +916,7 @@ def run_targets_recursively(targets, parallel=False, rand_seed=False):
         else:
             target_env["JAM_FUZZ_SEED"] = SEED
 
-        cmd = [sys.executable, os.path.abspath(__file__), "--target", target, "--gp-version", GP_VERSION, "--skip-get"] + base_args
+        cmd = [sys.executable, os.path.abspath(__file__), "--target", target, "--gp-version", GP_VERSION] + base_args
         print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
         proc = subprocess.Popen(cmd, env=target_env)
         processes.append((target, proc, session_id))
