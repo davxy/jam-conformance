@@ -91,11 +91,11 @@
   "spacejam": {
     "repo": "spacejamapp/specjam",
     "file": {
-      "linux": "spacejam-0.7.1-linux-amd64.tar.gz",
-      "macos": "spacejam-0.7.1-macos-arm64.tar.gz"
+      "linux": "spacejam-0.7.2-linux-amd64.tar.gz",
+      "macos": "spacejam-0.7.2-macos-arm64.tar.gz"
     },
     "cmd": "spacejam fuzz target {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "tsjam": {
     "repo": "vekexasia/tsjam-releases",
