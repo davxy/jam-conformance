@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "7134bb948e8243b0",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 57,
+        "imported": 25,
+        "import_max_step": 33,
+        "import_min": 1.3648639999999999,
+        "import_max": 29.765825999999997,
+        "import_mean": 6.03398452,
+        "import_p50": 4.007,
+        "import_p75": 6.232,
+        "import_p90": 8.241,
+        "import_p99": 29.765,
+        "import_std_dev": 7.374197788864743
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 5,
+                "patch": 0
+            },
+            "app_name": "@typeberry/jam"
+        },
+        "stats": {
+            "steps": 57,
+            "imported": 24,
+            "import_max_step": 47,
+            "import_min": 10.775542000000002,
+            "import_max": 281.322126,
+            "import_mean": 37.305316375,
+            "import_p50": 27.795,
+            "import_p75": 33.804,
+            "import_p90": 47.48,
+            "import_p99": 281.322,
+            "import_std_dev": 53.13114098085039
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Invalid signatures for validators with keys: 0xcab2b9ff25c2410fbe9b8a717abb298c716a03983c98ceb4def2087500b8e341, 0x8b8c5d436f92ecf605421e873a99ec528761eb52a88a2f9a057b3b3003e6f32a, 0xab0084d01534b31c1dd87c81645fd762482a90027754041ca1b56133d0466c06, 0x4418fb8c85bb3985394a8c2756d3643457ce614546202a2f50b093d762499ace, 0xad93247bd01307550ec7acd757ce6fb805fcf73db364063265b30a949e90d933, 0xf30aa5444688b3cab47697b37d5cac5707bb3289e986b19b17db437206931a8d\nError: Stf (1) - Reports (3) - 21"
+        }
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "27608b8b41ae08c6",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 11,
+        "imported": 7,
+        "import_max_step": 5,
+        "import_min": 1.326562,
+        "import_max": 7.912560000000001,
+        "import_mean": 3.9547182857142857,
+        "import_p50": 1.887,
+        "import_p75": 7.877,
+        "import_p90": 7.877,
+        "import_p99": 7.912,
+        "import_std_dev": 3.149909495938453
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 10,
+            "imported": 7,
+            "import_max_step": 3,
+            "import_min": 10.534371,
+            "import_max": 298.58662200000003,
+            "import_mean": 88.30806057142857,
+            "import_p50": 48.031,
+            "import_p75": 136.643,
+            "import_p90": 136.643,
+            "import_p99": 298.586,
+            "import_std_dev": 104.22513736549165
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}
