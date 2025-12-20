@@ -18,6 +18,7 @@ Empty cells indicate successful processing
 * jamduna (go)
 * jamixir (elixir)
 * jampy (python)
+* jamzig (zig)
 * jamzilla (go)
 * javajam (java)
 * pyjamaz (python)
@@ -40,7 +41,6 @@ See [summaries](0.7.1/summaries)
 ### GP 0.7.0
 
 * graymatter (elixir)
-* jamzig (zig)
 * new_jamneration (go)
 * tessera (python)
 * turbojam (c++)

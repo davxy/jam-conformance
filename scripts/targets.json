@@ -34,7 +34,7 @@
       "macos": "tiny/macos/aarch64/jam_conformance_target"
     },
     "args": "--socket={TARGET_SOCK}",
-    "gp_version": "0.7.0"
+    "gp_version": "0.7.2"
   },
   "pyjamaz": {
     "image": "jamdottech/pyjamaz:latest",
