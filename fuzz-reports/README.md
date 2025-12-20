@@ -16,7 +16,9 @@ Empty cells indicate successful processing
 ### GP 0.7.2
 
 * fastroll (rust)
+* jam4s (scala)
 * jamduna (go)
+* jamforge (scala)
 * jamixir (elixir)
 * jampy (python)
 * jamzig (zig)
