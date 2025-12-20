@@ -2,10 +2,10 @@
 
 ## Organization
 
-- Reports are stored **per team** in the `./<jam-version>/reports` subfolder.  
-- Traces are stored in the `./<jam-version>/traces` subfolder.  
+- Reports are stored **per team** in the `./<jam-version>/reports` subfolder.
+- Traces are stored in the `./<jam-version>/traces` subfolder.
 - Each report is named after the **trace involved**.
-- **Disputed traces** are preserved permanently, even after the dispute has been resolved for all teams.  
+- **Disputed traces** are preserved permanently, even after the dispute has been resolved for all teams.
 
 ## Disputes
 
@@ -23,6 +23,7 @@ Empty cells indicate successful processing
 * jamzilla (go)
 * javajam (java)
 * pyjamaz (python)
+* spacejam (rust)
 * strawberry (go)
 * tsjam (ts)
 * typeberry (ts)
@@ -32,7 +33,6 @@ Empty cells indicate successful processing
 
 * boka (swift)
 * gossamer (go)
-* spacejam (rust)
 
 Total archived traces: 78
 
