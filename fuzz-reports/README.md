@@ -21,9 +21,10 @@ Empty cells indicate successful processing
 * jamzilla (go)
 * javajam (java)
 * pyjamaz (python)
-* vinwolf (rust)
+* strawberry (go)
 * tsjam (ts)
 * typeberry (ts)
+* vinwolf (rust)
 
 ### GP 0.7.1
 
@@ -41,7 +42,6 @@ See [summaries](0.7.1/summaries)
 * graymatter (elixir)
 * jamzig (zig)
 * new_jamneration (go)
-* strawberry (go)
 * tessera (python)
 * turbojam (c++)
 
