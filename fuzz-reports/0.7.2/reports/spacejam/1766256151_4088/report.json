@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1766256151_4088",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "preimages": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 781,
+        "imported": 781,
+        "import_max_step": 445,
+        "import_min": 1.184577,
+        "import_max": 11.067505,
+        "import_mean": 3.765784108834825,
+        "import_p50": 3.888,
+        "import_p75": 5.099,
+        "import_p90": 6.212,
+        "import_p99": 8.632,
+        "import_std_dev": 1.943821899511157
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 21
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 781,
+            "imported": 781,
+            "import_max_step": 108,
+            "import_min": 0.950196,
+            "import_max": 17.222975,
+            "import_mean": 3.4780905582586454,
+            "import_p50": 3.142,
+            "import_p75": 4.214,
+            "import_p90": 5.424,
+            "import_p99": 9.692,
+            "import_std_dev": 1.7573379878549376
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x637725ba3b81d5564387a7677d5cf29a056f7ea8bbd2d3f42c12c3fb88897c27",
+                "got": "0x5a40db6fec111660797a9ccb7816d6c70d4ca506cfa5ae2ae42ef20feda95574"
+            },
+            "keyvals": [
+                {
+                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ffffffffffffffff0a000000000000000a000000000000002645020000000000ffffffffffffffff79000000000000000d03000000000000",
+                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ffffffffffffffff0a000000000000000a000000000000007044020000000000ffffffffffffffff77000000000000000d03000000000000"
+                    }
+                }
+            ]
+        }
+    }
+}
