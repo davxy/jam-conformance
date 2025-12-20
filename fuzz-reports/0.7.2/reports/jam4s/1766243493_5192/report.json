@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766243493_5192",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 1
+    },
+    "stats": {
+        "steps": 15,
+        "imported": 12,
+        "import_max_step": 15,
+        "import_min": 1.341183,
+        "import_max": 37.30703,
+        "import_mean": 6.191802583333333,
+        "import_p50": 1.642,
+        "import_p75": 6.67,
+        "import_p90": 8.512,
+        "import_p99": 37.307,
+        "import_std_dev": 10.200631203168463
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "jam4s"
+        },
+        "stats": {
+            "steps": 15,
+            "imported": 11,
+            "import_max_step": 12,
+            "import_min": 17.430453,
+            "import_max": 6873.257333,
+            "import_mean": 1132.9558319090909,
+            "import_p50": 74.472,
+            "import_p75": 1761.532,
+            "import_p90": 2191.051,
+            "import_p99": 6873.257,
+            "import_std_dev": 2057.201698931839
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "org.jam4s.forkless.exceptions$UnknownException"
+        }
+    }
+}
