@@ -1,28 +1,28 @@
 {
     "config": {
-        "seed": "1766243315_6968",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 2,
-        "imported": 1,
-        "import_max_step": 1,
-        "import_min": 1.584055,
-        "import_max": 1.584055,
-        "import_mean": 1.584055,
-        "import_p50": 1.584055,
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
         "import_p75": 0.0,
-        "import_p90": 1.584055,
+        "import_p90": 0.0,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -43,15 +43,15 @@
             "app_name": "jamzilla"
         },
         "stats": {
-            "steps": 1,
-            "imported": 1,
-            "import_max_step": 1,
-            "import_min": 2.042501,
-            "import_max": 2.042501,
-            "import_mean": 2.042501,
-            "import_p50": 2.042501,
+            "steps": 0,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 2.042501,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

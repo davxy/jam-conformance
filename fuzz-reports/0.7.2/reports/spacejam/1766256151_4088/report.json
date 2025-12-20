@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1766256151_4088",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "preimages": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
         "max_mutations": 0
     },
     "stats": {
-        "steps": 781,
-        "imported": 781,
-        "import_max_step": 445,
-        "import_min": 1.184577,
-        "import_max": 11.067505,
-        "import_mean": 3.765784108834825,
-        "import_p50": 3.888,
-        "import_p75": 5.099,
-        "import_p90": 6.212,
-        "import_p99": 8.632,
-        "import_std_dev": 1.943821899511157
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 6.393713,
+        "import_max": 6.393713,
+        "import_mean": 6.393713,
+        "import_p50": 6.393713,
+        "import_p75": 0.0,
+        "import_p90": 6.393713,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "spacejam"
         },
         "stats": {
-            "steps": 781,
-            "imported": 781,
-            "import_max_step": 108,
-            "import_min": 0.950196,
-            "import_max": 17.222975,
-            "import_mean": 3.4780905582586454,
-            "import_p50": 3.142,
-            "import_p75": 4.214,
-            "import_p90": 5.424,
-            "import_p99": 9.692,
-            "import_std_dev": 1.7573379878549376
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 13.598025999999999,
+            "import_max": 13.598025999999999,
+            "import_mean": 13.598025999999999,
+            "import_p50": 13.598025999999999,
+            "import_p75": 0.0,
+            "import_p90": 13.598025999999999,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1766244122_7675",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "preimages": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1587,
-        "imported": 520,
-        "import_max_step": 795,
-        "import_min": 1.284322,
-        "import_max": 7.214090000000001,
-        "import_mean": 3.1632476692307727,
-        "import_p50": 3.412,
-        "import_p75": 4.153,
-        "import_p90": 4.901,
-        "import_p99": 5.987,
-        "import_std_dev": 1.3708252696974899
+        "steps": 3,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "PyJAMaz"
         },
         "stats": {
-            "steps": 1587,
-            "imported": 521,
-            "import_max_step": 21,
-            "import_min": 7.598375,
-            "import_max": 1187.984352,
-            "import_mean": 52.75331945105564,
-            "import_p50": 65.942,
-            "import_p75": 72.71,
-            "import_p90": 79.398,
-            "import_p99": 97.589,
-            "import_std_dev": 58.018507916533444
+            "steps": 3,
+            "imported": 1,
+            "import_max_step": 3,
+            "import_min": 920.353957,
+            "import_max": 920.353957,
+            "import_mean": 920.353957,
+            "import_p50": 920.353957,
+            "import_p75": 0.0,
+            "import_p90": 920.353957,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

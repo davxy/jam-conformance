@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1766243315_9206",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1065,
-        "imported": 360,
-        "import_max_step": 303,
-        "import_min": 1.2872370000000002,
-        "import_max": 220.25430100000003,
-        "import_mean": 6.811491544444447,
-        "import_p50": 4.302,
-        "import_p75": 5.908,
-        "import_p90": 7.667,
-        "import_p99": 48.453,
-        "import_std_dev": 17.8428856537254
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 8.863372,
+        "import_max": 8.863372,
+        "import_mean": 8.863372,
+        "import_p50": 8.863372,
+        "import_p75": 0.0,
+        "import_p90": 8.863372,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "tsjam-0.7.2-tiny-777f1b7c"
         },
         "stats": {
-            "steps": 1065,
-            "imported": 360,
-            "import_max_step": 599,
-            "import_min": 6.552475,
-            "import_max": 628.824291,
-            "import_mean": 92.17494803611113,
-            "import_p50": 68.975,
-            "import_p75": 134.79,
-            "import_p90": 210.505,
-            "import_p99": 395.25,
-            "import_std_dev": 94.82006777771244
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 256.790232,
+            "import_max": 256.790232,
+            "import_mean": 256.790232,
+            "import_p50": 256.790232,
+            "import_p75": 0.0,
+            "import_p90": 256.790232,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

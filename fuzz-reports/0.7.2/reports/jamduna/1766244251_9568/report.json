@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1766244251_9568",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "preimages": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 10
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 20,
-        "imported": 5,
-        "import_max_step": 12,
-        "import_min": 1.3454890000000002,
-        "import_max": 5.0370550000000005,
-        "import_mean": 2.2694762000000006,
-        "import_p50": 1.673,
-        "import_p75": 1.791,
-        "import_p90": 5.037,
-        "import_p99": 5.037,
-        "import_std_dev": 1.5563811696277041
+        "steps": 8,
+        "imported": 2,
+        "import_max_step": 8,
+        "import_min": 1.459106,
+        "import_max": 1.502008,
+        "import_mean": 1.4805570000000001,
+        "import_p50": 1.502,
+        "import_p75": 1.502,
+        "import_p90": 1.502,
+        "import_p99": 1.502,
+        "import_std_dev": 0.03033629512646518
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "duna-target"
         },
         "stats": {
-            "steps": 20,
-            "imported": 4,
-            "import_max_step": 1,
-            "import_min": 3.5097869999999998,
-            "import_max": 62.712294,
-            "import_mean": 20.20683875,
-            "import_p50": 8.104,
-            "import_p75": 8.104,
-            "import_p90": 62.712,
-            "import_p99": 62.712,
-            "import_std_dev": 28.400877928295483
+            "steps": 8,
+            "imported": 1,
+            "import_max_step": 3,
+            "import_min": 50.10485,
+            "import_max": 50.10485,
+            "import_mean": 50.10485,
+            "import_p50": 50.10485,
+            "import_p75": 0.0,
+            "import_p90": 50.10485,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
