@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766255635_1584",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 16,
+        "imported": 6,
+        "import_max_step": 3,
+        "import_min": 1.642286,
+        "import_max": 12.044427,
+        "import_mean": 6.449406666666667,
+        "import_p50": 7.891,
+        "import_p75": 8.774,
+        "import_p90": 12.044,
+        "import_p99": 12.044,
+        "import_std_dev": 4.073886052194424
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 21
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 16,
+            "imported": 7,
+            "import_max_step": 3,
+            "import_min": 1.463089,
+            "import_max": 13.081650999999999,
+            "import_mean": 6.662289571428571,
+            "import_p50": 7.358,
+            "import_p75": 10.606,
+            "import_p90": 10.606,
+            "import_p99": 13.081,
+            "import_std_dev": 4.278074172327694
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block header verification failure: InvalidExtrinsicHash",
+            "got": "ok"
+        }
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1766255635_3689",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 77,
+        "imported": 40,
+        "import_max_step": 56,
+        "import_min": 1.343914,
+        "import_max": 12.107037,
+        "import_mean": 4.200372975000001,
+        "import_p50": 2.475,
+        "import_p75": 6.405,
+        "import_p90": 8.97,
+        "import_p99": 12.107,
+        "import_std_dev": 3.1467608150853215
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 2,
+                "patch": 6
+            },
+            "app_name": "Jamixir"
+        },
+        "stats": {
+            "steps": 76,
+            "imported": 40,
+            "import_max_step": 12,
+            "import_min": 3.3718950000000003,
+            "import_max": 127.701007,
+            "import_mean": 19.969583999999998,
+            "import_p50": 12.494,
+            "import_p75": 23.605,
+            "import_p90": 33.841,
+            "import_p99": 127.701,
+            "import_std_dev": 24.00189492930755
+        }
+    },
+    "error": {
+        "communication": "IO error: Failed to decode message (potential target crash)"
+    }
+}

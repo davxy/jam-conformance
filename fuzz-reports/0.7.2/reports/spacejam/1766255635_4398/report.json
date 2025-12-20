@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766255635_4398",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 8,
+        "imported": 4,
+        "import_max_step": 5,
+        "import_min": 1.910269,
+        "import_max": 7.261557,
+        "import_mean": 5.27394075,
+        "import_p50": 6.184,
+        "import_p75": 6.184,
+        "import_p90": 7.261,
+        "import_p99": 7.261,
+        "import_std_dev": 2.3316987007396386
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 21
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 8,
+            "imported": 5,
+            "import_max_step": 5,
+            "import_min": 1.220966,
+            "import_max": 9.727979,
+            "import_mean": 4.738250399999999,
+            "import_p50": 5.16,
+            "import_p75": 5.459,
+            "import_p90": 9.727,
+            "import_p99": 9.727,
+            "import_std_dev": 3.3469510685785053
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block header verification failure: InvalidEpochMark",
+            "got": "ok"
+        }
+    }
+}
