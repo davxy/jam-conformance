@@ -31,7 +31,7 @@ from jam_types import ScaleBytes
 from jam_types import spec
 from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
 
-DEFAULT_GP_VERSION = "0.7.1"
+DEFAULT_GP_VERSION = "0.7.2"
 # GP_VERSION will be determined from polkajam-fuzz --version or command line
 GP_VERSION = DEFAULT_GP_VERSION
 

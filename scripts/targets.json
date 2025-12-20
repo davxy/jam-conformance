@@ -167,7 +167,7 @@
     "args": "--socket {TARGET_SOCK}",
     "gp_version": "0.7.2"
   },
-  "new_jamneration": {
+  "new-jamneration": {
     "repo": "New-JAMneration/new-jamneration-release",
     "file": "new-jamneration-target-linux-amd64-0.7.0.tar.gz",
     "cmd": "new-jamneration-target {TARGET_SOCK}",

@@ -781,6 +781,9 @@ def handle_list_action(gp_version: Optional[str] = None) -> bool:
     """Handle the list action to show all available targets."""
     available_targets = get_available_targets()
 
+    if gp_version == "all":
+        gp_version = None
+
     # Filter by gp_version if provided
     if gp_version:
         filtered_targets = []
