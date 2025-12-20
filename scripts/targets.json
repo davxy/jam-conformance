@@ -130,7 +130,7 @@
       "macos": "fastroll-macos-aarch64-tiny"
     },
     "args": "fuzz --socket {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "gossamer": {
     "repo": "chainsafe/gossamer-jam-releases",

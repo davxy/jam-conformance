@@ -15,6 +15,7 @@ Empty cells indicate successful processing
 
 ### GP 0.7.2
 
+* fastroll (rust)
 * jamduna (go)
 * jamixir (elixir)
 * jampy (python)
@@ -30,7 +31,6 @@ Empty cells indicate successful processing
 ### GP 0.7.1
 
 * boka (swift)
-* fastroll (rust)
 * gossamer (go)
 * spacejam (rust)
 
