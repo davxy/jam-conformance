@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766244122_3562",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "preimages": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 16,
+        "imported": 6,
+        "import_max_step": 14,
+        "import_min": 1.4086299999999998,
+        "import_max": 4.761579,
+        "import_mean": 3.1836883333333335,
+        "import_p50": 4.149,
+        "import_p75": 4.302,
+        "import_p90": 4.761,
+        "import_p99": 4.761,
+        "import_std_dev": 1.3866730434091041
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 0
+            },
+            "app_name": "duna-target"
+        },
+        "stats": {
+            "steps": 16,
+            "imported": 5,
+            "import_max_step": 2,
+            "import_min": 3.644535,
+            "import_max": 57.860242,
+            "import_mean": 17.018192,
+            "import_p50": 7.541,
+            "import_p75": 10.06,
+            "import_p90": 57.86,
+            "import_p99": 57.86,
+            "import_std_dev": 22.950447651845455
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "ParentHeaderHash does not match recent block"
+        }
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766244122_6938",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "preimages": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 1139,
+        "imported": 386,
+        "import_max_step": 633,
+        "import_min": 1.325131,
+        "import_max": 7.304714000000001,
+        "import_mean": 3.366504738341972,
+        "import_p50": 3.643,
+        "import_p75": 4.352,
+        "import_p90": 4.956,
+        "import_p99": 6.013,
+        "import_std_dev": 1.3501370385457185
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "jamzig-target"
+        },
+        "stats": {
+            "steps": 1139,
+            "imported": 387,
+            "import_max_step": 48,
+            "import_min": 0.863744,
+            "import_max": 62.938327,
+            "import_mean": 6.964874873385011,
+            "import_p50": 5.061,
+            "import_p75": 7.45,
+            "import_p90": 12.788,
+            "import_p99": 34.169,
+            "import_std_dev": 8.18728200655962
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block header verification failure: InvalidEpochMark",
+            "got": "ok"
+        }
+    }
+}
