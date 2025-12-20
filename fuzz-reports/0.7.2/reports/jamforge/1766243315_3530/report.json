@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766243315_3530",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 76,
+        "imported": 27,
+        "import_max_step": 59,
+        "import_min": 1.2955919999999999,
+        "import_max": 195.025006,
+        "import_mean": 23.048277074074072,
+        "import_p50": 6.168,
+        "import_p75": 9.491,
+        "import_p90": 44.704,
+        "import_p99": 195.025,
+        "import_std_dev": 49.90282740996514
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 1
+            },
+            "app_name": "jam-scala"
+        },
+        "stats": {
+            "steps": 76,
+            "imported": 26,
+            "import_max_step": 59,
+            "import_min": 10.509202,
+            "import_max": 1332.7833110000001,
+            "import_mean": 279.6623952307693,
+            "import_p50": 177.473,
+            "import_p75": 439.726,
+            "import_p90": 638.681,
+            "import_p99": 1332.783,
+            "import_std_dev": 341.1660202204274
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Import failed: AssuranceError - Assurance: BadSignature"
+        }
+    }
+}
