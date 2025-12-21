@@ -345,13 +345,20 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
     """
     Run `cargo polkajam-fuzz` with 'trace' source.
     """
+    # Grab the original trace session id
+    original_session_id = os.path.basename(trace_dir)
+
+    # Copy the original trace folder to the "session_dir/trace/original_session_id"
+    input_trace_dir = os.path.join(SESSION_DIR, "trace", original_session_id)
+    shutil.copytree(trace_dir, input_trace_dir)
+
     fuzzer_args = [
         "--source",
         "trace",
         "--seed",
         SEED,
         "--trace-dir",
-        trace_dir,
+        input_trace_dir,
         "--target-sock",
         SESSION_TARGET_SOCK,
         "--verbosity",
@@ -360,21 +367,25 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
         "--trace-traces",
     ]
 
-    fuzzer_temp_folder = f"{trace_dir}_new"
-    print(f"Using temporary directory in {fuzzer_temp_folder}")
-
     result = fuzzer_run(fuzzer_args, log_file)
+
+    # This is the name assigned to output traces by polkajam-fuzz when using `trace-traces`
+    # (I.e. the input_trace_dir name with `_new` suffix)
+    output_trace_dir = f"{input_trace_dir}_new"
+
+    # Rename output trace dir using input trace dir name
+    shutil.rmtree(input_trace_dir)
+    shutil.move(output_trace_dir, input_trace_dir)
 
     report_missing = False
     if result.returncode == 0:
         print("Fuzzer completed successfully.")
-        shutil.rmtree(fuzzer_temp_folder)
     else:
         print(f"Fuzzer completed with error code: {result.returncode}")
         failed_trace_dir = os.path.join(
-            SESSION_FAILED_TRACES_DIR, target, os.path.basename(trace_dir)
+            SESSION_FAILED_TRACES_DIR, target, original_session_id
         )
-        shutil.move(fuzzer_temp_folder, failed_trace_dir)
+        shutil.copytree(input_trace_dir, failed_trace_dir)
 
         # Remove all files except report.bin from this directory
         for f in os.listdir(failed_trace_dir):
