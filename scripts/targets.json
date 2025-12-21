@@ -117,7 +117,7 @@
   "graymatter": {
     "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",
     "cmd": "fuzz-m1-target --stay-open --listen {TARGET_SOCK}",
-    "gp_version": "0.7.0"
+    "gp_version": "0.7.2"
   },
   "fastroll": {
     "repo": "fastroll-jam/fastroll-releases",
