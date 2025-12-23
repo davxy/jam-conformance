@@ -17,14 +17,14 @@
         "steps": 5,
         "imported": 2,
         "import_max_step": 5,
-        "import_min": 7.725013000000001,
-        "import_max": 10.180137,
-        "import_mean": 8.952575,
-        "import_p50": 10.18,
-        "import_p75": 10.18,
-        "import_p90": 10.18,
-        "import_p99": 10.18,
-        "import_std_dev": 1.7360348290538417
+        "import_min": 9.878892,
+        "import_max": 13.179534,
+        "import_mean": 11.529213,
+        "import_p50": 13.179,
+        "import_p75": 13.179,
+        "import_p90": 13.179,
+        "import_p99": 13.179,
+        "import_std_dev": 2.3339063404691287
     },
     "target": {
         "info": {
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 3,
-                "patch": 0
+                "patch": 2
             },
             "app_name": "duna-target"
         },
@@ -46,12 +46,12 @@
             "steps": 5,
             "imported": 1,
             "import_max_step": 2,
-            "import_min": 107.298326,
-            "import_max": 107.298326,
-            "import_mean": 107.298326,
-            "import_p50": 107.298326,
+            "import_min": 125.12327400000001,
+            "import_max": 125.12327400000001,
+            "import_mean": 125.12327400000001,
+            "import_p50": 125.12327400000001,
             "import_p75": 0.0,
-            "import_p90": 107.298326,
+            "import_p90": 125.12327400000001,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
