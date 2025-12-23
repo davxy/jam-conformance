@@ -15,6 +15,7 @@ Empty cells indicate successful processing
 
 ### GP 0.7.2
 
+* boka (swift)
 * fastroll (rust)
 * graymatter (elixir)
 * jam4s (scala)
@@ -34,7 +35,6 @@ Empty cells indicate successful processing
 
 ### GP 0.7.1
 
-* boka (swift)
 * gossamer (go)
 
 Total archived traces: 78
