@@ -107,7 +107,7 @@
   "boka": {
     "image": "acala/boka:latest",
     "cmd": "fuzz target --socket-path {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "turbojam": {
     "image": "r2rationality/turbojam-fuzz:latest",
