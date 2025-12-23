@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1766479507_1854",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 61,
+        "imported": 21,
+        "import_max_step": 45,
+        "import_min": 1.499915,
+        "import_max": 13.541156,
+        "import_mean": 5.446087238095239,
+        "import_p50": 5.371,
+        "import_p75": 7.541,
+        "import_p90": 8.42,
+        "import_p99": 13.541,
+        "import_std_dev": 3.1860210423586484
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 2
+            },
+            "app_name": "strawberry"
+        },
+        "stats": {
+            "steps": 61,
+            "imported": 22,
+            "import_max_step": 56,
+            "import_min": 6.372555,
+            "import_max": 42.837774,
+            "import_mean": 14.496968363636363,
+            "import_p50": 12.598,
+            "import_p75": 17.188,
+            "import_p90": 20.623,
+            "import_p99": 42.837,
+            "import_std_dev": 7.828624674422229
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: bad offenders mark",
+            "got": "ok"
+        }
+    }
+}

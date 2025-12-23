@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1766479507_4840",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 292,
+        "imported": 99,
+        "import_max_step": 223,
+        "import_min": 1.337375,
+        "import_max": 187.997715,
+        "import_mean": 9.486359959595962,
+        "import_p50": 4.217,
+        "import_p75": 6.672,
+        "import_p90": 8.143,
+        "import_p99": 187.474,
+        "import_std_dev": 27.6354067914866
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 292,
+            "imported": 99,
+            "import_max_step": 23,
+            "import_min": 22.620108,
+            "import_max": 1015.0988050000001,
+            "import_mean": 166.3505643131313,
+            "import_p50": 104.508,
+            "import_p75": 252.45,
+            "import_p90": 378.427,
+            "import_p99": 921.544,
+            "import_std_dev": 177.2172278068621
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x0607209c8871461c8527a185a4ff91dd9e4670d9df80a3152f3e5bf54803959f",
+                "got": "0xf36d0066fc46e32c5f92077788ff0b23116f54cd5f4f862af71ef3aceb86dc88"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0e000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x000000000000000000000000",
+                        "got": "0x0000000000000000000158182542011cd2fc8365ae93a54d6e1124ca063dbe0703fbd60b2b83f6febe73b5030000c9666d4d4ea3df84089b460a7c24844cc896a2678f7c88f1e829dbee322e1eab0000000000000000000000000000000000000000000000000000000000000000000003424ac06144bd7d3ff672ceb87d48802d5d8ee0ce3b390b3d003d860c12cc3974eef4f54d2841f7ad36d5158742b4f16b93e3ac2672ee2c0d44535eccc69fb6b252eeab02a3b361ca3216b6cb7e547171447b98b6d69b0fca095c7acec1d77203424ac06144bd7d3ff672ceb87d48802d5d8ee0ce3b390b3d003d860c12cc394b000000035badc76560d3e2b8716ee4efcc214c5d94e8d47642297f56fd9d263ba6422962c57958d213ec1474789595bc29161cf347b31a59db66b0cb7421b1acfba60e16fb8bab427caffe5bdad7081e651481f375dadc55e125ba5b596ad780ab6198a8012357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f80300000104c0e494bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1ef7a35085e6af6ad4f5b628f114ad62ffe3abcb737920041f9c0a7c221be6f8e5809698000000000000270101090000000011de17003bde170004c0e494303be99d2ccce3af2dcce3afdd4d0feda15b72178b4f000581950001fb8bab427caffe5bdad7081e651481f375dadc55e125ba5b596ad780ab6198a80000"
+                    }
+                }
+            ]
+        }
+    }
+}
