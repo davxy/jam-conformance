@@ -15,7 +15,9 @@ Empty cells indicate successful processing
 
 ### GP 0.7.2
 
+* boka (swift)
 * fastroll (rust)
+* graymatter (elixir)
 * jam4s (scala)
 * jamduna (go)
 * jamforge (scala)
@@ -33,7 +35,6 @@ Empty cells indicate successful processing
 
 ### GP 0.7.1
 
-* boka (swift)
 * gossamer (go)
 
 Total archived traces: 78
@@ -42,7 +43,6 @@ See [summaries](0.7.1/summaries)
 
 ### GP 0.7.0
 
-* graymatter (elixir)
 * new_jamneration (go)
 * tessera (python)
 * turbojam (c++)
