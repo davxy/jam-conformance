@@ -14,15 +14,15 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 3,
+        "imported": 1,
+        "import_max_step": 3,
+        "import_min": 7.597228,
+        "import_max": 7.597228,
+        "import_mean": 7.597228,
+        "import_p50": 7.597228,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 7.597228,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -43,7 +43,7 @@
             "app_name": "jam4s"
         },
         "stats": {
-            "steps": 0,
+            "steps": 3,
             "imported": 0,
             "import_max_step": 0,
             "import_min": 0.0,
@@ -57,6 +57,9 @@
         }
     },
     "error": {
-        "communication": "IO error: early eof (potential target crash)"
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "org.jam4s.forkless.exceptions$UnknownException"
+        }
     }
 }
