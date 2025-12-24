@@ -101,7 +101,7 @@
     "repo": "vekexasia/tsjam-releases",
     "file": "tsjam-fuzzer-target.tgz",
     "cmd": "tsjam-fuzzer-target/jam-fuzzer-target --socket {TARGET_SOCK}",
-    "env": "JAM_CONSTANTS=tiny",
+    "env": "JAM_CONSTANTS=tiny NODE_OPTIONS=\"--max-old-space-size=8192\"",
     "gp_version": "0.7.2"
   },
   "boka": {
