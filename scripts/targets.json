@@ -169,10 +169,10 @@
   },
   "new-jamneration": {
     "repo": "New-JAMneration/new-jamneration-release",
-    "file": "new-jamneration-target-linux-amd64-0.7.0.tar.gz",
+    "file": "new-jamneration-target-linux-amd64-0.7.1.tar.gz",
     "cmd": "new-jamneration-target {TARGET_SOCK}",
     "env": "export USE_MINI_REDIS=true",
-    "gp_version": "0.7.0"
+    "gp_version": "0.7.1"
   },
   "jamforge": {
     "image": "ghcr.io/philoniare/jam-forge:latest",
