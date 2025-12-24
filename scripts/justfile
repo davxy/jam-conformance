@@ -6,8 +6,8 @@ get-target target="all":
 
 # Execute an exploratory workflow with a few targets and random seed
 fuzz-local target="all":
-    ./fuzz-workflow.py -t "{{target}}" --skip-get --source local --rand-seed --max-mutations 5
+    ./fuzz-workflow.py -t "{{target}}" --skip-get --source local --rand-seed --max-mutations 5 --parallel
 
 # Execute a trace workflow with a few targets and publish the corresponding reports
 fuzz-trace target="all":
-    time ./fuzz-workflow.py -t "{{target}}" --skip-get --report-publish --source trace
+    ./fuzz-workflow.py -t "{{target}}" --skip-get --report-publish --source trace --parallel
