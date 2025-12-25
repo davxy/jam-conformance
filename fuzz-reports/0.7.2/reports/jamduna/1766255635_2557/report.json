@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 4,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 5.612281,
+        "import_max": 5.612281,
+        "import_mean": 5.612281,
+        "import_p50": 5.612281,
+        "import_p75": 0.0,
+        "import_p90": 5.612281,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 0
+            },
+            "app_name": "duna-target"
+        },
+        "stats": {
+            "steps": 4,
+            "imported": 1,
+            "import_max_step": 4,
+            "import_min": 60.774287,
+            "import_max": 60.774287,
+            "import_mean": 60.774287,
+            "import_p50": 60.774287,
+            "import_p75": 0.0,
+            "import_p90": 60.774287,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xcc94abc63e661aa366b82ff865e2e6febe4588d8c2bdea4cef0e531fe0622646",
+                "got": "0xe504fdff5a026077bb8261128a6322a29a9ac9ec4d50783639b5475d3c07f017"
+            },
+            "keyvals": [
+                {
+                    "key": "0x31d788457fb79efec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x7e3b09c82b8ba8c6",
+                        "got": "0x0ab8cb10395ab4f3"
+                    }
+                }
+            ]
+        }
+    }
+}

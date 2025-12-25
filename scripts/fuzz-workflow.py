@@ -705,9 +705,9 @@ def run_trace_workflow(args, target):
     if args.skip_report:
         print("Warning: Ignoring flag to skip report generation.")
 
-    source_traces_dir = os.path.join(
-        JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION, "traces"
-    )
+    base_target_dir = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION)
+
+    source_traces_dir = os.path.join(base_target_dir, "traces")
     if not os.path.exists(source_traces_dir):
         print(f"No traces available in {source_traces_dir}. Exiting.")
         exit(1)
@@ -751,9 +751,12 @@ def run_trace_workflow(args, target):
         # of a target failing a particular trace.
         shutil.copytree(
             SESSION_FAILED_TRACES_DIR,
-            os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION, "reports"),
+            os.path.join(base_target_dir, "reports"),
             dirs_exist_ok=True,
         )
+        summaries_dir = os.path.join(base_target_dir, "summaries")
+        os.makedirs(summaries_dir, exist_ok=True)
+        shutil.copy(summary_file, summaries_dir)
 
 
 def check_trace_is_valid(source_traces_dir, trace, args):

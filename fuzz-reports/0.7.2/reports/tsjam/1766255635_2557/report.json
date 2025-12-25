@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 4,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 4.991199,
+        "import_max": 4.991199,
+        "import_mean": 4.991199,
+        "import_p50": 4.991199,
+        "import_p75": 0.0,
+        "import_p90": 4.991199,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "tsjam-0.7.2-tiny-777f1b7c"
+        },
+        "stats": {
+            "steps": 4,
+            "imported": 1,
+            "import_max_step": 4,
+            "import_min": 114.503649,
+            "import_max": 114.503649,
+            "import_mean": 114.503649,
+            "import_p50": 114.503649,
+            "import_p75": 0.0,
+            "import_p90": 114.503649,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xcc94abc63e661aa366b82ff865e2e6febe4588d8c2bdea4cef0e531fe0622646",
+                "got": "0x6135654c9e5c450bbcbd6343a20282743a7cd7f1fd91971b04c53aabec0adb97"
+            },
+            "keyvals": [
+                {
+                    "key": "0x31d788457fb79efec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x7e3b09c82b8ba8c6",
+                        "got": "0xf762f1446ee6e454"
+                    }
+                }
+            ]
+        }
+    }
+}
