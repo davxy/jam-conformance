@@ -617,7 +617,8 @@ def run_docker_image(target: str, args=None) -> None:
     ]
 
     if env:
-        docker_cmd.extend(["-e", env])
+        for var in env.split():
+            docker_cmd.extend(["-e", var])
 
     if image == DEFAULT_DOCKER_IMAGE:
         docker_cmd.extend(["-w", "/jam"])
