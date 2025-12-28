@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 5.135449,
-        "import_max": 5.135449,
-        "import_mean": 5.135449,
-        "import_p50": 5.135449,
+        "import_min": 4.323115,
+        "import_max": 4.323115,
+        "import_mean": 4.323115,
+        "import_p50": 4.323115,
         "import_p75": 0.0,
-        "import_p90": 5.135449,
+        "import_p90": 4.323115,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -59,7 +59,7 @@
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "org.jam4s.guarantee.exceptions$BadSignatureException$"
+            "got": "org.jam4s.guarantee.exceptions$AnchorNotRecentException$"
         }
     }
 }
