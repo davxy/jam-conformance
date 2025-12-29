@@ -171,7 +171,7 @@
     "repo": "New-JAMneration/new-jamneration-release",
     "file": "new-jamneration-target-linux-amd64-0.7.2.tar.gz",
     "cmd": "new-jamneration-target {TARGET_SOCK}",
-    "env": "export USE_MINI_REDIS=true",
+    "env": "USE_MINI_REDIS=true",
     "gp_version": "0.7.2"
   },
   "jamforge": {
