@@ -16,15 +16,15 @@
     "stats": {
         "steps": 5,
         "imported": 2,
-        "import_max_step": 5,
-        "import_min": 5.0365590000000005,
-        "import_max": 5.747732,
-        "import_mean": 5.3921455,
-        "import_p50": 5.747,
-        "import_p75": 5.747,
-        "import_p90": 5.747,
-        "import_p99": 5.747,
-        "import_std_dev": 0.5028752508967806
+        "import_max_step": 1,
+        "import_min": 5.3566389999999995,
+        "import_max": 5.677663,
+        "import_mean": 5.517151,
+        "import_p50": 5.677,
+        "import_p75": 5.677,
+        "import_p90": 5.677,
+        "import_p99": 5.677,
+        "import_std_dev": 0.22699824732363083
     },
     "target": {
         "info": {
@@ -46,12 +46,12 @@
             "steps": 5,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 295.758919,
-            "import_max": 295.758919,
-            "import_mean": 295.758919,
-            "import_p50": 295.758919,
+            "import_min": 380.10485700000004,
+            "import_max": 380.10485700000004,
+            "import_mean": 380.10485700000004,
+            "import_p50": 380.10485700000004,
             "import_p75": 0.0,
-            "import_p90": 295.758919,
+            "import_p90": 380.10485700000004,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -59,7 +59,7 @@
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "failed to restore block and state after parent mismatch: failed to restore block and state for hash 0x0b7416d8026191c4: failed to retrieve block for hash 0x0b7416d8026191c4: failed to get redis backend: redis backend is not initialized"
+            "got": "failed to restore block and state after parent mismatch: failed to restore block and state for hash 0x0b7416d8026191c4: failed to retrieve block for hash 0x0b7416d8026191c4: block not found for hash 0x0b7416d8026191c4"
         }
     }
 }
