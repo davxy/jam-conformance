@@ -17,14 +17,14 @@
         "steps": 8,
         "imported": 2,
         "import_max_step": 8,
-        "import_min": 1.48285,
-        "import_max": 1.667444,
-        "import_mean": 1.5751469999999999,
-        "import_p50": 1.667,
-        "import_p75": 1.667,
-        "import_p90": 1.667,
-        "import_p99": 1.667,
-        "import_std_dev": 0.13052766916634959
+        "import_min": 1.689492,
+        "import_max": 1.751803,
+        "import_mean": 1.7206475,
+        "import_p50": 1.751,
+        "import_p75": 1.751,
+        "import_p90": 1.751,
+        "import_p99": 1.751,
+        "import_std_dev": 0.04406053064251489
     },
     "target": {
         "info": {
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 3,
-                "patch": 2
+                "patch": 3
             },
             "app_name": "duna-target"
         },
@@ -46,12 +46,12 @@
             "steps": 8,
             "imported": 1,
             "import_max_step": 3,
-            "import_min": 54.401071,
-            "import_max": 54.401071,
-            "import_mean": 54.401071,
-            "import_p50": 54.401071,
+            "import_min": 52.81924,
+            "import_max": 52.81924,
+            "import_mean": 52.81924,
+            "import_p50": 52.81924,
             "import_p75": 0.0,
-            "import_p90": 54.401071,
+            "import_p90": 52.81924,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -59,7 +59,7 @@
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "ParentHeaderHash does not match recent block"
+            "got": "T6|TimeslotNotMonotonic: Progress from slot X to slot X. Timeslot must be strictly monotonic."
         }
     }
 }

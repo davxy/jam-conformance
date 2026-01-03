@@ -17,12 +17,12 @@
         "steps": 4,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 1.59766,
-        "import_max": 1.59766,
-        "import_mean": 1.59766,
-        "import_p50": 1.59766,
+        "import_min": 1.9831290000000001,
+        "import_max": 1.9831290000000001,
+        "import_mean": 1.9831290000000001,
+        "import_p50": 1.9831290000000001,
         "import_p75": 0.0,
-        "import_p90": 1.59766,
+        "import_p90": 1.9831290000000001,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 5,
-                "patch": 0
+                "patch": 1
             },
             "app_name": "@typeberry/jam"
         },
@@ -46,12 +46,12 @@
             "steps": 3,
             "imported": 1,
             "import_max_step": 3,
-            "import_min": 21.583247999999998,
-            "import_max": 21.583247999999998,
-            "import_mean": 21.583247999999998,
-            "import_p50": 21.583247999999998,
+            "import_min": 22.361575000000002,
+            "import_max": 22.361575000000002,
+            "import_mean": 22.361575000000002,
+            "import_p50": 22.361575000000002,
             "import_p75": 0.0,
-            "import_p90": 21.583247999999998,
+            "import_p90": 22.361575000000002,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

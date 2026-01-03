@@ -16,15 +16,15 @@
     "stats": {
         "steps": 5,
         "imported": 2,
-        "import_max_step": 5,
-        "import_min": 4.236798,
-        "import_max": 4.478009,
-        "import_mean": 4.3574035,
-        "import_p50": 4.478,
-        "import_p75": 4.478,
-        "import_p90": 4.478,
-        "import_p99": 4.478,
-        "import_std_dev": 0.17056193379678822
+        "import_max_step": 2,
+        "import_min": 4.760507,
+        "import_max": 5.740938,
+        "import_mean": 5.2507225,
+        "import_p50": 5.74,
+        "import_p75": 5.74,
+        "import_p90": 5.74,
+        "import_p99": 5.74,
+        "import_std_dev": 0.6932694085855085
     },
     "target": {
         "info": {
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 3,
-                "patch": 2
+                "patch": 3
             },
             "app_name": "duna-target"
         },
@@ -46,12 +46,12 @@
             "steps": 5,
             "imported": 1,
             "import_max_step": 2,
-            "import_min": 57.243609,
-            "import_max": 57.243609,
-            "import_mean": 57.243609,
-            "import_p50": 57.243609,
+            "import_min": 59.796468999999995,
+            "import_max": 59.796468999999995,
+            "import_mean": 59.796468999999995,
+            "import_p50": 59.796468999999995,
             "import_p75": 0.0,
-            "import_p90": 57.243609,
+            "import_p90": 59.796468999999995,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -59,7 +59,7 @@
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "ParentHeaderHash does not match recent block"
+            "got": "A3|BadCore: One assurance targets a core without any assigned work report."
         }
     }
 }

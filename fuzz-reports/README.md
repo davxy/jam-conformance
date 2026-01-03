@@ -27,6 +27,7 @@ Empty cells indicate successful processing
 * jamzilla (go)
 * javajam (java)
 * new_jamneration (go)
+* pbnjam (ts)
 * pyjamaz (python)
 * spacejam (rust)
 * strawberry (go)

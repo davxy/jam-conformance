@@ -17,14 +17,14 @@
         "steps": 5,
         "imported": 2,
         "import_max_step": 5,
-        "import_min": 9.181129,
-        "import_max": 9.425137,
-        "import_mean": 9.303132999999999,
-        "import_p50": 9.425,
-        "import_p75": 9.425,
-        "import_p90": 9.425,
-        "import_p99": 9.425,
-        "import_std_dev": 0.1725397114637671
+        "import_min": 9.712244,
+        "import_max": 11.555057,
+        "import_mean": 10.6336505,
+        "import_p50": 11.555,
+        "import_p75": 11.555,
+        "import_p90": 11.555,
+        "import_p99": 11.555,
+        "import_std_dev": 1.303065568758725
     },
     "target": {
         "info": {
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 3,
-                "patch": 2
+                "patch": 3
             },
             "app_name": "duna-target"
         },
@@ -46,12 +46,12 @@
             "steps": 5,
             "imported": 1,
             "import_max_step": 2,
-            "import_min": 120.168008,
-            "import_max": 120.168008,
-            "import_mean": 120.168008,
-            "import_p50": 120.168008,
+            "import_min": 115.065975,
+            "import_max": 115.065975,
+            "import_mean": 115.065975,
+            "import_p50": 115.065975,
             "import_p75": 0.0,
-            "import_p90": 120.168008,
+            "import_p90": 115.065975,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -59,7 +59,7 @@
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "ParentHeaderHash does not match recent block"
+            "got": "ApplyStateTransitionFromBlock: ValidateAddPreimage failed for service 0: preimagelookup not empty"
         }
     }
 }
