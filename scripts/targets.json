@@ -184,5 +184,10 @@
     "cmd": "--fuzz --seed 0 --socket {TARGET_SOCK}",
     "env": "CONFIG_FILE=app/config/node-dev.conf",
     "gp_version": "0.7.2"
+  },
+    "pbnjam": {
+    "image": "shimonchick/pbnjam-fuzzer-target:latest",
+    "cmd": "--socket {TARGET_SOCK}",
+    "gp_version": "0.7.2"
   }
 }
