@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 11.82743,
+        "import_max": 11.82743,
+        "import_mean": 11.82743,
+        "import_p50": 11.82743,
+        "import_p75": 0.0,
+        "import_p90": 11.82743,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 28918.043563000003,
+            "import_max": 28918.043563000003,
+            "import_mean": 28918.043563000003,
+            "import_p50": 28918.043563000003,
+            "import_p75": 0.0,
+            "import_p90": 28918.043563000003,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x9f7e92d6f4ff44cc33f9f91f61db4952382e6eb9f7bd4593e2d30d6ec40d082a",
+                "got": "0xeb7cb09fbfe413122946cc77a2a2478d872afd9f1eccc73c3e5142c380dd6e0f"
+            },
+            "keyvals": [
+                {
+                    "key": "0xffff0062004600a00000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e463a020000000000dd240000000000001027000000000000b5390200000000000000000000000000030000004d0100004d0100008ca61ea5",
+                        "got": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e463a020000000000dd240000000000001027000000000000b5390200000000000000000000000000030000004d010000000000008ca61ea5"
+                    }
+                }
+            ]
+        }
+    }
+}

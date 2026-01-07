@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 62.422906,
-        "import_max": 62.422906,
-        "import_mean": 62.422906,
-        "import_p50": 62.422906,
+        "import_min": 32.975927,
+        "import_max": 32.975927,
+        "import_mean": 32.975927,
+        "import_p50": 32.975927,
         "import_p75": 0.0,
-        "import_p90": 62.422906,
+        "import_p90": 32.975927,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 1,
-                "patch": 25
+                "patch": 26
             },
             "app_name": "FastRoll"
         },
