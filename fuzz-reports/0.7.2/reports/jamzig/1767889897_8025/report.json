@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767889897_8025",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 228,
+        "imported": 76,
+        "import_max_step": 93,
+        "import_min": 1.379152,
+        "import_max": 5815.668213,
+        "import_mean": 158.93377231578944,
+        "import_p50": 6.767,
+        "import_p75": 20.768,
+        "import_p90": 317.156,
+        "import_p99": 2447.567,
+        "import_std_dev": 721.742405737699
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "jamzig-target"
+        },
+        "stats": {
+            "steps": 228,
+            "imported": 76,
+            "import_max_step": 93,
+            "import_min": 0.964595,
+            "import_max": 525.47038,
+            "import_mean": 37.542253026315784,
+            "import_p50": 13.876,
+            "import_p75": 25.092,
+            "import_p90": 52.795,
+            "import_p99": 444.892,
+            "import_std_dev": 92.19092216673027
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xf968798aa238d396d8f0127237f8eae8736297ff3fa046b9ebd5633f2b0bf4ad",
+                "got": "0xfff3649b4e6057e863aeae66b95f08d15228ab6505499548f82400957536072c"
+            },
+            "keyvals": [
+                {
+                    "key": "0xff5a0049000200900000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x000000000000000000000000000000000000000000000000000000000000000000ae45050000000000000000000000000000000000000000008e39020000000000000000000000000002000000090000003000000000000000",
+                        "got": "0x0000000000000000000000000000000000000000000000000000000000000000006d31050000000000000000000000000000000000000000008e39020000000000000000000000000002000000090000003000000000000000"
+                    }
+                }
+            ]
+        }
+    }
+}

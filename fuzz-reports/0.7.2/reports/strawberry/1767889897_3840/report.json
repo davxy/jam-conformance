@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767889897_3840",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 710,
+        "imported": 240,
+        "import_max_step": 76,
+        "import_min": 1.2883580000000001,
+        "import_max": 6809.727384000001,
+        "import_mean": 53.631217858333294,
+        "import_p50": 7.02,
+        "import_p75": 12.42,
+        "import_p90": 23.721,
+        "import_p99": 348.295,
+        "import_std_dev": 462.9546098935561
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 2
+            },
+            "app_name": "strawberry"
+        },
+        "stats": {
+            "steps": 710,
+            "imported": 240,
+            "import_max_step": 631,
+            "import_min": 6.002418,
+            "import_max": 923.8340830000001,
+            "import_mean": 35.002381191666665,
+            "import_p50": 20.258,
+            "import_p75": 27.781,
+            "import_p90": 36.181,
+            "import_p99": 436.506,
+            "import_std_dev": 86.81745772050525
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x361680d444e1ee40ab0ee027c855cbba670e0ee9aea27c21cae71a3372618cea",
+                "got": "0x810583269456f534435c4f255e8b6a11a7e71281c7dce03a2b5fe40b7c3fd94e"
+            },
+            "keyvals": [
+                {
+                    "key": "0x50d7064541b73bfec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x2d61c4a890d9fa31",
+                        "got": "0xdc750dcd447929b7"
+                    }
+                }
+            ]
+        }
+    }
+}

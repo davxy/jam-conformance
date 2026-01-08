@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1767889897_4774",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 2352,
+        "imported": 798,
+        "import_max_step": 80,
+        "import_min": 1.333104,
+        "import_max": 4331.1729430000005,
+        "import_mean": 26.86270949749374,
+        "import_p50": 5.221,
+        "import_p75": 7.752,
+        "import_p90": 13.713,
+        "import_p99": 196.638,
+        "import_std_dev": 203.99578916247475
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 5,
+                "patch": 1
+            },
+            "app_name": "@typeberry/jam"
+        },
+        "stats": {
+            "steps": 2351,
+            "imported": 797,
+            "import_max_step": 383,
+            "import_min": 8.946469,
+            "import_max": 753.4539070000001,
+            "import_mean": 53.03922130112924,
+            "import_p50": 35.225,
+            "import_p75": 57.803,
+            "import_p90": 87.714,
+            "import_p99": 471.789,
+            "import_std_dev": 80.37489848101552
+        }
+    },
+    "error": {
+        "communication": "IO error: Connection reset by peer (os error 104) (potential target crash)"
+    }
+}
