@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767895984_8315",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1920,
-        "imported": 640,
-        "import_max_step": 204,
-        "import_min": 1.348732,
-        "import_max": 11735.940693,
-        "import_mean": 246.71850327499988,
-        "import_p50": 5.171,
-        "import_p75": 8.527,
-        "import_p90": 24.307,
-        "import_p99": 6509.353,
-        "import_std_dev": 1133.782948537967
+        "steps": 3,
+        "imported": 3,
+        "import_max_step": 2,
+        "import_min": 1.988934,
+        "import_max": 2.5923119999999997,
+        "import_mean": 2.2218476666666667,
+        "import_p50": 2.084,
+        "import_p75": 2.592,
+        "import_p90": 2.592,
+        "import_p99": 2.592,
+        "import_std_dev": 0.32435534857056564
     },
     "target": {
         "info": {
@@ -43,20 +43,20 @@
             "app_name": "@typeberry/jam"
         },
         "stats": {
-            "steps": 1919,
-            "imported": 639,
-            "import_max_step": 204,
-            "import_min": 9.431818999999999,
-            "import_max": 961.068435,
-            "import_mean": 78.93547602503915,
-            "import_p50": 43.02,
-            "import_p75": 74.169,
-            "import_p90": 122.81,
-            "import_p99": 707.224,
-            "import_std_dev": 133.62791574110477
+            "steps": 2,
+            "imported": 2,
+            "import_max_step": 1,
+            "import_min": 21.728127999999998,
+            "import_max": 46.213877000000004,
+            "import_mean": 33.9710025,
+            "import_p50": 46.213,
+            "import_p75": 46.213,
+            "import_p90": 46.213,
+            "import_p99": 46.213,
+            "import_std_dev": 17.314039160331728
         }
     },
     "error": {
-        "communication": "IO error: Connection reset by peer (os error 104) (potential target crash)"
+        "communication": "IO error: Broken pipe (os error 32) (potential target crash)"
     }
 }

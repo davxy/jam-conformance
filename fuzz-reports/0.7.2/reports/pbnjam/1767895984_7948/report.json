@@ -1,17 +1,17 @@
 {
     "config": {
-        "seed": "1767895984_7948",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
         "steps": 1,
@@ -46,12 +46,12 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 379.21542000000005,
-            "import_max": 379.21542000000005,
-            "import_mean": 379.21542000000005,
-            "import_p50": 379.21542000000005,
+            "import_min": 237.215724,
+            "import_max": 237.215724,
+            "import_mean": 237.215724,
+            "import_p50": 237.215724,
             "import_p75": 0.0,
-            "import_p90": 379.21542000000005,
+            "import_p90": 237.215724,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

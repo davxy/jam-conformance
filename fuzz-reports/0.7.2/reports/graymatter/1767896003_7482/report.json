@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767896003_7482",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 129,
-        "imported": 40,
-        "import_max_step": 49,
-        "import_min": 1.640639,
-        "import_max": 875.6614950000001,
-        "import_mean": 87.095086075,
-        "import_p50": 6.812,
-        "import_p75": 17.018,
-        "import_p90": 308.379,
-        "import_p99": 875.661,
-        "import_std_dev": 205.5053398549991
+        "steps": 2,
+        "imported": 1,
+        "import_max_step": 2,
+        "import_min": 1.5973330000000001,
+        "import_max": 1.5973330000000001,
+        "import_mean": 1.5973330000000001,
+        "import_p50": 1.5973330000000001,
+        "import_p75": 0.0,
+        "import_p90": 1.5973330000000001,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "GrayMatter"
         },
         "stats": {
-            "steps": 129,
-            "imported": 39,
-            "import_max_step": 68,
-            "import_min": 3.9839189999999998,
-            "import_max": 2366.299259,
-            "import_mean": 393.6345517435898,
-            "import_p50": 231.647,
-            "import_p75": 599.423,
-            "import_p90": 888.101,
-            "import_p99": 2366.299,
-            "import_std_dev": 523.973859385575
+            "steps": 2,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

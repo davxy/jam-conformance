@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 2,
+        "import_max_step": 1,
+        "import_min": 2.348503,
+        "import_max": 2.3763349999999996,
+        "import_mean": 2.362419,
+        "import_p50": 2.376,
+        "import_p75": 2.376,
+        "import_p90": 2.376,
+        "import_p99": 2.376,
+        "import_std_dev": 0.019680195933983888
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 2
+            },
+            "app_name": "strawberry"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 71.386081,
+            "import_max": 71.386081,
+            "import_mean": 71.386081,
+            "import_p50": 71.386081,
+            "import_p75": 0.0,
+            "import_p90": 71.386081,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Chain error: failed to import block: failed to verify block header: timeslot is in the future"
+        }
+    }
+}

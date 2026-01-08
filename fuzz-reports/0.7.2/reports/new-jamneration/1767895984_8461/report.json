@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 1,
+        "import_max_step": 3,
+        "import_min": 111.82088399999999,
+        "import_max": 111.82088399999999,
+        "import_mean": 111.82088399999999,
+        "import_p50": 111.82088399999999,
+        "import_p75": 0.0,
+        "import_p90": 111.82088399999999,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 1
+            },
+            "app_name": "new_jamneration"
+        },
+        "stats": {
+            "steps": 3,
+            "imported": 1,
+            "import_max_step": 3,
+            "import_min": 499.49858800000004,
+            "import_max": 499.49858800000004,
+            "import_mean": 499.49858800000004,
+            "import_p50": 499.49858800000004,
+            "import_p75": 0.0,
+            "import_p90": 499.49858800000004,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xa149418dcbe23266a4a3bb2af2b9a99c5fea46b5f9da108c94ac7ed551ee5f00",
+                "got": "0x6658f6636f4ec269e740b7ddbe2b5b5b3e9a514afbaa28b9c6446c78cff35ec3"
+            },
+            "keyvals": [
+                {
+                    "key": "0x2e54021ffa1d6f85ec87dc0a66300a7f00d132d3266fdfd1c3f70221e0228b",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                }
+            ]
+        }
+    }
+}

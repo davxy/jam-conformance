@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767896003_6043",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1444,
-        "imported": 475,
-        "import_max_step": 39,
-        "import_min": 1.3953259999999998,
-        "import_max": 12433.413445999999,
-        "import_mean": 91.56385951368419,
-        "import_p50": 5.652,
-        "import_p75": 8.51,
-        "import_p90": 12.268,
-        "import_p99": 1375.783,
-        "import_std_dev": 805.291675948644
+        "steps": 2,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "jampy"
         },
         "stats": {
-            "steps": 1444,
-            "imported": 476,
-            "import_max_step": 169,
-            "import_min": 22.555421,
-            "import_max": 1488.611257,
-            "import_mean": 236.73953393277313,
-            "import_p50": 165.581,
-            "import_p75": 331.593,
-            "import_p90": 520.606,
-            "import_p99": 1077.776,
-            "import_std_dev": 231.76964772602184
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 307.02579099999997,
+            "import_max": 307.02579099999997,
+            "import_mean": 307.02579099999997,
+            "import_p50": 307.02579099999997,
+            "import_p75": 0.0,
+            "import_p90": 307.02579099999997,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
