@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767896003_7099",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 367,
+        "imported": 124,
+        "import_max_step": 67,
+        "import_min": 1.464124,
+        "import_max": 3797.521751,
+        "import_mean": 69.05533379838711,
+        "import_p50": 7.105,
+        "import_p75": 12.813,
+        "import_p90": 69.305,
+        "import_p99": 729.592,
+        "import_std_dev": 357.43732473908216
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 2
+            },
+            "app_name": "jam-scala"
+        },
+        "stats": {
+            "steps": 367,
+            "imported": 124,
+            "import_max_step": 67,
+            "import_min": 19.628127,
+            "import_max": 1462.32365,
+            "import_mean": 300.04571626612915,
+            "import_p50": 199.579,
+            "import_p75": 365.153,
+            "import_p90": 870.001,
+            "import_p99": 1444.35,
+            "import_std_dev": 356.0476461415222
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xc97650baf8cace47c6e00d4fec0a7b829883f6fa27eae1ec8030530e9feda6ec",
+                "got": "0x89636646c6d28da59827f111d696899f2c6ec5ac3dd315a300635e15cfed4741"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00000000000000000000000014cd85f80000000000",
+                        "got": "0x000000000000000000000000000000000000000000"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1767896003_3771",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 2.520346,
+        "import_max": 2.520346,
+        "import_mean": 2.520346,
+        "import_p50": 2.520346,
+        "import_p75": 0.0,
+        "import_p90": 2.520346,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 2,
+            "import_max_step": 2,
+            "import_min": 369.360681,
+            "import_max": 415.728361,
+            "import_mean": 392.54452100000003,
+            "import_p50": 415.728,
+            "import_p75": 415.728,
+            "import_p90": 415.728,
+            "import_p99": 415.728,
+            "import_std_dev": 32.78690095588784
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: bad signature batch",
+            "got": "ok"
+        }
+    }
+}

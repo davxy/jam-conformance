@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767896003_7770",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 33,
+        "imported": 12,
+        "import_max_step": 10,
+        "import_min": 2.071607,
+        "import_max": 635.093111,
+        "import_mean": 123.13394941666665,
+        "import_p50": 7.656,
+        "import_p75": 13.699,
+        "import_p90": 432.08,
+        "import_p99": 635.093,
+        "import_std_dev": 220.8040227227286
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 5
+            },
+            "app_name": "duna-target"
+        },
+        "stats": {
+            "steps": 33,
+            "imported": 12,
+            "import_max_step": 33,
+            "import_min": 8.037358,
+            "import_max": 748.711168,
+            "import_mean": 230.46734408333336,
+            "import_p50": 249.004,
+            "import_p75": 321.461,
+            "import_p90": 405.844,
+            "import_p99": 748.711,
+            "import_std_dev": 217.63270487660066
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xeec593b5b4dee574e28b760ec7bfe76fc18c6eb9a12a14d545b91b3dd6d89251",
+                "got": "0x4acee9760828e789a85eee83692579443b72de484b55d67d2e4e338e779bae26"
+            },
+            "keyvals": [
+                {
+                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327990bd1ffffffffff0a000000000000000a00000000000000e11c020000000000ffffffffffffffff0c000000000000000900000000000000",
+                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ca98d7ffffffffff0a000000000000000a00000000000000e11c020000000000ffffffffffffffff0c000000000000000900000000000000"
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767896003_2541",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 13910,
+        "imported": 4604,
+        "import_max_step": 85,
+        "import_min": 1.294509,
+        "import_max": 10562.801866000002,
+        "import_mean": 21.03564815421376,
+        "import_p50": 5.245,
+        "import_p75": 7.77,
+        "import_p90": 11.916,
+        "import_p99": 194.684,
+        "import_std_dev": 238.9081183562802
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 22
+            },
+            "app_name": "JavaJAM"
+        },
+        "stats": {
+            "steps": 13910,
+            "imported": 4604,
+            "import_max_step": 5,
+            "import_min": 1.508305,
+            "import_max": 288.272609,
+            "import_mean": 13.666355531928803,
+            "import_p50": 9.157,
+            "import_p75": 15.79,
+            "import_p90": 26.353,
+            "import_p99": 80.619,
+            "import_std_dev": 17.25940865748011
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x389997685120e425bfa073789d8a7e6d262554fffcf02a078093b18ad0cba7aa",
+                "got": "0x8e7db36e26e248d42df1f3d2d363dd630efda84f2a90836246511c4b80e2fb3b"
+            },
+            "keyvals": [
+                {
+                    "key": "0xfad74a452cb710fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x33c97ace95118b1c",
+                        "got": "0x133c5b169e834749"
+                    }
+                }
+            ]
+        }
+    }
+}
