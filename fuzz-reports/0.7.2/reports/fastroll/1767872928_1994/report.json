@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1767872928_1994",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 399,
+        "imported": 144,
+        "import_max_step": 182,
+        "import_min": 1.4035689999999998,
+        "import_max": 3276.0760649999997,
+        "import_mean": 79.94481713194445,
+        "import_p50": 6.221,
+        "import_p75": 12.768,
+        "import_p90": 92.861,
+        "import_p99": 2050.089,
+        "import_std_dev": 351.3883784101551
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 26
+            },
+            "app_name": "FastRoll"
+        },
+        "stats": {
+            "steps": 398,
+            "imported": 144,
+            "import_max_step": 213,
+            "import_min": 1.8451819999999999,
+            "import_max": 69.06093100000001,
+            "import_mean": 18.517642263888888,
+            "import_p50": 17.496,
+            "import_p75": 26.414,
+            "import_p90": 39.317,
+            "import_p99": 62.62,
+            "import_std_dev": 14.651913416223397
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}
