@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767889897_2748",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 59,
-        "imported": 20,
-        "import_max_step": 11,
-        "import_min": 1.398809,
-        "import_max": 458.41490699999997,
-        "import_mean": 68.96365820000001,
-        "import_p50": 5.121,
-        "import_p75": 115.932,
-        "import_p90": 186.332,
-        "import_p99": 458.414,
-        "import_std_dev": 120.57869893934453
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "boka-fuzzing-target"
         },
         "stats": {
-            "steps": 59,
-            "imported": 21,
-            "import_max_step": 59,
-            "import_min": 4.340797,
-            "import_max": 118.402612,
-            "import_mean": 41.045377571428574,
-            "import_p50": 35.885,
-            "import_p75": 52.927,
-            "import_p90": 88.184,
-            "import_p99": 118.402,
-            "import_std_dev": 34.49916550970154
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 123.46164499999999,
+            "import_max": 123.46164499999999,
+            "import_mean": 123.46164499999999,
+            "import_p50": 123.46164499999999,
+            "import_p75": 0.0,
+            "import_p90": 123.46164499999999,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

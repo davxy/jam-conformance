@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767889897_6429",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 5924,
-        "imported": 1919,
-        "import_max_step": 416,
-        "import_min": 1.2588650000000001,
-        "import_max": 2629.054569,
-        "import_mean": 10.26965663105785,
-        "import_p50": 5.064,
-        "import_p75": 7.446,
-        "import_p90": 10.228,
-        "import_p99": 112.674,
-        "import_std_dev": 64.27349732497468
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 6.251688,
+        "import_max": 6.251688,
+        "import_mean": 6.251688,
+        "import_p50": 6.251688,
+        "import_p75": 0.0,
+        "import_p90": 6.251688,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "vinwolf-target"
         },
         "stats": {
-            "steps": 5924,
-            "imported": 1919,
-            "import_max_step": 416,
-            "import_min": 2.2505580000000003,
-            "import_max": 709.446932,
-            "import_mean": 34.739806207920815,
-            "import_p50": 23.503,
-            "import_p75": 32.922,
-            "import_p90": 43.953,
-            "import_p99": 470.992,
-            "import_std_dev": 68.92863022844773
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 35.01975,
+            "import_max": 35.01975,
+            "import_mean": 35.01975,
+            "import_p50": 35.01975,
+            "import_p75": 0.0,
+            "import_p90": 35.01975,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
