@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767871405_1393",
-        "max_steps": 2000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 29,
-        "imported": 11,
-        "import_max_step": 26,
-        "import_min": 1.352971,
-        "import_max": 10.41832,
-        "import_mean": 5.58159009090909,
-        "import_p50": 6.092,
-        "import_p75": 7.856,
-        "import_p90": 9.608,
-        "import_p99": 10.418,
-        "import_std_dev": 3.0691669481854342
+        "steps": 3,
+        "imported": 1,
+        "import_max_step": 3,
+        "import_min": 7.851752,
+        "import_max": 7.851752,
+        "import_mean": 7.851752,
+        "import_p50": 7.851752,
+        "import_p75": 0.0,
+        "import_p90": 7.851752,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "strawberry"
         },
         "stats": {
-            "steps": 29,
-            "imported": 11,
-            "import_max_step": 26,
-            "import_min": 5.681186,
-            "import_max": 23.221945,
-            "import_mean": 15.908459454545456,
-            "import_p50": 16.834,
-            "import_p75": 21.758,
-            "import_p90": 22.938,
-            "import_p99": 23.221,
-            "import_std_dev": 6.5333762639427295
+            "steps": 3,
+            "imported": 1,
+            "import_max_step": 3,
+            "import_min": 20.642711000000002,
+            "import_max": 20.642711000000002,
+            "import_mean": 20.642711000000002,
+            "import_p50": 20.642711000000002,
+            "import_p75": 0.0,
+            "import_p90": 20.642711000000002,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1767872928_6833",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 3568,
-        "imported": 1204,
-        "import_max_step": 107,
-        "import_min": 1.302976,
-        "import_max": 2686.1206850000003,
-        "import_mean": 16.393667877076425,
-        "import_p50": 4.705,
-        "import_p75": 7.103,
-        "import_p90": 10.032,
-        "import_p99": 176.151,
-        "import_std_dev": 123.01965940014465
+        "steps": 3,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "@typeberry/jam"
         },
         "stats": {
-            "steps": 3567,
-            "imported": 1204,
-            "import_max_step": 1837,
-            "import_min": 7.680791,
-            "import_max": 808.726332,
-            "import_mean": 51.260937878737565,
-            "import_p50": 34.03,
-            "import_p75": 57.26,
-            "import_p90": 88.877,
-            "import_p99": 497.241,
-            "import_std_dev": 77.27007270720871
+            "steps": 2,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

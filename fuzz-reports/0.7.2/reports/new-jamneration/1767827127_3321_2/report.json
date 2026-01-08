@@ -17,12 +17,12 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 16.340111,
-        "import_max": 16.340111,
-        "import_mean": 16.340111,
-        "import_p50": 16.340111,
+        "import_min": 27.041457,
+        "import_max": 27.041457,
+        "import_mean": 27.041457,
+        "import_p50": 27.041457,
         "import_p75": 0.0,
-        "import_p90": 16.340111,
+        "import_p90": 27.041457,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -46,12 +46,12 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 894.255079,
-            "import_max": 894.255079,
-            "import_mean": 894.255079,
-            "import_p50": 894.255079,
+            "import_min": 942.449001,
+            "import_max": 942.449001,
+            "import_mean": 942.449001,
+            "import_p50": 942.449001,
             "import_p75": 0.0,
-            "import_p90": 894.255079,
+            "import_p90": 942.449001,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -60,7 +60,7 @@
         "state_diff": {
             "roots": {
                 "exp": "0xec58a78592843d4a573c2609a8a42156a64e01c9870838864df0499962d7034a",
-                "got": "0x2a10e51bd96961756b783bae7b2f0cb697e9f4e51cdfbb4d8b6c60793d502f43"
+                "got": "0xc66b714967c73417a1655091dc8ce47cd4dd89aaf7b4f73c72bdfc70af253733"
             },
             "keyvals": [
                 {
@@ -68,13 +68,6 @@
                     "diff": {
                         "exp": "0x",
                         "got": "0x00"
-                    }
-                },
-                {
-                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ab82bdffffffffff0a000000000000000a000000000000000c3b020000000000ffffffffffffffff3600000000000000481f000000000000",
-                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327e65fbfffffffffff0a000000000000000a000000000000000c3b020000000000ffffffffffffffff3600000000000000481f000000000000"
                     }
                 },
                 {

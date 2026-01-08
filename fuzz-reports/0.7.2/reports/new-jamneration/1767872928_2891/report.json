@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 1,
+        "import_max_step": 3,
+        "import_min": 9.940836,
+        "import_max": 9.940836,
+        "import_mean": 9.940836,
+        "import_p50": 9.940836,
+        "import_p75": 0.0,
+        "import_p90": 9.940836,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 1
+            },
+            "app_name": "new_jamneration"
+        },
+        "stats": {
+            "steps": 3,
+            "imported": 1,
+            "import_max_step": 3,
+            "import_min": 785.9410180000001,
+            "import_max": 785.9410180000001,
+            "import_mean": 785.9410180000001,
+            "import_p50": 785.9410180000001,
+            "import_p75": 0.0,
+            "import_p90": 785.9410180000001,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xa25eab1d77d3c5741de8de3868e27223351e7078dddfb2f648487478cd9c7a51",
+                "got": "0x22c31f979a9222d2f2983ced1436b32a2d2a7fc4576347569d7f5127b5e7f101"
+            },
+            "keyvals": [
+                {
+                    "key": "0xcf803cbcdd79a97ae7167253b1531fb03ac0ac1aebe21bd2a97aea70f863f8",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                }
+            ]
+        }
+    }
+}
