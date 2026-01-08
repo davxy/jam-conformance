@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767827127_2328",
+        "max_steps": 2000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 166444,
+        "imported": 55202,
+        "import_max_step": 26482,
+        "import_min": 1.23023,
+        "import_max": 852.818933,
+        "import_mean": 8.224708187366367,
+        "import_p50": 11.174,
+        "import_p75": 17.519,
+        "import_p90": 108.602,
+        "import_p99": 148.324,
+        "import_std_dev": 20.2052233384182
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 22
+            },
+            "app_name": "JavaJAM"
+        },
+        "stats": {
+            "steps": 166444,
+            "imported": 55202,
+            "import_max_step": 33306,
+            "import_min": 1.379351,
+            "import_max": 203.622353,
+            "import_mean": 10.789738745933196,
+            "import_p50": 20.069,
+            "import_p75": 29.474,
+            "import_p90": 54.213,
+            "import_p99": 94.776,
+            "import_std_dev": 11.600073732236943
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x8791da1f144c27b53f550b9e413d90fe94effcf8cbbdc2d02507ac2380c31678",
+                "got": "0x15254c0468785fe135b11023d96a0a956369a8cdb2700fb456e1ce3617b2a6d7"
+            },
+            "keyvals": [
+                {
+                    "key": "0x57d70b4573b73efec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x6031adc68612227c",
+                        "got": "0x0c5b1d8973e12d4a"
+                    }
+                }
+            ]
+        }
+    }
+}
