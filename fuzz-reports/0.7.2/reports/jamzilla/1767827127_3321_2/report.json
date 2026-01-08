@@ -14,15 +14,15 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 6,
+        "steps": 1,
         "imported": 1,
-        "import_max_step": 6,
-        "import_min": 14.497384,
-        "import_max": 14.497384,
-        "import_mean": 14.497384,
-        "import_p50": 14.497384,
+        "import_max_step": 1,
+        "import_min": 22.286443,
+        "import_max": 22.286443,
+        "import_mean": 22.286443,
+        "import_p50": 22.286443,
         "import_p75": 0.0,
-        "import_p90": 14.497384,
+        "import_p90": 22.286443,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -37,21 +37,21 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 3,
-                "patch": 22
+                "minor": 1,
+                "patch": 0
             },
-            "app_name": "JavaJAM"
+            "app_name": "jamzilla"
         },
         "stats": {
-            "steps": 6,
+            "steps": 1,
             "imported": 1,
-            "import_max_step": 6,
-            "import_min": 249.28750499999998,
-            "import_max": 249.28750499999998,
-            "import_mean": 249.28750499999998,
-            "import_p50": 249.28750499999998,
+            "import_max_step": 1,
+            "import_min": 68.481472,
+            "import_max": 68.481472,
+            "import_mean": 68.481472,
+            "import_p50": 68.481472,
             "import_p75": 0.0,
-            "import_p90": 249.28750499999998,
+            "import_p90": 68.481472,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

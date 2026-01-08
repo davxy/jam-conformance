@@ -14,15 +14,15 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 6,
-        "imported": 1,
-        "import_max_step": 6,
-        "import_min": 17.040886,
-        "import_max": 17.040886,
-        "import_mean": 17.040886,
-        "import_p50": 17.040886,
+        "steps": 3,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
         "import_p75": 0.0,
-        "import_p90": 17.040886,
+        "import_p90": 0.0,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -40,23 +40,26 @@
                 "minor": 1,
                 "patch": 0
             },
-            "app_name": "GrayMatter"
+            "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 6,
+            "steps": 3,
             "imported": 1,
-            "import_max_step": 6,
-            "import_min": 984.714645,
-            "import_max": 984.714645,
-            "import_mean": 984.714645,
-            "import_p50": 984.714645,
+            "import_max_step": 3,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 984.714645,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "communication": "IO error: early eof (potential target crash)"
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
+            "got": "ok"
+        }
     }
 }

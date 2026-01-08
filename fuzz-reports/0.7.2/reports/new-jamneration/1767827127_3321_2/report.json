@@ -14,15 +14,15 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 6,
+        "steps": 1,
         "imported": 1,
-        "import_max_step": 6,
-        "import_min": 14.497384,
-        "import_max": 14.497384,
-        "import_mean": 14.497384,
-        "import_p50": 14.497384,
+        "import_max_step": 1,
+        "import_min": 16.340111,
+        "import_max": 16.340111,
+        "import_mean": 16.340111,
+        "import_p50": 16.340111,
         "import_p75": 0.0,
-        "import_p90": 14.497384,
+        "import_p90": 16.340111,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,20 +38,20 @@
             "app_version": {
                 "major": 0,
                 "minor": 3,
-                "patch": 22
+                "patch": 1
             },
-            "app_name": "JavaJAM"
+            "app_name": "new_jamneration"
         },
         "stats": {
-            "steps": 6,
+            "steps": 1,
             "imported": 1,
-            "import_max_step": 6,
-            "import_min": 249.28750499999998,
-            "import_max": 249.28750499999998,
-            "import_mean": 249.28750499999998,
-            "import_p50": 249.28750499999998,
+            "import_max_step": 1,
+            "import_min": 894.255079,
+            "import_max": 894.255079,
+            "import_mean": 894.255079,
+            "import_p50": 894.255079,
             "import_p75": 0.0,
-            "import_p90": 249.28750499999998,
+            "import_p90": 894.255079,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
@@ -60,9 +60,23 @@
         "state_diff": {
             "roots": {
                 "exp": "0xec58a78592843d4a573c2609a8a42156a64e01c9870838864df0499962d7034a",
-                "got": "0x725f8557c453e5b47cb01df6664d21a0a39f4be1942773073ef1c73041c8c3c7"
+                "got": "0x2a10e51bd96961756b783bae7b2f0cb697e9f4e51cdfbb4d8b6c60793d502f43"
             },
             "keyvals": [
+                {
+                    "key": "0x3b4d265665f738ea066730a9773442b6e2dfe40cf4af36e4ae6f9a2cde7105",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                },
+                {
+                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ab82bdffffffffff0a000000000000000a000000000000000c3b020000000000ffffffffffffffff3600000000000000481f000000000000",
+                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327e65fbfffffffffff0a000000000000000a000000000000000c3b020000000000ffffffffffffffff3600000000000000481f000000000000"
+                    }
+                },
                 {
                     "key": "0xff1600a500ad00a40000000000000000000000000000000000000000000000",
                     "diff": {
