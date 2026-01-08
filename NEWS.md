@@ -1,3 +1,7 @@
+### [09-12-25]
+
+Refresh 0.7.0 reports
+
 ### [21-11-25]
 
 Retire 1763371531,1763489287 for v0.7.1 and 1758819527,1758708840 for v0.7.0.
@@ -6,6 +10,10 @@ Empty prior and/or posterior state due to a fuzzer bug.
 ### [17-11-25]
 
 New traces batch targeting protocol version 0.7.1 has been released.
+
+### [10-11-25]
+
+Added comprehensive ed25519 consensus critical test vectors with generator tool.
 
 ### [27-10-25]
 
