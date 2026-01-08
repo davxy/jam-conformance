@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1767871405_6428",
+        "max_steps": 2000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 2007,
+        "imported": 675,
+        "import_max_step": 295,
+        "import_min": 1.319447,
+        "import_max": 2258.945561,
+        "import_mean": 14.10593615259258,
+        "import_p50": 5.591,
+        "import_p75": 8.021,
+        "import_p90": 11.723,
+        "import_p99": 176.022,
+        "import_std_dev": 91.91104132440843
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 8
+            },
+            "app_name": "vinwolf-target"
+        },
+        "stats": {
+            "steps": 2007,
+            "imported": 675,
+            "import_max_step": 295,
+            "import_min": 2.9404980000000003,
+            "import_max": 753.188228,
+            "import_mean": 43.36788301037038,
+            "import_p50": 29.389,
+            "import_p75": 39.033,
+            "import_p90": 50.684,
+            "import_p99": 584.556,
+            "import_std_dev": 88.7753741413151
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x27f3b179b2a652ebd16f264e27805c3db1474534ee2c5bbc1ab5d15aa3d77319",
+                "got": "0xf1188372e210ed8abeb58c057fedc9e7867705e116f7dcd503a8e891cd21454a"
+            },
+            "keyvals": [
+                {
+                    "key": "0x83d761450db727fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0xb7a8be03cc7e5312",
+                        "got": "0xdc5762407dc3c5b8"
+                    }
+                }
+            ]
+        }
+    }
+}
