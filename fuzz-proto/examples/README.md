@@ -9,9 +9,7 @@ We provide the following predefined session message sets:
 These session messages can be used with the `minifuzz` application to exercise your target
 before submission. **WARNING:** pay special attention when using the `faulty` session.
 
----
-
-# WARNING: Faulty Session
+## WARNING: Faulty Session
 
 The `faulty` session set intentionally simulates a buggy target by ending with
 an incorrect state root.
