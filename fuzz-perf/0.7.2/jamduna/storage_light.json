@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 3,
+      "patch": 6
+    },
+    "app_name": "duna-target"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 83,
+    "import_min": 3.13145,
+    "import_max": 9.569894000000001,
+    "import_mean": 5.315639089999998,
+    "import_p50": 5.386,
+    "import_p75": 5.957,
+    "import_p90": 7.314,
+    "import_p99": 9.326,
+    "import_std_dev": 1.5236363775825084
+  }
+}

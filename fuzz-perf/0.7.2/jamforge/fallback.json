@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 2
+    },
+    "app_name": "jam-scala"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 1,
+    "import_min": 4.666379,
+    "import_max": 470.277031,
+    "import_mean": 34.09009212999998,
+    "import_p50": 17.482,
+    "import_p75": 50.406,
+    "import_p90": 63.213,
+    "import_p99": 270.918,
+    "import_std_dev": 55.11079782322353
+  }
+}

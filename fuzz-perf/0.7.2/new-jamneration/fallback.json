@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 3,
+      "patch": 1
+    },
+    "app_name": "new_jamneration"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 1,
+    "import_min": 17.365582,
+    "import_max": 257.21182,
+    "import_mean": 32.68315547000002,
+    "import_p50": 26.42,
+    "import_p75": 31.274,
+    "import_p90": 45.358,
+    "import_p99": 80.33,
+    "import_std_dev": 26.929950337496507
+  }
+}
