@@ -76,15 +76,9 @@
     "gp_version": "0.7.2"
   },
   "jamzilla": {
-    "repo": "ascrivener/jamzilla-conformance-releases",
-    "file": {
-      "linux": "fuzzserver-tiny-amd64-linux",
-      "macos": "fuzzserver-tiny-arm64-darwin"
-    },
-    "cmd": {
-      "linux": "fuzzserver-tiny-amd64-linux",
-      "macos": "fuzzserver-tiny-arm64-darwin"
-    },
+    "repo": "ascrivener/jam",
+    "file": "jamzilla-tiny",
+    "cmd": "jamzilla-tiny",
     "args": "-socket {TARGET_SOCK}",
     "gp_version": "0.7.2"
   },
