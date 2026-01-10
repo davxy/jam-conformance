@@ -19,7 +19,7 @@ IMPLEMENTATION_LANGUAGES = {
     'jamzilla': 'Go',
     'javajam': 'Java',
     'polkajam': 'Rust',
-    'polkajam_int': 'Rust',
+    'polkajam-int': 'Rust',
     'pyjamaz': 'Python',
     'spacejam': 'Rust',
     'strawberry': 'Go',
@@ -27,6 +27,9 @@ IMPLEMENTATION_LANGUAGES = {
     'vinwolf': 'Rust',
     'tessera': 'Python',
     'typeberry': 'Go',
+    'new-jamneration': 'Go',
+    'jamforge': 'Scala',
+    'graymatter': 'Elixir'
 }
 
 def load_json_reports(base_path: str = ".") -> Dict[str, Dict[str, Any]]:
