@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 2,
+        "import_max_step": 3,
+        "import_min": 5.826415,
+        "import_max": 6.602995,
+        "import_mean": 6.214705,
+        "import_p50": 6.602,
+        "import_p75": 6.602,
+        "import_p90": 6.602,
+        "import_p99": 6.602,
+        "import_std_dev": 0.5491249841338488
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 23
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 3,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 12.442959,
+            "import_max": 12.442959,
+            "import_mean": 12.442959,
+            "import_p50": 12.442959,
+            "import_p75": 0.0,
+            "import_p90": 12.442959,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "block slot is less than or equal to current height"
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 155.75585999999998,
+        "import_max": 155.75585999999998,
+        "import_mean": 155.75585999999998,
+        "import_p50": 155.75585999999998,
+        "import_p75": 0.0,
+        "import_p90": 155.75585999999998,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 1
+            },
+            "app_name": "new_jamneration"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 1020.732853,
+            "import_max": 1020.732853,
+            "import_mean": 1020.732853,
+            "import_p50": 1020.732853,
+            "import_p75": 0.0,
+            "import_p90": 1020.732853,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xa01b6a1c7fb0a55fbb74c8a425153868fdc24ad27d8d9656e661305bd28d7b07",
+                "got": "0x07ab03aed82bfdb4b6e77fe4bf7421d69c765d298dc6df76eb3baca81c6c0f07"
+            },
+            "keyvals": [
+                {
+                    "key": "0x3fbbe7d8224631038f5dbf22e2eb04c5d549c88e0c29bbcd5b335f9ffeadfc",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                }
+            ]
+        }
+    }
+}

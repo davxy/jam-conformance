@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 6,
+        "imported": 1,
+        "import_max_step": 6,
+        "import_min": 11.254382,
+        "import_max": 11.254382,
+        "import_mean": 11.254382,
+        "import_p50": 11.254382,
+        "import_p75": 0.0,
+        "import_p90": 11.254382,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 22
+            },
+            "app_name": "JavaJAM"
+        },
+        "stats": {
+            "steps": 6,
+            "imported": 1,
+            "import_max_step": 6,
+            "import_min": 224.407183,
+            "import_max": 224.407183,
+            "import_mean": 224.407183,
+            "import_p50": 224.407183,
+            "import_p75": 0.0,
+            "import_p90": 224.407183,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x389997685120e425bfa073789d8a7e6d262554fffcf02a078093b18ad0cba7aa",
+                "got": "0x8e7db36e26e248d42df1f3d2d363dd630efda84f2a90836246511c4b80e2fb3b"
+            },
+            "keyvals": [
+                {
+                    "key": "0xfad74a452cb710fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x33c97ace95118b1c",
+                        "got": "0x133c5b169e834749"
+                    }
+                }
+            ]
+        }
+    }
+}

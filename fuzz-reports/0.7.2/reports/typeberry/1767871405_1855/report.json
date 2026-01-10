@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 2,
+        "import_max_step": 2,
+        "import_min": 7.0151959999999995,
+        "import_max": 15.747919999999999,
+        "import_mean": 11.381557999999998,
+        "import_p50": 15.747,
+        "import_p75": 15.747,
+        "import_p90": 15.747,
+        "import_p99": 15.747,
+        "import_std_dev": 6.174968358630511
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 5,
+                "patch": 1
+            },
+            "app_name": "@typeberry/jam"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 66.327616,
+            "import_max": 66.327616,
+            "import_mean": 66.327616,
+            "import_p50": 66.327616,
+            "import_p75": 0.0,
+            "import_p90": 66.327616,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "communication": "IO error: Broken pipe (os error 32) (potential target crash)"
+    }
+}

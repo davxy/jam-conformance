@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 4,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 9.446548,
+        "import_max": 9.446548,
+        "import_mean": 9.446548,
+        "import_p50": 9.446548,
+        "import_p75": 0.0,
+        "import_p90": 9.446548,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 23
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 4,
+            "imported": 1,
+            "import_max_step": 4,
+            "import_min": 32.563307,
+            "import_max": 32.563307,
+            "import_mean": 32.563307,
+            "import_p50": 32.563307,
+            "import_p75": 0.0,
+            "import_p90": 32.563307,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x9b330c2c9a06cee69ebe6f8f0050bba849a5a7a47aa433da4d0ca08d5558ad76",
+                "got": "0x82b7256a9b89fe08afda57337ab921581ee8b8658a3eb6ab13542ece73c3eb68"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x000000000000000000000000000000000000000000",
+                        "got": "0x000000000000000000000000622bd9420000000000"
+                    }
+                }
+            ]
+        }
+    }
+}

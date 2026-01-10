@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1767895984_7154",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 10,
+        "imported": 3,
+        "import_max_step": 10,
+        "import_min": 1.352832,
+        "import_max": 1.393291,
+        "import_mean": 1.3782716666666668,
+        "import_p50": 1.388,
+        "import_p75": 1.393,
+        "import_p90": 1.393,
+        "import_p99": 1.393,
+        "import_std_dev": 0.022151076279344373
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 23
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 10,
+            "imported": 2,
+            "import_max_step": 6,
+            "import_min": 1.187808,
+            "import_max": 1.327472,
+            "import_mean": 1.2576399999999999,
+            "import_p50": 1.327,
+            "import_p75": 1.327,
+            "import_p90": 1.327,
+            "import_p99": 1.327,
+            "import_std_dev": 0.09875736148763806
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Parent mismatch, expected: 0xdd6016de3c74d7442022cafbb8bf0802b962e8d075852d86c524153d38966648, got: 0x2bf11dc5e1c7b9bbaafc2c8533017abc12daeb0baf22c92509ad50f7875e5716"
+        }
+    }
+}
