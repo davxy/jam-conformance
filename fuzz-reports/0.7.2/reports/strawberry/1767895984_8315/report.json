@@ -16,15 +16,15 @@
     "stats": {
         "steps": 2,
         "imported": 2,
-        "import_max_step": 1,
-        "import_min": 2.348503,
-        "import_max": 2.3763349999999996,
-        "import_mean": 2.362419,
-        "import_p50": 2.376,
-        "import_p75": 2.376,
-        "import_p90": 2.376,
-        "import_p99": 2.376,
-        "import_std_dev": 0.019680195933983888
+        "import_max_step": 2,
+        "import_min": 2.19975,
+        "import_max": 2.45182,
+        "import_mean": 2.3257849999999998,
+        "import_p50": 2.451,
+        "import_p75": 2.451,
+        "import_p90": 2.451,
+        "import_p99": 2.451,
+        "import_std_dev": 0.17824040633369337
     },
     "target": {
         "info": {
@@ -46,12 +46,12 @@
             "steps": 2,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 71.386081,
-            "import_max": 71.386081,
-            "import_mean": 71.386081,
-            "import_p50": 71.386081,
+            "import_min": 63.667498,
+            "import_max": 63.667498,
+            "import_mean": 63.667498,
+            "import_p50": 63.667498,
             "import_p75": 0.0,
-            "import_p90": 71.386081,
+            "import_p90": 63.667498,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
