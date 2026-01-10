@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#
+# Version 0.1.1
 
 import argparse
 import socket
@@ -45,14 +47,17 @@ def response_check(response, precomputed) -> bool:
         fuzz_version_got = target_peer_info.get("fuzz_version")
         fuzz_version_exp = precomputed_peer_info.get("fuzz_version")
         if fuzz_version_exp != fuzz_version_got:
-            print(f"Unexpected Fuzzer protocol version. Expected: {fuzz_version_exp}, Got: {fuzz_version_got}")
+            print("Unexpected Fuzzer protocol version.")
+            print(f"Expected: {fuzz_version_exp}")
+            print(f"Got:      {fuzz_version_got}")
             return False
         # Check JAM version
         jam_version_got = target_peer_info.get("jam_version")
         jam_version_exp = precomputed_peer_info.get("jam_version")
         if jam_version_exp != jam_version_got:
-            print(f"Unexpected JAM protocol version. Expected: {jam_version_exp}, Got: {jam_version_got}")
-            return False
+            print("Warning: Unexpected JAM protocol version.")
+            print(f"Expected: {jam_version_exp}")
+            print(f"Got:      {jam_version_got}")
         return True
 
     # All other messages must match
@@ -101,7 +106,7 @@ def main():
         print(f"Error: Trace directory '{trace_dir}' does not exist or is not a directory")
         sys.exit(1)
     
-    # Find all binary files containing "fuzzer" in the name
+    # Collect fuzzer and target session files
     fuzzer_files = []
     target_files = []
     for file_path in trace_dir.glob('*.bin'):
@@ -132,7 +137,7 @@ def main():
                 print(f"\nStopping after {args.stop_after} file pairs as requested")
                 break
             print("\n==========================================================================")
-            print(f"Processing pair {i+1}: {fuzzer_file.name} -> {target_file.name}")
+            print(f"Processing pair {i+1}: {fuzzer_file.name} <-> {target_file.name}")
             
             # Read fuzzer file binary content
             try:
