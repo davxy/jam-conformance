@@ -5,12 +5,12 @@
     "jam_version": {
       "major": 0,
       "minor": 7,
-      "patch": 0
+      "patch": 2
     },
     "app_version": {
       "major": 0,
       "minor": 1,
-      "patch": 25
+      "patch": 27
     },
     "app_name": "polkajam"
   },
@@ -18,13 +18,13 @@
     "steps": 100,
     "imported": 100,
     "import_max_step": 8,
-    "import_min": 1.052696,
-    "import_max": 12.50059,
-    "import_mean": 4.38121782,
-    "import_p50": 3.488,
-    "import_p75": 6.681,
-    "import_p90": 8.316,
-    "import_p99": 11.34,
-    "import_std_dev": 3.10741887998154
+    "import_min": 0.960114,
+    "import_max": 17.675585,
+    "import_mean": 4.395078940000001,
+    "import_p50": 3.726,
+    "import_p75": 6.432,
+    "import_p90": 9.66,
+    "import_p99": 12.024,
+    "import_std_dev": 3.4319160497385224
   }
 }
