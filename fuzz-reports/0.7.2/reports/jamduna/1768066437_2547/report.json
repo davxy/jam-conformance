@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 1000000,
+        "safrole": true,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 76,
+        "imported": 72,
+        "import_max_step": 35,
+        "import_min": 1.467702,
+        "import_max": 177.365728,
+        "import_mean": 16.806128041666668,
+        "import_p50": 9.93,
+        "import_p75": 15.582,
+        "import_p90": 20.775,
+        "import_p99": 155.543,
+        "import_std_dev": 29.91533919470104
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 6
+            },
+            "app_name": "duna-target"
+        },
+        "stats": {
+            "steps": 76,
+            "imported": 71,
+            "import_max_step": 11,
+            "import_min": 35.794095,
+            "import_max": 3837.131968,
+            "import_mean": 534.3207470281689,
+            "import_p50": 268.27,
+            "import_p75": 524.637,
+            "import_p90": 1561.283,
+            "import_p99": 2760.925,
+            "import_std_dev": 709.8830651053836
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "T4|BadRingProof: Submit tickets with a bad ring proof."
+        }
+    }
+}
