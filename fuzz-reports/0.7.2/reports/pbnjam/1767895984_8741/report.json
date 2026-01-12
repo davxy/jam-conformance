@@ -14,7 +14,7 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
+        "steps": 2,
         "imported": 0,
         "import_max_step": 0,
         "import_min": 0.0,
@@ -29,7 +29,7 @@
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,28 +37,28 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 2,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 476.265574,
-            "import_max": 476.265574,
-            "import_mean": 476.265574,
-            "import_p50": 476.265574,
+            "import_max_step": 2,
+            "import_min": 1501.632769,
+            "import_max": 1501.632769,
+            "import_mean": 1501.632769,
+            "import_p50": 1501.632769,
             "import_p75": 0.0,
-            "import_p90": 476.265574,
+            "import_p90": 1501.632769,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
+            "exp": "Local chain error: block execution failure: bad offenders mark",
             "got": "ok"
         }
     }

@@ -17,19 +17,19 @@
         "steps": 1,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 4.957426,
-        "import_max": 4.957426,
-        "import_mean": 4.957426,
-        "import_p50": 4.957426,
+        "import_min": 4.642552,
+        "import_max": 4.642552,
+        "import_mean": 4.642552,
+        "import_p50": 4.642552,
         "import_p75": 0.0,
-        "import_p90": 4.957426,
+        "import_p90": 4.642552,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,8 +37,8 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
@@ -46,12 +46,12 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 1878.351446,
-            "import_max": 1878.351446,
-            "import_mean": 1878.351446,
-            "import_p50": 1878.351446,
+            "import_min": 1636.02112,
+            "import_max": 1636.02112,
+            "import_mean": 1636.02112,
+            "import_p50": 1636.02112,
             "import_p75": 0.0,
-            "import_p90": 1878.351446,
+            "import_p90": 1636.02112,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

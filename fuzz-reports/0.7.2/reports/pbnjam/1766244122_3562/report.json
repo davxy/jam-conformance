@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
-        "import_p75": 0.0,
-        "import_p90": 0.0,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 6,
+        "imported": 2,
+        "import_max_step": 6,
+        "import_min": 5.461574000000001,
+        "import_max": 6.458245,
+        "import_mean": 5.9599095,
+        "import_p50": 6.458,
+        "import_p75": 6.458,
+        "import_p90": 6.458,
+        "import_p99": 6.458,
+        "import_std_dev": 0.7047528227119769
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,29 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 6,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 234.56797200000003,
-            "import_max": 234.56797200000003,
-            "import_mean": 234.56797200000003,
-            "import_p50": 234.56797200000003,
+            "import_max_step": 4,
+            "import_min": 10811.602695,
+            "import_max": 10811.602695,
+            "import_mean": 10811.602695,
+            "import_p50": 10811.602695,
             "import_p75": 0.0,
-            "import_p90": 234.56797200000003,
+            "import_p90": 10811.602695,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Failed to decode block in ImportBlock: Cannot decode natural number from empty data"
         }
     }
 }

@@ -17,19 +17,19 @@
         "steps": 3,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 7.845606,
-        "import_max": 7.845606,
-        "import_mean": 7.845606,
-        "import_p50": 7.845606,
+        "import_min": 6.009043,
+        "import_max": 6.009043,
+        "import_mean": 6.009043,
+        "import_p50": 6.009043,
         "import_p75": 0.0,
-        "import_p90": 7.845606,
+        "import_p90": 6.009043,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,15 +37,15 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
             "steps": 3,
-            "imported": 1,
-            "import_max_step": 3,
+            "imported": 0,
+            "import_max_step": 0,
             "import_min": 0.0,
             "import_max": 0.0,
             "import_mean": 0.0,
@@ -57,6 +57,9 @@
         }
     },
     "error": {
-        "communication": "Unexpected response"
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Local chain error: block header verification failure: InvalidAuthorIndex"
+        }
     }
 }

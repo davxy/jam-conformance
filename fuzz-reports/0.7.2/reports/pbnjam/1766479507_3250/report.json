@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
-        "import_p75": 0.0,
-        "import_p90": 0.0,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 5,
+        "imported": 2,
+        "import_max_step": 5,
+        "import_min": 1.750164,
+        "import_max": 1.88371,
+        "import_mean": 1.816937,
+        "import_p50": 1.883,
+        "import_p75": 1.883,
+        "import_p90": 1.883,
+        "import_p99": 1.883,
+        "import_std_dev": 0.09443128220033863
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,29 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 5,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 240.37509300000002,
-            "import_max": 240.37509300000002,
-            "import_mean": 240.37509300000002,
-            "import_p50": 240.37509300000002,
+            "import_max_step": 2,
+            "import_min": 108.317606,
+            "import_max": 108.317606,
+            "import_mean": 108.317606,
+            "import_p50": 108.317606,
             "import_p75": 0.0,
-            "import_p90": 240.37509300000002,
+            "import_p90": 108.317606,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Block slot (1) must be greater than previous block's slot (1)"
         }
     }
 }

@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
-        "import_p75": 0.0,
-        "import_p90": 0.0,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 3,
+        "imported": 2,
+        "import_max_step": 2,
+        "import_min": 7.249742,
+        "import_max": 7.928644,
+        "import_mean": 7.589193,
+        "import_p50": 7.928,
+        "import_p75": 7.928,
+        "import_p90": 7.928,
+        "import_p99": 7.928,
+        "import_std_dev": 0.4800562079611091
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,29 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 3,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 298.886914,
-            "import_max": 298.886914,
-            "import_mean": 298.886914,
-            "import_p50": 298.886914,
+            "import_max_step": 2,
+            "import_min": 8891.690806,
+            "import_max": 8891.690806,
+            "import_mean": 8891.690806,
+            "import_p50": 8891.690806,
             "import_p75": 0.0,
-            "import_p90": 298.886914,
+            "import_p90": 8891.690806,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block execution failure: assurances error: not sorted or unique assurers",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Block slot (2) must be greater than previous block's slot (2)"
         }
     }
 }

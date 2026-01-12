@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
-        "import_p75": 0.0,
-        "import_p90": 0.0,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 4,
+        "imported": 2,
+        "import_max_step": 2,
+        "import_min": 5.61162,
+        "import_max": 9.790054,
+        "import_mean": 7.700837,
+        "import_p50": 9.79,
+        "import_p75": 9.79,
+        "import_p90": 9.79,
+        "import_p99": 9.79,
+        "import_std_dev": 2.9545990161404303
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,29 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 4,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 253.330672,
-            "import_max": 253.330672,
-            "import_mean": 253.330672,
-            "import_p50": 253.330672,
+            "import_max_step": 2,
+            "import_min": 21927.480619,
+            "import_max": 21927.480619,
+            "import_mean": 21927.480619,
+            "import_p50": 21927.480619,
             "import_p75": 0.0,
-            "import_p90": 253.330672,
+            "import_p90": 21927.480619,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Block slot (9) must be greater than previous block's slot (9)"
         }
     }
 }

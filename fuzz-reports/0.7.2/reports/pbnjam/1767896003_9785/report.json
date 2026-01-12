@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
-        "import_p75": 0.0,
-        "import_p90": 0.0,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 5,
+        "imported": 2,
+        "import_max_step": 3,
+        "import_min": 1.537965,
+        "import_max": 1.562312,
+        "import_mean": 1.5501385,
+        "import_p50": 1.562,
+        "import_p75": 1.562,
+        "import_p90": 1.562,
+        "import_p99": 1.562,
+        "import_std_dev": 0.017215928801548878
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,29 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 5,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 32.743756999999995,
-            "import_max": 32.743756999999995,
-            "import_mean": 32.743756999999995,
-            "import_p50": 32.743756999999995,
+            "import_max_step": 3,
+            "import_min": 226.537813,
+            "import_max": 226.537813,
+            "import_mean": 226.537813,
+            "import_p50": 226.537813,
             "import_p75": 0.0,
-            "import_p90": 32.743756999999995,
+            "import_p90": 226.537813,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: InvalidAuthorIndex",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Block slot (2) must be greater than previous block's slot (11)"
         }
     }
 }

@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 3,
+        "imported": 1,
+        "import_max_step": 3,
+        "import_min": 188.0502,
+        "import_max": 188.0502,
+        "import_mean": 188.0502,
+        "import_p50": 188.0502,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 188.0502,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,26 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
-            "imported": 1,
-            "import_max_step": 1,
-            "import_min": 407.193391,
-            "import_max": 407.193391,
-            "import_mean": 407.193391,
-            "import_p50": 407.193391,
+            "steps": 2,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 407.193391,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: InvalidEpochMark",
-            "got": "ok"
-        }
+        "communication": "Timeout waiting for peer (potential target crash)"
     }
 }

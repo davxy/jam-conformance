@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 4,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 9.130078,
+        "import_max": 9.130078,
+        "import_mean": 9.130078,
+        "import_p50": 9.130078,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 9.130078,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,40 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 4,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 434.424808,
-            "import_max": 434.424808,
-            "import_mean": 434.424808,
-            "import_p50": 434.424808,
+            "import_max_step": 4,
+            "import_min": 18259.834425,
+            "import_max": 18259.834425,
+            "import_mean": 18259.834425,
+            "import_p50": 18259.834425,
             "import_p75": 0.0,
-            "import_p90": 434.424808,
+            "import_p90": 18259.834425,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
-            "got": "ok"
+        "state_diff": {
+            "roots": {
+                "exp": "0x361680d444e1ee40ab0ee027c855cbba670e0ee9aea27c21cae71a3372618cea",
+                "got": "0x703a48024c7d2e132140d76a14d41cfd95cda7ab509bfba9a649a4de6d6cdbf9"
+            },
+            "keyvals": [
+                {
+                    "key": "0x50d7064541b73bfec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x2d61c4a890d9fa31",
+                        "got": "0x410f6d8e4bafb336"
+                    }
+                }
+            ]
         }
     }
 }

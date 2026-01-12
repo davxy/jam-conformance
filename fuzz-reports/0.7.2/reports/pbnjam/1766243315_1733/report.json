@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 2,
-        "imported": 1,
-        "import_max_step": 1,
-        "import_min": 2.109375,
-        "import_max": 2.109375,
-        "import_mean": 2.109375,
-        "import_p50": 2.109375,
-        "import_p75": 0.0,
-        "import_p90": 2.109375,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 4,
+        "imported": 2,
+        "import_max_step": 4,
+        "import_min": 1.885492,
+        "import_max": 4.679124,
+        "import_mean": 3.2823079999999996,
+        "import_p50": 4.679,
+        "import_p75": 4.679,
+        "import_p90": 4.679,
+        "import_p99": 4.679,
+        "import_std_dev": 1.9753961313397372
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,29 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 2,
-            "imported": 2,
+            "steps": 4,
+            "imported": 1,
             "import_max_step": 1,
-            "import_min": 25.308632,
-            "import_max": 257.710193,
-            "import_mean": 141.5094125,
-            "import_p50": 257.71,
-            "import_p75": 257.71,
-            "import_p90": 257.71,
-            "import_p99": 257.71,
-            "import_std_dev": 164.3327197414391
+            "import_min": 272.770649,
+            "import_max": 272.770649,
+            "import_mean": 272.770649,
+            "import_p50": 272.770649,
+            "import_p75": 0.0,
+            "import_p90": 272.770649,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: InvalidEpochMark",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Block slot (2) must be greater than previous block's slot (2)"
         }
     }
 }
