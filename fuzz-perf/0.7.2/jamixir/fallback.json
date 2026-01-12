@@ -1,11 +1,11 @@
 {
   "info": {
     "fuzz_version": 1,
-    "fuzz_features": 0,
+    "fuzz_features": 2,
     "jam_version": {
       "major": 0,
       "minor": 7,
-      "patch": 0
+      "patch": 2
     },
     "app_version": {
       "major": 0,
@@ -17,14 +17,14 @@
   "stats": {
     "steps": 100,
     "imported": 100,
-    "import_max_step": 12,
-    "import_min": 2.735644,
-    "import_max": 58.292531000000004,
-    "import_mean": 4.40800034,
-    "import_p50": 3.214,
-    "import_p75": 3.437,
-    "import_p90": 3.653,
-    "import_p99": 7.861,
-    "import_std_dev": 7.704035561067756
+    "import_max_step": 1,
+    "import_min": 2.262516,
+    "import_max": 69.50532399999999,
+    "import_mean": 7.458607059999997,
+    "import_p50": 2.722,
+    "import_p75": 2.976,
+    "import_p90": 4.544,
+    "import_p99": 53.854,
+    "import_std_dev": 14.815112391960275
   }
 }

@@ -26,10 +26,11 @@ IMPLEMENTATION_LANGUAGES = {
     'turbojam': 'C++',
     'vinwolf': 'Rust',
     'tessera': 'Python',
-    'typeberry': 'Go',
+    'typeberry': 'TS',
     'new-jamneration': 'Go',
     'jamforge': 'Scala',
-    'graymatter': 'Elixir'
+    'graymatter': 'Elixir',
+    'pbnjam': 'TS',
 }
 
 def load_json_reports(base_path: str = ".") -> Dict[str, Dict[str, Any]]:
