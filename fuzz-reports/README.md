@@ -14,6 +14,7 @@
 
 * boka (swift)
 * fastroll (rust)
+* gossamer (go)
 * graymatter (elixir)
 * jam4s (scala)
 * jamduna (go)
@@ -32,10 +33,6 @@
 * tsjam (ts)
 * typeberry (ts)
 * vinwolf (rust)
-
-### GP 0.7.1
-
-* gossamer (go)
 
 ### GP 0.7.0
 
