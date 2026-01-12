@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 0,
+      "patch": 1
+    },
+    "app_name": "gossamer-jam"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 61,
+    "import_min": 4.246649,
+    "import_max": 939.799776,
+    "import_mean": 223.49188846,
+    "import_p50": 141.733,
+    "import_p75": 341.568,
+    "import_p90": 597.007,
+    "import_p99": 895.25,
+    "import_std_dev": 244.67115953721023
+  }
+}

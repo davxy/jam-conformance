@@ -10,7 +10,7 @@ especially important since the fuzzer will run for a significant number of steps
 (currently exact number is undefined) and we cannot wait indefinitely for
 targets to complete execution.
 
-### Testing Environment
+## Testing Environment
 
 Current performance testing is conducted on the following platform:
 - **CPU**: AMD Ryzen Threadripper 3970X 32-Core (64 threads) @ 4.55 GHz
@@ -64,7 +64,7 @@ Docker process itself is run with the following priority related environment:
 - `ionice -c1 -n0`: Set real-time I/O scheduling class with highest priority (0)
 - `taskset -c 16-31`: Pin Docker process to isolated CPU cores (16-31)
 
-### Report Categories
+## Report Categories
 
 Performance testing is currently run on the public jam-test-vectors traces to
 allow easy reproduction and optimization. We plan to provide test traces that
@@ -76,7 +76,7 @@ Current categories:
 - `storage`: At most 5 storage-related work items per report. No Safrole.
 - `storage_light`: like `storage` but with at most 1 work item per reprot.
 
-### Report Structure
+## Report Structure
 
 Performance reports are stored as JSON files with the following structure:
 
@@ -101,7 +101,7 @@ Performance reports are stored as JSON files with the following structure:
 
 Example report structure can be seen in [polkajam/storage.json].
 
-### Performance Dashboard
+## Performance Dashboard
 
 This repository provides the benchmark artifacts used by the
 [JAM Conformance Dashboard](https://paritytech.github.io/jam-conformance-dashboard/).

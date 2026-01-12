@@ -3,17 +3,17 @@
     "repo": "none",
     "file": "polkajam-fuzz",
     "cmd": "polkajam-fuzz",
-    "args": "--source remote --step-period 0 --target-sock {TARGET_SOCK}",
+    "args": "--source remote --step-period 0 --source-sock {TARGET_SOCK} --pvm-interpreter-backend false",
     "env": "RUST_LOG=off",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
-  "polkajam_int": {
+  "polkajam-int": {
     "repo": "none",
     "file": "polkajam-fuzz",
     "cmd": "polkajam-fuzz",
-    "args": "--source remote --step-period 0 --target-sock {TARGET_SOCK} --pvm-interpreter-backend",
+    "args": "--source remote --step-period 0 --source-sock {TARGET_SOCK} --pvm-interpreter-backend true",
     "env": "RUST_LOG=off",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "vinwolf": {
     "repo": "bloppan/conformance_testing",
@@ -137,7 +137,7 @@
       "macos": "gossamer-jam-tiny-macos-arm64"
     },
     "args": "target --socket {TARGET_SOCK}",
-    "gp_version": "0.7.1"
+    "gp_version": "0.7.2"
   },
   "tessera": {
     "repo": "Chainscore/tessera-releases",

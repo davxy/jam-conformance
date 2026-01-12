@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 1,
+      "patch": 0
+    },
+    "app_name": "pbnj-fuzzer-target"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 61,
+    "import_min": 113.748598,
+    "import_max": 43704.238122,
+    "import_mean": 9418.35919233,
+    "import_p50": 5547.564,
+    "import_p75": 14231.265,
+    "import_p90": 25635.211,
+    "import_p99": 38768.088,
+    "import_std_dev": 10845.692097882813
+  }
+}

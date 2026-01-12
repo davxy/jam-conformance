@@ -3,10 +3,12 @@
 # Performance table generator for JAM teams
 # Groups by test file name and creates tables sorted from fastest to slowest
 
+GP_VERSION=${GP_VERSION:-"0.7.2"}
+
 OUTPUT_DIR="summary"
 
 # Find all team perf directories 
-PERF_DIRS=$(find . -type d -not -path "./summary" -not -path "." | sort)
+PERF_DIRS=$(find "$GP_VERSION" -type d -not -path "$GP_VERSION" | sort)
 
 if [ -z "$PERF_DIRS" ]; then
     echo "No performance directories found"

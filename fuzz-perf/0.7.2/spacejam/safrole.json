@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 0,
+      "patch": 23
+    },
+    "app_name": "spacejam"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 38,
+    "import_min": 1.1781789999999999,
+    "import_max": 12.125739,
+    "import_mean": 5.442610329999998,
+    "import_p50": 6.313,
+    "import_p75": 11.422,
+    "import_p90": 11.662,
+    "import_p99": 12.085,
+    "import_std_dev": 4.424940131732687
+  }
+}
