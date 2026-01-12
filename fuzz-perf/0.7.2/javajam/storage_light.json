@@ -1,0 +1,30 @@
+{
+  "info": {
+    "fuzz_version": 1,
+    "fuzz_features": 2,
+    "jam_version": {
+      "major": 0,
+      "minor": 7,
+      "patch": 2
+    },
+    "app_version": {
+      "major": 0,
+      "minor": 3,
+      "patch": 23
+    },
+    "app_name": "JavaJAM"
+  },
+  "stats": {
+    "steps": 100,
+    "imported": 100,
+    "import_max_step": 61,
+    "import_min": 1.347926,
+    "import_max": 44.992876,
+    "import_mean": 13.439338000000005,
+    "import_p50": 10.753,
+    "import_p75": 18.838,
+    "import_p90": 30.731,
+    "import_p99": 41.081,
+    "import_std_dev": 11.06984465295818
+  }
+}

@@ -1,0 +1,36 @@
+{
+    "target": {
+        "name": "boka-fuzzing-target",
+        "app_version": {
+            "major": 0,
+            "minor": 1,
+            "patch": 0
+        },
+        "jam_version": {
+            "major": 0,
+            "minor": 6,
+            "patch": 7
+        }
+    },
+    "config": {
+        "seed": "42",
+        "profile": {
+            "Empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.0,
+        "max_mutations": 3,
+        "max_steps": 100
+    },
+    "fuzz_state": {
+        "step": 2,
+        "slot": 2
+    },
+    "roots": {
+        "exp": "0x5460d13dd524bb89230eeb6f65abc671187b1201f9d75696f2f03b4161acba5b",
+        "got": "0xf852840ad98674914e652967cadd01adf8134ff5bad4bb059af52a3bb4057351"
+    },
+    "keyvals": []
+}

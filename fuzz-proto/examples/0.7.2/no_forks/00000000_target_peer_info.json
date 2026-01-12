@@ -1,0 +1,17 @@
+{
+    "peer_info": {
+        "fuzz_version": 1,
+        "fuzz_features": 2,
+        "jam_version": {
+            "major": 0,
+            "minor": 7,
+            "patch": 2
+        },
+        "app_version": {
+            "major": 0,
+            "minor": 1,
+            "patch": 27
+        },
+        "app_name": "polkajam-target"
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 6,
+        "imported": 1,
+        "import_max_step": 6,
+        "import_min": 8.638242,
+        "import_max": 8.638242,
+        "import_mean": 8.638242,
+        "import_p50": 8.638242,
+        "import_p75": 0.0,
+        "import_p90": 8.638242,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 1
+            },
+            "app_name": "new_jamneration"
+        },
+        "stats": {
+            "steps": 6,
+            "imported": 1,
+            "import_max_step": 6,
+            "import_min": 552.149268,
+            "import_max": 552.149268,
+            "import_mean": 552.149268,
+            "import_p50": 552.149268,
+            "import_p75": 0.0,
+            "import_p90": 552.149268,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x86bc2b1f992e29b3ccce983a2b9343b8fc980f989db45e2a1efc434b2058c4f6",
+                "got": "0x694be647d822686939a6eed16cedd7b1d1194e515c1b9931c8764bc7d8ec70a2"
+            },
+            "keyvals": [
+                {
+                    "key": "0x7d64c089433f2d7dde23ae899dd80d9ea324b0fd2f4adc86117f9c27a45d36",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                }
+            ]
+        }
+    }
+}
