@@ -12,6 +12,7 @@
 | jamzilla | 50.80847 |
 | fastroll | 58.841572 |
 | jamduna | 69.349892 |
+| jamixir | 69.979096 |
 | jamzig | 83.329973 |
 | typeberry | 139.81626699999998 |
 | pyjamaz | 165.599214 |
@@ -19,10 +20,10 @@
 | tsjam | 583.918546 |
 | javajam | 662.7287309999999 |
 | new-jamneration | 1105.554525 |
+| graymatter | 1200.4575630000002 |
 | jampy | 1705.428104 |
 | jamforge | 1780.8258230000001 |
-| graymatter | 2063.599026 |
-| jamixir | 2257.3232270000003 |
+| gossamer | 3794.671208 |
 
 ## import_mean
 
@@ -36,6 +37,7 @@
 | vinwolf | 13.100836949999996 |
 | fastroll | 13.199640080000002 |
 | jamzilla | 14.73744703 |
+| jamixir | 16.484093620000003 |
 | jamzig | 18.31709187 |
 | javajam | 32.25944175 |
 | typeberry | 50.60784535000003 |
@@ -43,10 +45,10 @@
 | boka | 86.64031524999999 |
 | tsjam | 123.23225199 |
 | new-jamneration | 243.61028673999994 |
+| graymatter | 261.7149035 |
 | jamforge | 335.72060934 |
 | jampy | 358.86264948 |
-| graymatter | 433.40735968000007 |
-| jamixir | 530.2285852599999 |
+| gossamer | 761.4646541600004 |
 
 ## import_min
 
@@ -60,11 +62,12 @@
 | javajam | 1.503238 |
 | vinwolf | 1.763872 |
 | fastroll | 2.005391 |
-| graymatter | 2.217685 |
+| graymatter | 2.1851309999999997 |
+| jamixir | 2.560692 |
 | jamduna | 2.8534110000000004 |
-| jamixir | 3.679941 |
 | jamforge | 3.712361 |
 | strawberry | 4.040489 |
+| gossamer | 4.22331 |
 | boka | 4.509485 |
 | tsjam | 4.574564 |
 | pyjamaz | 7.307025 |
@@ -82,6 +85,7 @@
 | jamduna | 6.183 |
 | strawberry | 9.637 |
 | vinwolf | 9.952 |
+| jamixir | 10.379 |
 | fastroll | 10.523 |
 | jamzig | 10.66 |
 | jamzilla | 14.158 |
@@ -91,10 +95,10 @@
 | tsjam | 72.832 |
 | pyjamaz | 76.237 |
 | new-jamneration | 134.974 |
+| graymatter | 157.41 |
 | jamforge | 181.2 |
 | jampy | 189.389 |
-| jamixir | 225.489 |
-| graymatter | 244.713 |
+| gossamer | 359.79 |
 
 ## import_p75
 
@@ -107,6 +111,7 @@
 | strawberry | 17.334 |
 | vinwolf | 19.719 |
 | fastroll | 20.588 |
+| jamixir | 23.556 |
 | jamzilla | 23.715 |
 | jamzig | 28.666 |
 | javajam | 36.587 |
@@ -115,10 +120,10 @@
 | boka | 151.086 |
 | tsjam | 204.294 |
 | new-jamneration | 384.748 |
+| graymatter | 451.384 |
 | jamforge | 505.9 |
 | jampy | 568.945 |
-| graymatter | 696.901 |
-| jamixir | 902.723 |
+| gossamer | 1264.528 |
 
 ## import_p90
 
@@ -132,6 +137,7 @@
 | fastroll | 29.232 |
 | jamzilla | 32.301 |
 | vinwolf | 32.649 |
+| jamixir | 33.716 |
 | jamzig | 49.279 |
 | javajam | 57.866 |
 | typeberry | 97.075 |
@@ -139,10 +145,10 @@
 | boka | 235.449 |
 | tsjam | 332.803 |
 | new-jamneration | 643.169 |
+| graymatter | 701.03 |
 | jamforge | 988.898 |
 | jampy | 992.839 |
-| graymatter | 1186.206 |
-| jamixir | 1306.267 |
+| gossamer | 2201.288 |
 
 ## import_p99
 
@@ -156,6 +162,7 @@
 | jamzilla | 40.196 |
 | vinwolf | 40.865 |
 | fastroll | 43.68 |
+| jamixir | 65.588 |
 | jamzig | 76.647 |
 | typeberry | 122.602 |
 | pyjamaz | 153.694 |
@@ -163,10 +170,10 @@
 | boka | 309.176 |
 | tsjam | 440.1 |
 | new-jamneration | 886.251 |
+| graymatter | 972.525 |
 | jamforge | 1247.263 |
 | jampy | 1400.029 |
-| graymatter | 1679.127 |
-| jamixir | 1973.427 |
+| gossamer | 3029.021 |
 
 ## import_std_dev
 
@@ -180,6 +187,7 @@
 | fastroll | 11.569383828558566 |
 | vinwolf | 12.085944941036034 |
 | jamzilla | 12.747641621803563 |
+| jamixir | 16.39259426480418 |
 | jamzig | 20.040411522433015 |
 | typeberry | 32.006534128735076 |
 | pyjamaz | 46.89971228895819 |
@@ -187,8 +195,8 @@
 | boka | 92.048945239653 |
 | tsjam | 131.8336147960685 |
 | new-jamneration | 262.577986263686 |
+| graymatter | 291.8987331196249 |
 | jamforge | 394.78965269139024 |
 | jampy | 413.21546757185195 |
-| graymatter | 505.0817666274385 |
-| jamixir | 598.2230877915975 |
+| gossamer | 922.7483381268614 |
 
