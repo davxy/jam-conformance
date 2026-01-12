@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 16,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 8415,
+        "imported": 8415,
+        "import_max_step": 7995,
+        "import_min": 0.821125,
+        "import_max": 25.342209,
+        "import_mean": 0.9196710131907313,
+        "import_p50": 0.876,
+        "import_p75": 0.898,
+        "import_p90": 0.925,
+        "import_p99": 1.929,
+        "import_std_dev": 0.4100747257690118
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 18
+            },
+            "app_name": "FastRoll"
+        },
+        "stats": {
+            "steps": 8415,
+            "imported": 8414,
+            "import_max_step": 1169,
+            "import_min": 0.5721670000000001,
+            "import_max": 109.229041,
+            "import_mean": 0.7545489714761099,
+            "import_p50": 0.651,
+            "import_p75": 0.686,
+            "import_p90": 0.745,
+            "import_p99": 2.895,
+            "import_std_dev": 1.3988477658876781
+        }
+    },
+    "state_diff": null,
+    "import_diff": {
+        "exp": "ok",
+        "got": "BlockHeaderDBError: CachedDBError: CoreDBError: RocksDB error: IO error: No such file or directory: While open a file for appending: /var/folders/mz/rp8k2sw55g7_nkr6n3g17cnm0000gn/T/.tmpHGuHXT/fuzz_target_db /000008.log: No such file or directory"
+    }
+}

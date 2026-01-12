@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 7.183205,
+        "import_max": 7.183205,
+        "import_mean": 7.183205,
+        "import_p50": 7.183205,
+        "import_p75": 0.0,
+        "import_p90": 7.183205,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "jamzig-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 6.178119000000001,
+            "import_max": 6.178119000000001,
+            "import_mean": 6.178119000000001,
+            "import_p50": 6.178119000000001,
+            "import_p75": 0.0,
+            "import_p90": 6.178119000000001,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "state_diff": {
+        "roots": {
+            "exp": "0x1eed8760dc9f9b1d45e4c79d72251d0058f32eeb5b660c75bf616d52c4614a7a",
+            "got": "0xd138867fca246c1f61de5b6c6e4d399d378f01468523310ab625c7a6a0a635f9"
+        },
+        "keyvals": [
+            {
+                "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                "diff": {
+                    "exp": "0x0000000000000000000000000000000000",
+                    "got": "0x000000000000000000000000597c9c9b00"
+                }
+            }
+        ]
+    },
+    "import_diff": null
+}

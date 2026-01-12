@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 8.787182,
+        "import_max": 8.787182,
+        "import_mean": 8.787182,
+        "import_p50": 8.787182,
+        "import_p75": 0.0,
+        "import_p90": 8.787182,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "boka-fuzzing-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 73.975235,
+            "import_max": 73.975235,
+            "import_mean": 73.975235,
+            "import_p50": 73.975235,
+            "import_p75": 0.0,
+            "import_p90": 73.975235,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "diff": {
+        "state": {
+            "roots": {
+                "exp": "0x054f9c102edbf590567d2848464c1326d183483c6f1b1615ed0962199f50f784",
+                "got": "0x96793932d89edaac0581445b9fe18499effd31580c1b586ab570a45b4352078c"
+            },
+            "keyvals": [
+                {
+                    "key": "0xcdd7584519b7e1fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0x70e7444348e3af86",
+                        "got": "0xb4ff8306bb85b098"
+                    }
+                }
+            ]
+        }
+    }
+}
