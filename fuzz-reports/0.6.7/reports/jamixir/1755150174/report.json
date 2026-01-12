@@ -1,0 +1,51 @@
+{
+    "target": {
+        "name": "Jamixir",
+        "app_version": {
+            "major": 0,
+            "minor": 2,
+            "patch": 4
+        },
+        "jam_version": {
+            "major": 0,
+            "minor": 6,
+            "patch": 7
+        }
+    },
+    "config": {
+        "seed": "42",
+        "profile": {
+            "Empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.0,
+        "max_mutations": 3,
+        "max_steps": 100
+    },
+    "fuzz_state": {
+        "step": 0,
+        "slot": 0
+    },
+    "roots": {
+        "exp": "0xde491f52cfef134fe895168553ff2ad7f090498b8df8a024770b67879ed94779",
+        "got": "0x528d7b0835da4fea6e9938b710f7b3f5aa38ba316a7fcd2956bc1cb7b921363b"
+    },
+    "keyvals": [
+        {
+            "key": "0x00f5009a00d200631b4f8e53d6450360710aefb553b15462553eecc02c0eff",
+            "diff": {
+                "exp": "0x3200000000000000",
+                "got": "0x"
+            }
+        },
+        {
+            "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+            "diff": {
+                "exp": "0xd5af3c9f17be352e5ccc5a16ede5fa96f272d95e6b9e2638a4cd483699e402d0ffffffffffffffff0a000000000000000a00000000000000a376020000000000ffffffffffffffff05000000000000001800000000000000",
+                "got": "0xd5af3c9f17be352e5ccc5a16ede5fa96f272d95e6b9e2638a4cd483699e402d0ffffffffffffffff0a000000000000000a000000000000006576020000000000ffffffffffffffff04000000000000001800000000000000"
+            }
+        }
+    ]
+}

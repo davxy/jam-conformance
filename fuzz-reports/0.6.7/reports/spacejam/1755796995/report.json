@@ -1,0 +1,44 @@
+{
+    "target": {
+        "name": "spacejam",
+        "app_version": {
+            "major": 0,
+            "minor": 0,
+            "patch": 5
+        },
+        "jam_version": {
+            "major": 0,
+            "minor": 6,
+            "patch": 7
+        }
+    },
+    "config": {
+        "seed": "42",
+        "profile": {
+            "Empty": null
+        },
+        "safrole": false,
+        "max_work_items": 1,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.0,
+        "max_mutations": 3,
+        "max_steps": 100
+    },
+    "fuzz_state": {
+        "step": 1,
+        "slot": 11
+    },
+    "roots": {
+        "exp": "0x18404679833857d87ef448f66c4bf030eb535bd2494dc1ccea424ad4653680ec",
+        "got": "0x183940d9cd5d844bd9d7dd58a0c76183b7d51afc40d84b74feea89c0a8d3712c"
+    },
+    "keyvals": [
+        {
+            "key": "0x929a5b70ae0e94259c585b524dfe81a6988ef4ecee1beda1cc2c7be732edf9",
+            "diff": {
+                "exp": "0x6000000000000000f7b71c239cdd109a6b0f7c5ecbe4f42e3bbf13c10050752ccb0cd212bf91fc5d8c41020000000000763101000000000010270000000000001027000000000000e030010000000000050000000000000000000000060000000000000000000000",
+                "got": "0x6000000000000000f7b71c239cdd109a6b0f7c5ecbe4f42e3bbf13c10050752ccb0cd212bf91fc5d8c41020000000000763101000000000010270000000000001027000000000000e030010000000000050000000000000000000000060000000b00000000000000"
+            }
+        }
+    ]
+}

@@ -1,0 +1,59 @@
+{
+    "config": {
+        "seed": "42",
+        "profile": {
+            "storage_and_preimages": null
+        },
+        "safrole": false,
+        "max_work_items": 16,
+        "max_service_keys": 10,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "max_steps": 10000
+    },
+    "stats": {
+        "steps": 3912,
+        "imported": 3912,
+        "import_max_step": 849,
+        "import_min": 0.878416,
+        "import_max": 33.615208,
+        "import_mean": 4.420541567995935,
+        "import_p50": 3.352,
+        "import_p75": 6.796,
+        "import_p90": 9.529,
+        "import_p99": 14.688,
+        "import_std_dev": 3.6091526074308096
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 1
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 18
+            },
+            "app_name": "FastRoll"
+        },
+        "stats": {
+            "steps": 3911,
+            "imported": 3911,
+            "import_max_step": 879,
+            "import_min": 0.649583,
+            "import_max": 189.272167,
+            "import_mean": 29.297376807977486,
+            "import_p50": 18.593,
+            "import_p75": 49.73,
+            "import_p90": 74.676,
+            "import_p99": 123.899,
+            "import_std_dev": 31.38768690924641
+        }
+    },
+    "state_diff": null,
+    "import_diff": null
+}
