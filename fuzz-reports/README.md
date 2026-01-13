@@ -30,11 +30,11 @@
 * pyjamaz (python)
 * spacejam (rust)
 * strawberry (go)
+* tessera (python)
 * tsjam (ts)
 * typeberry (ts)
 * vinwolf (rust)
 
 ### GP 0.7.0
 
-* tessera (python)
 * turbojam (c++)

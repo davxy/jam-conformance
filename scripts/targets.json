@@ -146,7 +146,7 @@
       "macos": "tessera-node-Darwin-arm64.tar.gz"
     },
     "cmd": "tessera-node --fuzzer --socket {TARGET_SOCK}",
-    "gp_version": "0.7.0"
+    "gp_version": "0.7.2"
   },
   "typeberry": {
     "image": "ghcr.io/fluffylabs/typeberry:latest",
@@ -179,7 +179,7 @@
     "env": "CONFIG_FILE=app/config/node-dev.conf",
     "gp_version": "0.7.2"
   },
-    "pbnjam": {
+  "pbnjam": {
     "image": "shimonchick/pbnjam-fuzzer-target:latest",
     "cmd": "--socket {TARGET_SOCK}",
     "gp_version": "0.7.2"
