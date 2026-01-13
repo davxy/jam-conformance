@@ -550,13 +550,38 @@ def run_docker_image(target: str, args=None) -> None:
         print(f"Please run: {sys.argv[0]} get {target}")
         sys.exit(1)
 
+    # Create a dedicated temporary directory for the container to avoid polluting host /tmp
+    container_tmp_dir = tempfile.mkdtemp(prefix=f"jam_{container_name}_")
+    print(f"Container temp dir: {container_tmp_dir}")
+
+    # Create a symlink from TARGET_SOCK to the socket inside the container temp dir
+    # so the host can access it at the expected path
+    socket_basename = os.path.basename(TARGET_SOCK)
+    container_socket_path = os.path.join(container_tmp_dir, socket_basename)
+
+    # Remove existing socket/symlink if present
+    try:
+        os.unlink(TARGET_SOCK)
+    except FileNotFoundError:
+        pass
+
+    # Create symlink: TARGET_SOCK -> container_socket_path
+    os.symlink(container_socket_path, TARGET_SOCK)
+    print(f"Socket symlink: {TARGET_SOCK} -> {container_socket_path}")
 
     def cleanup_docker():
         print(f"Cleaning up Docker container {container_name}...")
         subprocess.run(["docker", "kill", container_name], capture_output=True)
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
+        # Remove the symlink
         try:
             os.unlink(TARGET_SOCK)
+        except FileNotFoundError:
+            pass
+        # Remove the dedicated temp directory and all its contents
+        try:
+            shutil.rmtree(container_tmp_dir)
+            print(f"Cleaned up container temp dir: {container_tmp_dir}")
         except FileNotFoundError:
             pass
 
@@ -613,7 +638,7 @@ def run_docker_image(target: str, args=None) -> None:
         "--cap-add",
         "IPC_LOCK",
         "-v",
-        "/tmp:/tmp",
+        f"{container_tmp_dir}:/tmp",
     ]
 
     if env:
