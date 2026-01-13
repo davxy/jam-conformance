@@ -174,7 +174,7 @@
     "gp_version": "0.7.2"
   },
   "jam4s": {
-    "image": "jamforscala/jam4s:0.7.2-rc.6-amd64",
+    "image": "jamforscala/jam4s:0.7.2-rc.7-amd64",
     "cmd": "--fuzz --seed 0 --socket {TARGET_SOCK}",
     "env": "CONFIG_FILE=app/config/node-dev.conf",
     "gp_version": "0.7.2"
