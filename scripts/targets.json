@@ -51,12 +51,10 @@
   "jamduna": {
     "repo": "jam-duna/jamtestnet",
     "file": {
-      "linux": "duna_target_linux",
-      "macos": "duna_target_mac"
+      "linux": "duna_target_linux"
     },
     "cmd": {
-      "linux": "duna_target_linux",
-      "macos": "duna_target_mac"
+      "linux": "duna_target_linux"
     },
     "args": "--socket {TARGET_SOCK}",
     "gp_version": "0.7.2"
