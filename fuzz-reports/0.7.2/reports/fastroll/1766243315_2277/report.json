@@ -17,12 +17,12 @@
         "steps": 2,
         "imported": 1,
         "import_max_step": 1,
-        "import_min": 9.222275999999999,
-        "import_max": 9.222275999999999,
-        "import_mean": 9.222275999999999,
-        "import_p50": 9.222275999999999,
+        "import_min": 8.766623,
+        "import_max": 8.766623,
+        "import_mean": 8.766623,
+        "import_p50": 8.766623,
         "import_p75": 0.0,
-        "import_p90": 9.222275999999999,
+        "import_p90": 8.766623,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,7 +38,7 @@
             "app_version": {
                 "major": 0,
                 "minor": 1,
-                "patch": 28
+                "patch": 31
             },
             "app_name": "FastRoll"
         },
@@ -46,12 +46,12 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 21.416203000000003,
-            "import_max": 21.416203000000003,
-            "import_mean": 21.416203000000003,
-            "import_p50": 21.416203000000003,
+            "import_min": 24.601242,
+            "import_max": 24.601242,
+            "import_mean": 24.601242,
+            "import_p50": 24.601242,
             "import_p75": 0.0,
-            "import_p90": 21.416203000000003,
+            "import_p90": 24.601242,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
