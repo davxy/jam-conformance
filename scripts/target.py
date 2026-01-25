@@ -221,6 +221,18 @@ Use 'info all' to see available targets.
         action="store_true",
         help="Force host usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
     )
+    run_parser.add_argument(
+        "--target-args",
+        type=str,
+        default="",
+        help="Extra target args to append to the ones found in target.json"
+    )
+    run_parser.add_argument(
+        "--target-env",
+        type=str,
+        default="",
+        help="Extra environment variables (space-separated KEY=VALUE pairs) to extend target env"
+    )
 
     run_parser.add_argument(
         "--container-name",
@@ -645,6 +657,10 @@ def run_docker_image(target: str, args=None) -> None:
         for var in env.split():
             docker_cmd.extend(["-e", var])
 
+    if args and args.target_env:
+        for var in args.target_env.split():
+            docker_cmd.extend(["-e", var])
+
     if image == DEFAULT_DOCKER_IMAGE:
         docker_cmd.extend(["-w", "/jam"])
         docker_cmd.extend(["-e", "HOME=/jam"])
@@ -927,6 +943,8 @@ def run_target(target: str, os_name: str, args=None) -> None:
     command_args = target_obj.get_args()
     if command_args is not None:
         full_command += f" {command_args}"
+    if args.target_args:
+        full_command += f" {args.target_args}"
 
     if RUN_DOCKER == 1:
         # Overwrite target information and run it in a dedicated docker image
@@ -971,6 +989,12 @@ def run_target(target: str, os_name: str, args=None) -> None:
         if env:
             # Export environment variables
             for var in env.split():
+                if "=" in var:
+                    key, value = var.split("=", 1)
+                    os.environ[key] = value
+
+        if args.target_env:
+            for var in args.target_env.split():
                 if "=" in var:
                     key, value = var.split("=", 1)
                     os.environ[key] = value
