@@ -16,15 +16,15 @@
     "stats": {
         "steps": 4,
         "imported": 2,
-        "import_max_step": 4,
-        "import_min": 5.310955,
-        "import_max": 5.833895,
-        "import_mean": 5.572425,
-        "import_p50": 5.833,
-        "import_p75": 5.833,
-        "import_p90": 5.833,
-        "import_p99": 5.833,
-        "import_std_dev": 0.36977442015369333
+        "import_max_step": 3,
+        "import_min": 4.287711,
+        "import_max": 6.091405,
+        "import_mean": 5.189558,
+        "import_p50": 6.091,
+        "import_p75": 6.091,
+        "import_p90": 6.091,
+        "import_p99": 6.091,
+        "import_std_dev": 1.2754042585854888
     },
     "target": {
         "info": {
@@ -46,14 +46,14 @@
             "steps": 4,
             "imported": 2,
             "import_max_step": 4,
-            "import_min": 271.217881,
-            "import_max": 402.47185,
-            "import_mean": 336.84486549999997,
-            "import_p50": 402.471,
-            "import_p75": 402.471,
-            "import_p90": 402.471,
-            "import_p99": 402.471,
-            "import_std_dev": 92.81057153754894
+            "import_min": 304.531458,
+            "import_max": 465.213985,
+            "import_mean": 384.8727215,
+            "import_p50": 465.213,
+            "import_p75": 465.213,
+            "import_p90": 465.213,
+            "import_p99": 465.213,
+            "import_std_dev": 113.6197044598905
         }
     },
     "error": {

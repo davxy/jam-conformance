@@ -51,10 +51,12 @@
   "jamduna": {
     "repo": "jam-duna/jamtestnet",
     "file": {
-      "linux": "duna_target_linux"
+      "linux": "duna_target_linux",
+      "macos": "duna_target_mac"
     },
     "cmd": {
-      "linux": "duna_target_linux"
+      "linux": "duna_target_linux",
+      "macos": "duna_target_mac"
     },
     "args": "--socket {TARGET_SOCK}",
     "gp_version": "0.7.2"
@@ -92,7 +94,8 @@
   "tsjam": {
     "repo": "vekexasia/tsjam-releases",
     "file": "tsjam-fuzzer-target.tgz",
-    "cmd": "tsjam-fuzzer-target/jam-fuzzer-target --socket {TARGET_SOCK}",
+    "cmd": "tsjam-fuzzer-target/jam-fuzzer-target",
+    "args": "--socket {TARGET_SOCK}",
     "env": "JAM_CONSTANTS=tiny NODE_OPTIONS=\"--max-old-space-size=8192\"",
     "gp_version": "0.7.2"
   },

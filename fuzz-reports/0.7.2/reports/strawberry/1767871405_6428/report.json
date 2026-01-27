@@ -17,12 +17,12 @@
         "steps": 5,
         "imported": 1,
         "import_max_step": 5,
-        "import_min": 7.586427,
-        "import_max": 7.586427,
-        "import_mean": 7.586427,
-        "import_p50": 7.586427,
+        "import_min": 11.134518,
+        "import_max": 11.134518,
+        "import_mean": 11.134518,
+        "import_p50": 11.134518,
         "import_p75": 0.0,
-        "import_p90": 7.586427,
+        "import_p90": 11.134518,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -44,22 +44,33 @@
         },
         "stats": {
             "steps": 5,
-            "imported": 0,
-            "import_max_step": 0,
-            "import_min": 0.0,
-            "import_max": 0.0,
-            "import_mean": 0.0,
-            "import_p50": 0.0,
+            "imported": 1,
+            "import_max_step": 5,
+            "import_min": 39.338657,
+            "import_max": 39.338657,
+            "import_mean": 39.338657,
+            "import_p50": 39.338657,
             "import_p75": 0.0,
-            "import_p90": 0.0,
+            "import_p90": 39.338657,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "ok",
-            "got": "Chain error: failed to import block: no record of header found"
+        "state_diff": {
+            "roots": {
+                "exp": "0x27f3b179b2a652ebd16f264e27805c3db1474534ee2c5bbc1ab5d15aa3d77319",
+                "got": "0xf1188372e210ed8abeb58c057fedc9e7867705e116f7dcd503a8e891cd21454a"
+            },
+            "keyvals": [
+                {
+                    "key": "0x83d761450db727fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
+                    "diff": {
+                        "exp": "0xb7a8be03cc7e5312",
+                        "got": "0xdc5762407dc3c5b8"
+                    }
+                }
+            ]
         }
     }
 }
