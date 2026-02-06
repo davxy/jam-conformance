@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 5,
+        "imported": 1,
+        "import_max_step": 5,
+        "import_min": 2.01392,
+        "import_max": 2.01392,
+        "import_mean": 2.01392,
+        "import_p50": 2.01392,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 2.01392,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,40 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 5,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 622.1285519999999,
-            "import_max": 622.1285519999999,
-            "import_mean": 622.1285519999999,
-            "import_p50": 622.1285519999999,
+            "import_max_step": 5,
+            "import_min": 717.0252230000001,
+            "import_max": 717.0252230000001,
+            "import_mean": 717.0252230000001,
+            "import_p50": 717.0252230000001,
             "import_p75": 0.0,
-            "import_p90": 622.1285519999999,
+            "import_p90": 717.0252230000001,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: InvalidAuthorIndex",
-            "got": "ok"
+        "state_diff": {
+            "roots": {
+                "exp": "0x5b1fa50810390b153fc8510ad31c675dde15a37764fdb0d30440f944410ff005",
+                "got": "0xc44b72f1ef37ad0362978d66d7a38402c8286b23b30c48a5189e0139b6c5a652"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0e000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x0000000000000000000000012060506493aae48d283913fd697e63f0eb9909fbf70a74ea1373f62bf2c334c1e409000086819e1ab73598fee0a7c1fa68ca53fe261c25af0add026d51e15c8227f4a245000000000000000000000000000000000000000000000000000000000000000000001c1f1583107d4f594f75fc89600743d4369b3ebc16f622cae17c3654f2a3a01ab470c748974de141ae6d80649052439d3661a417863a15b682afba276fe401741978bdc2f9989334b4d216e72a14297dd9b06c8feaf1f80cde76cf1057786a2b1c1f1583107d4f594f75fc89600743d4369b3ebc16f622cae17c3654f2a3a01a090000000308da0215573e12f61bcf9618da726abbaabe90263615eeb6375daca90d1d3b58b4db5c32c9f1c92e820d7cec58853de61500ce7e2f4d1fc2e9610c7e7d380728e2734a95ea50e5d1a6438403c9e7896d088151859c517310b628345f31d0d815002357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f8030000043c66fa00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1ed46eab67ed15f4c109821e932a9fea9371e331626649b1d93ed4a0cce919543aa025260000000000001b010106000000001266fa003c66fa006666fa001fb8286937fd008c8b8c00017d006666fa00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e8a928ccbb330b492d06465137b3f6c5f19d539021ab1d0feaf756a8d8c0b57dfa025260000000000001b010106000000001266fa003c66fa006666fa001fb82869bc0e0f038bb8000982070000000000d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327114b0ec7fcc2cdd779874dff566ee920df6e612b6b68875fa3a0604e1e639157a0252600000000000080c30100bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e3d390200000000001027000000000000102700000000000085c8020000000000676966740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b2aa00028096001266fa00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e4f31ebfd2e1e8091dca901ff4a4f1c625091483a793dacfedde5082fe4f062d3a025260000000000001b010106000000001266fa003c66fa006666fa001fb828699d94954f8bb80006813e000108da0215573e12f61bcf9618da726abbaabe90263615eeb6375daca90d1d3b58",
+                        "got": "0x000000000000000000000000"
+                    }
+                }
+            ]
         }
     }
 }

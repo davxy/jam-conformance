@@ -14,15 +14,15 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 4,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 5,
+        "imported": 1,
+        "import_max_step": 5,
+        "import_min": 160.310251,
+        "import_max": 160.310251,
+        "import_mean": 160.310251,
+        "import_p50": 160.310251,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 160.310251,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -43,20 +43,34 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 3,
-            "imported": 0,
-            "import_max_step": 0,
-            "import_min": 0.0,
-            "import_max": 0.0,
-            "import_mean": 0.0,
-            "import_p50": 0.0,
+            "steps": 5,
+            "imported": 1,
+            "import_max_step": 5,
+            "import_min": 16669.609951,
+            "import_max": 16669.609951,
+            "import_mean": 16669.609951,
+            "import_p50": 16669.609951,
             "import_p75": 0.0,
-            "import_p90": 0.0,
+            "import_p90": 16669.609951,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "communication": "Timeout waiting for peer (potential target crash)"
+        "state_diff": {
+            "roots": {
+                "exp": "0xfb062f9ced092e4cce5fe19c4e87ae19b2b7cb3bffb12829062444528714abfd",
+                "got": "0x708ff8678f97275ad496021f388c4c2b3158f7b784a352d61d2f3f7648fea271"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0e000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00000000000001f5ac0f7c73cbd798817eeee737c904662b453d6908bc2d377195fe95047a3725ea01000062b3a18295b4a4e0ef582092fc4d5934a23891347c8785f5bebbdf930ea192a60000000000000000000000000000000000000000000000000000000000000000000082644a42e1f01a6905baab9a1297444e5747507c68f538e9f560e01c1822d1b6f7fab4a29607600ea920dfed1d8c76da3837d90225cfebc9af62ba301a0ee3b6027f85a5d8b1b09e90167e3159432154d06b85b514e842e91817821227b80c3f82644a42e1f01a6905baab9a1297444e5747507c68f538e9f560e01c1822d1b62d000000020557ff280f8f25f9f63eda5a9aabd2712293a467dc2e5657236945c693187818ee4bbbe69827b1b9c7b421ec1f95eba6097ed5bc7e62947a898bc3476641a58f002357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f80300000195b15ddcbb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1ed171eca937d09129d978a48415056f1872e8cd22297270df7edbebb4211149fc8096980000000000002b01010a0000000057ad817acb931a90f5931a9075a1da95133629ce95b15ddce9a9c0eaa148dbfa12160c538b100001760001ee4bbbe69827b1b9c7b421ec1f95eba6097ed5bc7e62947a898bc3476641a58f0000000000",
+                        "got": "0x000000000000000000000000"
+                    }
+                }
+            ]
+        }
     }
 }

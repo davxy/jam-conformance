@@ -14,22 +14,22 @@
         "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 6,
+        "imported": 1,
+        "import_max_step": 6,
+        "import_min": 10.643336,
+        "import_max": 10.643336,
+        "import_mean": 10.643336,
+        "import_p50": 10.643336,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 10.643336,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
         "info": {
             "fuzz_version": 1,
-            "fuzz_features": 2,
+            "fuzz_features": 0,
             "jam_version": {
                 "major": 0,
                 "minor": 7,
@@ -37,29 +37,40 @@
             },
             "app_version": {
                 "major": 0,
-                "minor": 1,
-                "patch": 0
+                "minor": 7,
+                "patch": 2
             },
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 1,
+            "steps": 6,
             "imported": 1,
-            "import_max_step": 1,
-            "import_min": 462.455962,
-            "import_max": 462.455962,
-            "import_mean": 462.455962,
-            "import_p50": 462.455962,
+            "import_max_step": 6,
+            "import_min": 14904.276161,
+            "import_max": 14904.276161,
+            "import_mean": 14904.276161,
+            "import_p50": 14904.276161,
             "import_p75": 0.0,
-            "import_p90": 462.455962,
+            "import_p90": 14904.276161,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report refers to slot in the future",
-            "got": "ok"
+        "state_diff": {
+            "roots": {
+                "exp": "0x389997685120e425bfa073789d8a7e6d262554fffcf02a078093b18ad0cba7aa",
+                "got": "0xcda26b0fac115d850bd8d262d83cbf773fc95d51948ca39f906d90289d221a99"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0e000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x000000000137e9137c7561c66d9229805e1da4a6bd684ae06fedef68cb07f85d8cccd0c010550a000078eb474c05a1b2678a3a99bb2fb532e7a411a289cdb82bc6852315f6659c979b000000000000000000000000000000000000000000000000000000000000000000002e7fc73093ca454ed8ed4f827b75211c6a7de74a7f9fc963da2d7bb3b0c3572cf05dc124e70dee5e982414b60ee98f51223b8df3f86111edea3080b69205cdb0e54621604da14ad104220ebab338f75809b2db33d25c8aa7610bc5e4a4fd40bb2e7fc73093ca454ed8ed4f827b75211c6a7de74a7f9fc963da2d7bb3b0c3572ccc0f000002990ced1b20e57f3b69a38e07c382ae9f7c77a409520ad7c179d8e9673be5f98cbc65ae010c5d5f84588223e1ed78c3a054e13c6eb05a8a6eea4fb02705a472f1002357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f803000002a6a8a4e6bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e2b8b4ce992140e3168851d228a6e8b99ebc7f0b7d4aa2c82fbd379e875e50e29404b4c0000000000004301011000000000b1db9504fa4a2c10c1104f1ef163f332a62e34564a7df364fa0ff68265956b8818c1f89c731fb3b5a3e60edfa6a8a4e6e1146bf2350202f4e329e2fc8b29000b835500a62e3456bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e9cd807a887e37df90d10e8fb1df15ae79f0b9f7f0635bfe15901f186285b7a2d404b4c0000000000004301011000000000b1db9504fa4a2c10c1104f1ef163f332a62e34564a7df364fa0ff68265956b8818c1f89c731fb3b5a3e60edfa6a8a4e6e1146bf2350202f410c6da8a8b550009824c0001990ced1b20e57f3b69a38e07c382ae9f7c77a409520ad7c179d8e9673be5f98c00000000000000",
+                        "got": "0x000000000000000000000000"
+                    }
+                }
+            ]
         }
     }
 }
