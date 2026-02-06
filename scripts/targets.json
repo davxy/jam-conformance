@@ -80,6 +80,15 @@
     "file": "jamzilla-tiny",
     "cmd": "jamzilla-tiny",
     "args": "-socket {TARGET_SOCK}",
+    "env": "PVM_MODE=jit",
+    "gp_version": "0.7.2"
+  },
+   "jamzilla-int": {
+    "repo": "ascrivener/jam",
+    "file": "jamzilla-tiny",
+    "cmd": "jamzilla-tiny",
+    "args": "-socket {TARGET_SOCK}",
+    "env": "PVM_MODE=interpreter",
     "gp_version": "0.7.2"
   },
   "spacejam": {
