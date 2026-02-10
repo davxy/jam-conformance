@@ -17,14 +17,14 @@
         "steps": 5,
         "imported": 2,
         "import_max_step": 5,
-        "import_min": 4.88156,
-        "import_max": 5.181085,
-        "import_mean": 5.0313225,
-        "import_p50": 5.181,
-        "import_p75": 5.181,
-        "import_p90": 5.181,
-        "import_p99": 5.181,
-        "import_std_dev": 0.211796158634901
+        "import_min": 5.270279,
+        "import_max": 6.538594,
+        "import_mean": 5.9044365,
+        "import_p50": 6.538,
+        "import_p75": 6.538,
+        "import_p90": 6.538,
+        "import_p99": 6.538,
+        "import_std_dev": 0.8968341371806156
     },
     "target": {
         "info": {
@@ -46,59 +46,17 @@
             "steps": 5,
             "imported": 2,
             "import_max_step": 5,
-            "import_min": 151.207385,
-            "import_max": 319.494314,
-            "import_mean": 235.35084949999998,
-            "import_p50": 319.494,
-            "import_p75": 319.494,
-            "import_p90": 319.494,
-            "import_p99": 319.494,
-            "import_std_dev": 118.99682868095906
+            "import_min": 167.932381,
+            "import_max": 394.58676599999995,
+            "import_mean": 281.2595735,
+            "import_p50": 394.586,
+            "import_p75": 394.586,
+            "import_p90": 394.586,
+            "import_p99": 394.586,
+            "import_std_dev": 160.26885261916647
         }
     },
     "error": {
-        "state_diff": {
-            "roots": {
-                "exp": "0x766c76b7dcb1daa24408afce64015a381c08a3bc2811fe033e3e84e7b62c2891",
-                "got": "0xa845720ee0dc9b52258e56d70249aafb3a07993efb0103c381fbc4138b7f2f01"
-            },
-            "keyvals": [
-                {
-                    "key": "0x004400b500a400aaa0d7f8eab5ca1cca4a0472988422febc68a6b6a944cabf",
-                    "diff": {
-                        "exp": "0x4cf9a5ec",
-                        "got": "0x4df9a5ec"
-                    }
-                },
-                {
-                    "key": "0x4c2cf9ffa530ec44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x00",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0x4d2cf9ffa530ec44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x00"
-                    }
-                },
-                {
-                    "key": "0xff4c00f900a500ec0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e689c040000000000102700000000000010270000000000008e39020000000000000000000000000002000000120000000000000000000000",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xff4d00f900a500ec0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e689c040000000000102700000000000010270000000000008e39020000000000000000000000000002000000120000000000000000000000"
-                    }
-                }
-            ]
-        }
+        "communication": "Unexpected response"
     }
 }
