@@ -17,6 +17,7 @@ IMPLEMENTATION_LANGUAGES = {
     'jamixir': 'Elixir',
     'jamzig': 'Zig',
     'jamzilla': 'Go',
+    'jamzilla-int': 'Go',
     'javajam': 'Java',
     'polkajam': 'Rust',
     'polkajam-int': 'Rust',

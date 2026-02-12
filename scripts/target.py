@@ -490,19 +490,22 @@ def get_github_release(target: str, os_name: str) -> bool:
     download_url = f"https://github.com/{repo}/releases/download/{latest_tag}/{file}"
     print(f"Downloading from: {download_url}")
 
-    # Download the file
+    # Download to a temporary file to avoid race conditions when
+    # multiple targets share the same filename (e.g., jamzilla and jamzilla-int)
     try:
-        urllib.request.urlretrieve(download_url, file)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{file}") as tmp:
+            tmp_path = tmp.name
+        urllib.request.urlretrieve(download_url, tmp_path)
     except Exception as e:
         print(f"Error: Download failed: {e}")
         return False
 
-    print(f"Downloading target to file: {file}")
+    print(f"Downloaded target to: {tmp_path}")
     target_dir = Path(f"{TARGETS_DIR}/{target}")
     target_dir_rev = target_dir / latest_tag
 
     target_dir_rev.mkdir(parents=True, exist_ok=True)
-    shutil.move(file, target_dir_rev / file)
+    shutil.move(tmp_path, target_dir_rev / file)
     print(f"* Target downloaded to: {target_dir_rev}")
 
 
