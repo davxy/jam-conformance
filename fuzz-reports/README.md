@@ -32,9 +32,6 @@
 * strawberry (go)
 * tessera (python)
 * tsjam (ts)
+* turbojam (c++)
 * typeberry (ts)
 * vinwolf (rust)
-
-### GP 0.7.0
-
-* turbojam (c++)
