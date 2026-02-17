@@ -116,7 +116,7 @@
   "turbojam": {
     "image": "r2rationality/turbojam-fuzz:latest",
     "cmd": "fuzzer-api {TARGET_SOCK}",
-    "gp_version": "0.7.0"
+    "gp_version": "0.7.2"
   },
   "graymatter": {
     "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",

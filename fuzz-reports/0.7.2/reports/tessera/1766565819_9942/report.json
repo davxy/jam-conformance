@@ -17,14 +17,14 @@
         "steps": 3,
         "imported": 2,
         "import_max_step": 2,
-        "import_min": 6.300067,
-        "import_max": 6.560786,
-        "import_mean": 6.4304265,
-        "import_p50": 6.56,
-        "import_p75": 6.56,
-        "import_p90": 6.56,
-        "import_p99": 6.56,
-        "import_std_dev": 0.18435617288417544
+        "import_min": 6.174644,
+        "import_max": 6.870704,
+        "import_mean": 6.522674,
+        "import_p50": 6.87,
+        "import_p75": 6.87,
+        "import_p90": 6.87,
+        "import_p99": 6.87,
+        "import_std_dev": 0.4921887461127087
     },
     "target": {
         "info": {
@@ -46,31 +46,17 @@
             "steps": 3,
             "imported": 2,
             "import_max_step": 3,
-            "import_min": 140.33066399999998,
-            "import_max": 223.45682,
-            "import_mean": 181.89374199999997,
-            "import_p50": 223.456,
-            "import_p75": 223.456,
-            "import_p90": 223.456,
-            "import_p99": 223.456,
-            "import_std_dev": 58.77906860157083
+            "import_min": 150.96869900000002,
+            "import_max": 232.880589,
+            "import_mean": 191.924644,
+            "import_p50": 232.88,
+            "import_p75": 232.88,
+            "import_p90": 232.88,
+            "import_p99": 232.88,
+            "import_std_dev": 57.92045287880653
         }
     },
     "error": {
-        "state_diff": {
-            "roots": {
-                "exp": "0x030c5d58e0e217e9a4c5c795a32e7bf202365d2a1de3b3b6a4878e1f49f32a75",
-                "got": "0x1b637d8a567a1583c6583409d802de820c10be564ef74eb826714f9c7c7031fd"
-            },
-            "keyvals": [
-                {
-                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ffffffffffffffff0a000000000000000a00000000000000d819020000000000ffffffffffffffff07000000000000000200000000000000",
-                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ffffffffffffffff0a000000000000000a000000000000005019020000000000ffffffffffffffff04000000000000000200000000000000"
-                    }
-                }
-            ]
-        }
+        "communication": "Unexpected response"
     }
 }

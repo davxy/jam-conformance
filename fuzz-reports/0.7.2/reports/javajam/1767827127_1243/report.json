@@ -17,12 +17,12 @@
         "steps": 3,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 145.970045,
-        "import_max": 145.970045,
-        "import_mean": 145.970045,
-        "import_p50": 145.970045,
+        "import_min": 8.895135,
+        "import_max": 8.895135,
+        "import_mean": 8.895135,
+        "import_p50": 8.895135,
         "import_p75": 0.0,
-        "import_p90": 145.970045,
+        "import_p90": 8.895135,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,39 +38,25 @@
             "app_version": {
                 "major": 0,
                 "minor": 3,
-                "patch": 22
+                "patch": 26
             },
             "app_name": "JavaJAM"
         },
         "stats": {
-            "steps": 3,
-            "imported": 1,
-            "import_max_step": 3,
-            "import_min": 286.369094,
-            "import_max": 286.369094,
-            "import_mean": 286.369094,
-            "import_p50": 286.369094,
+            "steps": 2,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 286.369094,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "state_diff": {
-            "roots": {
-                "exp": "0xa5ab60b5fdaa9c68cc4da97341e049395b34fcdefccbca19d12b37785d52b36f",
-                "got": "0xc1daef62e80a041bf9ba085932545d57fa9bf14c3d0e9bcc4338e1e6f621f480"
-            },
-            "keyvals": [
-                {
-                    "key": "0x6bd7e8450bb77cfec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
-                    "diff": {
-                        "exp": "0x608cde747bce1bf6",
-                        "got": "0x08f0014e110de764"
-                    }
-                }
-            ]
-        }
+        "communication": "IO error: early eof (potential target crash)"
     }
 }
