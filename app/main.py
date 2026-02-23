@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import re
 import signal
 import sys
 import time
@@ -23,6 +24,8 @@ FUZZ_WORKFLOW = SCRIPTS_DIR / "fuzz-workflow.py"
 # Where sessions are stored. Defaults to ./sessions relative to cwd,
 # same as fuzz-workflow.py does.
 SESSIONS_BASE = Path(os.environ.get("JAM_FUZZ_SESSIONS_DIR", Path.cwd() / "sessions"))
+
+STEP_RE = re.compile(r'\[STEP (\d{8})\]')
 
 
 def validate_environment():
@@ -55,6 +58,7 @@ class FuzzSession:
     max_steps: int
     status: str = "running"  # running | completed | failed | stopped
     return_code: Optional[int] = None
+    current_step: Optional[int] = None
     start_time: float = field(default_factory=time.time)
     process: Optional[asyncio.subprocess.Process] = None
     pgid: Optional[int] = None
@@ -154,8 +158,9 @@ async def start_fuzz(req: FuzzRequest):
 
     sessions[sid] = session
 
-    # Background task to wait for completion.
+    # Background tasks: monitor process completion and track step progress.
     asyncio.create_task(_monitor_process(sid, log_fh))
+    asyncio.create_task(_track_steps(sid))
 
     return {"session_id": sid, "status": "running"}
 
@@ -175,6 +180,40 @@ async def _monitor_process(sid: str, log_fh):
             log_fh.close()
         except Exception:
             pass
+
+
+async def _track_steps(sid: str):
+    """Tail the fuzzer log and extract the current step number."""
+    session = sessions.get(sid)
+    if not session:
+        return
+    log_path = _resolve_log_path(sid, session.target, "fuzzer")
+
+    # Wait for the fuzzer log to appear.
+    while not log_path.exists():
+        if session.status != "running":
+            return
+        await asyncio.sleep(2.0)
+
+    with open(log_path, "r") as fh:
+        while True:
+            line = fh.readline()
+            if line:
+                m = STEP_RE.search(line)
+                if m:
+                    session.current_step = int(m.group(1))
+            else:
+                if session.status != "running":
+                    # Final flush.
+                    while True:
+                        line = fh.readline()
+                        if not line:
+                            break
+                        m = STEP_RE.search(line)
+                        if m:
+                            session.current_step = int(m.group(1))
+                    return
+                await asyncio.sleep(0.5)
 
 
 @app.get("/api/sessions")
@@ -211,8 +250,20 @@ def _session_summary(s: FuzzSession) -> dict:
         "max_steps": s.max_steps,
         "status": s.status,
         "return_code": s.return_code,
+        "current_step": s.current_step,
         "start_time": s.start_time,
     }
+
+
+@app.delete("/api/sessions/{session_id}")
+async def delete_session(session_id: str):
+    s = sessions.get(session_id)
+    if not s:
+        return JSONResponse({"error": "Session not found"}, status_code=404)
+    if s.status == "running":
+        return JSONResponse({"error": "Cannot remove a running session (stop it first)"}, status_code=400)
+    del sessions[session_id]
+    return {"session_id": session_id, "removed": True}
 
 
 @app.post("/api/sessions/{session_id}/stop")

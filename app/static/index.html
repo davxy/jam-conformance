@@ -212,17 +212,24 @@ async function refreshSessions() {
       const started = new Date(s.start_time * 1000).toLocaleTimeString();
       const statusClass = "status-" + s.status;
       const rc = s.return_code !== null ? ` (rc=${s.return_code})` : "";
+      let stepInfo = "";
+      if (s.current_step !== null) {
+        stepInfo = ` step ${s.current_step} / ${s.max_steps}`;
+      }
       const stopBtn = s.status === "running"
         ? `<button class="danger" onclick="stopSession('${s.session_id}')">Stop</button>`
+        : "";
+      const removeBtn = s.status !== "running"
+        ? `<button onclick="removeSession('${s.session_id}')">Remove</button>`
         : "";
       const logBtn = `<button onclick="viewLogs('${s.session_id}','workflow')">Logs</button>`;
       return `<tr>
         <td>${s.session_id}</td>
         <td>${s.target}</td>
         <td>${s.max_steps}</td>
-        <td class="${statusClass}">${s.status}${rc}</td>
+        <td class="${statusClass}">${s.status}${rc}${stepInfo}</td>
         <td>${started}</td>
-        <td>${stopBtn} ${logBtn}</td>
+        <td>${stopBtn} ${removeBtn} ${logBtn}</td>
       </tr>`;
     }).join("");
   } catch (e) {
@@ -236,6 +243,21 @@ async function stopSession(sid) {
     refreshSessions();
   } catch (e) {
     alert("Stop failed: " + e);
+  }
+}
+
+async function removeSession(sid) {
+  try {
+    await fetch(`/api/sessions/${sid}`, {method: "DELETE"});
+    if (currentLogSession === sid) {
+      if (ws) { ws.close(); ws = null; }
+      currentLogSession = null;
+      document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
+      updateLogButtons();
+    }
+    refreshSessions();
+  } catch (e) {
+    alert("Remove failed: " + e);
   }
 }
 
