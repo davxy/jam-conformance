@@ -1,0 +1,326 @@
+import asyncio
+import json
+import os
+import signal
+import sys
+import time
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Optional
+
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+
+# Resolve paths relative to the repo root (one level up from app/).
+APP_DIR = Path(__file__).resolve().parent
+REPO_DIR = APP_DIR.parent
+SCRIPTS_DIR = REPO_DIR / "scripts"
+TARGETS_JSON = SCRIPTS_DIR / "targets.json"
+FUZZ_WORKFLOW = SCRIPTS_DIR / "fuzz-workflow.py"
+
+# Where sessions are stored. Defaults to ./sessions relative to cwd,
+# same as fuzz-workflow.py does.
+SESSIONS_BASE = Path(os.environ.get("JAM_FUZZ_SESSIONS_DIR", Path.cwd() / "sessions"))
+
+
+def validate_environment():
+    polkajam = os.environ.get("POLKAJAM_FUZZ_DIR")
+    if not polkajam:
+        print("Error: POLKAJAM_FUZZ_DIR environment variable is not set.", file=sys.stderr)
+        sys.exit(1)
+    if not Path(polkajam).is_dir():
+        print(f"Error: POLKAJAM_FUZZ_DIR '{polkajam}' is not a valid directory.", file=sys.stderr)
+        sys.exit(1)
+    if not TARGETS_JSON.exists():
+        print(f"Error: targets.json not found at {TARGETS_JSON}", file=sys.stderr)
+        sys.exit(1)
+    if not FUZZ_WORKFLOW.exists():
+        print(f"Error: fuzz-workflow.py not found at {FUZZ_WORKFLOW}", file=sys.stderr)
+        sys.exit(1)
+
+
+validate_environment()
+
+
+# ---------------------------------------------------------------------------
+# Session tracking
+# ---------------------------------------------------------------------------
+
+@dataclass
+class FuzzSession:
+    session_id: str
+    target: str
+    max_steps: int
+    status: str = "running"  # running | completed | failed | stopped
+    return_code: Optional[int] = None
+    start_time: float = field(default_factory=time.time)
+    process: Optional[asyncio.subprocess.Process] = None
+    pgid: Optional[int] = None
+
+
+sessions: dict[str, FuzzSession] = {}
+
+
+def generate_session_id() -> str:
+    sid = str(int(time.time()))
+    if sid in sessions:
+        suffix = 1
+        while f"{sid}_{suffix}" in sessions:
+            suffix += 1
+        sid = f"{sid}_{suffix}"
+    return sid
+
+
+# ---------------------------------------------------------------------------
+# FastAPI app
+# ---------------------------------------------------------------------------
+
+app = FastAPI(title="JAM Conformance Fuzzer")
+
+
+@app.get("/")
+async def index():
+    return FileResponse(APP_DIR / "static" / "index.html")
+
+
+# Serve static assets (css, js, etc.) if any are added later.
+app.mount("/static", StaticFiles(directory=APP_DIR / "static"), name="static")
+
+
+# ---------------------------------------------------------------------------
+# REST endpoints
+# ---------------------------------------------------------------------------
+
+@app.get("/api/targets")
+async def get_targets():
+    data = json.loads(TARGETS_JSON.read_text())
+    targets = []
+    for name, meta in data.items():
+        targets.append({
+            "name": name,
+            "gp_version": meta.get("gp_version"),
+            "has_image": "image" in meta,
+            "has_repo": "repo" in meta,
+        })
+    return targets
+
+
+class FuzzRequest(BaseModel):
+    target: str
+    max_steps: int = 1000000
+
+
+@app.post("/api/fuzz")
+async def start_fuzz(req: FuzzRequest):
+    # Validate target exists.
+    data = json.loads(TARGETS_JSON.read_text())
+    if req.target not in data:
+        return JSONResponse({"error": f"Unknown target: {req.target}"}, status_code=400)
+
+    sid = generate_session_id()
+    session_dir = SESSIONS_BASE / sid
+    session_dir.mkdir(parents=True, exist_ok=True)
+
+    workflow_log = session_dir / "workflow.log"
+
+    env = os.environ.copy()
+    env["JAM_FUZZ_SESSION_ID"] = sid
+    env["JAM_FUZZ_MAX_STEPS"] = str(req.max_steps)
+    env["JAM_FUZZ_SESSIONS_DIR"] = str(SESSIONS_BASE)
+
+    log_fh = open(workflow_log, "w")
+
+    proc = await asyncio.create_subprocess_exec(
+        sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--skip-report",
+        stdout=log_fh,
+        stderr=log_fh,
+        env=env,
+        start_new_session=True,
+    )
+
+    session = FuzzSession(
+        session_id=sid,
+        target=req.target,
+        max_steps=req.max_steps,
+        process=proc,
+    )
+    # Store the process group id for later killing.
+    try:
+        session.pgid = os.getpgid(proc.pid)
+    except OSError:
+        session.pgid = None
+
+    sessions[sid] = session
+
+    # Background task to wait for completion.
+    asyncio.create_task(_monitor_process(sid, log_fh))
+
+    return {"session_id": sid, "status": "running"}
+
+
+async def _monitor_process(sid: str, log_fh):
+    session = sessions.get(sid)
+    if not session or not session.process:
+        return
+    try:
+        rc = await session.process.wait()
+        session.return_code = rc
+        session.status = "completed" if rc == 0 else "failed"
+    except Exception:
+        session.status = "failed"
+    finally:
+        try:
+            log_fh.close()
+        except Exception:
+            pass
+
+
+@app.get("/api/sessions")
+async def list_sessions():
+    result = []
+    for s in sessions.values():
+        result.append(_session_summary(s))
+    return result
+
+
+@app.get("/api/sessions/{session_id}")
+async def get_session(session_id: str):
+    s = sessions.get(session_id)
+    if not s:
+        return JSONResponse({"error": "Session not found"}, status_code=404)
+
+    info = _session_summary(s)
+
+    # List available log files.
+    logs_dir = SESSIONS_BASE / session_id / "logs"
+    log_files = []
+    if logs_dir.is_dir():
+        for f in sorted(logs_dir.iterdir()):
+            if f.is_file():
+                log_files.append(f.name)
+    info["log_files"] = log_files
+    return info
+
+
+def _session_summary(s: FuzzSession) -> dict:
+    return {
+        "session_id": s.session_id,
+        "target": s.target,
+        "max_steps": s.max_steps,
+        "status": s.status,
+        "return_code": s.return_code,
+        "start_time": s.start_time,
+    }
+
+
+@app.post("/api/sessions/{session_id}/stop")
+async def stop_session(session_id: str):
+    s = sessions.get(session_id)
+    if not s:
+        return JSONResponse({"error": "Session not found"}, status_code=404)
+    if s.status != "running":
+        return JSONResponse({"error": f"Session is not running (status={s.status})"}, status_code=400)
+
+    killed = False
+    # Try SIGTERM on the process group first.
+    if s.pgid is not None:
+        try:
+            os.killpg(s.pgid, signal.SIGTERM)
+        except OSError:
+            pass
+
+    # Wait up to 2 seconds, then SIGKILL.
+    try:
+        await asyncio.wait_for(s.process.wait(), timeout=2.0)
+    except asyncio.TimeoutError:
+        if s.pgid is not None:
+            try:
+                os.killpg(s.pgid, signal.SIGKILL)
+                killed = True
+            except OSError:
+                pass
+        try:
+            s.process.kill()
+            killed = True
+        except OSError:
+            pass
+
+    s.status = "stopped"
+    return {"session_id": session_id, "status": "stopped", "killed": killed}
+
+
+# ---------------------------------------------------------------------------
+# WebSocket log streaming
+# ---------------------------------------------------------------------------
+
+@app.websocket("/ws/logs/{session_id}")
+async def ws_logs(ws: WebSocket, session_id: str):
+    await ws.accept()
+
+    s = sessions.get(session_id)
+    if not s:
+        await ws.send_json({"event": "error", "message": "Session not found"})
+        await ws.close()
+        return
+
+    log_type = ws.query_params.get("log", "workflow")
+    log_path = _resolve_log_path(session_id, s.target, log_type)
+
+    try:
+        # Wait for the log file to appear (cargo build can be slow).
+        waited = 0.0
+        timeout = 300.0  # 5 minutes
+        while not log_path.exists():
+            if waited >= timeout:
+                await ws.send_json({"event": "error", "message": f"Log file did not appear within {timeout}s"})
+                await ws.close()
+                return
+            await ws.send_json({"event": "waiting", "message": f"Waiting for {log_path.name}..."})
+            await asyncio.sleep(2.0)
+            waited += 2.0
+
+        # Tail the file.
+        with open(log_path, "r") as fh:
+            while True:
+                line = fh.readline()
+                if line:
+                    await ws.send_json({"event": "log", "data": line.rstrip("\n")})
+                else:
+                    # No new data -- check if process is still running.
+                    if s.status != "running":
+                        # Flush remaining.
+                        while True:
+                            line = fh.readline()
+                            if not line:
+                                break
+                            await ws.send_json({"event": "log", "data": line.rstrip("\n")})
+                        await ws.send_json({
+                            "event": "done",
+                            "status": s.status,
+                            "return_code": s.return_code,
+                        })
+                        break
+                    await asyncio.sleep(0.3)
+
+    except WebSocketDisconnect:
+        pass
+    except Exception as e:
+        try:
+            await ws.send_json({"event": "error", "message": str(e)})
+            await ws.close()
+        except Exception:
+            pass
+
+
+def _resolve_log_path(session_id: str, target: str, log_type: str) -> Path:
+    session_dir = SESSIONS_BASE / session_id
+    if log_type == "workflow":
+        return session_dir / "workflow.log"
+    elif log_type == "fuzzer":
+        return session_dir / "logs" / f"fuzzer_{target}.log"
+    elif log_type == "target":
+        return session_dir / "logs" / f"target_{target}.log"
+    else:
+        return session_dir / "workflow.log"

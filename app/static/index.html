@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JAM Conformance Fuzzer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "SF Mono", "Menlo", "Consolas", monospace;
+    background: #111;
+    color: #ccc;
+    padding: 20px;
+    font-size: 14px;
+  }
+  h1 { font-size: 18px; margin-bottom: 16px; color: #eee; }
+  h2 { font-size: 15px; margin-bottom: 10px; color: #ddd; }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: #999;
+  }
+  .controls select, .controls input {
+    background: #222;
+    color: #eee;
+    border: 1px solid #444;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  .controls select { min-width: 180px; }
+  .controls input[type="number"] { width: 130px; }
+
+  button {
+    background: #333;
+    color: #eee;
+    border: 1px solid #555;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  button:hover { background: #444; }
+  button.primary { background: #2a5a2a; border-color: #4a8a4a; }
+  button.primary:hover { background: #3a6a3a; }
+  button.danger { background: #5a2a2a; border-color: #8a4a4a; }
+  button.danger:hover { background: #6a3a3a; }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 6px 10px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  th { color: #888; font-weight: normal; font-size: 11px; text-transform: uppercase; }
+
+  .status-running { color: #6ae; }
+  .status-completed { color: #6c6; }
+  .status-failed { color: #e66; }
+  .status-stopped { color: #aa6; }
+
+  .log-section { margin-top: 10px; }
+  .log-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: center;
+  }
+  .log-controls span { color: #888; font-size: 12px; }
+  .log-controls button.active { background: #444; border-color: #888; }
+
+  #logViewer {
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    padding: 10px;
+    height: 450px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #aaa;
+  }
+  #logViewer .waiting { color: #886; }
+  #logViewer .error { color: #e66; }
+  #logViewer .done { color: #6c6; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>JAM Conformance Fuzzer</h1>
+
+<div class="controls">
+  <label>
+    Target
+    <select id="targetSelect"><option>Loading...</option></select>
+  </label>
+  <label>
+    Max Steps
+    <input type="number" id="maxSteps" value="1000000" min="1">
+  </label>
+  <button class="primary" id="startBtn" onclick="startFuzz()">Start Fuzzing</button>
+</div>
+
+<h2>Sessions</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Session</th>
+      <th>Target</th>
+      <th>Max Steps</th>
+      <th>Status</th>
+      <th>Started</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="sessionsBody">
+    <tr><td colspan="6" style="color:#666">No sessions yet</td></tr>
+  </tbody>
+</table>
+
+<div class="log-section">
+  <div class="log-controls">
+    <span id="logLabel">Log viewer</span>
+    <button id="btnWorkflow" onclick="switchLog('workflow')">workflow</button>
+    <button id="btnFuzzer" onclick="switchLog('fuzzer')">fuzzer</button>
+    <button id="btnTarget" onclick="switchLog('target')">target</button>
+  </div>
+  <div id="logViewer">Select a session to view logs.</div>
+</div>
+
+<script>
+let currentLogSession = null;
+let currentLogType = "workflow";
+let ws = null;
+let pollInterval = null;
+
+async function loadTargets() {
+  try {
+    const resp = await fetch("/api/targets");
+    const targets = await resp.json();
+    const sel = document.getElementById("targetSelect");
+    sel.innerHTML = "";
+    targets.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t.name;
+      opt.textContent = t.name;
+      sel.appendChild(opt);
+    });
+  } catch (e) {
+    console.error("Failed to load targets:", e);
+  }
+}
+
+async function startFuzz() {
+  const target = document.getElementById("targetSelect").value;
+  const maxSteps = parseInt(document.getElementById("maxSteps").value, 10);
+  const btn = document.getElementById("startBtn");
+  btn.disabled = true;
+
+  try {
+    const resp = await fetch("/api/fuzz", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({target, max_steps: maxSteps}),
+    });
+    const data = await resp.json();
+    if (data.session_id) {
+      viewLogs(data.session_id, "workflow");
+      refreshSessions();
+    } else {
+      alert("Error: " + (data.error || "Unknown error"));
+    }
+  } catch (e) {
+    alert("Request failed: " + e);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function refreshSessions() {
+  try {
+    const resp = await fetch("/api/sessions");
+    const sessions = await resp.json();
+    const tbody = document.getElementById("sessionsBody");
+
+    if (sessions.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="color:#666">No sessions yet</td></tr>';
+      return;
+    }
+
+    // Sort newest first.
+    sessions.sort((a, b) => b.start_time - a.start_time);
+
+    tbody.innerHTML = sessions.map(s => {
+      const started = new Date(s.start_time * 1000).toLocaleTimeString();
+      const statusClass = "status-" + s.status;
+      const rc = s.return_code !== null ? ` (rc=${s.return_code})` : "";
+      const stopBtn = s.status === "running"
+        ? `<button class="danger" onclick="stopSession('${s.session_id}')">Stop</button>`
+        : "";
+      const logBtn = `<button onclick="viewLogs('${s.session_id}','workflow')">Logs</button>`;
+      return `<tr>
+        <td>${s.session_id}</td>
+        <td>${s.target}</td>
+        <td>${s.max_steps}</td>
+        <td class="${statusClass}">${s.status}${rc}</td>
+        <td>${started}</td>
+        <td>${stopBtn} ${logBtn}</td>
+      </tr>`;
+    }).join("");
+  } catch (e) {
+    console.error("Failed to refresh sessions:", e);
+  }
+}
+
+async function stopSession(sid) {
+  try {
+    await fetch(`/api/sessions/${sid}/stop`, {method: "POST"});
+    refreshSessions();
+  } catch (e) {
+    alert("Stop failed: " + e);
+  }
+}
+
+function viewLogs(sid, logType) {
+  currentLogSession = sid;
+  currentLogType = logType || "workflow";
+  updateLogButtons();
+  connectWs();
+}
+
+function switchLog(logType) {
+  if (!currentLogSession) return;
+  currentLogType = logType;
+  updateLogButtons();
+  connectWs();
+}
+
+function updateLogButtons() {
+  ["Workflow", "Fuzzer", "Target"].forEach(name => {
+    const btn = document.getElementById("btn" + name);
+    btn.classList.toggle("active", currentLogType === name.toLowerCase());
+  });
+  document.getElementById("logLabel").textContent =
+    currentLogSession ? `Session ${currentLogSession} / ${currentLogType}` : "Log viewer";
+}
+
+function connectWs() {
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+
+  const viewer = document.getElementById("logViewer");
+  viewer.innerHTML = "";
+
+  const proto = location.protocol === "https:" ? "wss:" : "ws:";
+  const url = `${proto}//${location.host}/ws/logs/${currentLogSession}?log=${currentLogType}`;
+  ws = new WebSocket(url);
+
+  ws.onmessage = (evt) => {
+    const msg = JSON.parse(evt.data);
+    const line = document.createElement("div");
+
+    if (msg.event === "log") {
+      line.textContent = msg.data;
+    } else if (msg.event === "waiting") {
+      line.textContent = msg.message;
+      line.className = "waiting";
+    } else if (msg.event === "done") {
+      line.textContent = `\n--- ${msg.status} (return_code=${msg.return_code}) ---`;
+      line.className = "done";
+      refreshSessions();
+    } else if (msg.event === "error") {
+      line.textContent = msg.message;
+      line.className = "error";
+    }
+
+    viewer.appendChild(line);
+    viewer.scrollTop = viewer.scrollHeight;
+  };
+
+  ws.onerror = () => {
+    const line = document.createElement("div");
+    line.textContent = "WebSocket error.";
+    line.className = "error";
+    viewer.appendChild(line);
+  };
+
+  ws.onclose = () => {
+    // Normal closure, no action needed.
+  };
+}
+
+// Init
+loadTargets();
+pollInterval = setInterval(refreshSessions, 5000);
+refreshSessions();
+</script>
+</body>
+</html>
