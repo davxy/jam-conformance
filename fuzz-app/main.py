@@ -61,7 +61,8 @@ class FuzzSession:
     target: str
     max_steps: int
     mode: str = "start"  # "start" or "download"
-    status: str = "running"  # running | stopping | completed | failed | stopped
+    status: str = "running"  # running | paused | stopping | completed | failed | stopped
+    paused: bool = False
     return_code: Optional[int] = None
     current_step: Optional[int] = None
     start_time: float = field(default_factory=time.time)
@@ -87,6 +88,32 @@ def generate_session_id() -> str:
 # ---------------------------------------------------------------------------
 
 app = FastAPI(title="JAM Conformance Fuzzer")
+
+
+@app.on_event("shutdown")
+async def shutdown_all_sessions():
+    """Kill all running/paused sessions and their containers on server exit."""
+    for s in sessions.values():
+        if s.status not in ("running", "paused"):
+            continue
+        # Kill the process group.
+        if s.pgid is not None:
+            try:
+                os.killpg(s.pgid, signal.SIGKILL)
+            except OSError:
+                pass
+        # Stop the target container (best-effort, don't wait long).
+        if s.mode == "start":
+            container = f"{s.target}-{s.session_id}"
+            try:
+                proc = await asyncio.create_subprocess_exec(
+                    "docker", "rm", "-f", container,
+                    stdout=asyncio.subprocess.DEVNULL,
+                    stderr=asyncio.subprocess.DEVNULL,
+                )
+                await asyncio.wait_for(proc.wait(), timeout=5.0)
+            except Exception:
+                pass
 
 
 @app.get("/")
@@ -232,7 +259,7 @@ async def _track_steps(sid: str):
 
     # Wait for the fuzzer log to appear.
     while not log_path.exists():
-        if session.status not in ("running", "stopping"):
+        if session.status not in ("running", "paused", "stopping"):
             return
         await asyncio.sleep(2.0)
 
@@ -244,7 +271,7 @@ async def _track_steps(sid: str):
                 if m:
                     session.current_step = int(m.group(1))
             else:
-                if session.status not in ("running", "stopping"):
+                if session.status not in ("running", "paused", "stopping"):
                     # Final flush.
                     while True:
                         line = fh.readline()
@@ -291,6 +318,7 @@ def _session_summary(s: FuzzSession) -> dict:
         "max_steps": s.max_steps,
         "mode": s.mode,
         "status": s.status,
+        "paused": s.paused,
         "return_code": s.return_code,
         "current_step": s.current_step,
         "start_time": s.start_time,
@@ -302,7 +330,7 @@ async def delete_session(session_id: str):
     s = sessions.get(session_id)
     if not s:
         return JSONResponse({"error": "Session not found"}, status_code=404)
-    if s.status in ("running", "stopping"):
+    if s.status in ("running", "paused", "stopping"):
         return JSONResponse({"error": "Cannot remove a running session (stop it first)"}, status_code=400)
     del sessions[session_id]
     return {"session_id": session_id, "removed": True}
@@ -313,10 +341,11 @@ async def stop_session(session_id: str):
     s = sessions.get(session_id)
     if not s:
         return JSONResponse({"error": "Session not found"}, status_code=404)
-    if s.status != "running":
+    if s.status not in ("running", "paused"):
         return JSONResponse({"error": f"Session is not running (status={s.status})"}, status_code=400)
 
     s.status = "stopping"
+    s.paused = False
 
     killed = False
     # Try SIGTERM on the process group first.
@@ -344,6 +373,64 @@ async def stop_session(session_id: str):
 
     # Final status transition (stopping -> stopped) is handled by _monitor_process.
     return {"session_id": session_id, "status": "stopping", "killed": killed}
+
+
+@app.post("/api/sessions/{session_id}/pause")
+async def pause_session(session_id: str):
+    s = sessions.get(session_id)
+    if not s:
+        return JSONResponse({"error": "Session not found"}, status_code=404)
+    if s.status not in ("running", "paused"):
+        return JSONResponse({"error": f"Session is not running (status={s.status})"}, status_code=400)
+
+    container = f"{s.target}-{session_id}"
+
+    if s.paused:
+        # Resume: unpause container first, then SIGCONT the process group.
+        proc = await asyncio.create_subprocess_exec(
+            "docker", "unpause", container,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        _, stderr = await proc.communicate()
+        if proc.returncode != 0:
+            return JSONResponse(
+                {"error": f"docker unpause failed: {stderr.decode().strip()}"},
+                status_code=500,
+            )
+        if s.pgid is not None:
+            try:
+                os.killpg(s.pgid, signal.SIGCONT)
+            except OSError:
+                pass
+    else:
+        # Pause: SIGSTOP the process group first, then pause container.
+        if s.pgid is not None:
+            try:
+                os.killpg(s.pgid, signal.SIGSTOP)
+            except OSError:
+                pass
+        proc = await asyncio.create_subprocess_exec(
+            "docker", "pause", container,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        _, stderr = await proc.communicate()
+        if proc.returncode != 0:
+            # Roll back: resume the process group since docker pause failed.
+            if s.pgid is not None:
+                try:
+                    os.killpg(s.pgid, signal.SIGCONT)
+                except OSError:
+                    pass
+            return JSONResponse(
+                {"error": f"docker pause failed: {stderr.decode().strip()}"},
+                status_code=500,
+            )
+
+    s.paused = not s.paused
+    s.status = "paused" if s.paused else "running"
+    return {"session_id": session_id, "status": s.status}
 
 
 # ---------------------------------------------------------------------------
@@ -416,7 +503,7 @@ async def ws_logs(ws: WebSocket, session_id: str):
                 if line:
                     await ws.send_json({"event": "log", "data": line.rstrip("\n")})
                 else:
-                    if s.status not in ("running", "stopping"):
+                    if s.status not in ("running", "paused", "stopping"):
                         # Flush remaining.
                         while True:
                             line = fh.readline()

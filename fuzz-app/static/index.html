@@ -78,6 +78,7 @@
   .status-completed { color: #6c6; }
   .status-downloaded { color: #6c6; }
   .status-failed { color: #e66; }
+  .status-paused { color: #a8a; }
   .status-stopping { color: #a86; }
   .status-stopped { color: #aa6; }
 
@@ -125,7 +126,8 @@
   <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
   <span style="flex:1"></span>
   <button class="danger" onclick="stopAll()">Stop All</button>
-  <button onclick="removeAll()">Remove All</button>
+  <button onclick="pauseAll()">Pause All</button>
+  <button onclick="removeAll()">Clean</button>
 </div>
 
 <h2>Sessions</h2>
@@ -230,10 +232,13 @@ async function refreshSessions() {
       if (s.current_step !== null) {
         stepInfo = ` step ${s.current_step} / ${s.max_steps}`;
       }
-      const stopBtn = s.status === "running"
+      const pauseBtn = s.mode === "start" && (s.status === "running" || s.status === "paused")
+        ? `<button onclick="event.stopPropagation(); pauseSession('${s.session_id}')">${s.paused ? "Resume" : "Pause"}</button>`
+        : "";
+      const stopBtn = s.status === "running" || s.status === "paused"
         ? `<button class="danger" onclick="event.stopPropagation(); stopSession('${s.session_id}')">Stop</button>`
         : "";
-      const removeBtn = s.status !== "running" && s.status !== "stopping"
+      const removeBtn = !["running", "paused", "stopping"].includes(s.status)
         ? `<button onclick="event.stopPropagation(); removeSession('${s.session_id}')">Remove</button>`
         : "";
       const rowClass = s.session_id === currentLogSession ? "active-session" : "";
@@ -243,11 +248,22 @@ async function refreshSessions() {
         <td>${s.max_steps}</td>
         <td class="${statusClass}">${s.status}${stepInfo}</td>
         <td>${started}</td>
-        <td>${stopBtn} ${removeBtn}</td>
+        <td>${pauseBtn} ${stopBtn} ${removeBtn}</td>
       </tr>`;
     }).join("");
   } catch (e) {
     console.error("Failed to refresh sessions:", e);
+  }
+}
+
+async function pauseSession(sid) {
+  try {
+    const resp = await fetch(`/api/sessions/${sid}/pause`, {method: "POST"});
+    const data = await resp.json();
+    if (data.error) alert("Pause failed: " + data.error);
+    refreshSessions();
+  } catch (e) {
+    alert("Pause failed: " + e);
   }
 }
 
@@ -271,6 +287,20 @@ async function stopAll() {
     refreshSessions();
   } catch (e) {
     alert("Stop all failed: " + e);
+  }
+}
+
+async function pauseAll() {
+  try {
+    const resp = await fetch("/api/sessions");
+    const sessions = await resp.json();
+    await Promise.all(
+      sessions.filter(s => s.status === "running" && s.mode === "start")
+        .map(s => fetch(`/api/sessions/${s.session_id}/pause`, {method: "POST"}))
+    );
+    refreshSessions();
+  } catch (e) {
+    alert("Pause all failed: " + e);
   }
 }
 
