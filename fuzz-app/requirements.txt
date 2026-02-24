@@ -1,0 +1,3 @@
+fastapi
+uvicorn[standard]
+jam-types @ git+https://github.com/davxy/jam-types-py.git

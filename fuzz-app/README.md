@@ -7,28 +7,27 @@ streaming its output to the browser in real time via WebSocket.
 ## Prerequisites
 
 - Python 3.10+
-- The `polkajam-fuzz` repo cloned locally (the fuzzer itself, built via cargo)
-- Rust toolchain (cargo) -- `fuzz-workflow.py` builds and runs the fuzzer with `cargo run`
+- The `polkajam-fuzz` binary (prebuilt or compiled from source)
 - Docker (only needed for targets that use container images, e.g. boka, turbojam, pyjamaz)
 
 ## Setup
 
 ```bash
-cd app
-pip install -r requirements.txt
+./install.sh
 ```
 
-This installs `fastapi` and `uvicorn[standard]`.
+This creates a virtual environment at `~/.local/pip/fuzz-app` and installs
+the dependencies (`fastapi`, `uvicorn[standard]`, `jam-types`).
 
 ## Running
 
 ```bash
-POLKAJAM_FUZZ_DIR=/path/to/polkajam-fuzz python -m uvicorn main:app --host 0.0.0.0 --port 8000
+POLKAJAM_FUZZ_BIN=/path/to/polkajam-fuzz ./fuzz-app.sh
 ```
 
 Then open `http://localhost:8000` in a browser.
 
-The server will refuse to start if `POLKAJAM_FUZZ_DIR` is not set, or if
+The server will refuse to start if `POLKAJAM_FUZZ_BIN` is not set, or if
 `scripts/targets.json` or `scripts/fuzz-workflow.py` are missing from the
 repo.
 
@@ -36,7 +35,7 @@ repo.
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `POLKAJAM_FUZZ_DIR` | yes | -- | Path to the polkajam-fuzz repository |
+| `POLKAJAM_FUZZ_BIN` | yes | -- | Path to the polkajam-fuzz binary |
 | `JAM_FUZZ_SESSIONS_DIR` | no | `./sessions` | Directory where session artifacts are stored |
 
 Each spawned subprocess also receives `JAM_FUZZ_SESSION_ID` and
@@ -105,8 +104,8 @@ The WebSocket sends JSON messages with an `event` field:
 
 ## Troubleshooting
 
-**Server won't start: "POLKAJAM_FUZZ_DIR is not set"**
-Export the variable pointing to your local polkajam-fuzz checkout.
+**Server won't start: "POLKAJAM_FUZZ_BIN is not set"**
+Export the variable pointing to your polkajam-fuzz binary.
 
 **Session stays "running" but no fuzzer log appears**
 The first run triggers a cargo build of `polkajam-fuzz`, which can take

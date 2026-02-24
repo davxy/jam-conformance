@@ -29,12 +29,16 @@ STEP_RE = re.compile(r'\[STEP (\d{8})\]')
 
 
 def validate_environment():
-    polkajam = os.environ.get("POLKAJAM_FUZZ_DIR")
-    if not polkajam:
-        print("Error: POLKAJAM_FUZZ_DIR environment variable is not set.", file=sys.stderr)
+    fuzz_bin = os.environ.get("POLKAJAM_FUZZ_BIN")
+    if not fuzz_bin:
+        print("Error: POLKAJAM_FUZZ_BIN environment variable is not set.", file=sys.stderr)
         sys.exit(1)
-    if not Path(polkajam).is_dir():
-        print(f"Error: POLKAJAM_FUZZ_DIR '{polkajam}' is not a valid directory.", file=sys.stderr)
+    bin_path = Path(fuzz_bin)
+    if not bin_path.is_file():
+        print(f"Error: POLKAJAM_FUZZ_BIN '{fuzz_bin}' is not a valid file.", file=sys.stderr)
+        sys.exit(1)
+    if not os.access(bin_path, os.X_OK):
+        print(f"Error: POLKAJAM_FUZZ_BIN '{fuzz_bin}' is not executable.", file=sys.stderr)
         sys.exit(1)
     if not TARGETS_JSON.exists():
         print(f"Error: targets.json not found at {TARGETS_JSON}", file=sys.stderr)
