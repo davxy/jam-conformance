@@ -17,14 +17,14 @@
         "steps": 4,
         "imported": 2,
         "import_max_step": 2,
-        "import_min": 5.565152,
-        "import_max": 12.525481,
-        "import_mean": 9.0453165,
-        "import_p50": 12.525,
-        "import_p75": 12.525,
-        "import_p90": 12.525,
-        "import_p99": 12.525,
-        "import_std_dev": 4.9216958351893805
+        "import_min": 5.078483,
+        "import_max": 10.875222,
+        "import_mean": 7.976852500000001,
+        "import_p50": 10.875,
+        "import_p75": 10.875,
+        "import_p90": 10.875,
+        "import_p99": 10.875,
+        "import_std_dev": 4.0989134556685265
     },
     "target": {
         "info": {
@@ -46,129 +46,17 @@
             "steps": 4,
             "imported": 2,
             "import_max_step": 2,
-            "import_min": 291.37506,
-            "import_max": 319.747686,
-            "import_mean": 305.561373,
-            "import_p50": 319.747,
-            "import_p75": 319.747,
-            "import_p90": 319.747,
-            "import_p99": 319.747,
-            "import_std_dev": 20.062476244669725
+            "import_min": 294.662088,
+            "import_max": 313.454417,
+            "import_mean": 304.0582525,
+            "import_p50": 313.454,
+            "import_p75": 313.454,
+            "import_p90": 313.454,
+            "import_p99": 313.454,
+            "import_std_dev": 13.288183270188608
         }
     },
     "error": {
-        "state_diff": {
-            "roots": {
-                "exp": "0x36ddf11a42bce2b9bddd07eb36dfd292da626aa3cc2df00a49eb1d085f2d6640",
-                "got": "0xec9fdff313e22cb308182a3849b586c36093ee2885cbc2776a577b68feeef118"
-            },
-            "keyvals": [
-                {
-                    "key": "0x004400b500a400aaa0d7f8eab5ca1cca4a0472988422febc68a6b6a944cabf",
-                    "diff": {
-                        "exp": "0x12868bee",
-                        "got": "0x13868bee"
-                    }
-                },
-                {
-                    "key": "0x005e00ec001400cc4efb2b66558ec2cdfbc435247929d71ff139cc9cbc2e56",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0x122c86ff8b30ee44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x00",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0x132c86ff8b30ee44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x00"
-                    }
-                },
-                {
-                    "key": "0x3c2c86ff8b30ee44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0x662c86ff8b30ee44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0x8f29fc2c48d1fe40bc50d602526f4b46e8aca90eb8c77c165b6497cae7625f",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xe82c85ff8b30ee44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x00",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xe92c85ff8b30ee44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x00"
-                    }
-                },
-                {
-                    "key": "0xff120086008b00ee0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e8403060000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xff130086008b00ee0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1e8403060000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000"
-                    }
-                },
-                {
-                    "key": "0xff3c0086008b00ee0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xff660086008b00ee0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xffe80085008b00ee0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1eb560040000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000",
-                        "got": "0x"
-                    }
-                },
-                {
-                    "key": "0xffe90085008b00ee0000000000000000000000000000000000000000000000",
-                    "diff": {
-                        "exp": "0x",
-                        "got": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1eb560040000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000"
-                    }
-                }
-            ]
-        }
+        "communication": "Unexpected response"
     }
 }

@@ -116,7 +116,7 @@
   "turbojam": {
     "image": "r2rationality/turbojam-fuzz:latest",
     "cmd": "fuzzer-api {TARGET_SOCK}",
-    "gp_version": "0.7.0"
+    "gp_version": "0.7.2"
   },
   "graymatter": {
     "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",
@@ -184,7 +184,7 @@
     "gp_version": "0.7.2"
   },
   "jam4s": {
-    "image": "jamforscala/jam4s:0.7.2-rc.10-amd64",
+    "image": "jamforscala/jam4s:0.7.2-rc.11-amd64",
     "cmd": "--fuzz --seed 0 --socket {TARGET_SOCK}",
     "env": "CONFIG_FILE=app/config/node-dev.conf",
     "gp_version": "0.7.2"
