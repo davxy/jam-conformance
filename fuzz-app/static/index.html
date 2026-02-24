@@ -252,6 +252,9 @@ async function refreshSessions() {
       const stopBtn = s.status === "running" || s.status === "paused"
         ? `<button class="danger" onclick="event.stopPropagation(); stopSession('${s.session_id}')">Stop</button>`
         : "";
+      const reportBtn = s.has_report
+        ? `<button onclick="event.stopPropagation(); downloadReport('${s.session_id}')">Report</button>`
+        : "";
       const removeBtn = !["running", "paused", "stopping"].includes(s.status)
         ? `<button onclick="event.stopPropagation(); removeSession('${s.session_id}')">Remove</button>`
         : "";
@@ -262,12 +265,16 @@ async function refreshSessions() {
         <td>${s.max_steps}</td>
         <td class="${statusClass}">${s.status}${stepInfo}</td>
         <td>${started}</td>
-        <td>${pauseBtn} ${stopBtn} ${removeBtn}</td>
+        <td>${pauseBtn} ${stopBtn} ${reportBtn} ${removeBtn}</td>
       </tr>`;
     }).join("");
   } catch (e) {
     console.error("Failed to refresh sessions:", e);
   }
+}
+
+function downloadReport(sid) {
+  window.open(`/api/sessions/${sid}/report`, "_blank");
 }
 
 async function pauseSession(sid) {

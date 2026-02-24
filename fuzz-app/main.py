@@ -1,4 +1,5 @@
 import asyncio
+import io
 import json
 import os
 import random
@@ -6,6 +7,7 @@ import re
 import signal
 import sys
 import time
+import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -319,6 +321,7 @@ async def get_session(session_id: str):
 
 
 def _session_summary(s: FuzzSession) -> dict:
+    report_dir = SESSIONS_BASE / s.session_id / "report"
     return {
         "session_id": s.session_id,
         "target": s.target,
@@ -329,6 +332,7 @@ def _session_summary(s: FuzzSession) -> dict:
         "return_code": s.return_code,
         "current_step": s.current_step,
         "start_time": s.start_time,
+        "has_report": report_dir.is_dir(),
     }
 
 
@@ -341,6 +345,31 @@ async def delete_session(session_id: str):
         return JSONResponse({"error": "Cannot remove a running session (stop it first)"}, status_code=400)
     del sessions[session_id]
     return {"session_id": session_id, "removed": True}
+
+
+@app.get("/api/sessions/{session_id}/report")
+async def download_report(session_id: str):
+    s = sessions.get(session_id)
+    if not s:
+        return JSONResponse({"error": "Session not found"}, status_code=404)
+
+    report_dir = SESSIONS_BASE / session_id / "report"
+    if not report_dir.is_dir():
+        return JSONResponse({"error": "No report available"}, status_code=404)
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for path in sorted(report_dir.rglob("*")):
+            if path.is_file():
+                zf.write(path, path.relative_to(report_dir))
+    buf.seek(0)
+
+    from fastapi.responses import StreamingResponse
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="report-{session_id}.zip"'},
+    )
 
 
 @app.post("/api/sessions/{session_id}/stop")
