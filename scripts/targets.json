@@ -76,7 +76,7 @@
     "gp_version": "0.7.2"
   },
   "jamzilla": {
-    "repo": "ascrivener/jam",
+    "repo": "ascrivener/jamzilla-conformance-releases",
     "file": "jamzilla-tiny",
     "cmd": "jamzilla-tiny",
     "args": "-socket {TARGET_SOCK}",
@@ -84,7 +84,7 @@
     "gp_version": "0.7.2"
   },
    "jamzilla-int": {
-    "repo": "ascrivener/jam",
+    "repo": "ascrivener/jamzilla-conformance-releases",
     "file": "jamzilla-tiny",
     "cmd": "jamzilla-tiny",
     "args": "-socket {TARGET_SOCK}",
