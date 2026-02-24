@@ -182,7 +182,7 @@ async def start_fuzz(req: FuzzRequest):
 
     log_fh = open(workflow_log, "w")
 
-    args = [sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--skip-report"]
+    args = [sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--omit-log-tail"]
     if req.mode == "start":
         args.append("--skip-get")
     else:
