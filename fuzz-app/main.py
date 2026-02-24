@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import random
 import re
 import signal
 import sys
@@ -26,6 +27,7 @@ FUZZ_WORKFLOW = SCRIPTS_DIR / "fuzz-workflow.py"
 SESSIONS_BASE = Path(os.environ.get("JAM_FUZZ_SESSIONS_DIR", Path.cwd() / "sessions"))
 
 STEP_RE = re.compile(r'\[STEP (\d{8})\]')
+DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}')
 
 
 def validate_environment():
@@ -149,6 +151,7 @@ async def get_targets():
 class FuzzRequest(BaseModel):
     target: str
     max_steps: int = 1000000
+    seed: Optional[int] = None
     mode: str = "start"  # "start" or "download"
 
 
@@ -168,10 +171,14 @@ async def start_fuzz(req: FuzzRequest):
 
     workflow_log = session_dir / "workflow.log"
 
+    seed = req.seed if req.seed is not None else random.randint(0, 2**32 - 1)
+
     env = os.environ.copy()
     env["JAM_FUZZ_SESSION_ID"] = sid
     env["JAM_FUZZ_MAX_STEPS"] = str(req.max_steps)
+    env["JAM_FUZZ_SEED"] = str(seed)
     env["JAM_FUZZ_SESSIONS_DIR"] = str(SESSIONS_BASE)
+    env["JAM_FUZZ_REMOTE_TIMEOUT"] = str(2**32 - 1)
 
     log_fh = open(workflow_log, "w")
 
@@ -463,6 +470,23 @@ def _read_tail(path: Path, n: int) -> tuple[list[str], int]:
         return lines[-n:], end_pos
 
 
+def _read_fuzzer_config(path: Path) -> list[str]:
+    """Read configuration lines from the top of the fuzzer log.
+
+    These are the lines before the first date-prefixed log entry.
+    """
+    lines = []
+    try:
+        with open(path, "r") as f:
+            for line in f:
+                if DATE_RE.match(line):
+                    break
+                lines.append(line.rstrip("\n"))
+    except OSError:
+        pass
+    return lines
+
+
 @app.websocket("/ws/logs/{session_id}")
 async def ws_logs(ws: WebSocket, session_id: str):
     await ws.accept()
@@ -495,10 +519,20 @@ async def ws_logs(ws: WebSocket, session_id: str):
         if tail:
             await ws.send_json({"event": "history", "lines": tail})
 
+        # For workflow logs, inject the fuzzer config header once it's available.
+        fuzzer_config_sent = log_type != "workflow"
+        fuzzer_log_path = _resolve_log_path(session_id, s.target, "fuzzer")
+
         with open(log_path, "r") as fh:
             fh.seek(end_pos)
 
             while True:
+                if not fuzzer_config_sent and fuzzer_log_path.exists():
+                    config = await asyncio.to_thread(_read_fuzzer_config, fuzzer_log_path)
+                    if config:
+                        await ws.send_json({"event": "config", "lines": config})
+                    fuzzer_config_sent = True
+
                 line = fh.readline()
                 if line:
                     await ws.send_json({"event": "log", "data": line.rstrip("\n")})

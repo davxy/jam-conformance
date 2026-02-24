@@ -72,6 +72,7 @@ MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
 SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
 SINGLE_STEP = os.environ.get("JAM_FUZZ_SINGLE_STEP", "false")
 VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
+REMOTE_TIMEOUT = os.environ.get("JAM_FUZZ_REMOTE_TIMEOUT", "30")
 
 FUZZER_LOG_TAIL_LENGTH = 100
 
@@ -322,6 +323,8 @@ def run_fuzzer_local_mode(args, log_file):
         str(args.max_mutations),
         "--verbosity",
         VERBOSITY,
+        "--remote-timeout",
+        REMOTE_TIMEOUT,
         "--pvm-interpreter-backend",
     ]
 

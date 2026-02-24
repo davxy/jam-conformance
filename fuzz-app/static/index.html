@@ -104,6 +104,7 @@
     line-height: 1.5;
     color: #aaa;
   }
+  #logViewer .config { color: #6ae; border-bottom: 1px solid #2a2a2a; padding-bottom: 6px; margin-bottom: 6px; }
   #logViewer .waiting { color: #886; }
   #logViewer .error { color: #e66; }
   #logViewer .done { color: #6c6; font-weight: bold; }
@@ -121,6 +122,10 @@
   <label>
     Max Steps
     <input type="number" id="maxSteps" value="1000000" min="1">
+  </label>
+  <label>
+    Seed
+    <input type="number" id="seed" min="0">
   </label>
   <button class="primary" id="downloadBtn" onclick="startFuzz('download')">Download</button>
   <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
@@ -182,22 +187,31 @@ async function loadTargets() {
   }
 }
 
+function randomSeed() {
+  return Math.floor(Math.random() * 0x100000000);
+}
+
 async function startFuzz(mode) {
   const target = document.getElementById("targetSelect").value;
   const maxSteps = parseInt(document.getElementById("maxSteps").value, 10);
+  const seedInput = document.getElementById("seed");
+  const seed = seedInput.value ? parseInt(seedInput.value, 10) : null;
   const startBtn = document.getElementById("startBtn");
   const downloadBtn = document.getElementById("downloadBtn");
   startBtn.disabled = true;
   downloadBtn.disabled = true;
 
   try {
+    const body = {target, max_steps: maxSteps, mode};
+    if (seed !== null) body.seed = seed;
     const resp = await fetch("/api/fuzz", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({target, max_steps: maxSteps, mode}),
+      body: JSON.stringify(body),
     });
     const data = await resp.json();
     if (data.session_id) {
+      seedInput.value = randomSeed();
       viewLogs(data.session_id, "workflow", target, mode);
       refreshSessions();
     } else {
@@ -388,7 +402,6 @@ function connectWs() {
     const msg = JSON.parse(evt.data);
 
     if (msg.event === "history") {
-      // Render all historical lines at once -- no per-line scroll.
       const frag = document.createDocumentFragment();
       for (const text of msg.lines) {
         const div = document.createElement("div");
@@ -396,6 +409,15 @@ function connectWs() {
         frag.appendChild(div);
       }
       viewer.appendChild(frag);
+      viewer.scrollTop = viewer.scrollHeight;
+      return;
+    }
+
+    if (msg.event === "config") {
+      const block = document.createElement("div");
+      block.className = "config";
+      block.textContent = msg.lines.join("\n");
+      viewer.insertBefore(block, viewer.firstChild);
       viewer.scrollTop = viewer.scrollHeight;
       return;
     }
@@ -433,6 +455,7 @@ function connectWs() {
 }
 
 // Init
+document.getElementById("seed").value = randomSeed();
 loadTargets();
 pollInterval = setInterval(refreshSessions, 5000);
 refreshSessions();
