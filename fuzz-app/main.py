@@ -60,7 +60,8 @@ class FuzzSession:
     session_id: str
     target: str
     max_steps: int
-    status: str = "running"  # running | completed | failed | stopped
+    mode: str = "start"  # "start" or "download"
+    status: str = "running"  # running | stopping | completed | failed | stopped
     return_code: Optional[int] = None
     current_step: Optional[int] = None
     start_time: float = field(default_factory=time.time)
@@ -121,10 +122,14 @@ async def get_targets():
 class FuzzRequest(BaseModel):
     target: str
     max_steps: int = 1000000
+    mode: str = "start"  # "start" or "download"
 
 
 @app.post("/api/fuzz")
 async def start_fuzz(req: FuzzRequest):
+    if req.mode not in ("start", "download"):
+        return JSONResponse({"error": f"Invalid mode: {req.mode}"}, status_code=400)
+
     # Validate target exists.
     data = json.loads(TARGETS_JSON.read_text())
     if req.target not in data:
@@ -143,8 +148,14 @@ async def start_fuzz(req: FuzzRequest):
 
     log_fh = open(workflow_log, "w")
 
+    args = [sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--skip-report"]
+    if req.mode == "start":
+        args.append("--skip-get")
+    else:
+        args.append("--skip-run")
+
     proc = await asyncio.create_subprocess_exec(
-        sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--skip-report",
+        *args,
         stdout=log_fh,
         stderr=log_fh,
         env=env,
@@ -155,6 +166,7 @@ async def start_fuzz(req: FuzzRequest):
         session_id=sid,
         target=req.target,
         max_steps=req.max_steps,
+        mode=req.mode,
         process=proc,
     )
     # Store the process group id for later killing.
@@ -188,7 +200,9 @@ async def _monitor_process(sid: str, log_fh):
     try:
         rc = await session.process.wait()
         session.return_code = rc
-        if rc != 0:
+        if session.status == "stopping":
+            session.status = "stopped"
+        elif rc != 0:
             session.status = "failed"
         else:
             # Check the fuzzer log tail for errors.
@@ -196,9 +210,12 @@ async def _monitor_process(sid: str, log_fh):
             if await asyncio.to_thread(_log_tail_has_error, fuzzer_log):
                 session.status = "failed"
             else:
-                session.status = "completed"
+                session.status = "downloaded" if session.mode == "download" else "completed"
     except Exception:
-        session.status = "failed"
+        if session.status == "stopping":
+            session.status = "stopped"
+        else:
+            session.status = "failed"
     finally:
         try:
             log_fh.close()
@@ -215,7 +232,7 @@ async def _track_steps(sid: str):
 
     # Wait for the fuzzer log to appear.
     while not log_path.exists():
-        if session.status != "running":
+        if session.status not in ("running", "stopping"):
             return
         await asyncio.sleep(2.0)
 
@@ -227,7 +244,7 @@ async def _track_steps(sid: str):
                 if m:
                     session.current_step = int(m.group(1))
             else:
-                if session.status != "running":
+                if session.status not in ("running", "stopping"):
                     # Final flush.
                     while True:
                         line = fh.readline()
@@ -272,6 +289,7 @@ def _session_summary(s: FuzzSession) -> dict:
         "session_id": s.session_id,
         "target": s.target,
         "max_steps": s.max_steps,
+        "mode": s.mode,
         "status": s.status,
         "return_code": s.return_code,
         "current_step": s.current_step,
@@ -284,7 +302,7 @@ async def delete_session(session_id: str):
     s = sessions.get(session_id)
     if not s:
         return JSONResponse({"error": "Session not found"}, status_code=404)
-    if s.status == "running":
+    if s.status in ("running", "stopping"):
         return JSONResponse({"error": "Cannot remove a running session (stop it first)"}, status_code=400)
     del sessions[session_id]
     return {"session_id": session_id, "removed": True}
@@ -297,6 +315,8 @@ async def stop_session(session_id: str):
         return JSONResponse({"error": "Session not found"}, status_code=404)
     if s.status != "running":
         return JSONResponse({"error": f"Session is not running (status={s.status})"}, status_code=400)
+
+    s.status = "stopping"
 
     killed = False
     # Try SIGTERM on the process group first.
@@ -322,8 +342,8 @@ async def stop_session(session_id: str):
         except OSError:
             pass
 
-    s.status = "stopped"
-    return {"session_id": session_id, "status": "stopped", "killed": killed}
+    # Final status transition (stopping -> stopped) is handled by _monitor_process.
+    return {"session_id": session_id, "status": "stopping", "killed": killed}
 
 
 # ---------------------------------------------------------------------------
@@ -396,7 +416,7 @@ async def ws_logs(ws: WebSocket, session_id: str):
                 if line:
                     await ws.send_json({"event": "log", "data": line.rstrip("\n")})
                 else:
-                    if s.status != "running":
+                    if s.status not in ("running", "stopping"):
                         # Flush remaining.
                         while True:
                             line = fh.readline()

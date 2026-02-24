@@ -70,9 +70,15 @@
   }
   th { color: #888; font-weight: normal; font-size: 11px; text-transform: uppercase; }
 
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: #1a1a1a; }
+  tr.active-session { background: #1a2a1a; }
+
   .status-running { color: #6ae; }
   .status-completed { color: #6c6; }
+  .status-downloaded { color: #6c6; }
   .status-failed { color: #e66; }
+  .status-stopping { color: #a86; }
   .status-stopped { color: #aa6; }
 
   .log-section { margin-top: 10px; }
@@ -115,7 +121,11 @@
     Max Steps
     <input type="number" id="maxSteps" value="1000000" min="1">
   </label>
-  <button class="primary" id="startBtn" onclick="startFuzz()">Start Fuzzing</button>
+  <button class="primary" id="downloadBtn" onclick="startFuzz('download')">Download</button>
+  <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
+  <span style="flex:1"></span>
+  <button class="danger" onclick="stopAll()">Stop All</button>
+  <button onclick="removeAll()">Remove All</button>
 </div>
 
 <h2>Sessions</h2>
@@ -147,6 +157,8 @@
 
 <script>
 let currentLogSession = null;
+let currentLogTarget = null;
+let currentLogMode = null;
 let currentLogType = "workflow";
 let ws = null;
 let pollInterval = null;
@@ -168,21 +180,23 @@ async function loadTargets() {
   }
 }
 
-async function startFuzz() {
+async function startFuzz(mode) {
   const target = document.getElementById("targetSelect").value;
   const maxSteps = parseInt(document.getElementById("maxSteps").value, 10);
-  const btn = document.getElementById("startBtn");
-  btn.disabled = true;
+  const startBtn = document.getElementById("startBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  startBtn.disabled = true;
+  downloadBtn.disabled = true;
 
   try {
     const resp = await fetch("/api/fuzz", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({target, max_steps: maxSteps}),
+      body: JSON.stringify({target, max_steps: maxSteps, mode}),
     });
     const data = await resp.json();
     if (data.session_id) {
-      viewLogs(data.session_id, "workflow");
+      viewLogs(data.session_id, "workflow", target, mode);
       refreshSessions();
     } else {
       alert("Error: " + (data.error || "Unknown error"));
@@ -190,7 +204,8 @@ async function startFuzz() {
   } catch (e) {
     alert("Request failed: " + e);
   } finally {
-    btn.disabled = false;
+    startBtn.disabled = false;
+    downloadBtn.disabled = false;
   }
 }
 
@@ -216,19 +231,19 @@ async function refreshSessions() {
         stepInfo = ` step ${s.current_step} / ${s.max_steps}`;
       }
       const stopBtn = s.status === "running"
-        ? `<button class="danger" onclick="stopSession('${s.session_id}')">Stop</button>`
+        ? `<button class="danger" onclick="event.stopPropagation(); stopSession('${s.session_id}')">Stop</button>`
         : "";
-      const removeBtn = s.status !== "running"
-        ? `<button onclick="removeSession('${s.session_id}')">Remove</button>`
+      const removeBtn = s.status !== "running" && s.status !== "stopping"
+        ? `<button onclick="event.stopPropagation(); removeSession('${s.session_id}')">Remove</button>`
         : "";
-      const logBtn = `<button onclick="viewLogs('${s.session_id}')">Logs</button>`;
-      return `<tr>
+      const rowClass = s.session_id === currentLogSession ? "active-session" : "";
+      return `<tr class="${rowClass}" onclick="viewLogs('${s.session_id}', null, '${s.target}', '${s.mode}')">
         <td>${s.session_id}</td>
         <td>${s.target}</td>
         <td>${s.max_steps}</td>
         <td class="${statusClass}">${s.status}${stepInfo}</td>
         <td>${started}</td>
-        <td>${stopBtn} ${removeBtn} ${logBtn}</td>
+        <td>${stopBtn} ${removeBtn}</td>
       </tr>`;
     }).join("");
   } catch (e) {
@@ -245,12 +260,50 @@ async function stopSession(sid) {
   }
 }
 
+async function stopAll() {
+  try {
+    const resp = await fetch("/api/sessions");
+    const sessions = await resp.json();
+    await Promise.all(
+      sessions.filter(s => s.status === "running")
+        .map(s => fetch(`/api/sessions/${s.session_id}/stop`, {method: "POST"}))
+    );
+    refreshSessions();
+  } catch (e) {
+    alert("Stop all failed: " + e);
+  }
+}
+
+async function removeAll() {
+  try {
+    const resp = await fetch("/api/sessions");
+    const sessions = await resp.json();
+    const removable = sessions.filter(s => s.status !== "running" && s.status !== "stopping");
+    await Promise.all(
+      removable.map(s => fetch(`/api/sessions/${s.session_id}`, {method: "DELETE"}))
+    );
+    if (currentLogSession && removable.some(s => s.session_id === currentLogSession)) {
+      if (ws) { ws.close(); ws = null; }
+      currentLogSession = null;
+      currentLogTarget = null;
+      currentLogMode = null;
+      document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
+      updateLogButtons();
+    }
+    refreshSessions();
+  } catch (e) {
+    alert("Remove all failed: " + e);
+  }
+}
+
 async function removeSession(sid) {
   try {
     await fetch(`/api/sessions/${sid}`, {method: "DELETE"});
     if (currentLogSession === sid) {
       if (ws) { ws.close(); ws = null; }
       currentLogSession = null;
+      currentLogTarget = null;
+      currentLogMode = null;
       document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
       updateLogButtons();
     }
@@ -260,11 +313,14 @@ async function removeSession(sid) {
   }
 }
 
-function viewLogs(sid, logType) {
+function viewLogs(sid, logType, target, mode) {
   currentLogSession = sid;
+  if (target) currentLogTarget = target;
+  if (mode) currentLogMode = mode;
   if (logType) currentLogType = logType;
   updateLogButtons();
   connectWs();
+  refreshSessions();
 }
 
 function switchLog(logType) {
@@ -275,12 +331,14 @@ function switchLog(logType) {
 }
 
 function updateLogButtons() {
+  const isDownload = currentLogMode === "download";
   ["Workflow", "Fuzzer", "Target"].forEach(name => {
     const btn = document.getElementById("btn" + name);
     btn.classList.toggle("active", currentLogType === name.toLowerCase());
+    btn.style.display = (isDownload && name !== "Workflow") ? "none" : "";
   });
   document.getElementById("logLabel").textContent =
-    currentLogSession ? `Session ${currentLogSession} / ${currentLogType}` : "Log viewer";
+    currentLogSession ? `Session ${currentLogSession} (${currentLogTarget})` : "Log viewer";
 }
 
 function connectWs() {
