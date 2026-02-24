@@ -90,7 +90,10 @@ app = FastAPI(title="JAM Conformance Fuzzer")
 
 @app.get("/")
 async def index():
-    return FileResponse(APP_DIR / "static" / "index.html")
+    return FileResponse(
+        APP_DIR / "static" / "index.html",
+        headers={"Cache-Control": "no-cache"},
+    )
 
 
 # Serve static assets (css, js, etc.) if any are added later.
@@ -169,6 +172,15 @@ async def start_fuzz(req: FuzzRequest):
     return {"session_id": sid, "status": "running"}
 
 
+def _log_tail_has_error(path: Path, n: int = 10) -> bool:
+    """Check if any of the last *n* lines of a log file contain 'Error'."""
+    try:
+        tail, _ = _read_tail(path, n)
+        return any("Error" in line for line in tail)
+    except (OSError, ValueError):
+        return False
+
+
 async def _monitor_process(sid: str, log_fh):
     session = sessions.get(sid)
     if not session or not session.process:
@@ -176,7 +188,15 @@ async def _monitor_process(sid: str, log_fh):
     try:
         rc = await session.process.wait()
         session.return_code = rc
-        session.status = "completed" if rc == 0 else "failed"
+        if rc != 0:
+            session.status = "failed"
+        else:
+            # Check the fuzzer log tail for errors.
+            fuzzer_log = _resolve_log_path(sid, session.target, "fuzzer")
+            if await asyncio.to_thread(_log_tail_has_error, fuzzer_log):
+                session.status = "failed"
+            else:
+                session.status = "completed"
     except Exception:
         session.status = "failed"
     finally:
@@ -310,6 +330,32 @@ async def stop_session(session_id: str):
 # WebSocket log streaming
 # ---------------------------------------------------------------------------
 
+def _read_tail(path: Path, n: int) -> tuple[list[str], int]:
+    """Read the last *n* lines of a file efficiently (from the end).
+
+    Returns (lines, end_position) so the caller can seek to end_position
+    and continue tailing for new content.
+    """
+    with open(path, "rb") as f:
+        f.seek(0, 2)
+        end_pos = f.tell()
+        if end_pos == 0:
+            return [], 0
+        buf = b""
+        chunk_size = 8192
+        pos = end_pos
+        # Read backwards until we have enough newlines.
+        while pos > 0:
+            read_size = min(chunk_size, pos)
+            pos -= read_size
+            f.seek(pos)
+            buf = f.read(read_size) + buf
+            if buf.count(b"\n") > n:
+                break
+        lines = buf.decode("utf-8", errors="replace").splitlines()
+        return lines[-n:], end_pos
+
+
 @app.websocket("/ws/logs/{session_id}")
 async def ws_logs(ws: WebSocket, session_id: str):
     await ws.accept()
@@ -336,14 +382,20 @@ async def ws_logs(ws: WebSocket, session_id: str):
             await asyncio.sleep(2.0)
             waited += 2.0
 
-        # Tail the file.
+        # Send the last TAIL_LINES lines as a batch, then tail new ones.
+        TAIL_LINES = 1000
+        tail, end_pos = await asyncio.to_thread(_read_tail, log_path, TAIL_LINES)
+        if tail:
+            await ws.send_json({"event": "history", "lines": tail})
+
         with open(log_path, "r") as fh:
+            fh.seek(end_pos)
+
             while True:
                 line = fh.readline()
                 if line:
                     await ws.send_json({"event": "log", "data": line.rstrip("\n")})
                 else:
-                    # No new data -- check if process is still running.
                     if s.status != "running":
                         # Flush remaining.
                         while True:

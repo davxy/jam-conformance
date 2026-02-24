@@ -211,7 +211,6 @@ async function refreshSessions() {
     tbody.innerHTML = sessions.map(s => {
       const started = new Date(s.start_time * 1000).toLocaleTimeString();
       const statusClass = "status-" + s.status;
-      const rc = s.return_code !== null ? ` (rc=${s.return_code})` : "";
       let stepInfo = "";
       if (s.current_step !== null) {
         stepInfo = ` step ${s.current_step} / ${s.max_steps}`;
@@ -222,12 +221,12 @@ async function refreshSessions() {
       const removeBtn = s.status !== "running"
         ? `<button onclick="removeSession('${s.session_id}')">Remove</button>`
         : "";
-      const logBtn = `<button onclick="viewLogs('${s.session_id}','workflow')">Logs</button>`;
+      const logBtn = `<button onclick="viewLogs('${s.session_id}')">Logs</button>`;
       return `<tr>
         <td>${s.session_id}</td>
         <td>${s.target}</td>
         <td>${s.max_steps}</td>
-        <td class="${statusClass}">${s.status}${rc}${stepInfo}</td>
+        <td class="${statusClass}">${s.status}${stepInfo}</td>
         <td>${started}</td>
         <td>${stopBtn} ${removeBtn} ${logBtn}</td>
       </tr>`;
@@ -263,7 +262,7 @@ async function removeSession(sid) {
 
 function viewLogs(sid, logType) {
   currentLogSession = sid;
-  currentLogType = logType || "workflow";
+  if (logType) currentLogType = logType;
   updateLogButtons();
   connectWs();
 }
@@ -299,6 +298,20 @@ function connectWs() {
 
   ws.onmessage = (evt) => {
     const msg = JSON.parse(evt.data);
+
+    if (msg.event === "history") {
+      // Render all historical lines at once -- no per-line scroll.
+      const frag = document.createDocumentFragment();
+      for (const text of msg.lines) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        frag.appendChild(div);
+      }
+      viewer.appendChild(frag);
+      viewer.scrollTop = viewer.scrollHeight;
+      return;
+    }
+
     const line = document.createElement("div");
 
     if (msg.event === "log") {
