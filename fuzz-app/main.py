@@ -181,10 +181,6 @@ async def start_fuzz(req: FuzzRequest):
         return JSONResponse({"error": f"Unknown target: {req.target}"}, status_code=400)
 
     sid = generate_session_id()
-    session_dir = SESSIONS_BASE / sid
-    session_dir.mkdir(parents=True, exist_ok=True)
-
-    workflow_log = session_dir / "workflow.log"
 
     seed = req.seed if req.seed is not None else random.randint(0, 2**32 - 1)
 
@@ -192,6 +188,27 @@ async def start_fuzz(req: FuzzRequest):
     if req.safrole:
         req.max_mutations = 0
         req.mutation_ratio = 0.0
+
+    # Reserve the session ID immediately (before any await) to prevent
+    # concurrent requests from getting the same ID.
+    session = FuzzSession(
+        session_id=sid,
+        target=req.target,
+        max_steps=req.max_steps,
+        seed=seed,
+        max_mutations=req.max_mutations,
+        mutation_ratio=req.mutation_ratio,
+        profile=req.profile,
+        fuzzy_profile=req.fuzzy_profile,
+        safrole=req.safrole,
+        skip_slots=req.skip_slots,
+        mode=req.mode,
+    )
+    sessions[sid] = session
+
+    session_dir = SESSIONS_BASE / sid
+    session_dir.mkdir(parents=True, exist_ok=True)
+    workflow_log = session_dir / "workflow.log"
 
     env = os.environ.copy()
     env["JAM_FUZZ_SESSION_ID"] = sid
@@ -226,27 +243,11 @@ async def start_fuzz(req: FuzzRequest):
         start_new_session=True,
     )
 
-    session = FuzzSession(
-        session_id=sid,
-        target=req.target,
-        max_steps=req.max_steps,
-        seed=seed,
-        max_mutations=req.max_mutations,
-        mutation_ratio=req.mutation_ratio,
-        profile=req.profile,
-        fuzzy_profile=req.fuzzy_profile,
-        safrole=req.safrole,
-        skip_slots=req.skip_slots,
-        mode=req.mode,
-        process=proc,
-    )
-    # Store the process group id for later killing.
+    session.process = proc
     try:
         session.pgid = os.getpgid(proc.pid)
     except OSError:
         session.pgid = None
-
-    sessions[sid] = session
 
     # Background tasks: monitor process completion and track step progress.
     asyncio.create_task(_monitor_process(sid, log_fh))

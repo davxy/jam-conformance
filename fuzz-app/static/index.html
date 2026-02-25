@@ -244,6 +244,10 @@ async function loadTargets() {
     targets.sort((a, b) => a.name.localeCompare(b.name));
     const sel = document.getElementById("targetSelect");
     sel.innerHTML = "";
+    const allOpt = document.createElement("option");
+    allOpt.value = "__all__";
+    allOpt.textContent = "-- all --";
+    sel.appendChild(allOpt);
     targets.forEach(t => {
       const opt = document.createElement("option");
       opt.value = t.name;
@@ -278,36 +282,44 @@ function onSafroleToggle(checked) {
 }
 
 async function startFuzz(mode) {
-  const target = document.getElementById("targetSelect").value;
+  const sel = document.getElementById("targetSelect");
+  const selectedTarget = sel.value;
+  const targets = selectedTarget === "__all__"
+    ? Array.from(sel.options).filter(o => o.value !== "__all__").map(o => o.value)
+    : [selectedTarget];
+
   const maxSteps = parseInt(document.getElementById("maxSteps").value, 10);
   const seedInput = document.getElementById("seed");
   const seed = seedInput.value ? parseInt(seedInput.value, 10) : null;
   const maxMutations = parseInt(document.getElementById("maxMutations").value, 10);
   const mutationRatio = parseFloat(document.getElementById("mutationRatio").value);
+  const profile = document.getElementById("profile").value;
+  const fuzzyProfile = document.getElementById("fuzzyProfile").value;
+  const safrole = document.getElementById("safrole").checked;
+  const skipSlots = document.getElementById("skipSlots").checked;
   const startBtn = document.getElementById("startBtn");
   const downloadBtn = document.getElementById("downloadBtn");
   startBtn.disabled = true;
   downloadBtn.disabled = true;
 
   try {
-    const profile = document.getElementById("profile").value;
-    const fuzzyProfile = document.getElementById("fuzzyProfile").value;
-    const safrole = document.getElementById("safrole").checked;
-    const skipSlots = document.getElementById("skipSlots").checked;
-    const body = {target, max_steps: maxSteps, max_mutations: maxMutations, mutation_ratio: mutationRatio, profile, fuzzy_profile: fuzzyProfile, safrole, skip_slots: skipSlots, mode};
-    if (seed !== null) body.seed = seed;
-    const resp = await fetch("/api/fuzz", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(body),
-    });
-    const data = await resp.json();
-    if (data.session_id) {
+    const results = await Promise.all(targets.map(target => {
+      const body = {target, max_steps: maxSteps, max_mutations: maxMutations, mutation_ratio: mutationRatio, profile, fuzzy_profile: fuzzyProfile, safrole, skip_slots: skipSlots, mode};
+      if (seed !== null) body.seed = seed;
+      return fetch("/api/fuzz", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      }).then(r => r.json());
+    }));
+    const errors = results.filter(d => d.error);
+    if (errors.length) {
+      alert("Errors: " + errors.map(d => d.error).join(", "));
+    }
+    if (results.some(d => d.session_id)) {
       seedInput.value = randomSeed();
       await refreshSessions();
       resetPoll();
-    } else {
-      alert("Error: " + (data.error || "Unknown error"));
     }
   } catch (e) {
     alert("Request failed: " + e);
