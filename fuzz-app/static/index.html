@@ -397,7 +397,9 @@ async function refreshSessions() {
       if (typeof va === "string") { va = va.toLowerCase(); vb = vb.toLowerCase(); }
       if (va < vb) return sortAsc ? -1 : 1;
       if (va > vb) return sortAsc ? 1 : -1;
-      return 0;
+      // Sub-sort by current_step when primary values are equal.
+      const sa = a.current_step ?? -1, sb = b.current_step ?? -1;
+      return sortAsc ? sa - sb : sb - sa;
     });
     updateSortArrows();
 
