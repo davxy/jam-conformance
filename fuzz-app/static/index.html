@@ -78,6 +78,7 @@
   tbody tr { cursor: pointer; }
   tbody tr:hover { background: #1a1a1a; }
   tr.active-session { background: #1a2a1a; }
+  tr.active-session:hover { background: #2a1a1a; }
 
   .status-running { color: #6ae; }
   .status-completed { color: #6c6; }
@@ -87,7 +88,8 @@
   .status-stopping { color: #a86; }
   .status-stopped { color: #aa6; }
 
-  .log-section { margin-top: 10px; }
+  .log-section { margin-top: 10px; display: none; }
+  .log-section.visible { display: block; }
   .log-controls {
     display: flex;
     gap: 8px;
@@ -95,7 +97,7 @@
     align-items: center;
   }
   .log-controls span { color: #888; font-size: 12px; }
-  .log-controls button.active { background: #444; border-color: #888; }
+  button.active { background: #444; border-color: #888; }
 
   #logViewer {
     background: #0a0a0a;
@@ -169,14 +171,14 @@
   </tbody>
 </table>
 
-<div class="log-section">
+<div class="log-section" id="logSection">
   <div class="log-controls">
     <span id="logLabel">Log viewer</span>
     <button id="btnWorkflow" onclick="switchLog('workflow')">workflow</button>
     <button id="btnFuzzer" onclick="switchLog('fuzzer')">fuzzer</button>
     <button id="btnTarget" onclick="switchLog('target')">target</button>
   </div>
-  <div id="logViewer">Select a session to view logs.</div>
+  <div id="logViewer"></div>
 </div>
 
 <script>
@@ -251,7 +253,6 @@ async function startFuzz(mode) {
     const data = await resp.json();
     if (data.session_id) {
       seedInput.value = randomSeed();
-      viewLogs(data.session_id, "workflow", target, mode);
       await refreshSessions();
       resetPoll();
     } else {
@@ -307,7 +308,7 @@ async function refreshSessions() {
         ? `<button onclick="event.stopPropagation(); removeSession('${s.session_id}')">Remove</button>`
         : "";
       const rowClass = s.session_id === currentLogSession ? "active-session" : "";
-      return `<tr class="${rowClass}" onclick="viewLogs('${s.session_id}', null, '${s.target}', '${s.mode}')">
+      return `<tr class="${rowClass}" onclick="toggleLogs('${s.session_id}', '${s.target}', '${s.mode}')">
         <td>${s.session_id}</td>
         <td>${s.target}</td>
         <td>${s.max_steps}</td>
@@ -386,12 +387,7 @@ async function removeAll() {
       removable.map(s => fetch(`/api/sessions/${s.session_id}`, {method: "DELETE"}))
     );
     if (currentLogSession && removable.some(s => s.session_id === currentLogSession)) {
-      if (ws) { ws.close(); ws = null; }
-      currentLogSession = null;
-      currentLogTarget = null;
-      currentLogMode = null;
-      document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
-      updateLogButtons();
+      hideLogs();
     }
     await refreshSessions();
     resetPoll();
@@ -404,12 +400,7 @@ async function removeSession(sid) {
   try {
     await fetch(`/api/sessions/${sid}`, {method: "DELETE"});
     if (currentLogSession === sid) {
-      if (ws) { ws.close(); ws = null; }
-      currentLogSession = null;
-      currentLogTarget = null;
-      currentLogMode = null;
-      document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
-      updateLogButtons();
+      hideLogs();
     }
     await refreshSessions();
     resetPoll();
@@ -418,13 +409,28 @@ async function removeSession(sid) {
   }
 }
 
-async function viewLogs(sid, logType, target, mode) {
-  currentLogSession = sid;
-  if (target) currentLogTarget = target;
-  if (mode) currentLogMode = mode;
-  if (logType) currentLogType = logType;
+function hideLogs() {
+  if (ws) { ws.close(); ws = null; }
+  currentLogSession = null;
+  currentLogTarget = null;
+  currentLogMode = null;
+  document.getElementById("logViewer").innerHTML = "";
+  document.getElementById("logSection").classList.remove("visible");
   updateLogButtons();
-  connectWs();
+}
+
+async function toggleLogs(sid, target, mode) {
+  if (currentLogSession === sid) {
+    hideLogs();
+  } else {
+    currentLogSession = sid;
+    currentLogTarget = target;
+    currentLogMode = mode;
+    currentLogType = "workflow";
+    document.getElementById("logSection").classList.add("visible");
+    updateLogButtons();
+    connectWs();
+  }
   await refreshSessions();
   resetPoll();
 }
