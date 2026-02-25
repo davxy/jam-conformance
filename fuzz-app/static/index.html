@@ -186,6 +186,7 @@ let currentLogMode = null;
 let currentLogType = "workflow";
 let ws = null;
 let pollInterval = null;
+let refreshVersion = 0;
 
 async function loadTargets() {
   try {
@@ -251,7 +252,8 @@ async function startFuzz(mode) {
     if (data.session_id) {
       seedInput.value = randomSeed();
       viewLogs(data.session_id, "workflow", target, mode);
-      refreshSessions();
+      await refreshSessions();
+      resetPoll();
     } else {
       alert("Error: " + (data.error || "Unknown error"));
     }
@@ -263,10 +265,18 @@ async function startFuzz(mode) {
   }
 }
 
+function resetPoll() {
+  clearInterval(pollInterval);
+  pollInterval = setInterval(refreshSessions, 5000);
+}
+
 async function refreshSessions() {
+  const version = ++refreshVersion;
   try {
-    const resp = await fetch("/api/sessions");
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
     const sessions = await resp.json();
+    // A newer refresh was started while we were waiting -- discard this one.
+    if (version !== refreshVersion) return;
     const tbody = document.getElementById("sessionsBody");
 
     if (sessions.length === 0) {
@@ -320,7 +330,8 @@ async function pauseSession(sid) {
     const resp = await fetch(`/api/sessions/${sid}/pause`, {method: "POST"});
     const data = await resp.json();
     if (data.error) alert("Pause failed: " + data.error);
-    refreshSessions();
+    await refreshSessions();
+    resetPoll();
   } catch (e) {
     alert("Pause failed: " + e);
   }
@@ -329,7 +340,8 @@ async function pauseSession(sid) {
 async function stopSession(sid) {
   try {
     await fetch(`/api/sessions/${sid}/stop`, {method: "POST"});
-    refreshSessions();
+    await refreshSessions();
+    resetPoll();
   } catch (e) {
     alert("Stop failed: " + e);
   }
@@ -337,13 +349,14 @@ async function stopSession(sid) {
 
 async function stopAll() {
   try {
-    const resp = await fetch("/api/sessions");
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
     const sessions = await resp.json();
     await Promise.all(
       sessions.filter(s => s.status === "running")
         .map(s => fetch(`/api/sessions/${s.session_id}/stop`, {method: "POST"}))
     );
-    refreshSessions();
+    await refreshSessions();
+    resetPoll();
   } catch (e) {
     alert("Stop all failed: " + e);
   }
@@ -351,13 +364,14 @@ async function stopAll() {
 
 async function pauseAll() {
   try {
-    const resp = await fetch("/api/sessions");
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
     const sessions = await resp.json();
     await Promise.all(
       sessions.filter(s => s.status === "running" && s.mode === "start")
         .map(s => fetch(`/api/sessions/${s.session_id}/pause`, {method: "POST"}))
     );
-    refreshSessions();
+    await refreshSessions();
+    resetPoll();
   } catch (e) {
     alert("Pause all failed: " + e);
   }
@@ -365,7 +379,7 @@ async function pauseAll() {
 
 async function removeAll() {
   try {
-    const resp = await fetch("/api/sessions");
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
     const sessions = await resp.json();
     const removable = sessions.filter(s => s.status !== "running" && s.status !== "stopping");
     await Promise.all(
@@ -379,7 +393,8 @@ async function removeAll() {
       document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
       updateLogButtons();
     }
-    refreshSessions();
+    await refreshSessions();
+    resetPoll();
   } catch (e) {
     alert("Remove all failed: " + e);
   }
@@ -396,20 +411,22 @@ async function removeSession(sid) {
       document.getElementById("logViewer").innerHTML = "Select a session to view logs.";
       updateLogButtons();
     }
-    refreshSessions();
+    await refreshSessions();
+    resetPoll();
   } catch (e) {
     alert("Remove failed: " + e);
   }
 }
 
-function viewLogs(sid, logType, target, mode) {
+async function viewLogs(sid, logType, target, mode) {
   currentLogSession = sid;
   if (target) currentLogTarget = target;
   if (mode) currentLogMode = mode;
   if (logType) currentLogType = logType;
   updateLogButtons();
   connectWs();
-  refreshSessions();
+  await refreshSessions();
+  resetPoll();
 }
 
 function switchLog(logType) {
@@ -477,7 +494,7 @@ function connectWs() {
     } else if (msg.event === "done") {
       line.textContent = `\n--- ${msg.status} (return_code=${msg.return_code}) ---`;
       line.className = "done";
-      refreshSessions();
+      refreshSessions().then(resetPoll);
     } else if (msg.event === "error") {
       line.textContent = msg.message;
       line.className = "error";
