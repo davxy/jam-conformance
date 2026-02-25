@@ -213,6 +213,7 @@ async function loadTargets() {
   try {
     const resp = await fetch("/api/targets");
     const targets = await resp.json();
+    targets.sort((a, b) => a.name.localeCompare(b.name));
     const sel = document.getElementById("targetSelect");
     sel.innerHTML = "";
     targets.forEach(t => {
