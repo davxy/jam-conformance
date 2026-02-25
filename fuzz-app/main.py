@@ -188,7 +188,7 @@ async def start_fuzz(req: FuzzRequest):
     env["JAM_FUZZ_MAX_STEPS"] = str(req.max_steps)
     env["JAM_FUZZ_SEED"] = str(seed)
     env["JAM_FUZZ_SESSIONS_DIR"] = str(SESSIONS_BASE)
-    env["JAM_FUZZ_REMOTE_TIMEOUT"] = "30" #str(2**32 - 1)
+    env["JAM_FUZZ_REMOTE_TIMEOUT"] = "120" # 2 min
     if req.safrole:
         env["JAM_FUZZ_SAFROLE"] = "1"
 

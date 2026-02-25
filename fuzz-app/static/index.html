@@ -288,7 +288,7 @@ async function startFuzz(mode) {
 
 function resetPoll() {
   clearInterval(pollInterval);
-  pollInterval = setInterval(refreshSessions, 5000);
+  pollInterval = setInterval(refreshSessions, 1000);
 }
 
 async function refreshSessions() {
@@ -560,7 +560,7 @@ function connectWs() {
 // Init
 document.getElementById("seed").value = randomSeed();
 loadTargets();
-pollInterval = setInterval(refreshSessions, 5000);
+pollInterval = setInterval(refreshSessions, 1000);
 refreshSessions();
 </script>
 </body>
