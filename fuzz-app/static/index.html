@@ -162,7 +162,7 @@
     </label>
     <label>
       Max Steps
-      <input type="number" id="maxSteps" value="1000000" min="1">
+      <input type="number" id="maxSteps" min="1">
     </label>
     <label>
       Seed
@@ -196,11 +196,11 @@
     </label>
     <label>
       Max Mutations
-      <input type="number" id="maxMutations" value="3" min="0">
+      <input type="number" id="maxMutations" min="0">
     </label>
     <label>
       Mutation Ratio
-      <input type="number" id="mutationRatio" value="0.1" min="0" max="1" step="0.01">
+      <input type="number" id="mutationRatio" min="0" max="1" step="0.01">
     </label>
     <label style="flex-direction:row; align-items:center; gap:6px">
       <input type="checkbox" id="safrole" onchange="onSafroleToggle(this.checked)">
@@ -669,8 +669,26 @@ function connectWs() {
   };
 }
 
+async function loadDefaults() {
+  try {
+    const resp = await fetch("/api/defaults");
+    const d = await resp.json();
+    document.getElementById("maxSteps").value = d.max_steps;
+    document.getElementById("maxMutations").value = d.max_mutations;
+    document.getElementById("mutationRatio").value = d.mutation_ratio;
+    document.getElementById("profile").value = d.profile;
+    document.getElementById("fuzzyProfile").value = d.fuzzy_profile;
+    document.getElementById("safrole").checked = d.safrole;
+    document.getElementById("skipSlots").checked = d.skip_slots;
+    onSafroleToggle(d.safrole);
+  } catch (e) {
+    console.error("Failed to load defaults:", e);
+  }
+}
+
 // Init
 document.getElementById("seed").value = randomSeed();
+loadDefaults();
 loadTargets();
 pollInterval = setInterval(refreshSessions, 1000);
 refreshSessions();

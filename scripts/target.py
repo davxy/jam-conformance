@@ -475,9 +475,12 @@ def get_github_release(target: str, os_name: str) -> bool:
     # Get the latest release tag from GitHub API
     print("Fetching latest release information...")
     try:
-        with urllib.request.urlopen(
-            f"https://api.github.com/repos/{repo}/releases/latest"
-        ) as response:
+        url = f"https://api.github.com/repos/{repo}/releases/latest"
+        req = urllib.request.Request(url)
+        github_token = os.environ.get("GITHUB_TOKEN")
+        if github_token:
+            req.add_header("Authorization", f"token {github_token}")
+        with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode())
             latest_tag = data["tag_name"]
     except Exception as e:

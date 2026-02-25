@@ -17,33 +17,67 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-# Resolve paths relative to the repo root (one level up from app/).
 APP_DIR = Path(__file__).resolve().parent
-REPO_DIR = APP_DIR.parent
-SCRIPTS_DIR = REPO_DIR / "scripts"
-TARGETS_JSON = SCRIPTS_DIR / "targets.json"
-FUZZ_WORKFLOW = SCRIPTS_DIR / "fuzz-workflow.py"
 
-# Where sessions are stored. Defaults to ./sessions relative to cwd,
-# same as fuzz-workflow.py does.
-SESSIONS_BASE = Path(os.environ.get("JAM_FUZZ_SESSIONS_DIR", Path.cwd() / "sessions"))
+# Load config file defaults, then let environment variables override.
+CONFIG_PATH = APP_DIR / "config.json"
+_cfg = {}
+if CONFIG_PATH.exists():
+    _cfg = json.loads(CONFIG_PATH.read_text())
+
+
+def _conf(key: str, env_var: str, default):
+    """Return env var if set, else config file value, else hard default."""
+    env = os.environ.get(env_var)
+    if env is not None:
+        return env
+    val = _cfg.get(key)
+    if val is not None and val != "":
+        return val
+    return default
+
+
+POLKAJAM_FUZZ_BIN = _conf("polkajam_fuzz_bin", "POLKAJAM_FUZZ_BIN", "")
+_scripts_dir = _conf("scripts_dir", "JAM_FUZZ_SCRIPTS_DIR", "")
+SESSIONS_BASE = Path(_conf("sessions_dir", "JAM_FUZZ_SESSIONS_DIR", Path.cwd() / "sessions"))
+
+# UI defaults (used by FuzzRequest and served to the frontend).
+UI_DEFAULTS = {
+    "max_steps": int(_conf("max_steps", "JAM_FUZZ_MAX_STEPS_DEFAULT", 1000000)),
+    "max_mutations": int(_conf("max_mutations", "JAM_FUZZ_MAX_MUTATIONS_DEFAULT", 3)),
+    "mutation_ratio": float(_conf("mutation_ratio", "JAM_FUZZ_MUTATION_RATIO_DEFAULT", 0.1)),
+    "profile": str(_conf("profile", "JAM_FUZZ_PROFILE_DEFAULT", "full")),
+    "fuzzy_profile": str(_conf("fuzzy_profile", "JAM_FUZZ_FUZZY_PROFILE_DEFAULT", "rand")),
+    "safrole": str(_conf("safrole", "JAM_FUZZ_SAFROLE_DEFAULT", False)).lower() in ("1", "true"),
+    "skip_slots": str(_conf("skip_slots", "JAM_FUZZ_SKIP_SLOTS_DEFAULT", False)).lower() in ("1", "true"),
+}
 
 STEP_RE = re.compile(r'\[STEP (\d{8})\]')
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}')
 
 
 def validate_environment():
-    fuzz_bin = os.environ.get("POLKAJAM_FUZZ_BIN")
-    if not fuzz_bin:
-        print("Error: POLKAJAM_FUZZ_BIN environment variable is not set.", file=sys.stderr)
+    global SCRIPTS_DIR, TARGETS_JSON, FUZZ_WORKFLOW
+
+    if not POLKAJAM_FUZZ_BIN:
+        print("Error: POLKAJAM_FUZZ_BIN is not set (config.json or environment).", file=sys.stderr)
         sys.exit(1)
-    bin_path = Path(fuzz_bin)
+    os.environ["POLKAJAM_FUZZ_BIN"] = POLKAJAM_FUZZ_BIN
+    bin_path = Path(POLKAJAM_FUZZ_BIN)
     if not bin_path.is_file():
-        print(f"Error: POLKAJAM_FUZZ_BIN '{fuzz_bin}' is not a valid file.", file=sys.stderr)
+        print(f"Error: POLKAJAM_FUZZ_BIN '{POLKAJAM_FUZZ_BIN}' is not a valid file.", file=sys.stderr)
         sys.exit(1)
     if not os.access(bin_path, os.X_OK):
-        print(f"Error: POLKAJAM_FUZZ_BIN '{fuzz_bin}' is not executable.", file=sys.stderr)
+        print(f"Error: POLKAJAM_FUZZ_BIN '{POLKAJAM_FUZZ_BIN}' is not executable.", file=sys.stderr)
         sys.exit(1)
+
+    if not _scripts_dir:
+        print("Error: scripts_dir is not set (config.json or JAM_FUZZ_SCRIPTS_DIR).", file=sys.stderr)
+        sys.exit(1)
+    SCRIPTS_DIR = Path(_scripts_dir)
+    TARGETS_JSON = SCRIPTS_DIR / "targets.json"
+    FUZZ_WORKFLOW = SCRIPTS_DIR / "fuzz-workflow.py"
+
     if not TARGETS_JSON.exists():
         print(f"Error: targets.json not found at {TARGETS_JSON}", file=sys.stderr)
         sys.exit(1)
@@ -145,6 +179,11 @@ app.mount("/static", StaticFiles(directory=APP_DIR / "static"), name="static")
 # REST endpoints
 # ---------------------------------------------------------------------------
 
+@app.get("/api/defaults")
+async def get_defaults():
+    return UI_DEFAULTS
+
+
 @app.get("/api/targets")
 async def get_targets():
     data = json.loads(TARGETS_JSON.read_text())
@@ -161,14 +200,14 @@ async def get_targets():
 
 class FuzzRequest(BaseModel):
     target: str
-    max_steps: int = 1000000
+    max_steps: int = UI_DEFAULTS["max_steps"]
     seed: Optional[int] = None
-    max_mutations: int = 3
-    mutation_ratio: float = 0.1
-    profile: str = "full"
-    fuzzy_profile: str = "rand"
-    safrole: bool = False
-    skip_slots: bool = False
+    max_mutations: int = UI_DEFAULTS["max_mutations"]
+    mutation_ratio: float = UI_DEFAULTS["mutation_ratio"]
+    profile: str = UI_DEFAULTS["profile"]
+    fuzzy_profile: str = UI_DEFAULTS["fuzzy_profile"]
+    safrole: bool = UI_DEFAULTS["safrole"]
+    skip_slots: bool = UI_DEFAULTS["skip_slots"]
     mode: str = "start"  # "start" or "download"
 
 
