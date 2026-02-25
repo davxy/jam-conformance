@@ -107,9 +107,9 @@ The top panel contains all parameters for launching a fuzzing session:
 - **Fuzzy Profile** -- sub-profile for the fuzzy service
   (`rand`, `full`, `empty`, `mem-check`, `storage`, `preimages`,
   `management`, `services`). Default: `rand`. Only meaningful when
-  Profile is set to `fuzzy`.
+  Profile is set to `fuzzy` or `full`.
 - **Max Mutations** / **Mutation Ratio** -- control how aggressively the
-  fuzzer mutates state between steps.
+  fuzzer mutates stap blocks.
 - **Safrole** -- enables safrole mode. When checked, Max Mutations and
   Mutation Ratio are forced to 0 and their inputs are disabled.
 - **Skip Slots** -- enables slot skipping in the fuzzer.
@@ -158,10 +158,10 @@ Each row has action buttons depending on the session state:
   and pauses/unpauses the Docker container.
 - **Stop** -- sends SIGTERM to the process group, waits 2 seconds, then
   SIGKILL if still alive. Works for both running and downloading sessions.
-- **Report** -- appears after a session completes successfully. Downloads
+- **Report** -- appears after a session completes. Downloads
   a zip archive of the report directory, which contains the conformance
-  test results (JSON traces, state diffs, and a summary).
-- **Remove** -- removes a finished session from the list (does not delete
+  test results (traces, state diffs, and a summary).
+- **Remove** -- removes a finished/failed session from the list (does not delete
   files on disk).
 
 ### Log viewer
@@ -210,15 +210,9 @@ the "all" target option) get unique IDs.
 **Server won't start: "POLKAJAM_FUZZ_BIN is not set"**
 Export the variable pointing to your polkajam-fuzz binary.
 
-**Session stays "running" but no fuzzer log appears**
-The first run triggers a cargo build of `polkajam-fuzz`, which can take
-several minutes. Watch the workflow log -- it shows build progress. The
-WebSocket waits up to 5 minutes for log files to appear.
-
 **Session fails immediately**
 Check the workflow log. Common causes: the target binary isn't available
-(needs download), Docker isn't running (for container-based targets), or
-the cargo build failed.
+(needs download) or Docker isn't running (for container-based targets).
 
 **HTTP 403 rate limit when downloading targets**
 The download fetches release information from the GitHub API. Without
