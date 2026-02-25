@@ -16,11 +16,21 @@
   h1 { font-size: 18px; margin-bottom: 16px; color: #eee; }
   h2 { font-size: 15px; margin-bottom: 10px; color: #ddd; }
 
+  .panel {
+    border: 1px solid #2a2a2a;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .panel-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
   .controls {
     display: flex;
     gap: 12px;
     align-items: flex-end;
-    margin-bottom: 20px;
     flex-wrap: wrap;
   }
   .controls label {
@@ -121,37 +131,46 @@
 
 <h1>JAM Conformance Fuzzer</h1>
 
-<div class="controls">
-  <label>
-    Target
-    <select id="targetSelect"><option>Loading...</option></select>
-  </label>
-  <label>
-    Max Steps
-    <input type="number" id="maxSteps" value="1000000" min="1">
-  </label>
-  <label>
-    Seed
-    <input type="number" id="seed" min="0">
-  </label>
-  <label>
-    Max Mutations
-    <input type="number" id="maxMutations" value="3" min="0">
-  </label>
-  <label>
-    Mutation Ratio
-    <input type="number" id="mutationRatio" value="0.1" min="0" max="1" step="0.01">
-  </label>
-  <label style="flex-direction:row; align-items:center; gap:6px">
-    <input type="checkbox" id="safrole" onchange="onSafroleToggle(this.checked)">
-    Safrole
-  </label>
-  <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
-  <button class="primary" id="downloadBtn" onclick="startFuzz('download')">Download</button>
-  <span style="flex:1"></span>
-  <button class="danger" onclick="stopAll()">Stop All</button>
-  <button onclick="pauseAll()">Pause All</button>
-  <button onclick="removeAll()">Clean</button>
+<div class="panel">
+  <div class="panel-label">Configuration</div>
+  <div class="controls">
+    <label>
+      Target
+      <select id="targetSelect"><option>Loading...</option></select>
+    </label>
+    <label>
+      Max Steps
+      <input type="number" id="maxSteps" value="1000000" min="1">
+    </label>
+    <label>
+      Seed
+      <input type="number" id="seed" min="0">
+    </label>
+    <label>
+      Max Mutations
+      <input type="number" id="maxMutations" value="3" min="0">
+    </label>
+    <label>
+      Mutation Ratio
+      <input type="number" id="mutationRatio" value="0.1" min="0" max="1" step="0.01">
+    </label>
+    <label style="flex-direction:row; align-items:center; gap:6px">
+      <input type="checkbox" id="safrole" onchange="onSafroleToggle(this.checked)">
+      Safrole
+    </label>
+    <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
+    <button class="primary" id="downloadBtn" onclick="startFuzz('download')">Download</button>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-label">Bulk Operations</div>
+  <div class="controls">
+    <button class="danger" onclick="stopAll()">Stop</button>
+    <button onclick="pauseAll()">Pause</button>
+    <button onclick="resumeAll()">Resume</button>
+    <button onclick="removeAll()">Clean</button>
+  </div>
 </div>
 
 <h2>Sessions</h2>
@@ -375,6 +394,21 @@ async function pauseAll() {
     resetPoll();
   } catch (e) {
     alert("Pause all failed: " + e);
+  }
+}
+
+async function resumeAll() {
+  try {
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
+    const sessions = await resp.json();
+    await Promise.all(
+      sessions.filter(s => s.status === "paused")
+        .map(s => fetch(`/api/sessions/${s.session_id}/pause`, {method: "POST"}))
+    );
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Resume all failed: " + e);
   }
 }
 
