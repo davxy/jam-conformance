@@ -64,6 +64,13 @@ class FuzzSession:
     session_id: str
     target: str
     max_steps: int
+    seed: int = 0
+    max_mutations: int = 3
+    mutation_ratio: float = 0.1
+    profile: str = "full"
+    fuzzy_profile: str = "rand"
+    safrole: bool = False
+    skip_slots: bool = False
     mode: str = "start"  # "start" or "download"
     status: str = "running"  # running | paused | stopping | completed | failed | stopped
     paused: bool = False
@@ -223,6 +230,13 @@ async def start_fuzz(req: FuzzRequest):
         session_id=sid,
         target=req.target,
         max_steps=req.max_steps,
+        seed=seed,
+        max_mutations=req.max_mutations,
+        mutation_ratio=req.mutation_ratio,
+        profile=req.profile,
+        fuzzy_profile=req.fuzzy_profile,
+        safrole=req.safrole,
+        skip_slots=req.skip_slots,
         mode=req.mode,
         process=proc,
     )
@@ -347,6 +361,13 @@ def _session_summary(s: FuzzSession) -> dict:
         "session_id": s.session_id,
         "target": s.target,
         "max_steps": s.max_steps,
+        "seed": s.seed,
+        "max_mutations": s.max_mutations,
+        "mutation_ratio": s.mutation_ratio,
+        "profile": s.profile,
+        "fuzzy_profile": s.fuzzy_profile,
+        "safrole": s.safrole,
+        "skip_slots": s.skip_slots,
         "mode": s.mode,
         "status": s.status,
         "paused": s.paused,

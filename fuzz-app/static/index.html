@@ -235,6 +235,7 @@ let currentLogType = "workflow";
 let ws = null;
 let pollInterval = null;
 let refreshVersion = 0;
+let sessionsCache = [];
 
 async function loadTargets() {
   try {
@@ -328,6 +329,7 @@ async function refreshSessions() {
     const sessions = await resp.json();
     // A newer refresh was started while we were waiting -- discard this one.
     if (version !== refreshVersion) return;
+    sessionsCache = sessions;
     const tbody = document.getElementById("sessionsBody");
 
     if (sessions.length === 0) {
@@ -484,7 +486,24 @@ function hideLogs() {
   updateLogButtons();
 }
 
+function populateConfig(session) {
+  document.getElementById("targetSelect").value = session.target;
+  document.getElementById("maxSteps").value = session.max_steps;
+  document.getElementById("seed").value = session.seed;
+  document.getElementById("profile").value = session.profile;
+  document.getElementById("fuzzyProfile").value = session.fuzzy_profile;
+  document.getElementById("safrole").checked = session.safrole;
+  document.getElementById("skipSlots").checked = session.skip_slots;
+  // Apply safrole toggle first (may disable mutation fields), then set values.
+  onSafroleToggle(session.safrole);
+  document.getElementById("maxMutations").value = session.max_mutations;
+  document.getElementById("mutationRatio").value = session.mutation_ratio;
+}
+
 async function toggleLogs(sid, target, mode) {
+  const session = sessionsCache.find(s => s.session_id === sid);
+  if (session) populateConfig(session);
+
   if (currentLogSession === sid) {
     hideLogs();
   } else {
