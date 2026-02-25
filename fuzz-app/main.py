@@ -154,6 +154,9 @@ class FuzzRequest(BaseModel):
     target: str
     max_steps: int = 1000000
     seed: Optional[int] = None
+    max_mutations: int = 3
+    mutation_ratio: float = 0.1
+    safrole: bool = False
     mode: str = "start"  # "start" or "download"
 
 
@@ -175,16 +178,27 @@ async def start_fuzz(req: FuzzRequest):
 
     seed = req.seed if req.seed is not None else random.randint(0, 2**32 - 1)
 
+    # Safrole mode: inhibit mutations.
+    if req.safrole:
+        req.max_mutations = 0
+        req.mutation_ratio = 0.0
+
     env = os.environ.copy()
     env["JAM_FUZZ_SESSION_ID"] = sid
     env["JAM_FUZZ_MAX_STEPS"] = str(req.max_steps)
     env["JAM_FUZZ_SEED"] = str(seed)
     env["JAM_FUZZ_SESSIONS_DIR"] = str(SESSIONS_BASE)
-    env["JAM_FUZZ_REMOTE_TIMEOUT"] = str(2**32 - 1)
+    env["JAM_FUZZ_REMOTE_TIMEOUT"] = "30" #str(2**32 - 1)
+    if req.safrole:
+        env["JAM_FUZZ_SAFROLE"] = "1"
 
     log_fh = open(workflow_log, "w")
 
-    args = [sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--omit-log-tail"]
+    args = [
+        sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--omit-log-tail",
+        "--max-mutations", str(req.max_mutations),
+        "--mutation-ratio", str(req.mutation_ratio),
+    ]
     if req.mode == "start":
         args.append("--skip-get")
     else:
