@@ -156,7 +156,10 @@ class FuzzRequest(BaseModel):
     seed: Optional[int] = None
     max_mutations: int = 3
     mutation_ratio: float = 0.1
+    profile: str = "full"
+    fuzzy_profile: str = "rand"
     safrole: bool = False
+    skip_slots: bool = False
     mode: str = "start"  # "start" or "download"
 
 
@@ -191,6 +194,8 @@ async def start_fuzz(req: FuzzRequest):
     env["JAM_FUZZ_REMOTE_TIMEOUT"] = "120" # 2 min
     if req.safrole:
         env["JAM_FUZZ_SAFROLE"] = "1"
+    if req.skip_slots:
+        env["JAM_FUZZ_SKIP_SLOTS"] = "1"
 
     log_fh = open(workflow_log, "w")
 
@@ -198,6 +203,8 @@ async def start_fuzz(req: FuzzRequest):
         sys.executable, str(FUZZ_WORKFLOW), "-t", req.target, "--omit-log-tail",
         "--max-mutations", str(req.max_mutations),
         "--mutation-ratio", str(req.mutation_ratio),
+        "--profile", req.profile,
+        "--fuzzy-profile", req.fuzzy_profile,
     ]
     if req.mode == "start":
         args.append("--skip-get")

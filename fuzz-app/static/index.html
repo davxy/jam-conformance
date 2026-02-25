@@ -147,6 +147,29 @@
       <input type="number" id="seed" min="0">
     </label>
     <label>
+      Profile
+      <select id="profile">
+        <option value="full" selected>full</option>
+        <option value="fuzzy">fuzzy</option>
+        <option value="empty">empty</option>
+        <option value="preimages">preimages</option>
+        <option value="storage">storage</option>
+      </select>
+    </label>
+    <label>
+      Fuzzy Profile
+      <select id="fuzzyProfile">
+        <option value="rand" selected>rand</option>
+        <option value="full">full</option>
+        <option value="empty">empty</option>
+        <option value="mem-check">mem-check</option>
+        <option value="storage">storage</option>
+        <option value="preimages">preimages</option>
+        <option value="management">management</option>
+        <option value="services">services</option>
+      </select>
+    </label>
+    <label>
       Max Mutations
       <input type="number" id="maxMutations" value="3" min="0">
     </label>
@@ -157,6 +180,10 @@
     <label style="flex-direction:row; align-items:center; gap:6px">
       <input type="checkbox" id="safrole" onchange="onSafroleToggle(this.checked)">
       Safrole
+    </label>
+    <label style="flex-direction:row; align-items:center; gap:6px">
+      <input type="checkbox" id="skipSlots">
+      Skip Slots
     </label>
     <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
     <button class="primary" id="downloadBtn" onclick="startFuzz('download')">Download</button>
@@ -262,8 +289,11 @@ async function startFuzz(mode) {
   downloadBtn.disabled = true;
 
   try {
+    const profile = document.getElementById("profile").value;
+    const fuzzyProfile = document.getElementById("fuzzyProfile").value;
     const safrole = document.getElementById("safrole").checked;
-    const body = {target, max_steps: maxSteps, max_mutations: maxMutations, mutation_ratio: mutationRatio, safrole, mode};
+    const skipSlots = document.getElementById("skipSlots").checked;
+    const body = {target, max_steps: maxSteps, max_mutations: maxMutations, mutation_ratio: mutationRatio, profile, fuzzy_profile: fuzzyProfile, safrole, skip_slots: skipSlots, mode};
     if (seed !== null) body.seed = seed;
     const resp = await fetch("/api/fuzz", {
       method: "POST",
