@@ -17,16 +17,12 @@ Date: 2026-03-02
     * [L1 - Minimum behaviour conformance]: run implementation against all published and well-known Test-Vectors. 
         - Teams have to pass all known (and applicable to M1) JAM test-vectors.
         - This ensures that teams don't break any well-known behaviour conditions. 
-    * [L2 - Happy Path]: run implementation for a large number of steps (100k or 1M?) without mutations or fuzzing. 
-        - This ensures that teams can import well-formed blocks one after another. 
+    * [L2 - Happy Path]: run implementation for a large number of steps (100k or 1M?) without mutations. 
+        - This ensures that teams can import well-formed blocks one after another, with Work-Packages exercising two different services (Bootstrap and Fuzzing)
         - Teams have to import all blocks without error.
         - Use seeds that have not yet been used in published reports or traces.
         - Also, if we want smaller seeds (for example 1 byte) only 42 has been used, so we can pick any other numbers.
-    * [L3A - Bad block detection - fuzzing]: run several shorter runs (for 10k steps?) using only fuzzing to intentionally generate possible error conditions. 
-        - Teams have to reach the same response as our Fuzzer
-        - This ensures teams can detect error conditions and not import bad blocks.
-        - May use own seed
-    * [L3B - Bad block detection - mutations]: run several shorter runs (for 10k steps?) using only mutatiosn to intentionally generate possible error conditions. 
+    * [L3 - Bad block detection - mutations]: run several shorter runs (for 10k steps?) using only mutations to intentionally generate possible error conditions. 
         - Teams have to reach the same response as our Fuzzer
         - This ensures teams can detect error conditions and not import bad blocks.
     * [L4 - (Optional) Exploratory Error]: run against selected traces or parameter combinations that in the past have highlighted selected mismatch categories from some teams.
@@ -70,45 +66,7 @@ Date: 2026-03-02
 
 ---
 
-## L3A — Fuzzing (Fuzzy, No Mutations)
-
-### Parameters
-
-- profile: fuzzy
-- fuzzy_profile: rand/full (?)
-- max_mutations: 0
-- mutation_ratio: 0.1 (inactive because max_mutations = 0)
-- max_work_items: 1
-- max_steps: 10000
-- safrole: false
-- seed: 42
-
-### Known evidence samples
-
-- [fuzz-reports/0.7.1/reports/jampy/1761651476/report.json](../fuzz-reports/0.7.1/reports/jampy/1761651476/report.json)
-- [fuzz-reports/0.7.1/reports/jampy/1761651616/report.json](../fuzz-reports/0.7.1/reports/jampy/1761651616/report.json)
-- [fuzz-reports/0.7.1/reports/jampy/1761651837/report.json](../fuzz-reports/0.7.1/reports/jampy/1761651837/report.json)
-
-### Acceptance Criteria
-
-- Fuzzer produces at least one reject class from known set (e.g., InvalidEpochMark, bad offenders mark, report-slot-future).
-- Team response must map to expected accept/reject class for that step.
-
-### (Optional) Additional sweep for instruction-family coverage
-
-Run short repeats across fuzzy profiles:
-
-- fuzzy_profile in: mem-check, storage, preimages, management, services
-- max_steps: 5000 each
-- seeds: 3 per fuzzy_profile
-- keep max_mutations = 0
-
-### Acceptance Criteria
-
-- At least one fuzzer-side reject is generated for the lane.
-- Coverage target: each selected fuzzy_profile executed at least 3 seeds.
-
-## L3B (1) — Mutations
+## L3B — Mutations
 
 ### Parameters
 
