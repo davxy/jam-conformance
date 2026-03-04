@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JAM Conformance Fuzzer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "SF Mono", "Menlo", "Consolas", monospace;
+    background: #111;
+    color: #ccc;
+    padding: 20px;
+    font-size: 14px;
+  }
+  h1 { font-size: 18px; margin-bottom: 16px; color: #eee; }
+  h2 { font-size: 15px; margin-bottom: 10px; color: #ddd; }
+
+  .panel {
+    border: 1px solid #2a2a2a;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .panel-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .controls {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: #999;
+  }
+  .controls select, .controls input {
+    background: #222;
+    color: #eee;
+    border: 1px solid #444;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  .controls input:disabled {
+    background: #1a1a1a;
+    color: #555;
+    border-color: #333;
+  }
+  .controls select { min-width: 180px; }
+  .controls input[type="number"] { width: 130px; }
+  .seed-group {
+    display: flex;
+    gap: 0;
+  }
+  .seed-group input {
+    border-right: none;
+  }
+  .seed-group button {
+    padding: 6px 8px;
+    border-left: none;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .controls-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  button {
+    background: #333;
+    color: #eee;
+    border: 1px solid #555;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  button:hover { background: #444; }
+  button.primary { background: #2a5a2a; border-color: #4a8a4a; }
+  button.primary:hover { background: #3a6a3a; }
+  button.danger { background: #5a2a2a; border-color: #8a4a4a; }
+  button.danger:hover { background: #6a3a3a; }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 6px 10px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  th { color: #888; font-weight: normal; font-size: 11px; text-transform: uppercase; cursor: pointer; user-select: none; }
+  th:last-child { cursor: default; }
+  th:hover:not(:last-child) { color: #ccc; }
+  th .sort-arrow { font-size: 10px; margin-left: 4px; }
+
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: #1a1a1a; }
+  tr.active-session { background: #1a2a1a; }
+  tr.active-session:hover { background: #2a1a1a; }
+
+  .status-running { color: #6ae; }
+  .status-downloading { color: #6ae; }
+  .status-completed { color: #6c6; }
+  .status-downloaded { color: #6c6; }
+  .status-failed { color: #e66; }
+  .status-paused { color: #a8a; }
+  .status-stopping { color: #a86; }
+  .status-stopped { color: #aa6; }
+
+  .log-section { margin-top: 10px; display: none; }
+  .log-section.visible { display: block; }
+  .log-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: center;
+  }
+  .log-controls span { color: #888; font-size: 12px; }
+  button.active { background: #444; border-color: #888; }
+
+  #logViewer {
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    padding: 10px;
+    height: 450px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #aaa;
+  }
+  #logViewer .config { color: #6ae; border-bottom: 1px solid #2a2a2a; padding-bottom: 6px; margin-bottom: 6px; }
+  #logViewer .waiting { color: #886; }
+  #logViewer .error { color: #e66; }
+  #logViewer .done { color: #6c6; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>JAM Conformance Fuzzer</h1>
+
+<div class="panel">
+  <div class="panel-label">Configuration</div>
+  <div class="controls">
+    <label>
+      Target
+      <select id="targetSelect"><option>Loading...</option></select>
+    </label>
+    <label>
+      Max Steps
+      <input type="number" id="maxSteps" min="1">
+    </label>
+    <label>
+      Seed
+      <div class="seed-group">
+        <input type="text" id="seed" style="width:110px">
+        <button onclick="document.getElementById('seed').value = randomSeed()">&#x21bb;</button>
+      </div>
+    </label>
+    <label>
+      Profile
+      <select id="profile">
+        <option value="full" selected>full</option>
+        <option value="fuzzy">fuzzy</option>
+        <option value="empty">empty</option>
+        <option value="preimages">preimages</option>
+        <option value="storage">storage</option>
+      </select>
+    </label>
+    <label>
+      Fuzzy Profile
+      <select id="fuzzyProfile">
+        <option value="rand" selected>rand</option>
+        <option value="full">full</option>
+        <option value="empty">empty</option>
+        <option value="mem-check">mem-check</option>
+        <option value="storage">storage</option>
+        <option value="preimages">preimages</option>
+        <option value="management">management</option>
+        <option value="services">services</option>
+      </select>
+    </label>
+    <label>
+      Max Mutations
+      <input type="number" id="maxMutations" min="0">
+    </label>
+    <label>
+      Mutation Ratio
+      <input type="number" id="mutationRatio" min="0" max="1" step="0.01">
+    </label>
+    <label style="flex-direction:row; align-items:center; gap:6px">
+      <input type="checkbox" id="safrole" onchange="onSafroleToggle(this.checked)">
+      Safrole
+    </label>
+    <label style="flex-direction:row; align-items:center; gap:6px">
+      <input type="checkbox" id="skipSlots">
+      Skip Slots
+    </label>
+  </div>
+  <div class="controls-actions">
+    <button class="primary" id="startBtn" onclick="startFuzz('start')">Start</button>
+    <button class="primary" id="downloadBtn" onclick="startFuzz('download')">Download</button>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-label">Bulk Operations</div>
+  <div class="controls">
+    <button class="danger" onclick="stopAll()">Stop</button>
+    <button onclick="pauseAll()">Pause</button>
+    <button onclick="resumeAll()">Resume</button>
+    <button onclick="removeAll()">Clean</button>
+  </div>
+</div>
+
+<h2>Sessions</h2>
+<table>
+  <thead>
+    <tr>
+      <th onclick="sortBy('session_id')">Session<span class="sort-arrow" id="sort-session_id"></span></th>
+      <th onclick="sortBy('target')">Target<span class="sort-arrow" id="sort-target"></span></th>
+      <th onclick="sortBy('start_time')">Started<span class="sort-arrow" id="sort-start_time"></span></th>
+      <th onclick="sortBy('status')">Status<span class="sort-arrow" id="sort-status"></span></th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="sessionsBody">
+    <tr><td colspan="5" style="color:#666">No sessions yet</td></tr>
+  </tbody>
+</table>
+
+<div class="log-section" id="logSection">
+  <div class="log-controls">
+    <span id="logLabel">Log viewer</span>
+    <button id="btnWorkflow" onclick="switchLog('workflow')">workflow</button>
+    <button id="btnFuzzer" onclick="switchLog('fuzzer')">fuzzer</button>
+    <button id="btnTarget" onclick="switchLog('target')">target</button>
+  </div>
+  <div id="logViewer"></div>
+</div>
+
+<script>
+let currentLogSession = null;
+let currentLogTarget = null;
+let currentLogMode = null;
+let currentLogType = "workflow";
+let ws = null;
+let pollInterval = null;
+let refreshVersion = 0;
+let sessionsCache = [];
+let sortColumn = "start_time";
+let sortAsc = false;
+
+async function loadTargets() {
+  try {
+    const resp = await fetch("/api/targets");
+    const targets = await resp.json();
+    targets.sort((a, b) => a.name.localeCompare(b.name));
+    const sel = document.getElementById("targetSelect");
+    sel.innerHTML = "";
+    const allOpt = document.createElement("option");
+    allOpt.value = "__all__";
+    allOpt.textContent = "-- all --";
+    sel.appendChild(allOpt);
+    targets.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t.name;
+      opt.textContent = t.name;
+      sel.appendChild(opt);
+    });
+  } catch (e) {
+    console.error("Failed to load targets:", e);
+  }
+}
+
+function randomSeed() {
+  return Math.floor(Math.random() * 0x100000000);
+}
+
+function onSafroleToggle(checked) {
+  const maxMut = document.getElementById("maxMutations");
+  const mutRatio = document.getElementById("mutationRatio");
+  if (checked) {
+    maxMut.dataset.prev = maxMut.value;
+    mutRatio.dataset.prev = mutRatio.value;
+    maxMut.value = 0;
+    mutRatio.value = 0;
+    maxMut.disabled = true;
+    mutRatio.disabled = true;
+  } else {
+    maxMut.value = maxMut.dataset.prev || 3;
+    mutRatio.value = mutRatio.dataset.prev || 0.1;
+    maxMut.disabled = false;
+    mutRatio.disabled = false;
+  }
+}
+
+async function startFuzz(mode) {
+  const sel = document.getElementById("targetSelect");
+  const selectedTarget = sel.value;
+  const targets = selectedTarget === "__all__"
+    ? Array.from(sel.options).filter(o => o.value !== "__all__").map(o => o.value)
+    : [selectedTarget];
+
+  const maxSteps = parseInt(document.getElementById("maxSteps").value, 10);
+  const seedInput = document.getElementById("seed");
+  const seed = seedInput.value ? parseInt(seedInput.value, 10) : null;
+  const maxMutations = parseInt(document.getElementById("maxMutations").value, 10);
+  const mutationRatio = parseFloat(document.getElementById("mutationRatio").value);
+  const profile = document.getElementById("profile").value;
+  const fuzzyProfile = document.getElementById("fuzzyProfile").value;
+  const safrole = document.getElementById("safrole").checked;
+  const skipSlots = document.getElementById("skipSlots").checked;
+  const startBtn = document.getElementById("startBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  startBtn.disabled = true;
+  downloadBtn.disabled = true;
+
+  try {
+    const results = await Promise.all(targets.map(target => {
+      const body = {target, max_steps: maxSteps, max_mutations: maxMutations, mutation_ratio: mutationRatio, profile, fuzzy_profile: fuzzyProfile, safrole, skip_slots: skipSlots, mode};
+      if (seed !== null) body.seed = seed;
+      return fetch("/api/fuzz", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      }).then(r => r.json());
+    }));
+    const errors = results.filter(d => d.error);
+    if (errors.length) {
+      alert("Errors: " + errors.map(d => d.error).join(", "));
+    }
+    if (results.some(d => d.session_id)) {
+      await refreshSessions();
+      resetPoll();
+    }
+  } catch (e) {
+    alert("Request failed: " + e);
+  } finally {
+    startBtn.disabled = false;
+    downloadBtn.disabled = false;
+  }
+}
+
+function resetPoll() {
+  clearInterval(pollInterval);
+  pollInterval = setInterval(refreshSessions, 1000);
+}
+
+function sortBy(column) {
+  if (sortColumn === column) {
+    sortAsc = !sortAsc;
+  } else {
+    sortColumn = column;
+    sortAsc = true;
+  }
+  refreshSessions();
+}
+
+function updateSortArrows() {
+  document.querySelectorAll(".sort-arrow").forEach(el => el.textContent = "");
+  const el = document.getElementById("sort-" + sortColumn);
+  if (el) el.textContent = sortAsc ? "\u25b2" : "\u25bc";
+}
+
+async function refreshSessions() {
+  const version = ++refreshVersion;
+  try {
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
+    const sessions = await resp.json();
+    // A newer refresh was started while we were waiting -- discard this one.
+    if (version !== refreshVersion) return;
+    sessionsCache = sessions;
+    const tbody = document.getElementById("sessionsBody");
+
+    if (sessions.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="color:#666">No sessions yet</td></tr>';
+      return;
+    }
+
+    sessions.sort((a, b) => {
+      let va = a[sortColumn], vb = b[sortColumn];
+      if (typeof va === "string") { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      // Sub-sort by current_step when primary values are equal.
+      const sa = a.current_step ?? -1, sb = b.current_step ?? -1;
+      return sortAsc ? sa - sb : sb - sa;
+    });
+    updateSortArrows();
+
+    tbody.innerHTML = sessions.map(s => {
+      const started = new Date(s.start_time * 1000).toLocaleTimeString();
+      const statusClass = "status-" + s.status;
+      let stepInfo = "";
+      if (s.current_step !== null) {
+        stepInfo = ` step ${s.current_step} / ${s.max_steps}`;
+      }
+      const isActive = ["running", "downloading", "paused", "stopping"].includes(s.status);
+      const pauseBtn = s.mode === "start" && (s.status === "running" || s.status === "paused")
+        ? `<button onclick="event.stopPropagation(); pauseSession('${s.session_id}')">${s.paused ? "Resume" : "Pause"}</button>`
+        : "";
+      const stopBtn = s.status === "running" || s.status === "downloading" || s.status === "paused"
+        ? `<button class="danger" onclick="event.stopPropagation(); stopSession('${s.session_id}')">Stop</button>`
+        : "";
+      const reportBtn = s.has_report
+        ? `<button onclick="event.stopPropagation(); downloadReport('${s.session_id}')">Report</button>`
+        : "";
+      const removeBtn = !isActive
+        ? `<button onclick="event.stopPropagation(); removeSession('${s.session_id}')">Remove</button>`
+        : "";
+      const rowClass = s.session_id === currentLogSession ? "active-session" : "";
+      return `<tr class="${rowClass}" onclick="toggleLogs('${s.session_id}', '${s.target}', '${s.mode}')">
+        <td>${s.session_id}</td>
+        <td>${s.target}</td>
+        <td>${started}</td>
+        <td class="${statusClass}">${s.status}${stepInfo}</td>
+        <td>${pauseBtn} ${stopBtn} ${reportBtn} ${removeBtn}</td>
+      </tr>`;
+    }).join("");
+  } catch (e) {
+    console.error("Failed to refresh sessions:", e);
+  }
+}
+
+function downloadReport(sid) {
+  window.open(`/api/sessions/${sid}/report`, "_blank");
+}
+
+async function pauseSession(sid) {
+  try {
+    const resp = await fetch(`/api/sessions/${sid}/pause`, {method: "POST"});
+    const data = await resp.json();
+    if (data.error) alert("Pause failed: " + data.error);
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Pause failed: " + e);
+  }
+}
+
+async function stopSession(sid) {
+  try {
+    await fetch(`/api/sessions/${sid}/stop`, {method: "POST"});
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Stop failed: " + e);
+  }
+}
+
+async function stopAll() {
+  try {
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
+    const sessions = await resp.json();
+    await Promise.all(
+      sessions.filter(s => s.status === "running" || s.status === "downloading")
+        .map(s => fetch(`/api/sessions/${s.session_id}/stop`, {method: "POST"}))
+    );
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Stop all failed: " + e);
+  }
+}
+
+async function pauseAll() {
+  try {
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
+    const sessions = await resp.json();
+    await Promise.all(
+      sessions.filter(s => s.status === "running" && s.mode === "start")
+        .map(s => fetch(`/api/sessions/${s.session_id}/pause`, {method: "POST"}))
+    );
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Pause all failed: " + e);
+  }
+}
+
+async function resumeAll() {
+  try {
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
+    const sessions = await resp.json();
+    await Promise.all(
+      sessions.filter(s => s.status === "paused")
+        .map(s => fetch(`/api/sessions/${s.session_id}/pause`, {method: "POST"}))
+    );
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Resume all failed: " + e);
+  }
+}
+
+async function removeAll() {
+  try {
+    const resp = await fetch("/api/sessions", {cache: "no-store"});
+    const sessions = await resp.json();
+    const removable = sessions.filter(s => !["running", "downloading", "paused", "stopping"].includes(s.status));
+    await Promise.all(
+      removable.map(s => fetch(`/api/sessions/${s.session_id}`, {method: "DELETE"}))
+    );
+    if (currentLogSession && removable.some(s => s.session_id === currentLogSession)) {
+      hideLogs();
+    }
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Remove all failed: " + e);
+  }
+}
+
+async function removeSession(sid) {
+  try {
+    await fetch(`/api/sessions/${sid}`, {method: "DELETE"});
+    if (currentLogSession === sid) {
+      hideLogs();
+    }
+    await refreshSessions();
+    resetPoll();
+  } catch (e) {
+    alert("Remove failed: " + e);
+  }
+}
+
+function hideLogs() {
+  if (ws) { ws.close(); ws = null; }
+  currentLogSession = null;
+  currentLogTarget = null;
+  currentLogMode = null;
+  document.getElementById("logViewer").innerHTML = "";
+  document.getElementById("logSection").classList.remove("visible");
+  updateLogButtons();
+}
+
+function populateConfig(session) {
+  document.getElementById("targetSelect").value = session.target;
+  document.getElementById("maxSteps").value = session.max_steps;
+  document.getElementById("seed").value = session.seed;
+  document.getElementById("profile").value = session.profile;
+  document.getElementById("fuzzyProfile").value = session.fuzzy_profile;
+  document.getElementById("safrole").checked = session.safrole;
+  document.getElementById("skipSlots").checked = session.skip_slots;
+  // Apply safrole toggle first (may disable mutation fields), then set values.
+  onSafroleToggle(session.safrole);
+  document.getElementById("maxMutations").value = session.max_mutations;
+  document.getElementById("mutationRatio").value = session.mutation_ratio;
+}
+
+async function toggleLogs(sid, target, mode) {
+  const session = sessionsCache.find(s => s.session_id === sid);
+  if (session) populateConfig(session);
+
+  if (currentLogSession === sid) {
+    hideLogs();
+  } else {
+    currentLogSession = sid;
+    currentLogTarget = target;
+    currentLogMode = mode;
+    currentLogType = "workflow";
+    document.getElementById("logSection").classList.add("visible");
+    updateLogButtons();
+    connectWs();
+  }
+  await refreshSessions();
+  resetPoll();
+}
+
+function switchLog(logType) {
+  if (!currentLogSession) return;
+  currentLogType = logType;
+  updateLogButtons();
+  connectWs();
+}
+
+function updateLogButtons() {
+  const isDownload = currentLogMode === "download";
+  ["Workflow", "Fuzzer", "Target"].forEach(name => {
+    const btn = document.getElementById("btn" + name);
+    btn.classList.toggle("active", currentLogType === name.toLowerCase());
+    btn.style.display = (isDownload && name !== "Workflow") ? "none" : "";
+  });
+  document.getElementById("logLabel").textContent =
+    currentLogSession ? `Session ${currentLogSession} (${currentLogTarget})` : "Log viewer";
+}
+
+function connectWs() {
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+
+  const viewer = document.getElementById("logViewer");
+  viewer.innerHTML = "";
+
+  const proto = location.protocol === "https:" ? "wss:" : "ws:";
+  const url = `${proto}//${location.host}/ws/logs/${currentLogSession}?log=${currentLogType}`;
+  ws = new WebSocket(url);
+
+  ws.onmessage = (evt) => {
+    const msg = JSON.parse(evt.data);
+
+    if (msg.event === "history") {
+      const frag = document.createDocumentFragment();
+      for (const text of msg.lines) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        frag.appendChild(div);
+      }
+      viewer.appendChild(frag);
+      viewer.scrollTop = viewer.scrollHeight;
+      return;
+    }
+
+    if (msg.event === "config") {
+      const block = document.createElement("div");
+      block.className = "config";
+      block.textContent = msg.lines.join("\n");
+      viewer.insertBefore(block, viewer.firstChild);
+      viewer.scrollTop = viewer.scrollHeight;
+      return;
+    }
+
+    const line = document.createElement("div");
+
+    if (msg.event === "log") {
+      line.textContent = msg.data;
+    } else if (msg.event === "waiting") {
+      line.textContent = msg.message;
+      line.className = "waiting";
+    } else if (msg.event === "done") {
+      line.textContent = `\n--- ${msg.status} (return_code=${msg.return_code}) ---`;
+      line.className = "done";
+      refreshSessions().then(resetPoll);
+    } else if (msg.event === "error") {
+      line.textContent = msg.message;
+      line.className = "error";
+    }
+
+    viewer.appendChild(line);
+    viewer.scrollTop = viewer.scrollHeight;
+  };
+
+  ws.onerror = () => {
+    const line = document.createElement("div");
+    line.textContent = "WebSocket error.";
+    line.className = "error";
+    viewer.appendChild(line);
+  };
+
+  ws.onclose = () => {
+    // Normal closure, no action needed.
+  };
+}
+
+async function loadDefaults() {
+  try {
+    const resp = await fetch("/api/defaults");
+    const d = await resp.json();
+    document.getElementById("maxSteps").value = d.max_steps;
+    document.getElementById("maxMutations").value = d.max_mutations;
+    document.getElementById("mutationRatio").value = d.mutation_ratio;
+    document.getElementById("profile").value = d.profile;
+    document.getElementById("fuzzyProfile").value = d.fuzzy_profile;
+    document.getElementById("safrole").checked = d.safrole;
+    document.getElementById("skipSlots").checked = d.skip_slots;
+    onSafroleToggle(d.safrole);
+  } catch (e) {
+    console.error("Failed to load defaults:", e);
+  }
+}
+
+// Init
+document.getElementById("seed").value = randomSeed();
+loadDefaults();
+loadTargets();
+pollInterval = setInterval(refreshSessions, 1000);
+refreshSessions();
+</script>
+</body>
+</html>

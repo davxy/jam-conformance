@@ -69,9 +69,11 @@ SEED = os.environ.get("JAM_FUZZ_SEED", "42")
 MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
 STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
 MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
-SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
 SINGLE_STEP = os.environ.get("JAM_FUZZ_SINGLE_STEP", "false")
 VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
+REMOTE_TIMEOUT = os.environ.get("JAM_FUZZ_REMOTE_TIMEOUT", "30")
+SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
+SKIP_SLOTS = os.environ.get("JAM_FUZZ_SKIP_SLOTS", "false")
 
 FUZZER_LOG_TAIL_LENGTH = 100
 
@@ -302,6 +304,8 @@ def run_fuzzer_local_mode(args, log_file):
         STEP_PERIOD,
         "--safrole",
         SAFROLE,
+        "--skip-slots",
+        SKIP_SLOTS,
         "--seed",
         seed,
         "--max-work-items",
@@ -322,6 +326,8 @@ def run_fuzzer_local_mode(args, log_file):
         str(args.max_mutations),
         "--verbosity",
         VERBOSITY,
+        "--remote-timeout",
+        REMOTE_TIMEOUT,
         "--pvm-interpreter-backend",
     ]
 
