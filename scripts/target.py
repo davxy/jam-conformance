@@ -25,7 +25,8 @@ TARGET_SOCK = os.environ.get("JAM_FUZZ_TARGET_SOCK", DEFAULT_SOCK)
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
 
 # Maximum number of cores to use for docker containers
-DOCKER_CPU_SET = os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", "16-32")
+_default_cpu_set = f"0-{os.cpu_count() - 1}" if os.cpu_count() and os.cpu_count() > 1 else "0"
+DOCKER_CPU_SET = os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", _default_cpu_set)
 
 # Whether to run targets in docker containers (1) or directly on host (0)
 RUN_DOCKER = int(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
@@ -953,6 +954,18 @@ def run_target(target: str, os_name: str, args=None) -> None:
         full_command += f" {args.target_args}"
 
     if RUN_DOCKER == 1:
+        # Ensure the default Docker image is available locally
+        try:
+            subprocess.run(
+                ["docker", "image", "inspect", DEFAULT_DOCKER_IMAGE],
+                check=True, capture_output=True,
+            )
+        except subprocess.CalledProcessError:
+            print(f"Docker image '{DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
+            subprocess.run(
+                ["docker", "pull", "--platform", DOCKER_PLATFORM, DEFAULT_DOCKER_IMAGE],
+                check=True,
+            )
         # Overwrite target information and run it in a dedicated docker image
         target_obj = TARGETS[target]
         target_obj.image = DEFAULT_DOCKER_IMAGE
