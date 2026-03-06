@@ -32,7 +32,7 @@ from jam_types import spec
 from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
 
 DEFAULT_GP_VERSION = "0.7.2"
-# GP_VERSION will be determined from polkajam-fuzz --version or command line
+# GP_VERSION will be determined from POLKAJAM_FUZZ_BIN --version or command line
 GP_VERSION = DEFAULT_GP_VERSION
 
 CURRENT_DIR = os.getcwd()
@@ -69,9 +69,11 @@ SEED = os.environ.get("JAM_FUZZ_SEED", "42")
 MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
 STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
 MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
-SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
 SINGLE_STEP = os.environ.get("JAM_FUZZ_SINGLE_STEP", "false")
 VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
+REMOTE_TIMEOUT = os.environ.get("JAM_FUZZ_REMOTE_TIMEOUT", "30")
+SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
+SKIP_SLOTS = os.environ.get("JAM_FUZZ_SKIP_SLOTS", "false")
 
 FUZZER_LOG_TAIL_LENGTH = 100
 
@@ -226,16 +228,18 @@ def parse_command_line_args():
     return args
 
 
-def polkajam_fuzz_dir():
-    # Detect if jam-conformance repo is defined, and quit with appropriate message if not
-    if not os.environ.get("POLKAJAM_FUZZ_DIR"):
-        print("Error: POLKAJAM_FUZZ_DIR is not defined.")
+def polkajam_fuzz_bin():
+    if not os.environ.get("POLKAJAM_FUZZ_BIN"):
+        print("Error: POLKAJAM_FUZZ_BIN is not defined.")
         exit(1)
-    polkajam_fuzz_dir = os.environ["POLKAJAM_FUZZ_DIR"]
-    if not os.path.isdir(polkajam_fuzz_dir):
-        print(f"Error: POLKAJAM_FUZZ_DIR '{polkajam_fuzz_dir}' is not a valid directory.")
+    bin_path = os.environ["POLKAJAM_FUZZ_BIN"]
+    if not os.path.isfile(bin_path):
+        print(f"Error: POLKAJAM_FUZZ_BIN '{bin_path}' is not a valid file.")
         exit(1)
-    return polkajam_fuzz_dir
+    if not os.access(bin_path, os.X_OK):
+        print(f"Error: POLKAJAM_FUZZ_BIN '{bin_path}' is not executable.")
+        exit(1)
+    return bin_path
 
 
 def get_gp_version_from_fuzzer():
@@ -244,10 +248,8 @@ def get_gp_version_from_fuzzer():
     Returns the GP version or DEFAULT_GP_VERSION if parsing fails."""
     try:
         print("Getting GP version from polkajam-fuzz")
-        cargo_cmd = ["cargo", "run", "--release", "-p", "polkajam-fuzz", "--", "--version"]
         result = subprocess.run(
-            cargo_cmd,
-            cwd=polkajam_fuzz_dir(),
+            [polkajam_fuzz_bin(), "--version"],
             text=True,
             capture_output=True,
             check=False,
@@ -267,23 +269,15 @@ def get_gp_version_from_fuzzer():
     return DEFAULT_GP_VERSION
 
 
-def build_fuzzer():
-    print("Building polkajam-fuzz binary")
-    cargo_cmd = ["cargo", "build", "--release", "-p", "polkajam-fuzz"]
-    return subprocess.run(cargo_cmd, cwd=polkajam_fuzz_dir(), check=False, text=True)
-
-
 def fuzzer_run(args, log_file):
-    cargo_cmd = ["cargo", "run", "--release", "-p", "polkajam-fuzz", "--"] + args
+    cmd = [polkajam_fuzz_bin()] + args
 
-    print(f"Running cargo command: {' '.join(cargo_cmd)}")
-    # Run the command and redirect output to a log file
+    print(f"Running command: {' '.join(cmd)}")
     print(f"Fuzzer output will be written to: {log_file}")
 
     log = open(log_file, "w")
     return subprocess.run(
-        cargo_cmd,
-        cwd=polkajam_fuzz_dir(),
+        cmd,
         check=False,
         text=True,
         stdout=log,
@@ -310,6 +304,8 @@ def run_fuzzer_local_mode(args, log_file):
         STEP_PERIOD,
         "--safrole",
         SAFROLE,
+        "--skip-slots",
+        SKIP_SLOTS,
         "--seed",
         seed,
         "--max-work-items",
@@ -330,6 +326,8 @@ def run_fuzzer_local_mode(args, log_file):
         str(args.max_mutations),
         "--verbosity",
         VERBOSITY,
+        "--remote-timeout",
+        REMOTE_TIMEOUT,
         "--pvm-interpreter-backend",
     ]
 
@@ -999,14 +997,6 @@ def explode_target_args(targets):
 def main():
     global GP_VERSION
     args = parse_command_line_args()
-
-    # If we will need the fuzzer, build it as soon as possible.
-    # Do not attempt building on recursive calls
-    if not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
-        result = build_fuzzer()
-        if result.returncode != 0:
-            print(f"Error building fuzzer: {result.returncode}")
-            exit(1)
 
     # Determine GP version: use command line if provided, otherwise detect from fuzzer
     if args.gp_version is not None:

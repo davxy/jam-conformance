@@ -1,0 +1,12 @@
+{
+  "polkajam_fuzz_bin": "/mnt/ssd/develop/jam/polkajam/target/release/polkajam-fuzz",
+  "scripts_dir": "/mnt/ssd/develop/jam/jam-conformance/scripts",
+  "sessions_dir": "./sessions",
+  "max_steps": 1000000,
+  "max_mutations": 3,
+  "mutation_ratio": 0.1,
+  "profile": "full",
+  "fuzzy_profile": "rand",
+  "safrole": false,
+  "skip_slots": false
+}

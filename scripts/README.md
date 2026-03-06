@@ -49,11 +49,11 @@ documentation](../fuzz-proto/README.md).
 ### fuzz-workflow.py
 
 The `fuzz-workflow.py` script orchestrates the complete fuzzing workflow by coordinating both the
-target implementation (via `target.py`) and the fuzzer (from `POLKAJAM_FUZZ_DIR`). It automates:
+target implementation (via `target.py`) and the fuzzer binary pointed to by `POLKAJAM_FUZZ_BIN`.
+It automates:
 
 - **Target Setup**: Downloads and prepares target implementations using `target.py`
-- **Fuzzer Execution**: Runs the fuzzer from the `polkajam-fuzz` crate located at
-  `POLKAJAM_FUZZ_DIR`
+- **Fuzzer Execution**: Runs the `polkajam-fuzz` binary specified by `POLKAJAM_FUZZ_BIN`
 - **Session Management**: Creates session directories with logs, traces, and reports
 - **Report Generation**: Converts binary traces to JSON format and publishes results
 
@@ -63,7 +63,7 @@ The script operates in two primary modes:
 
 In practice, `fuzz-workflow.py`:
 1. Uses `target.py` to download and launch the target implementation
-2. Starts the fuzzer from `POLKAJAM_FUZZ_DIR` via cargo
+2. Runs the fuzzer binary specified by `POLKAJAM_FUZZ_BIN`
 3. Coordinates communication between them through Unix domain sockets
 4. Collects and processes the results into session directories
 5. Optionally publishes reports to the `fuzz-reports` directory
@@ -102,8 +102,8 @@ while others provide optional configuration.
 
 ### Required Variables
 
-- `POLKAJAM_FUZZ_DIR` - Path to the `polkajam-fuzz` crate that hosts the Fuzzer code. This must be
-  set before running the fuzzing workflow.
+- `POLKAJAM_FUZZ_BIN` - Path to the `polkajam-fuzz` binary. This must be set before running the
+  fuzzing workflow.
 
 ### Directory Configuration
 
