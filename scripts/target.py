@@ -15,6 +15,8 @@ import string
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 DEFAULT_SOCK = "/tmp/jam_target.sock"
 
@@ -540,6 +542,18 @@ def print_docker_image_info(image):
     print(f"Created: {created}")
 
 
+def is_rootless_docker() -> bool:
+    """Detect if Docker is running in rootless mode."""
+    try:
+        result = subprocess.run(
+            ["docker", "info", "--format", "{{.SecurityOptions}}"],
+            capture_output=True, text=True, check=True,
+        )
+        return "rootless" in result.stdout
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+
+
 def run_docker_image(target: str, args=None) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
@@ -571,6 +585,9 @@ def run_docker_image(target: str, args=None) -> None:
 
     # Create a dedicated temporary directory for the container to avoid polluting host /tmp
     container_tmp_dir = tempfile.mkdtemp(prefix=f"jam_{container_name}_")
+    # Ensure the directory is world-writable so the container user can create files
+    # (needed for rootless Docker where the mapped user may differ from the host user)
+    os.chmod(container_tmp_dir, 0o777)
     print(f"Container temp dir: {container_tmp_dir}")
 
     # Create a symlink from TARGET_SOCK to the socket inside the container temp dir
@@ -599,7 +616,7 @@ def run_docker_image(target: str, args=None) -> None:
             pass
         # Remove the dedicated temp directory and all its contents
         try:
-            shutil.rmtree(container_tmp_dir)
+            shutil.rmtree(container_tmp_dir, ignore_errors=True)
             print(f"Cleaned up container temp dir: {container_tmp_dir}")
         except FileNotFoundError:
             pass
@@ -615,6 +632,10 @@ def run_docker_image(target: str, args=None) -> None:
     print(f"Ensuring no leftover container with name {container_name}...")
     subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
 
+    rootless = is_rootless_docker()
+    if rootless:
+        print("Detected rootless Docker, skipping --user flag")
+
     docker_cmd = [
         "docker",
         "run",
@@ -622,8 +643,6 @@ def run_docker_image(target: str, args=None) -> None:
         "--name",
         container_name,
         "--init",
-        "--user",
-        f"{os.getuid()}:{os.getgid()}",
         "--platform",
         DOCKER_PLATFORM,
         "--cpuset-cpus",
@@ -659,6 +678,12 @@ def run_docker_image(target: str, args=None) -> None:
         "-v",
         f"{container_tmp_dir}:/tmp",
     ]
+
+    # In rootful Docker, run as the host user so files are owned correctly.
+    # In rootless Docker, container root already maps to the host user,
+    # so --user would cause double UID remapping and permission errors.
+    if not rootless:
+        docker_cmd.extend(["--user", f"{os.getuid()}:{os.getgid()}"])
 
     if env:
         for var in env.split():
