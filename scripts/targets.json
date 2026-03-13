@@ -76,18 +76,14 @@
     "gp_version": "0.7.2"
   },
   "jamzilla": {
-    "repo": "ascrivener/jamzilla-conformance-releases",
-    "file": "jamzilla-tiny",
-    "cmd": "jamzilla-tiny",
-    "args": "-socket {TARGET_SOCK}",
+    "image": "ghcr.io/ascrivener/jamzilla-tiny:edge",
+    "cmd": "-socket {TARGET_SOCK}",
     "env": "PVM_MODE=jit",
     "gp_version": "0.7.2"
   },
-   "jamzilla-int": {
-    "repo": "ascrivener/jamzilla-conformance-releases",
-    "file": "jamzilla-tiny",
-    "cmd": "jamzilla-tiny",
-    "args": "-socket {TARGET_SOCK}",
+  "jamzilla-int": {
+    "image": "ghcr.io/ascrivener/jamzilla-tiny:edge",
+    "cmd": "-socket {TARGET_SOCK}",
     "env": "PVM_MODE=interpreter",
     "gp_version": "0.7.2"
   },
