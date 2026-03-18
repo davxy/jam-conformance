@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1773842885_9774",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
-            "fuzzy": null
+            "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 92,
-        "imported": 26,
-        "import_max_step": 15,
-        "import_min": 1.508321,
-        "import_max": 60.086334,
-        "import_mean": 10.397992961538463,
-        "import_p50": 7.226,
-        "import_p75": 12.354,
-        "import_p90": 25.63,
-        "import_p99": 60.086,
-        "import_std_dev": 12.858908184441034
+        "steps": 2,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "spacejam"
         },
         "stats": {
-            "steps": 92,
-            "imported": 27,
-            "import_max_step": 15,
-            "import_min": 1.4333,
-            "import_max": 24.712502,
-            "import_mean": 5.329485407407407,
-            "import_p50": 4.29,
-            "import_p75": 6.077,
-            "import_p90": 7.374,
-            "import_p99": 24.712,
-            "import_std_dev": 5.148685710786508
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 6.037078,
+            "import_max": 6.037078,
+            "import_mean": 6.037078,
+            "import_p50": 6.037078,
+            "import_p75": 0.0,
+            "import_p90": 6.037078,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

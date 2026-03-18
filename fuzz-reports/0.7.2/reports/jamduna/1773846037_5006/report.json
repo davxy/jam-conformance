@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1773846037_5006",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.5,
-        "max_mutations": 3
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 42,
-        "imported": 19,
-        "import_max_step": 31,
-        "import_min": 1.669027,
-        "import_max": 124.071934,
-        "import_mean": 11.71536794736842,
-        "import_p50": 2.807,
-        "import_p75": 7.177,
-        "import_p90": 9.261,
-        "import_p99": 124.071,
-        "import_std_dev": 27.962398631859582
+        "steps": 2,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 19.216025000000002,
+        "import_max": 19.216025000000002,
+        "import_mean": 19.216025000000002,
+        "import_p50": 19.216025000000002,
+        "import_p75": 0.0,
+        "import_p90": 19.216025000000002,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "jamduna-target"
         },
         "stats": {
-            "steps": 41,
-            "imported": 19,
-            "import_max_step": 6,
-            "import_min": 3.615332,
-            "import_max": 107.018745,
-            "import_mean": 21.958903105263154,
-            "import_p50": 11.838,
-            "import_p75": 22.168,
-            "import_p90": 61.507,
-            "import_p99": 107.018,
-            "import_std_dev": 27.798634806386897
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 112.75966199999999,
+            "import_max": 112.75966199999999,
+            "import_mean": 112.75966199999999,
+            "import_p50": 112.75966199999999,
+            "import_p75": 0.0,
+            "import_p90": 112.75966199999999,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

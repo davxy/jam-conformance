@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1773845712_4658",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
         "max_mutations": 0
     },
     "stats": {
-        "steps": 4,
-        "imported": 4,
-        "import_max_step": 2,
-        "import_min": 1.781167,
-        "import_max": 33.345483,
-        "import_mean": 11.6054425,
-        "import_p50": 9.33,
-        "import_p75": 9.33,
-        "import_p90": 33.345,
-        "import_p99": 33.345,
-        "import_std_dev": 14.913881792837628
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 16.675543,
+        "import_max": 16.675543,
+        "import_mean": 16.675543,
+        "import_p50": 16.675543,
+        "import_p75": 0.0,
+        "import_p90": 16.675543,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 4,
-            "imported": 4,
-            "import_max_step": 4,
-            "import_min": 115.633431,
-            "import_max": 7814.928571,
-            "import_mean": 2241.4891885,
-            "import_p50": 787.981,
-            "import_p75": 787.981,
-            "import_p90": 7814.928,
-            "import_p99": 7814.928,
-            "import_std_dev": 3726.9966683890993
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 7198.149182,
+            "import_max": 7198.149182,
+            "import_mean": 7198.149182,
+            "import_p50": 7198.149182,
+            "import_p75": 0.0,
+            "import_p90": 7198.149182,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

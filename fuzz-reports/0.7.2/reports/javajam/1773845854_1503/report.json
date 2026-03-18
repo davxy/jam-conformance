@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 1,
+        "import_max_step": 2,
+        "import_min": 116.390359,
+        "import_max": 116.390359,
+        "import_mean": 116.390359,
+        "import_p50": 116.390359,
+        "import_p75": 0.0,
+        "import_p90": 116.390359,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 30
+            },
+            "app_name": "JavaJAM"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 42.704443000000005,
+            "import_max": 42.704443000000005,
+            "import_mean": 42.704443000000005,
+            "import_p50": 42.704443000000005,
+            "import_p75": 0.0,
+            "import_p90": 42.704443000000005,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}
