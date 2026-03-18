@@ -1,0 +1,104 @@
+{
+    "config": {
+        "seed": "1773842885_6855",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 30,
+        "imported": 11,
+        "import_max_step": 23,
+        "import_min": 1.521466,
+        "import_max": 19.172595,
+        "import_mean": 8.105312999999999,
+        "import_p50": 6.887,
+        "import_p75": 10.536,
+        "import_p90": 17.63,
+        "import_p99": 19.172,
+        "import_std_dev": 5.961416190416033
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 1,
+                "minor": 0,
+                "patch": 0
+            },
+            "app_name": "tessera-target"
+        },
+        "stats": {
+            "steps": 30,
+            "imported": 11,
+            "import_max_step": 30,
+            "import_min": 81.33840000000001,
+            "import_max": 940.544364,
+            "import_mean": 459.78017700000004,
+            "import_p50": 394.779,
+            "import_p75": 579.526,
+            "import_p90": 891.529,
+            "import_p99": 940.544,
+            "import_std_dev": 273.7677739697974
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x0083601ed21602e41b12726b63febac1e963ffb82c38951421fb04f8315e3adf",
+                "got": "0x27d5f0bca05ddee7eec3389a10677a7f83071fe70f616f50b40b5b89c068ed19"
+            },
+            "keyvals": [
+                {
+                    "key": "0xcb2cfcff4c302e44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xf52cfcff4c302e44aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d63273cf3ebffffffffff0a000000000000000a000000000000004f1e020000000000ffffffffffffffff0e000000000000000800000000000000",
+                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d63273cf3ebffffffffff0a000000000000000a00000000000000241e020000000000ffffffffffffffff0d000000000000000800000000000000"
+                    }
+                },
+                {
+                    "key": "0xffcb00fc004c002e0000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xfff500fc004c002e0000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                }
+            ]
+        }
+    }
+}

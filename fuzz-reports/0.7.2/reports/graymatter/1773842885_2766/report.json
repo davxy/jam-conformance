@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1773842885_2766",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 716,
+        "imported": 219,
+        "import_max_step": 312,
+        "import_min": 1.350251,
+        "import_max": 1791.354059,
+        "import_mean": 17.93393508675798,
+        "import_p50": 4.709,
+        "import_p75": 9.994,
+        "import_p90": 16.262,
+        "import_p99": 165.402,
+        "import_std_dev": 124.85967222138558
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "GrayMatter"
+        },
+        "stats": {
+            "steps": 715,
+            "imported": 219,
+            "import_max_step": 81,
+            "import_min": 3.961984,
+            "import_max": 1281.836086,
+            "import_mean": 203.19755856164383,
+            "import_p50": 123.208,
+            "import_p75": 315.642,
+            "import_p90": 556.14,
+            "import_p99": 1198.236,
+            "import_std_dev": 249.47478856640487
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}

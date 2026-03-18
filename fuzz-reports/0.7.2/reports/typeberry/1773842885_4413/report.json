@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1773842885_4413",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 20900,
+        "imported": 6960,
+        "import_max_step": 78,
+        "import_min": 1.282062,
+        "import_max": 7776.219744000001,
+        "import_mean": 12.862061381034454,
+        "import_p50": 4.643,
+        "import_p75": 6.657,
+        "import_p90": 9.077,
+        "import_p99": 112.741,
+        "import_std_dev": 164.21094861822397
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 5,
+                "patch": 9
+            },
+            "app_name": "@typeberry/jam"
+        },
+        "stats": {
+            "steps": 20899,
+            "imported": 6959,
+            "import_max_step": 20833,
+            "import_min": 4.093126,
+            "import_max": 9866.400064000001,
+            "import_mean": 65.70394780859324,
+            "import_p50": 55.646,
+            "import_p75": 92.67,
+            "import_p90": 124.83,
+            "import_p99": 227.372,
+            "import_std_dev": 148.88840223888099
+        }
+    },
+    "error": {
+        "communication": "Timeout waiting for peer (potential target crash)"
+    }
+}
