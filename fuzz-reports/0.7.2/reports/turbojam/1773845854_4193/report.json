@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1773845854_4193",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 780,
+        "imported": 336,
+        "import_max_step": 48,
+        "import_min": 1.442655,
+        "import_max": 490.579449,
+        "import_mean": 15.143988002976187,
+        "import_p50": 6.031,
+        "import_p75": 8.24,
+        "import_p90": 14.232,
+        "import_p99": 142.925,
+        "import_std_dev": 43.08475173339438
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 2,
+                "patch": 1
+            },
+            "app_name": "turbojam"
+        },
+        "stats": {
+            "steps": 779,
+            "imported": 336,
+            "import_max_step": 407,
+            "import_min": 1.227974,
+            "import_max": 3086.117315,
+            "import_mean": 29.686776705357186,
+            "import_p50": 4.429,
+            "import_p75": 8.728,
+            "import_p90": 21.497,
+            "import_p99": 580.136,
+            "import_std_dev": 189.83022398681268
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}

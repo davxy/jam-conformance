@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1773845854_8692",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 265,
+        "imported": 120,
+        "import_max_step": 137,
+        "import_min": 1.4904169999999999,
+        "import_max": 352.283024,
+        "import_mean": 12.705516075000006,
+        "import_p50": 6.303,
+        "import_p75": 10.248,
+        "import_p90": 14.861,
+        "import_p99": 124.725,
+        "import_std_dev": 36.32732792554335
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 1
+            },
+            "app_name": "new_jamneration"
+        },
+        "stats": {
+            "steps": 264,
+            "imported": 120,
+            "import_max_step": 38,
+            "import_min": 14.118466,
+            "import_max": 433.426915,
+            "import_mean": 118.33061611666672,
+            "import_p50": 95.439,
+            "import_p75": 139.508,
+            "import_p90": 227.171,
+            "import_p99": 427.887,
+            "import_std_dev": 88.86903722829398
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}

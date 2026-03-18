@@ -1,0 +1,160 @@
+{
+    "config": {
+        "seed": "1773845854_1258",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 24,
+        "imported": 10,
+        "import_max_step": 11,
+        "import_min": 1.833536,
+        "import_max": 43.903354,
+        "import_mean": 10.902151200000002,
+        "import_p50": 7.959,
+        "import_p75": 12.131,
+        "import_p90": 19.481,
+        "import_p99": 43.903,
+        "import_std_dev": 12.979686399970548
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 1,
+                "minor": 0,
+                "patch": 0
+            },
+            "app_name": "tessera-target"
+        },
+        "stats": {
+            "steps": 24,
+            "imported": 10,
+            "import_max_step": 24,
+            "import_min": 67.83990700000001,
+            "import_max": 1264.907029,
+            "import_mean": 439.2134344,
+            "import_p50": 288.444,
+            "import_p75": 614.394,
+            "import_p90": 870.087,
+            "import_p99": 1264.907,
+            "import_std_dev": 380.4533323899816
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xa1076eaa7f61d02b9a7973c371c7faa17a51e25f0b95e848c4e17ed3d85158e4",
+                "got": "0x700b738e700d5a8ec68fa849a88c123a7ec12071654a9661484ca75e310c81fa"
+            },
+            "keyvals": [
+                {
+                    "key": "0x004400b500a400aaa0d7f8eab5ca1cca4a0472988422febc68a6b6a944cabf",
+                    "diff": {
+                        "exp": "0xfb3d3fb8",
+                        "got": "0xfc3d3fb8"
+                    }
+                },
+                {
+                    "key": "0x00af008600ba00397cdc32d5cd34d6ee92983d33655c8fee8ffd3279a2f8c6",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00b70012007c0031b8bdb286c2082b4d3adab0a27defa04f1550c3b9487565",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00d8007b00aa0019278b07889b912a721d65cbccd7aee81686e53b66c83b5c",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xd12c3dff3f30b844aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
+                    "diff": {
+                        "exp": "0x00",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xd22c3dff3f30b844aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                },
+                {
+                    "key": "0xfb2c3dff3f30b844aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
+                    "diff": {
+                        "exp": "0x00",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xfc2c3dff3f30b844aa84f31be60f9d7ed87eaef9dbb83ab9b4db18c1148396",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00"
+                    }
+                },
+                {
+                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d63273a38f6ffffffffff0a000000000000000a00000000000000a320020000000000ffffffffffffffff19000000000000000900000000000000",
+                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d63273a38f6ffffffffff0a000000000000000a00000000000000d21d020000000000ffffffffffffffff0d000000000000000900000000000000"
+                    }
+                },
+                {
+                    "key": "0xffd1003d003f00b80000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1effeb040000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xffd2003d003f00b80000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1effeb040000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000"
+                    }
+                },
+                {
+                    "key": "0xfffb003d003f00b80000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1ec6db040000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xfffc003d003f00b80000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x00bb8648e2eb5cab1ebb8129eca29c8af2e5155fe1ac9400ab01852a1e0cc82b1ec6db040000000000102700000000000010270000000000008e39020000000000000000000000000002000000090000000000000000000000"
+                    }
+                }
+            ]
+        }
+    }
+}
