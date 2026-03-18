@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1773846037_8145",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.5,
+        "max_mutations": 3
+    },
+    "stats": {
+        "steps": 69,
+        "imported": 33,
+        "import_max_step": 6,
+        "import_min": 1.5513599999999999,
+        "import_max": 33.25654,
+        "import_mean": 6.562339575757575,
+        "import_p50": 4.09,
+        "import_p75": 7.265,
+        "import_p90": 16.348,
+        "import_p99": 33.256,
+        "import_std_dev": 7.032777323545701
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "spacejam"
+        },
+        "stats": {
+            "steps": 69,
+            "imported": 34,
+            "import_max_step": 45,
+            "import_min": 0.9825770000000001,
+            "import_max": 20.592785999999997,
+            "import_mean": 3.90977494117647,
+            "import_p50": 2.926,
+            "import_p75": 3.995,
+            "import_p90": 4.813,
+            "import_p99": 20.592,
+            "import_std_dev": 4.24046158547194
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: core not available",
+            "got": "ok"
+        }
+    }
+}
