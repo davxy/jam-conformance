@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1775225235_5878",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 217,
+        "imported": 71,
+        "import_max_step": 51,
+        "import_min": 1.4379359999999999,
+        "import_max": 134.022339,
+        "import_mean": 12.060770056338026,
+        "import_p50": 4.288,
+        "import_p75": 8.151,
+        "import_p90": 16.57,
+        "import_p99": 119.581,
+        "import_std_dev": 27.362149761479504
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 15
+            },
+            "app_name": "jamduna-target"
+        },
+        "stats": {
+            "steps": 216,
+            "imported": 71,
+            "import_max_step": 23,
+            "import_min": 3.2694680000000003,
+            "import_max": 88.709609,
+            "import_mean": 16.884793281690136,
+            "import_p50": 11.156,
+            "import_p75": 17.985,
+            "import_p90": 35.557,
+            "import_p99": 78.084,
+            "import_std_dev": 19.15776897038032
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}

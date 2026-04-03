@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1775225235_5488",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 618,
+        "imported": 191,
+        "import_max_step": 161,
+        "import_min": 1.49792,
+        "import_max": 378.629874,
+        "import_mean": 21.75594822513088,
+        "import_p50": 7.152,
+        "import_p75": 13.027,
+        "import_p90": 26.176,
+        "import_p99": 250.873,
+        "import_std_dev": 51.11263100973758
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 1
+            },
+            "app_name": "gossamer-jam"
+        },
+        "stats": {
+            "steps": 617,
+            "imported": 190,
+            "import_max_step": 542,
+            "import_min": 5.949516,
+            "import_max": 2219.491544,
+            "import_mean": 174.66167619999993,
+            "import_p50": 77.563,
+            "import_p75": 192.736,
+            "import_p90": 447.948,
+            "import_p99": 1533.98,
+            "import_std_dev": 293.7546593353719
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}

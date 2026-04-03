@@ -1,0 +1,139 @@
+{
+    "config": {
+        "seed": "1775225235_7373",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 9,
+        "imported": 4,
+        "import_max_step": 7,
+        "import_min": 1.36694,
+        "import_max": 35.115504,
+        "import_mean": 12.153409500000002,
+        "import_p50": 10.037,
+        "import_p75": 10.037,
+        "import_p90": 35.115,
+        "import_p99": 35.115,
+        "import_std_dev": 15.803731060751877
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 1,
+                "minor": 0,
+                "patch": 0
+            },
+            "app_name": "tessera-target"
+        },
+        "stats": {
+            "steps": 9,
+            "imported": 4,
+            "import_max_step": 9,
+            "import_min": 48.544121000000004,
+            "import_max": 554.1014869999999,
+            "import_mean": 251.3197755,
+            "import_p50": 326.167,
+            "import_p75": 326.167,
+            "import_p90": 554.101,
+            "import_p99": 554.101,
+            "import_std_dev": 237.32605587425937
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x0f9e84ec214eb24dab55007fe074e25d078f5ea0a567f1c2c902318156eca1e3",
+                "got": "0x369593fd2a951572e6b43b08a07556c54bd70d51fba62d160d790e17d6d8fac4"
+            },
+            "keyvals": [
+                {
+                    "key": "0x00560067002200834b74a3e43c8340b83945bd96ecd43a740afa97ad66d19d",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x0073004500720018965e633f213e7b5dbb5fc8f03793a98909bdd61d0f94a8",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x0077004f00e8009a6d16ee1b63f18c993234fff7f9f045f847ef7936ed2466",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00af008600ba00397cdc32d5cd34d6ee92983d33655c8fee8ffd3279a2f8c6",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00b70012007c0031b8bdb286c2082b4d3adab0a27defa04f1550c3b9487565",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00be00c7002d00bd4ae3e4eb640f9a0862de5599c6f5ae7f421ccb03e83ca7",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00bf005a002800557041774031b2bc43d5f765c958c995ebb8f941b208ecda",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00d8007b00aa0019278b07889b912a721d65cbccd7aee81686e53b66c83b5c",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x00ee006a00a9007953b04004d64312426477cb504ddccdd5a335447bdd337d",
+                    "diff": {
+                        "exp": "0x",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0xff000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ffffffffffffffff0a000000000000000a00000000000000d819020000000000ffffffffffffffff07000000000000000300000000000000",
+                        "got": "0x00d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327ffffffffffffffff0a000000000000000a000000000000005019020000000000ffffffffffffffff04000000000000000300000000000000"
+                    }
+                }
+            ]
+        }
+    }
+}
