@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1775225235_2150",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 875,
+        "imported": 863,
+        "import_max_step": 233,
+        "import_min": 1.320273,
+        "import_max": 4479.786947,
+        "import_mean": 36.26865739629202,
+        "import_p50": 4.923,
+        "import_p75": 7.011,
+        "import_p90": 10.68,
+        "import_p99": 125.777,
+        "import_std_dev": 311.88126430102653
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 0,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 874,
+            "imported": 862,
+            "import_max_step": 16,
+            "import_min": 90.326294,
+            "import_max": 14046.392041000001,
+            "import_mean": 1775.8492746682136,
+            "import_p50": 1220.949,
+            "import_p75": 2635.047,
+            "import_p90": 4119.959,
+            "import_p99": 8088.742,
+            "import_std_dev": 1852.596871796778
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}
