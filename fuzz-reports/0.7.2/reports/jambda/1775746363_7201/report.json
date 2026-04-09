@@ -1,0 +1,68 @@
+{
+    "config": {
+        "seed": "1775746363_7201",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 2005,
+        "imported": 666,
+        "import_max_step": 553,
+        "import_min": 1.387809,
+        "import_max": 4577.148953,
+        "import_mean": 28.247846696696694,
+        "import_p50": 5.566,
+        "import_p75": 8.754,
+        "import_p90": 16.276,
+        "import_p99": 171.555,
+        "import_std_dev": 222.7606202630002
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 1
+            },
+            "app_name": "jambda"
+        },
+        "stats": {
+            "steps": 2005,
+            "imported": 666,
+            "import_max_step": 1390,
+            "import_min": 1.593951,
+            "import_max": 52.994701,
+            "import_mean": 9.091614456456451,
+            "import_p50": 6.432,
+            "import_p75": 12.08,
+            "import_p90": 20.432,
+            "import_p99": 39.828,
+            "import_std_dev": 8.491488215357492
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xbef360508a77b8b25d1e0dea6f42e9dcc2255aa1e06607b19fc3ef2f73c5126c",
+                "got": "0x9acd3c43bf3086bd8039c3bd8f26429b008fe8940eef4fb8c03c2046d70d64ad"
+            },
+            "keyvals": []
+        }
+    }
+}
