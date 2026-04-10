@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1775746363_6002",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 244,
-        "imported": 243,
-        "import_max_step": 12,
-        "import_min": 1.374142,
-        "import_max": 126.337732,
-        "import_mean": 9.498236613168723,
-        "import_p50": 4.462,
-        "import_p75": 6.693,
-        "import_p90": 9.702,
-        "import_p99": 120.196,
-        "import_std_dev": 22.562400979656612
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 53.040372000000005,
+        "import_max": 53.040372000000005,
+        "import_mean": 53.040372000000005,
+        "import_p50": 53.040372000000005,
+        "import_p75": 0.0,
+        "import_p90": 53.040372000000005,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 243,
-            "imported": 242,
-            "import_max_step": 243,
-            "import_min": 85.772775,
-            "import_max": 11867.480747,
-            "import_mean": 1400.2001131570253,
-            "import_p50": 695.325,
-            "import_p75": 1789.682,
-            "import_p90": 4027.639,
-            "import_p99": 7761.853,
-            "import_std_dev": 1726.7971799810764
+            "steps": 0,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

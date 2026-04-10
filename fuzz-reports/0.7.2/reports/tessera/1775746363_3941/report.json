@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1775746363_3941",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 39,
-        "imported": 11,
-        "import_max_step": 4,
-        "import_min": 1.380587,
-        "import_max": 19.117436,
-        "import_mean": 7.921958909090909,
-        "import_p50": 6.135,
-        "import_p75": 11.746,
-        "import_p90": 14.563,
-        "import_p99": 19.117,
-        "import_std_dev": 5.798545097310643
+        "steps": 6,
+        "imported": 2,
+        "import_max_step": 3,
+        "import_min": 12.321212999999998,
+        "import_max": 17.767601000000003,
+        "import_mean": 15.044407,
+        "import_p50": 17.767,
+        "import_p75": 17.767,
+        "import_p90": 17.767,
+        "import_p99": 17.767,
+        "import_std_dev": 3.8511778877730407
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "tessera-target"
         },
         "stats": {
-            "steps": 39,
-            "imported": 11,
-            "import_max_step": 39,
-            "import_min": 67.14319300000001,
-            "import_max": 1177.322749,
-            "import_mean": 498.61217,
-            "import_p50": 428.668,
-            "import_p75": 734.639,
-            "import_p90": 1150.781,
-            "import_p99": 1177.322,
-            "import_std_dev": 394.0388207351827
+            "steps": 6,
+            "imported": 2,
+            "import_max_step": 6,
+            "import_min": 381.287331,
+            "import_max": 465.868919,
+            "import_mean": 423.578125,
+            "import_p50": 465.868,
+            "import_p75": 465.868,
+            "import_p90": 465.868,
+            "import_p99": 465.868,
+            "import_std_dev": 59.80821443832672
         }
     },
     "error": {

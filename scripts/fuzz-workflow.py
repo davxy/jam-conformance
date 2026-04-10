@@ -22,6 +22,7 @@ import os
 import random
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -419,19 +420,29 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
 
 
 def wait_for_target_sock(target_process):
-    # Detect if we terminated with an error and exit immediately if so
-    # Wait up to 10 seconds for TARGET_SOCK to be created
+    # Wait for the target to be actually accepting connections on the socket.
+    # Just checking file existence is not enough: the socket file may appear
+    # before the target has called listen(), causing connection failures
+    # especially under parallel startup load.
     socket_wait_timeout = 20
     socket_wait_start = time.time()
-    while not os.path.exists(SESSION_TARGET_SOCK):
+    while True:
         if target_process.poll() is not None:
             print("Error: Target process terminated before creating socket.")
             exit(1)
         if time.time() - socket_wait_start > socket_wait_timeout:
             print(
-                f"Error: Target socket {SESSION_TARGET_SOCK} was not created within {socket_wait_timeout} seconds."
+                f"Error: Target socket {SESSION_TARGET_SOCK} was not ready within {socket_wait_timeout} seconds."
             )
             exit(1)
+        if os.path.exists(SESSION_TARGET_SOCK):
+            try:
+                sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                sock.connect(SESSION_TARGET_SOCK)
+                sock.close()
+                break
+            except (ConnectionRefusedError, OSError):
+                pass
         time.sleep(0.1)
 
 
