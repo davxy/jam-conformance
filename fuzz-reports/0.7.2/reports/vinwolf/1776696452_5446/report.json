@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1776696452_5446",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 77,
+        "imported": 26,
+        "import_max_step": 77,
+        "import_min": 1.406839,
+        "import_max": 136.69299600000002,
+        "import_mean": 18.572602500000002,
+        "import_p50": 7.061,
+        "import_p75": 19.077,
+        "import_p90": 28.542,
+        "import_p99": 136.692,
+        "import_std_dev": 35.088976710467115
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 13
+            },
+            "app_name": "vinwolf-target"
+        },
+        "stats": {
+            "steps": 77,
+            "imported": 25,
+            "import_max_step": 42,
+            "import_min": 2.12244,
+            "import_max": 59.111743000000004,
+            "import_mean": 17.37063144,
+            "import_p50": 15.891,
+            "import_p75": 26.915,
+            "import_p90": 39.393,
+            "import_p99": 59.111,
+            "import_std_dev": 15.764334531692228
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Block execution failure: SafroleError(InvalidTicketSeal)"
+        }
+    }
+}
