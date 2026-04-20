@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1776702160_8140",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 40,
+        "imported": 13,
+        "import_max_step": 40,
+        "import_min": 1.6857389999999999,
+        "import_max": 129.515041,
+        "import_mean": 23.010148538461536,
+        "import_p50": 10.15,
+        "import_p75": 24.243,
+        "import_p90": 55.301,
+        "import_p99": 129.515,
+        "import_std_dev": 35.42233229264041
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 0,
+                "patch": 2
+            },
+            "app_name": "strawberry"
+        },
+        "stats": {
+            "steps": 40,
+            "imported": 12,
+            "import_max_step": 27,
+            "import_min": 3.3678760000000003,
+            "import_max": 23.766439000000002,
+            "import_mean": 13.9113805,
+            "import_p50": 17.065,
+            "import_p75": 21.761,
+            "import_p90": 22.91,
+            "import_p99": 23.766,
+            "import_std_dev": 8.142808455918203
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Chain error: invalid fork depth: can only build on head or head's parent"
+        }
+    }
+}

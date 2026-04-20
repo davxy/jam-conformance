@@ -1,0 +1,76 @@
+{
+    "config": {
+        "seed": "1776702160_6218",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 640,
+        "imported": 215,
+        "import_max_step": 336,
+        "import_min": 1.498373,
+        "import_max": 4596.333447,
+        "import_mean": 30.020742534883748,
+        "import_p50": 5.649,
+        "import_p75": 8.492,
+        "import_p90": 13.317,
+        "import_p99": 122.67,
+        "import_std_dev": 313.3615523132282
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 1
+            },
+            "app_name": "new_jamneration"
+        },
+        "stats": {
+            "steps": 640,
+            "imported": 215,
+            "import_max_step": 603,
+            "import_min": 7.127178,
+            "import_max": 344.222515,
+            "import_mean": 98.21691886046517,
+            "import_p50": 84.321,
+            "import_p75": 116.165,
+            "import_p90": 182.344,
+            "import_p99": 319.046,
+            "import_std_dev": 57.536143203111074
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x39334b392f9492277367be466496a6f4a574f96bcc3d6f03b9aef9412699074f",
+                "got": "0x85ea54bb835c5185dfbe0ec6901e88d63e158bd1b30b0903130fb3a359949a96"
+            },
+            "keyvals": [
+                {
+                    "key": "0x3c53ca4bfd66e17b4bbd1f80c0d878acf0ad5eacd24a9af4de37b7cc1b081d",
+                    "diff": {
+                        "exp": "0x9d0f8676628842f4cf568d60beed784c566f71ed1326d428d6660d822460d87f538ffb62cf377b2534045e404d0644559143ed3074c7c5b5448abe7ab4bb402cfa385bfb48581e6693bfca4e05ee9368df392227322f6a36e6cd",
+                        "got": "0x"
+                    }
+                }
+            ]
+        }
+    }
+}

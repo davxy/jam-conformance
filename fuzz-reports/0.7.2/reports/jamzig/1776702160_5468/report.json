@@ -1,0 +1,62 @@
+{
+    "config": {
+        "seed": "1776702160_5468",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 37,
+        "imported": 11,
+        "import_max_step": 11,
+        "import_min": 1.709615,
+        "import_max": 21.832230000000003,
+        "import_mean": 8.230055909090908,
+        "import_p50": 6.419,
+        "import_p75": 14.073,
+        "import_p90": 15.622,
+        "import_p99": 21.832,
+        "import_std_dev": 6.9647784517567315
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "jamzig-target"
+        },
+        "stats": {
+            "steps": 36,
+            "imported": 11,
+            "import_max_step": 28,
+            "import_min": 1.655977,
+            "import_max": 32.338195,
+            "import_mean": 11.034514545454547,
+            "import_p50": 12.722,
+            "import_p75": 18.173,
+            "import_p90": 18.822,
+            "import_p99": 32.338,
+            "import_std_dev": 9.895021242725095
+        }
+    },
+    "error": {
+        "communication": "IO error: early eof (potential target crash)"
+    }
+}
