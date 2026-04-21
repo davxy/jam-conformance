@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "1776702160_5343",
+        "max_steps": 1000000,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "rand": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 13760,
+        "imported": 4598,
+        "import_max_step": 1355,
+        "import_min": 1.2932460000000001,
+        "import_max": 4556.403373,
+        "import_mean": 16.37496034080044,
+        "import_p50": 5.017,
+        "import_p75": 7.147,
+        "import_p90": 9.855,
+        "import_p99": 141.672,
+        "import_std_dev": 139.03479643829453
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 0
+            },
+            "app_name": "boka-fuzzing-target"
+        },
+        "stats": {
+            "steps": 13760,
+            "imported": 4599,
+            "import_max_step": 11211,
+            "import_min": 8.403341,
+            "import_max": 730.252874,
+            "import_mean": 69.1540606431833,
+            "import_p50": 52.389,
+            "import_p75": 80.095,
+            "import_p90": 122.955,
+            "import_p99": 467.285,
+            "import_std_dev": 68.43289995710467
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: core not available",
+            "got": "ok"
+        }
+    }
+}
