@@ -17,12 +17,12 @@
         "steps": 3,
         "imported": 1,
         "import_max_step": 2,
-        "import_min": 125.99750600000002,
-        "import_max": 125.99750600000002,
-        "import_mean": 125.99750600000002,
-        "import_p50": 125.99750600000002,
+        "import_min": 122.61806899999999,
+        "import_max": 122.61806899999999,
+        "import_mean": 122.61806899999999,
+        "import_p50": 122.61806899999999,
         "import_p75": 0.0,
-        "import_p90": 125.99750600000002,
+        "import_p90": 122.61806899999999,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -46,17 +46,17 @@
             "steps": 2,
             "imported": 1,
             "import_max_step": 2,
-            "import_min": 131.14585,
-            "import_max": 131.14585,
-            "import_mean": 131.14585,
-            "import_p50": 131.14585,
+            "import_min": 141.259673,
+            "import_max": 141.259673,
+            "import_mean": 141.259673,
+            "import_p50": 141.259673,
             "import_p75": 0.0,
-            "import_p90": 131.14585,
+            "import_p90": 141.259673,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "communication": "IO error: early eof (potential target crash)"
+        "communication": "Timeout waiting for peer (potential target crash)"
     }
 }

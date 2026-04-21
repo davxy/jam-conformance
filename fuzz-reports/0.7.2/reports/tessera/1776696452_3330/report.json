@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 4,
+        "imported": 3,
+        "import_max_step": 2,
+        "import_min": 1.460281,
+        "import_max": 10.277275000000001,
+        "import_mean": 4.416843,
+        "import_p50": 1.512,
+        "import_p75": 10.277,
+        "import_p90": 10.277,
+        "import_p99": 10.277,
+        "import_std_dev": 5.07535137026827
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 1,
+                "minor": 0,
+                "patch": 0
+            },
+            "app_name": "tessera-target"
+        },
+        "stats": {
+            "steps": 4,
+            "imported": 2,
+            "import_max_step": 2,
+            "import_min": 153.9197,
+            "import_max": 217.19644499999998,
+            "import_mean": 185.55807249999998,
+            "import_p50": 217.196,
+            "import_p75": 217.196,
+            "import_p90": 217.196,
+            "import_p99": 217.196,
+            "import_std_dev": 44.743415480911956
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Invalid block. Error message unavailable"
+        }
+    }
+}

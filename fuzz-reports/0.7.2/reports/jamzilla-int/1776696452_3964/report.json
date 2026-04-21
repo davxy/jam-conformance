@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1776696452_3964",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
-        "max_work_items": 5,
-        "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 5455,
-        "imported": 1794,
-        "import_max_step": 961,
-        "import_min": 1.260569,
-        "import_max": 1417.923916,
-        "import_mean": 11.431724531215172,
-        "import_p50": 5.061,
-        "import_p75": 7.196,
-        "import_p90": 10.983,
-        "import_p99": 133.353,
-        "import_std_dev": 57.64991648981081
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,17 +43,17 @@
             "app_name": "jamzilla"
         },
         "stats": {
-            "steps": 5454,
-            "imported": 1794,
-            "import_max_step": 1442,
-            "import_min": 0.5852919999999999,
-            "import_max": 52.226697,
-            "import_mean": 4.168890265886281,
-            "import_p50": 3.475,
-            "import_p75": 5.547,
-            "import_p90": 7.949,
-            "import_p99": 17.988,
-            "import_std_dev": 3.9194384570193392
+            "steps": 0,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {

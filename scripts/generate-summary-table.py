@@ -80,22 +80,25 @@ def main():
                 all_ids.add(tid)
 
     # Compute column widths for aligned output.
-    # Emojis are 1 codepoint but render ~2 chars wide; for the summary row
-    # we need to account for bold markers and the "N/N" text.
+    # Emojis are 1 codepoint but render as 2 columns in monospace fonts, so
+    # data-row cells and text-row cells need matching visual widths.
     total = len(test_ids)
-    id_width = max(len("test_id"), max((len(tid) for tid in test_ids), default=0))
+    summary_label = "**PASS**"
+    id_width = max(
+        len("test_id"),
+        len(summary_label),
+        max((len(tid) for tid in test_ids), default=0),
+    )
 
-    # Each target column must fit: the target name, a single emoji, and the
-    # bold pass count (e.g. **201/205**).  Emoji rendering width varies, but
-    # for raw-text alignment we treat it as 1 character.
     pass_counts = {}
     for name in target_names:
         green = sum(1 for tid in test_ids if targets[name].get(tid) == "\U0001f7e2")
         pass_counts[name] = f"**{green}/{total}**"
 
+    # Target columns use visual width. Floor at 2 so a single emoji always fits.
     col_widths = {}
     for name in target_names:
-        col_widths[name] = max(len(name), len(pass_counts[name]))
+        col_widths[name] = max(len(name), len(pass_counts[name]), 2)
 
     # Per-test failure count
     num_targets = len(target_names)
@@ -131,15 +134,15 @@ def main():
         row = f"| {tid:<{id_width}} | {pad(test_failures[tid], stats_width)} |"
         for name in target_names:
             symbol = targets[name].get(tid, NOT_PRESENT)
-            # Emoji is 1 codepoint; pad remaining width with spaces
-            padding = col_widths[name] - 1
+            # Emoji renders as 2 columns; pad the remaining visual width
+            padding = col_widths[name] - 2
             left = padding // 2
             right = padding - left
             row += f" {' ' * left}{symbol}{' ' * right} |"
         lines.append(row)
 
     # Summary row
-    summary = f"| {'**PASS**':<{id_width}} | {pad('', stats_width)} |"
+    summary = f"| {summary_label:<{id_width}} | {pad('', stats_width)} |"
     for name in target_names:
         summary += f" {pad(pass_counts[name], col_widths[name])} |"
     lines.append(summary)
