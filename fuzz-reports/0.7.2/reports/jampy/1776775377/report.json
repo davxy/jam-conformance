@@ -1,0 +1,65 @@
+{
+    "config": {
+        "seed": "42",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 3,
+        "mutation_ratio": 0.0,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 6,
+        "imported": 3,
+        "import_max_step": 2,
+        "import_min": 4.823989,
+        "import_max": 13.03048,
+        "import_mean": 7.580556666666667,
+        "import_p50": 4.887,
+        "import_p75": 13.03,
+        "import_p90": 13.03,
+        "import_p99": 13.03,
+        "import_std_dev": 4.7198778791028415
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 6,
+            "imported": 2,
+            "import_max_step": 2,
+            "import_min": 148.288904,
+            "import_max": 427.081552,
+            "import_mean": 287.685228,
+            "import_p50": 427.081,
+            "import_p75": 427.081,
+            "import_p90": 427.081,
+            "import_p99": 427.081,
+            "import_std_dev": 197.13617194575417
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "invalid_prev_state_root"
+        }
+    }
+}
