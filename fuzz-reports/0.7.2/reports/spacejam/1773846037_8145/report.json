@@ -9,8 +9,8 @@
         "fuzzy_profile": {
             "full": null
         },
-        "max_work_items": 3,
-        "mutation_ratio": 0.0,
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
         "max_mutations": 0
     },
     "stats": {
@@ -46,12 +46,12 @@
             "steps": 1,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 2.0103679999999997,
-            "import_max": 2.0103679999999997,
-            "import_mean": 2.0103679999999997,
-            "import_p50": 2.0103679999999997,
+            "import_min": 1.6308550000000002,
+            "import_max": 1.6308550000000002,
+            "import_mean": 1.6308550000000002,
+            "import_p50": 1.6308550000000002,
             "import_p75": 0.0,
-            "import_p90": 2.0103679999999997,
+            "import_p90": 1.6308550000000002,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }

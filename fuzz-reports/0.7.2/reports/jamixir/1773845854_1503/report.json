@@ -11,18 +11,18 @@
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_mutations": 0
     },
     "stats": {
         "steps": 3,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "imported": 1,
+        "import_max_step": 2,
+        "import_min": 124.59102800000001,
+        "import_max": 124.59102800000001,
+        "import_mean": 124.59102800000001,
+        "import_p50": 124.59102800000001,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 124.59102800000001,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -43,23 +43,20 @@
             "app_name": "Jamixir"
         },
         "stats": {
-            "steps": 3,
-            "imported": 0,
-            "import_max_step": 0,
-            "import_min": 0.0,
-            "import_max": 0.0,
-            "import_mean": 0.0,
-            "import_p50": 0.0,
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 186.000284,
+            "import_max": 186.000284,
+            "import_mean": 186.000284,
+            "import_p50": 186.000284,
             "import_p75": 0.0,
-            "import_p90": 0.0,
+            "import_p90": 186.000284,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block execution failure: preimages error: preimage not required",
-            "got": "ok"
-        }
+        "communication": "Timeout waiting for peer (potential target crash)"
     }
 }

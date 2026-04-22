@@ -11,20 +11,20 @@
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
-        "import_p75": 0.0,
-        "import_p90": 0.0,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 4,
+        "imported": 3,
+        "import_max_step": 2,
+        "import_min": 1.464472,
+        "import_max": 13.028082999999999,
+        "import_mean": 5.418905666666666,
+        "import_p50": 1.764,
+        "import_p75": 13.028,
+        "import_p90": 13.028,
+        "import_p99": 13.028,
+        "import_std_dev": 6.591444325154414
     },
     "target": {
         "info": {
@@ -43,23 +43,23 @@
             "app_name": "tessera-target"
         },
         "stats": {
-            "steps": 1,
-            "imported": 0,
-            "import_max_step": 0,
-            "import_min": 0.0,
-            "import_max": 0.0,
-            "import_mean": 0.0,
-            "import_p50": 0.0,
-            "import_p75": 0.0,
-            "import_p90": 0.0,
-            "import_p99": 0.0,
-            "import_std_dev": 0.0
+            "steps": 4,
+            "imported": 2,
+            "import_max_step": 2,
+            "import_min": 182.415017,
+            "import_max": 212.273846,
+            "import_mean": 197.34443149999998,
+            "import_p50": 212.273,
+            "import_p75": 212.273,
+            "import_p90": 212.273,
+            "import_p99": 212.273,
+            "import_std_dev": 21.11338046418954
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: UnexpectedAuthor",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Invalid block. Error message unavailable"
         }
     }
 }

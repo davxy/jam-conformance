@@ -11,20 +11,20 @@
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 1,
-        "import_max_step": 1,
-        "import_min": 11.450109,
-        "import_max": 11.450109,
-        "import_mean": 11.450109,
-        "import_p50": 11.450109,
-        "import_p75": 0.0,
-        "import_p90": 11.450109,
-        "import_p99": 0.0,
-        "import_std_dev": 0.0
+        "steps": 6,
+        "imported": 3,
+        "import_max_step": 2,
+        "import_min": 5.1847,
+        "import_max": 15.516286000000001,
+        "import_mean": 8.780726000000001,
+        "import_p50": 5.641,
+        "import_p75": 15.516,
+        "import_p90": 15.516,
+        "import_p99": 15.516,
+        "import_std_dev": 5.8376298805008195
     },
     "target": {
         "info": {
@@ -43,23 +43,23 @@
             "app_name": "tessera-target"
         },
         "stats": {
-            "steps": 1,
-            "imported": 1,
-            "import_max_step": 1,
-            "import_min": 358.890501,
-            "import_max": 358.890501,
-            "import_mean": 358.890501,
-            "import_p50": 358.890501,
-            "import_p75": 0.0,
-            "import_p90": 358.890501,
-            "import_p99": 0.0,
-            "import_std_dev": 0.0
+            "steps": 6,
+            "imported": 2,
+            "import_max_step": 2,
+            "import_min": 494.910749,
+            "import_max": 636.6583919999999,
+            "import_mean": 565.7845705,
+            "import_p50": 636.658,
+            "import_p75": 636.658,
+            "import_p90": 636.658,
+            "import_p99": 636.658,
+            "import_std_dev": 100.2307195825098
         }
     },
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "error"
+            "got": "Invalid block. Error message unavailable"
         }
     }
 }

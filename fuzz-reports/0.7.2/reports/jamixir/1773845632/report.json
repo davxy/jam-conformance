@@ -11,18 +11,18 @@
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_mutations": 0
     },
     "stats": {
         "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 139.286162,
+        "import_max": 139.286162,
+        "import_mean": 139.286162,
+        "import_p50": 139.286162,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 139.286162,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -58,8 +58,8 @@
     },
     "error": {
         "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: UnexpectedAuthor",
-            "got": "ok"
+            "exp": "ok",
+            "got": "Chain error: block execution failure: bad_ticket_proof"
         }
     }
 }

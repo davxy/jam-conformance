@@ -11,18 +11,18 @@
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 8,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 4,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 12.035132,
+        "import_max": 12.035132,
+        "import_mean": 12.035132,
+        "import_p50": 12.035132,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 12.035132,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -43,23 +43,34 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 8,
-            "imported": 0,
-            "import_max_step": 0,
-            "import_min": 0.0,
-            "import_max": 0.0,
-            "import_mean": 0.0,
-            "import_p50": 0.0,
+            "steps": 4,
+            "imported": 1,
+            "import_max_step": 4,
+            "import_min": 4433.5811029999995,
+            "import_max": 4433.5811029999995,
+            "import_mean": 4433.5811029999995,
+            "import_p50": 4433.5811029999995,
             "import_p75": 0.0,
-            "import_p90": 0.0,
+            "import_p90": 4433.5811029999995,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block execution failure: reports error: report rotation before last",
-            "got": "ok"
+        "state_diff": {
+            "roots": {
+                "exp": "0xe806a5f5e97a14b9b058e8f812fed3f3ddd2efbebaf85052cfd9d61e1603a8a6",
+                "got": "0x712e846ce06ce028d724157f9c6de08cc73808fdd8b3934b340b2fdeb8adc750"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0e000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x015a8b5ff1e60216ba3c897efa1a5075ceb01c7c88841cb2b5424b2089943670b70a0800006bbe78b084c174cfff6b0eff5cdb069fd500ca082ceec9ff1b4aa850e9cd5ddc00000000000000000000000000000000000000000000000000000000000000000000ffc4d540e3a45b06efa7d840b0ab481604f0f8f4e7885a87b026c84d1117a79d7667bad0db8d75372b7b2325b36ba46c94d4b19720488704959019c481bb84e3e884038e46068eaab1df24317c855e78fe94335d4adb7aa6c62920ce1352eed7ffc4d540e3a45b06efa7d840b0ab481604f0f8f4e7885a87b026c84d1117a79d05000000025d58dac990023c19303ec23d13f65ed6476711417561c91baa36f85da9d075e0f12cb048d9f26bd5e808cf0555ee583e8c6c22cbd1e5d0a86d215838a0340f17002357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f80300000300000000d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327fbb16066a17ba0039e034c66269c275a6ffd0bb2cb812a81583a9afebaae847dd5dc3200000000000013010b00000000000000000000000000000000009b45000480be0000000000d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d63276c1bd700cdb95eb108697954279c0d26aa2e3ea56d5ae20d2681c5d5f4f93c0fd5dc3200000000000081040116000821c62eee5565e6b7438c73af16e3c1152c10c2acab7bbc923d9648da402deac26259889a0d6b251c9cdc3415345a7ed1d7c879bb943601d6d10327c8b6645a3aa1e0d9702cc04caa7abe401d06def5bd15f986e9be21561d7a9f95a288640ae9dd08f7b56f7a8777276233d447ace2bf4548a33a1f7205638e618b191dcb3325a06e698d52e508fd4ec877f65411fb5ce0e03c89f4acb87d42581b5f7fa76069717f7119404ae6347e13ea28241c45405020c12ec92ef87cd265f85d92f469b45d66274948c5908b2026ac207f26d9bbc44ee6d2ee7b9ff02319363d2bfb57fe4c623bfd73d70750eb6e35b061f645e67a9ab81bfb04023c7209ae8d286f9398c1f4120002150000000000d1b097b4410b3a63446d7c57d093972a9744fcd2d74f4a5e2ec163610e6d6327e0ed48fe689420fbf7b14ad493bd6d02422191ffad694f47981bdb0e84f5f7b7d5dc320000000000002a0106c91afcbf950ac9c8c62acccee23b9f23cc534d792176fce20a492308eb38dba75e000000000000009f780009824500015d58dac990023c19303ec23d13f65ed6476711417561c91baa36f85da9d075e00000000000000000000000",
+                        "got": "0x000000000000000000000000"
+                    }
+                }
+            ]
         }
     }
 }

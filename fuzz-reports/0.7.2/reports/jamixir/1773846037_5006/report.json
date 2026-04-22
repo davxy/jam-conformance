@@ -11,18 +11,18 @@
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5
+        "max_mutations": 0
     },
     "stats": {
-        "steps": 1,
-        "imported": 0,
-        "import_max_step": 0,
-        "import_min": 0.0,
-        "import_max": 0.0,
-        "import_mean": 0.0,
-        "import_p50": 0.0,
+        "steps": 2,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 14.060160999999999,
+        "import_max": 14.060160999999999,
+        "import_mean": 14.060160999999999,
+        "import_p50": 14.060160999999999,
         "import_p75": 0.0,
-        "import_p90": 0.0,
+        "import_p90": 14.060160999999999,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -44,22 +44,19 @@
         },
         "stats": {
             "steps": 1,
-            "imported": 0,
-            "import_max_step": 0,
-            "import_min": 0.0,
-            "import_max": 0.0,
-            "import_mean": 0.0,
-            "import_p50": 0.0,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 117.195908,
+            "import_max": 117.195908,
+            "import_mean": 117.195908,
+            "import_p50": 117.195908,
             "import_p75": 0.0,
-            "import_p90": 0.0,
+            "import_p90": 117.195908,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "import_result_diff": {
-            "exp": "Local chain error: block header verification failure: UnexpectedAuthor",
-            "got": "ok"
-        }
+        "communication": "Timeout waiting for peer (potential target crash)"
     }
 }
