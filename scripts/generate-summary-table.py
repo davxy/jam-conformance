@@ -141,6 +141,12 @@ def main():
             row += f" {' ' * left}{symbol}{' ' * right} |"
         lines.append(row)
 
+    # Repeat header before summary row
+    repeat_header = f"| {pad('test_id', id_width)} | {pad('failures', stats_width)} |"
+    for name in target_names:
+        repeat_header += f" {pad(name, col_widths[name])} |"
+    lines.append(repeat_header)
+
     # Summary row
     summary = f"| {summary_label:<{id_width}} | {pad('', stats_width)} |"
     for name in target_names:

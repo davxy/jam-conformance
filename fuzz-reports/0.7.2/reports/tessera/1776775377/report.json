@@ -9,22 +9,22 @@
         "fuzzy_profile": {
             "full": null
         },
-        "max_work_items": 3,
-        "mutation_ratio": 0.0,
-        "max_mutations": 0
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
     },
     "stats": {
-        "steps": 6,
-        "imported": 3,
-        "import_max_step": 2,
-        "import_min": 5.846121,
-        "import_max": 26.338250000000002,
-        "import_mean": 13.191643333333333,
-        "import_p50": 7.39,
-        "import_p75": 26.338,
-        "import_p90": 26.338,
-        "import_p99": 26.338,
-        "import_std_dev": 11.411453558596046
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 11.450109,
+        "import_max": 11.450109,
+        "import_mean": 11.450109,
+        "import_p50": 11.450109,
+        "import_p75": 0.0,
+        "import_p90": 11.450109,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,23 +43,23 @@
             "app_name": "tessera-target"
         },
         "stats": {
-            "steps": 6,
-            "imported": 2,
-            "import_max_step": 2,
-            "import_min": 544.800273,
-            "import_max": 612.866023,
-            "import_mean": 578.8331479999999,
-            "import_p50": 612.866,
-            "import_p75": 612.866,
-            "import_p90": 612.866,
-            "import_p99": 612.866,
-            "import_std_dev": 48.12975339154828
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 358.890501,
+            "import_max": 358.890501,
+            "import_mean": 358.890501,
+            "import_p50": 358.890501,
+            "import_p75": 0.0,
+            "import_p90": 358.890501,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
             "exp": "ok",
-            "got": "Invalid block. Error message unavailable"
+            "got": "error"
         }
     }
 }

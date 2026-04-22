@@ -9,22 +9,22 @@
         "fuzzy_profile": {
             "full": null
         },
-        "max_work_items": 3,
-        "mutation_ratio": 0.0,
-        "max_mutations": 0
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
     },
     "stats": {
-        "steps": 3,
-        "imported": 3,
-        "import_max_step": 3,
-        "import_min": 1.4201629999999998,
-        "import_max": 1.65236,
-        "import_mean": 1.5080756666666666,
-        "import_p50": 1.451,
-        "import_p75": 1.652,
-        "import_p90": 1.652,
-        "import_p99": 1.652,
-        "import_std_dev": 0.1259451678482877
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,23 +43,23 @@
             "app_name": "tessera-target"
         },
         "stats": {
-            "steps": 3,
-            "imported": 2,
-            "import_max_step": 2,
-            "import_min": 44.921098,
-            "import_max": 67.387297,
-            "import_mean": 56.1541975,
-            "import_p50": 67.387,
-            "import_p75": 67.387,
-            "import_p90": 67.387,
-            "import_p99": 67.387,
-            "import_std_dev": 15.886001660386436
+            "steps": 1,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
         "import_result_diff": {
-            "exp": "ok",
-            "got": "Invalid block. Error message unavailable"
+            "exp": "Local chain error: block header verification failure: UnexpectedAuthor",
+            "got": "ok"
         }
     }
 }

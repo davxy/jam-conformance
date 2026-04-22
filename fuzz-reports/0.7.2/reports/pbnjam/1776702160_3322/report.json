@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "1776702160_3322",
-        "max_steps": 1000000,
+        "seed": "42",
+        "max_steps": 4294967295,
         "safrole": false,
         "profile": {
             "full": null
         },
         "fuzzy_profile": {
-            "rand": null
+            "full": null
         },
         "max_work_items": 5,
         "mutation_ratio": 0.1,
         "max_mutations": 5
     },
     "stats": {
-        "steps": 7319,
-        "imported": 2396,
-        "import_max_step": 834,
-        "import_min": 1.431709,
-        "import_max": 4395.25755,
-        "import_mean": 35.91244927086806,
-        "import_p50": 5.018,
-        "import_p75": 7.337,
-        "import_p90": 12.952,
-        "import_p99": 142.193,
-        "import_std_dev": 300.39529728852926
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -43,20 +43,23 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 7318,
-            "imported": 2395,
-            "import_max_step": 617,
-            "import_min": 58.331524,
-            "import_max": 18195.748233,
-            "import_mean": 2415.5864752960383,
-            "import_p50": 1656.866,
-            "import_p75": 3773.619,
-            "import_p90": 5773.789,
-            "import_p99": 10409.378,
-            "import_std_dev": 2420.300003445866
+            "steps": 1,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
         }
     },
     "error": {
-        "communication": "IO error: early eof (potential target crash)"
+        "import_result_diff": {
+            "exp": "Local chain error: block header verification failure: UnexpectedAuthor",
+            "got": "ok"
+        }
     }
 }

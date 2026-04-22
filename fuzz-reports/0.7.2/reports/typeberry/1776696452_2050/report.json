@@ -9,20 +9,20 @@
         "fuzzy_profile": {
             "full": null
         },
-        "max_work_items": 3,
-        "mutation_ratio": 0.0,
-        "max_mutations": 0
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
     },
     "stats": {
-        "steps": 2,
-        "imported": 1,
-        "import_max_step": 2,
-        "import_min": 20.916998999999997,
-        "import_max": 20.916998999999997,
-        "import_mean": 20.916998999999997,
-        "import_p50": 20.916998999999997,
+        "steps": 3,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
         "import_p75": 0.0,
-        "import_p90": 20.916998999999997,
+        "import_p90": 0.0,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -38,39 +38,28 @@
             "app_version": {
                 "major": 0,
                 "minor": 5,
-                "patch": 10
+                "patch": 11
             },
             "app_name": "@typeberry/jam"
         },
         "stats": {
-            "steps": 2,
-            "imported": 1,
-            "import_max_step": 2,
-            "import_min": 146.758511,
-            "import_max": 146.758511,
-            "import_mean": 146.758511,
-            "import_p50": 146.758511,
+            "steps": 3,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
             "import_p75": 0.0,
-            "import_p90": 146.758511,
+            "import_p90": 0.0,
             "import_p99": 0.0,
             "import_std_dev": 0.0
         }
     },
     "error": {
-        "state_diff": {
-            "roots": {
-                "exp": "0x4b3f76d1cc7c79844930f18cc55d3e3f286d05ff06c2533bc6bd040287ec1a9c",
-                "got": "0x3f84b0fffdeecae59b834fe8a6f872be3dbbfe459d351a56a7adb6f738789ddc"
-            },
-            "keyvals": [
-                {
-                    "key": "0xe3d7514556b741fec13e507a95e86ec03add50794acc76edd9370aca5ecbf2",
-                    "diff": {
-                        "exp": "0x0d37c69f9f2826ee",
-                        "got": "0xdd95de3b70f43196"
-                    }
-                }
-            ]
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: bad signature batch",
+            "got": "ok"
         }
     }
 }

@@ -9,20 +9,20 @@
         "fuzzy_profile": {
             "full": null
         },
-        "max_work_items": 3,
-        "mutation_ratio": 0.0,
-        "max_mutations": 0
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
     },
     "stats": {
         "steps": 1,
-        "imported": 1,
-        "import_max_step": 1,
-        "import_min": 57.436532,
-        "import_max": 57.436532,
-        "import_mean": 57.436532,
-        "import_p50": 57.436532,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
         "import_p75": 0.0,
-        "import_p90": 57.436532,
+        "import_p90": 0.0,
         "import_p99": 0.0,
         "import_std_dev": 0.0
     },
@@ -43,7 +43,7 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 0,
+            "steps": 1,
             "imported": 0,
             "import_max_step": 0,
             "import_min": 0.0,
@@ -57,6 +57,9 @@
         }
     },
     "error": {
-        "communication": "Timeout waiting for peer (potential target crash)"
+        "import_result_diff": {
+            "exp": "Local chain error: block header verification failure: UnexpectedAuthor",
+            "got": "ok"
+        }
     }
 }
