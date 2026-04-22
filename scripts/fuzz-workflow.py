@@ -381,6 +381,8 @@ def run_fuzzer_trace_mode(target, trace_dir, log_file):
         input_trace_dir,
         "--target-sock",
         SESSION_TARGET_SOCK,
+        "--max-mutations",
+        "0",
         "--verbosity",
         VERBOSITY,
         "--pvm-interpreter-backend",

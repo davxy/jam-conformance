@@ -10,4 +10,4 @@ fuzz-local target="all":
 
 # Execute a trace workflow with a few targets and publish the corresponding reports
 fuzz-trace target="all":
-    ./fuzz-workflow.py -t "{{target}}" --skip-get --report-publish --parallel --source trace
+    ./fuzz-workflow.py -t "{{target}}" --skip-get --report-publish --parallel --source trace --max-mutations 0 --mutation-ratio 0
