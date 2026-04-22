@@ -4,7 +4,7 @@
   "targets_dir": "/mnt/ssd/develop/jam/jam-conformance/scripts/targets",
   "sessions_dir": "./sessions",
   "max_steps": 1000000,
-  "max_mutations": 3,
+  "max_mutations": 5,
   "mutation_ratio": 0.1,
   "profile": "full",
   "fuzzy_profile": "rand",
