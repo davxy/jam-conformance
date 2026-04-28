@@ -43,7 +43,6 @@
   },
   "jampy": {
     "image": "ghcr.io/dakk/jampy-target:0.7.2",
-    "cmd": "--sock {TARGET_SOCK}",
     "gp_version": "0.7.2"
   },
   "jamduna": {
