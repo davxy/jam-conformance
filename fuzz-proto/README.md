@@ -360,3 +360,8 @@ Environment variables are used in place of command line arguments to align
 with the prevailing convention for service-style container images.
 They integrate directly with `docker run -e` without requiring the entry point
 to be overridden.
+
+**Note on `JAM_FUZZ_DATA_PATH`**: This directory is mapped to a host folder.
+Implementors are free to use it for caching (e.g. to improve start-up time
+for performance-related testing). However, during official assessment this
+folder will be cleaned up to ensure a fresh start.
