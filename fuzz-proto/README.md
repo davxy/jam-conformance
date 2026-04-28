@@ -356,7 +356,8 @@ to be explicitly set before startup:
 | `JAM_FUZZ_SOCK_PATH` | Unix domain socket path for fuzzer communication. |
 | `JAM_FUZZ_LOG_LEVEL` | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. |
 
-All variables must be provided; targets **MUST** refuse to start if any are missing.
+`JAM_FUZZ_SPEC`, `JAM_FUZZ_DATA_PATH` and `JAM_FUZZ_SOCK_PATH` variables must be provided;
+targets **MUST** refuse to start if any are missing.
 
 Environment variables are used in place of command line arguments to align
 with the prevailing convention for service-style container images.
