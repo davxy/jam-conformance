@@ -42,6 +42,10 @@ TARGETS_DIR = os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{CURRENT_DIR}/targets")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TARGETS_FILE = os.environ.get("JAM_FUZZ_TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
 
+# Standard JAM fuzz packaging paths (see fuzz-proto/README.md).
+CONTAINER_DATA_PATH = "/tmp/jam_fuzz"
+CONTAINER_SOCK_PATH = f"{CONTAINER_DATA_PATH}/fuzz.sock"
+
 @dataclass
 class Target:
     name: str
@@ -111,14 +115,14 @@ def load_targets() -> Dict[str, Target]:
         processed_config = {}
         for key, value in target_config.items():
             if isinstance(value, str) and "{TARGET_SOCK}" in value:
-                processed_config[key] = value.format(TARGET_SOCK=TARGET_SOCK)
+                processed_config[key] = value.format(TARGET_SOCK=CONTAINER_SOCK_PATH)
             elif isinstance(value, dict):
                 # Handle nested dictionaries (file.linux, cmd.macos, etc.)
                 processed_dict = {}
                 for sub_key, sub_value in value.items():
                     if isinstance(sub_value, str) and "{TARGET_SOCK}" in sub_value:
                         processed_dict[sub_key] = sub_value.format(
-                            TARGET_SOCK=TARGET_SOCK
+                            TARGET_SOCK=CONTAINER_SOCK_PATH
                         )
                     elif isinstance(sub_value, list):
                         # Handle lists in nested dictionaries
@@ -126,7 +130,7 @@ def load_targets() -> Dict[str, Target]:
                         for item in sub_value:
                             if isinstance(item, str) and "{TARGET_SOCK}" in item:
                                 processed_list.append(
-                                    item.format(TARGET_SOCK=TARGET_SOCK)
+                                    item.format(TARGET_SOCK=CONTAINER_SOCK_PATH)
                                 )
                             else:
                                 processed_list.append(item)
@@ -139,12 +143,12 @@ def load_targets() -> Dict[str, Target]:
                 processed_list = []
                 for item in value:
                     if isinstance(item, str) and "{TARGET_SOCK}" in item:
-                        processed_list.append(item.format(TARGET_SOCK=TARGET_SOCK))
+                        processed_list.append(item.format(TARGET_SOCK=CONTAINER_SOCK_PATH))
                     else:
                         processed_list.append(item)
                 processed_config[key] = processed_list
             elif isinstance(value, str) and "{TARGET_SOCK}" in value:
-                processed_config[key] = value.format(TARGET_SOCK=TARGET_SOCK)
+                processed_config[key] = value.format(TARGET_SOCK=CONTAINER_SOCK_PATH)
             else:
                 processed_config[key] = value
 
@@ -590,10 +594,6 @@ def run_docker_image(target: str, args=None) -> None:
     os.chmod(container_tmp_dir, 0o777)
     print(f"Container temp dir: {container_tmp_dir}")
 
-    # Create a symlink from TARGET_SOCK to the socket inside the container temp dir
-    # so the host can access it at the expected path
-    socket_basename = os.path.basename(TARGET_SOCK)
-    container_socket_path = os.path.join(container_tmp_dir, socket_basename)
 
     # Remove existing socket/symlink if present
     try:
@@ -601,9 +601,10 @@ def run_docker_image(target: str, args=None) -> None:
     except FileNotFoundError:
         pass
 
-    # Create symlink: TARGET_SOCK -> container_socket_path
-    os.symlink(container_socket_path, TARGET_SOCK)
-    print(f"Socket symlink: {TARGET_SOCK} -> {container_socket_path}")
+    # Symlink so the host can reach the in-container socket via TARGET_SOCK
+    host_socket_path = os.path.join(container_tmp_dir, "fuzz.sock")
+    os.symlink(host_socket_path, TARGET_SOCK)
+    print(f"Socket symlink: {TARGET_SOCK} -> {host_socket_path}")
 
     def cleanup_docker():
         print(f"Cleaning up Docker container {container_name}...")
@@ -676,7 +677,7 @@ def run_docker_image(target: str, args=None) -> None:
         "--cap-add",
         "IPC_LOCK",
         "-v",
-        f"{container_tmp_dir}:/tmp",
+        f"{container_tmp_dir}:{CONTAINER_DATA_PATH}",
     ]
 
     # In rootful Docker, run as the host user so files are owned correctly.
@@ -684,6 +685,15 @@ def run_docker_image(target: str, args=None) -> None:
     # so --user would cause double UID remapping and permission errors.
     if not rootless:
         docker_cmd.extend(["--user", f"{os.getuid()}:{os.getgid()}"])
+
+    # Standard JAM fuzz packaging environment variables (see fuzz-proto/README.md).
+    # Set first so target.json `env` and --target-env can still override them.
+    docker_cmd.extend([
+        "-e", f"JAM_FUZZ_SPEC={os.environ.get('JAM_FUZZ_SPEC', 'tiny')}",
+        "-e", f"JAM_FUZZ_DATA_PATH={CONTAINER_DATA_PATH}",
+        "-e", f"JAM_FUZZ_SOCK_PATH={CONTAINER_SOCK_PATH}",
+        "-e", f"JAM_FUZZ_LOG_LEVEL={os.environ.get('JAM_FUZZ_LOG_LEVEL', 'info')}",
+    ])
 
     if env:
         for var in env.split():
