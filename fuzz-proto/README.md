@@ -375,5 +375,8 @@ its Unix domain socket, ready to accept a new fuzzer connection. Multiple
 fuzzing sessions must be supported in sequence without restarting the
 container.
 
-Each new session begins with a fresh handshake and `Initialize` message, so
-the target should reset any per-session state.
+Each session begins with a fresh handshake and exactly one `Initialize` message.
+The target must not accept multiple `Initialize` messages within a single session;
+if a second `Initialize` is received, the target should close the connection.
+
+Upon receiving `Initialize`, the target should reset any per-session state.
