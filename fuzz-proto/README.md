@@ -353,7 +353,7 @@ to be explicitly set before startup:
 |----------------------|-------------|
 | `JAM_FUZZ_SPEC`      | Protocol parameters set: `tiny` or `full`. |
 | `JAM_FUZZ_DATA_PATH` | Directory for target data persistence. |
-| `JAM_FUZZ_SOCK_PATH` | Unix domain socket path for fuzzer communication. |
+| `JAM_FUZZ_SOCK_PATH` | Unix domain socket path for fuzzer communication. The target can assume that no file is present here. |
 | `JAM_FUZZ_LOG_LEVEL` | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. |
 
 `JAM_FUZZ_SPEC`, `JAM_FUZZ_DATA_PATH` and `JAM_FUZZ_SOCK_PATH` variables must be provided;
