@@ -334,3 +334,29 @@ python minifuzz/minifuzz.py -d examples/v1/forks --target-sock /tmp/jam_target.s
 # For targets not supporting forks  
 python minifuzz/minifuzz.py -d examples/v1/no_forks --target-sock /tmp/jam_target.sock
 ```
+
+---
+
+## Standard Target Packaging
+
+### Docker Image
+
+Targets must be distributed as Docker images. Images should be kept
+lightweight and minimal; avoid inflating already large base images.
+
+### Entry Point
+
+The container's entry point is parameterized through the following
+environment variables:
+
+| Variable             | Default                | Description |
+|----------------------|------------------------|-------------|
+| `JAM_FUZZ_SPEC`      | `"tiny"`               | Protocol parameters set: `tiny` or `full`. |
+| `JAM_FUZZ_DATA_PATH` | `"/tmp/jam_fuzz/"`     | Directory for target data persistence. |
+| `JAM_FUZZ_SOCK_PATH` | `"$JAM_FUZZ_DATA_PATH/fuzz.sock"` | Unix domain socket path for fuzzer communication. |
+| `JAM_FUZZ_LOG_LEVEL` | `info`                 | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. |
+
+Environment variables are used in place of command line arguments to align
+with the prevailing convention for service-style container images.
+They integrate directly with `docker run -e` without requiring the entry point
+to be overridden.
