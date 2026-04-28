@@ -346,15 +346,17 @@ lightweight and minimal; avoid inflating already large base images.
 
 ### Entry Point
 
-The container's entry point is parameterized through the following
-environment variables:
+The container's entry point requires the following environment variables
+to be explicitly set before startup:
 
-| Variable             | Default                | Description |
-|----------------------|------------------------|-------------|
-| `JAM_FUZZ_SPEC`      | `"tiny"`               | Protocol parameters set: `tiny` or `full`. |
-| `JAM_FUZZ_DATA_PATH` | `"/tmp/jam_fuzz/"`     | Directory for target data persistence. |
-| `JAM_FUZZ_SOCK_PATH` | `"$JAM_FUZZ_DATA_PATH/fuzz.sock"` | Unix domain socket path for fuzzer communication. |
-| `JAM_FUZZ_LOG_LEVEL` | `info`                 | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. |
+| Variable             | Description |
+|----------------------|-------------|
+| `JAM_FUZZ_SPEC`      | Protocol parameters set: `tiny` or `full`. |
+| `JAM_FUZZ_DATA_PATH` | Directory for target data persistence. |
+| `JAM_FUZZ_SOCK_PATH` | Unix domain socket path for fuzzer communication. |
+| `JAM_FUZZ_LOG_LEVEL` | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. |
+
+All variables must be provided; targets **MUST** refuse to start if any are missing.
 
 Environment variables are used in place of command line arguments to align
 with the prevailing convention for service-style container images.
