@@ -365,3 +365,13 @@ to be overridden.
 Implementors are free to use it for caching (e.g. to improve start-up time
 for performance-related testing). However, during official assessment this
 folder will be cleaned up to ensure a fresh start.
+
+### Session Lifetime
+
+When the fuzzer disconnects, the target must remain active and listening on
+its Unix domain socket, ready to accept a new fuzzer connection. Multiple
+fuzzing sessions must be supported in sequence without restarting the
+container.
+
+Each new session begins with a fresh handshake and `Initialize` message, so
+the target should reset any per-session state.
