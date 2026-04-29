@@ -19,10 +19,12 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # HOST-side data directory for all fuzz-related temporary files.
-# Can be overridden via JAM_FUZZ_DATA_PATH environment variable.
+# When running in Docker, this directory is mounted to CONTAINER_DATA_PATH inside the container.
+# Can be overridden via JAM_FUZZ_DATA_PATH environment variable (set by fuzz-workflow.py per session).
 HOST_DATA_PATH = os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz")
 
 # HOST-side path to the Unix domain socket used for fuzzer-target communication.
+# Always derived from HOST_DATA_PATH; socket file is created inside the mounted data directory.
 HOST_SOCK_PATH = os.path.join(HOST_DATA_PATH, "fuzz.sock")
 
 # Used to run binaries when target is not provided as a docker image
@@ -596,7 +598,8 @@ def run_docker_image(target: str, args=None) -> None:
         print(f"Please run: {sys.argv[0]} get {target}")
         sys.exit(1)
 
-    # Remove existing data directory if present to start clean
+    # Clean start: remove any leftover data directory from previous runs
+    # This ensures the socket and other runtime files are fresh
     try:
         shutil.rmtree(HOST_DATA_PATH)
     except FileNotFoundError:
@@ -613,6 +616,7 @@ def run_docker_image(target: str, args=None) -> None:
         print(f"Cleaning up Docker container {container_name}...")
         subprocess.run(["docker", "kill", container_name], capture_output=True)
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
+        # Remove ephemeral data directory and socket files created during this run
         try:
             shutil.rmtree(HOST_DATA_PATH)
         except FileNotFoundError:
@@ -1025,6 +1029,7 @@ def run_target(target: str, os_name: str, args=None) -> None:
                 except ProcessLookupError:
                     pass
             try:
+                # Remove ephemeral data directory and socket files created during this run
                 shutil.rmtree(HOST_DATA_PATH)
             except FileNotFoundError:
                 pass

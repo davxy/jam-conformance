@@ -16,6 +16,14 @@
 #   in an exploratory session to generate new traces.
 # - trace mode, which runs a group of existing traces against several targets,
 #   and is meant to regenerate reports for existing traces.
+#
+# Data organization:
+# - SESSION_DATA_PATH: /tmp/jam_fuzz/{SESSION_ID} (ephemeral, cleaned up after each run)
+#   Contains socket and target runtime data passed to target.py via JAM_FUZZ_DATA_PATH
+# - SESSION_DIR: sessions/{SESSION_ID} (persistent)
+#   Contains traces, reports, logs from the fuzzing session
+# - SESSION_TARGET_SOCK: SESSION_DATA_PATH/fuzz.sock
+#   Unix domain socket for fuzzer-target communication
 
 import json
 import os
@@ -455,9 +463,13 @@ def run_target(target, log_file):
     """Run the target"""
     print(f"* Running target: {target}")
 
-    if os.path.exists(SESSION_TARGET_SOCK):
-        os.remove(SESSION_TARGET_SOCK)
-        print(f"Removed existing socket: {SESSION_TARGET_SOCK}")
+    # Clean up ephemeral data directory from previous runs (target.py will also do this)
+    # This ensures a fresh state even if target.py subprocess fails to clean up
+    try:
+        shutil.rmtree(SESSION_DATA_PATH)
+        print(f"Cleaned up ephemeral data directory: {SESSION_DATA_PATH}")
+    except FileNotFoundError:
+        pass
 
     target_command = [
         os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
