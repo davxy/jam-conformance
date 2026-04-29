@@ -351,13 +351,15 @@ to be explicitly set before startup:
 
 | Variable             | Description |
 |----------------------|-------------|
+| `JAM_FUZZ`           | Enable fuzz mode for the target image. |
 | `JAM_FUZZ_SPEC`      | Protocol parameters set: `tiny` or `full`. |
 | `JAM_FUZZ_DATA_PATH` | Directory for target data persistence. |
 | `JAM_FUZZ_SOCK_PATH` | Path to Unix domain socket for fuzzer communication. The target can assume that no file is present here. |
-| `JAM_FUZZ_LOG_LEVEL` | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. |
+| `JAM_FUZZ_LOG_LEVEL` | Log verbosity: `error`, `warn`, `info`, `debug`, `trace`. Optional. |
 
-`JAM_FUZZ_SPEC`, `JAM_FUZZ_DATA_PATH` and `JAM_FUZZ_SOCK_PATH` variables must be provided;
-targets **MUST** refuse to start if any are missing.
+When `JAM_FUZZ` is defined, the variables `JAM_FUZZ_SPEC`, `JAM_FUZZ_DATA_PATH` and `JAM_FUZZ_SOCK_PATH` 
+MUST all be provided; targets MUST refuse to start if any are missing.
+When `JAM_FUZZ` is not defined, the target operates in normal mode and these variables are ignored.
 
 Environment variables are used in place of command line arguments to align
 with the prevailing convention for service-style container images.
@@ -367,7 +369,9 @@ to be overridden.
 #### Examples
 
 ```bash
-docker run -e JAM_FUZZ_SPEC=tiny \
+# Running in fuzz mode
+docker run -e JAM_FUZZ=1 \
+           -e JAM_FUZZ_SPEC=tiny \
            -e JAM_FUZZ_DATA_PATH=/tmp/jam/data/ \
            -e JAM_FUZZ_SOCK_PATH=/tmp/jam/fuzz.sock \
            -e JAM_FUZZ_LOG_LEVEL=info \
