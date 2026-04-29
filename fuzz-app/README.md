@@ -200,10 +200,10 @@ list, but the files on disk remain.
 ## Concurrency
 
 Multiple sessions run in parallel without conflict. Each gets its own
-session ID, directory under `sessions/`, and unix socket
-(`/tmp/jam_fuzz_<session_id>.sock`). Session IDs are unix timestamps with
-a `_N` suffix appended on collision, so even simultaneous launches (e.g.
-the "all" target option) get unique IDs.
+session ID, directory under `sessions/`, and ephemeral data directory
+(`/tmp/jam_fuzz/{session_id}/` with the unix socket at `fuzz.sock` inside).
+Session IDs are unix timestamps with a `_N` suffix appended on collision, so
+even simultaneous launches (e.g. the "all" target option) get unique IDs.
 
 ## Troubleshooting
 
