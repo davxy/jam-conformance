@@ -472,7 +472,7 @@ def run_target(target, log_file):
         # Set up environment variables for the subprocess
         env = os.environ.copy()
         env["JAM_FUZZ_TARGETS_DIR"] = TARGETS_DIR
-        env["JAM_FUZZ_TARGET_SOCK"] = SESSION_TARGET_SOCK
+        env["JAM_FUZZ_HOST_SOCK_PATH"] = SESSION_TARGET_SOCK
         target_process = subprocess.Popen(
             target_command,
             stdin=subprocess.DEVNULL,
