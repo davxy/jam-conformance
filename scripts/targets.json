@@ -3,7 +3,7 @@
     "repo": "none",
     "file": "polkajam-fuzz",
     "cmd": "polkajam-fuzz",
-    "args": "--source remote --step-period 0 --source-sock {TARGET_SOCK} --pvm-interpreter-backend false",
+    "args": "--source remote --step-period 0 --source-sock {SOCK_PATH} --pvm-interpreter-backend false",
     "env": "RUST_LOG=off",
     "gp_version": "0.7.2"
   },
@@ -11,7 +11,7 @@
     "repo": "none",
     "file": "polkajam-fuzz",
     "cmd": "polkajam-fuzz",
-    "args": "--source remote --step-period 0 --source-sock {TARGET_SOCK} --pvm-interpreter-backend true",
+    "args": "--source remote --step-period 0 --source-sock {SOCK_PATH} --pvm-interpreter-backend true",
     "env": "RUST_LOG=off",
     "gp_version": "0.7.2"
   },
@@ -19,7 +19,7 @@
     "repo": "bloppan/conformance_testing",
     "clone": 1,
     "file": "linux/tiny/x86_64/vinwolf-target",
-    "cmd": "linux/tiny/x86_64/vinwolf-target --fuzz {TARGET_SOCK}",
+    "cmd": "linux/tiny/x86_64/vinwolf-target --fuzz {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jamzig": {
@@ -33,12 +33,12 @@
       "linux": "tiny/linux/x86_64/jam_conformance_target",
       "macos": "tiny/macos/aarch64/jam_conformance_target"
     },
-    "args": "--socket={TARGET_SOCK}",
+    "args": "--socket={SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "pyjamaz": {
     "image": "jamdottech/pyjamaz:latest",
-    "cmd": "fuzzer target --db-path=/tmp/pyjamaz_fuzzer_db --socket-path={TARGET_SOCK}",
+    "cmd": "fuzzer target --db-path=/tmp/pyjamaz_fuzzer_db --socket-path={SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jampy": {
@@ -55,7 +55,7 @@
       "linux": "duna_target_linux",
       "macos": "duna_target_mac"
     },
-    "args": "--socket {TARGET_SOCK}",
+    "args": "--socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jamixir": {
@@ -64,23 +64,23 @@
       "linux": "jamixir_linux-x86-64_0.7.2_tiny.tar.gz",
       "macos": "jamixir_macos-arm64_0.7.2_tiny.tar.gz"
     },
-    "cmd": "jamixir fuzzer --log error --socket-path {TARGET_SOCK}",
+    "cmd": "jamixir fuzzer --log error --socket-path {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "javajam": {
     "image": "ghcr.io/methodfive/javajam:latest-amd64",
-    "cmd": "-Dskip.warmup=true fuzz {TARGET_SOCK}",
+    "cmd": "-Dskip.warmup=true fuzz {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jamzilla": {
     "image": "ghcr.io/ascrivener/jamzilla-tiny:edge",
-    "cmd": "-socket {TARGET_SOCK}",
+    "cmd": "-socket {SOCK_PATH}",
     "env": "PVM_MODE=jit",
     "gp_version": "0.7.2"
   },
   "jamzilla-int": {
     "image": "ghcr.io/ascrivener/jamzilla-tiny:edge",
-    "cmd": "-socket {TARGET_SOCK}",
+    "cmd": "-socket {SOCK_PATH}",
     "env": "PVM_MODE=interpreter",
     "gp_version": "0.7.2"
   },
@@ -90,30 +90,30 @@
       "linux": "spacejam-0.7.2-linux-amd64.tar.gz",
       "macos": "spacejam-0.7.2-macos-arm64.tar.gz"
     },
-    "cmd": "spacejam fuzz target {TARGET_SOCK}",
+    "cmd": "spacejam fuzz target {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "tsjam": {
     "repo": "vekexasia/tsjam-releases",
     "file": "tsjam-fuzzer-target.tgz",
     "cmd": "tsjam-fuzzer-target/jam-fuzzer-target",
-    "args": "--socket {TARGET_SOCK}",
+    "args": "--socket {SOCK_PATH}",
     "env": "JAM_CONSTANTS=tiny NODE_OPTIONS=\"--max-old-space-size=8192\"",
     "gp_version": "0.7.2"
   },
   "boka": {
     "image": "acala/boka:latest",
-    "cmd": "fuzz target --socket-path {TARGET_SOCK}",
+    "cmd": "fuzz target --socket-path {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "turbojam": {
     "image": "r2rationality/turbojam-fuzz:latest",
-    "cmd": "fuzzer-api {TARGET_SOCK}",
+    "cmd": "fuzzer-api {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "graymatter": {
     "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",
-    "cmd": "fuzz-m1-target --stay-open --listen {TARGET_SOCK}",
+    "cmd": "fuzz-m1-target --stay-open --listen {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "fastroll": {
@@ -126,7 +126,7 @@
       "linux": "fastroll-linux-x86_64-tiny",
       "macos": "fastroll-macos-aarch64-tiny"
     },
-    "args": "fuzz --socket {TARGET_SOCK}",
+    "args": "fuzz --socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "gossamer": {
@@ -139,7 +139,7 @@
       "linux": "gossamer-jam-tiny-linux-amd64",
       "macos": "gossamer-jam-tiny-macos-arm64"
     },
-    "args": "target --socket {TARGET_SOCK}",
+    "args": "target --socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "tessera": {
@@ -148,12 +148,12 @@
       "linux": "tessera-node-Linux-x64.tar.gz",
       "macos": "tessera-node-Darwin-arm64.tar.gz"
     },
-    "cmd": "tessera-node --fuzzer --socket {TARGET_SOCK}",
+    "cmd": "tessera-node --fuzzer --socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "typeberry": {
     "image": "ghcr.io/fluffylabs/typeberry:latest",
-    "cmd": "--version=1 fuzz-target {TARGET_SOCK}",
+    "cmd": "--version=1 fuzz-target {SOCK_PATH}",
     "env": "JAM_LOG=log",
     "gp_version": "0.7.2"
   },
@@ -161,30 +161,30 @@
     "repo": "eigerco/strawberry",
     "file": "strawberry-linux-x86_64",
     "cmd": "strawberry-linux-x86_64",
-    "args": "--socket {TARGET_SOCK}",
+    "args": "--socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "new-jamneration": {
     "repo": "New-JAMneration/new-jamneration-release",
     "file": "new-jamneration-target-linux-amd64-0.7.2.tar.gz",
-    "cmd": "new-jamneration-target {TARGET_SOCK}",
+    "cmd": "new-jamneration-target {SOCK_PATH}",
     "env": "USE_MINI_REDIS=true",
     "gp_version": "0.7.2"
   },
   "jamforge": {
     "image": "ghcr.io/philoniare/jam-forge:latest",
-    "cmd": "--socket-path {TARGET_SOCK}",
+    "cmd": "--socket-path {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jam4s": {
     "image": "jamforscala/jam4s:latest",
-    "cmd": "--fuzz --seed 0 --socket {TARGET_SOCK}",
+    "cmd": "--fuzz --seed 0 --socket {SOCK_PATH}",
     "env": "CONFIG_FILE=app/config/node-dev.conf",
     "gp_version": "0.7.2"
   },
   "pbnjam": {
     "image": "shimonchick/pbnjam-fuzzer-target:latest",
-    "cmd": "--socket {TARGET_SOCK}",
+    "cmd": "--socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jambda": {
@@ -195,7 +195,7 @@
     "cmd": {
       "linux": "jambda-node-Linux-x64"
     },
-    "args": "fuzz-target --sock {TARGET_SOCK}",
+    "args": "fuzz-target --sock {SOCK_PATH}",
     "env": "RUST_LOG=off",
     "gp_version": "0.7.2"
   }
