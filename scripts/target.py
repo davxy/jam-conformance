@@ -18,12 +18,12 @@ from dataclasses import dataclass
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-DEFAULT_SOCK = "/tmp/jam_fuzz.sock"
+# HOST-side data directory for all fuzz-related temporary files.
+# Can be overridden via JAM_FUZZ_DATA_PATH environment variable.
+HOST_DATA_PATH = os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz")
 
 # HOST-side path to the Unix domain socket used for fuzzer-target communication.
-# When running in Docker, this is symlinked to the actual socket inside the container.
-# Can be overridden via JAM_FUZZ_HOST_SOCK_PATH environment variable.
-HOST_SOCK_PATH = os.environ.get("JAM_FUZZ_HOST_SOCK_PATH", DEFAULT_SOCK)
+HOST_SOCK_PATH = os.path.join(HOST_DATA_PATH, "fuzz.sock")
 
 # Used to run binaries when target is not provided as a docker image
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
@@ -188,7 +188,7 @@ Examples:
   %(prog)s info all                   # Show info for all targets
 
 Environment variables:
-  JAM_FUZZ_HOST_SOCK_PATH  Host socket path (default: /tmp/jam_fuzz.sock)
+  JAM_FUZZ_DATA_PATH       Host data directory (default: /tmp/jam_fuzz)
   JAM_FUZZ_RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
   JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: 16-32)
 
@@ -596,38 +596,25 @@ def run_docker_image(target: str, args=None) -> None:
         print(f"Please run: {sys.argv[0]} get {target}")
         sys.exit(1)
 
-    # Create a dedicated temporary directory for the container to avoid polluting host /tmp
-    container_tmp_dir = tempfile.mkdtemp(prefix=f"jam_{container_name}_")
-    # Ensure the directory is world-writable so the container user can create files
-    # (needed for rootless Docker where the mapped user may differ from the host user)
-    os.chmod(container_tmp_dir, 0o777)
-    print(f"Container temp dir: {container_tmp_dir}")
-
-
-    # Remove existing socket/symlink if present
+    # Remove existing data directory if present to start clean
     try:
-        os.unlink(HOST_SOCK_PATH)
+        shutil.rmtree(HOST_DATA_PATH)
     except FileNotFoundError:
         pass
 
-    # Symlink so the host can reach the in-container socket via HOST_SOCK_PATH
-    host_socket_path = os.path.join(container_tmp_dir, "fuzz.sock")
-    os.symlink(host_socket_path, HOST_SOCK_PATH)
-    print(f"Socket symlink: {HOST_SOCK_PATH} -> {host_socket_path}")
+    # Create host data directory
+    os.makedirs(HOST_DATA_PATH, exist_ok=True)
+    # Ensure the directory is world-writable so the container user can create files
+    # (needed for rootless Docker where the mapped user may differ from the host user)
+    os.chmod(HOST_DATA_PATH, 0o777)
+    print(f"Host data path: {HOST_DATA_PATH}")
 
     def cleanup_docker():
         print(f"Cleaning up Docker container {container_name}...")
         subprocess.run(["docker", "kill", container_name], capture_output=True)
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
-        # Remove the symlink
         try:
-            os.unlink(HOST_SOCK_PATH)
-        except FileNotFoundError:
-            pass
-        # Remove the dedicated temp directory and all its contents
-        try:
-            shutil.rmtree(container_tmp_dir, ignore_errors=True)
-            print(f"Cleaned up container temp dir: {container_tmp_dir}")
+            shutil.rmtree(HOST_DATA_PATH)
         except FileNotFoundError:
             pass
 
@@ -686,7 +673,7 @@ def run_docker_image(target: str, args=None) -> None:
         "--cap-add",
         "IPC_LOCK",
         "-v",
-        f"{container_tmp_dir}:{CONTAINER_DATA_PATH}",
+        f"{HOST_DATA_PATH}:{CONTAINER_DATA_PATH}",
     ]
 
     # In rootful Docker, run as the host user so files are owned correctly.
@@ -1038,7 +1025,7 @@ def run_target(target: str, os_name: str, args=None) -> None:
                 except ProcessLookupError:
                     pass
             try:
-                os.unlink(HOST_SOCK_PATH)
+                shutil.rmtree(HOST_DATA_PATH)
             except FileNotFoundError:
                 pass
 

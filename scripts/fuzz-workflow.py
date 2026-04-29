@@ -51,6 +51,7 @@ SESSIONS_DIR = os.environ.get("JAM_FUZZ_SESSIONS_DIR", f"{CURRENT_DIR}/sessions"
 
 # Fuzzing session id, defaults to unix timestamp
 SESSION_ID = os.environ.get("JAM_FUZZ_SESSION_ID", str(int(time.time())))
+
 # Session dir
 SESSION_DIR = os.path.join(SESSIONS_DIR, SESSION_ID)
 # The directory where we store the traces for one fuzzer session
@@ -62,8 +63,10 @@ SESSION_LOGS_DIR = os.path.join(SESSION_DIR, "logs")
 # The directory where failed traces are stored
 SESSION_FAILED_TRACES_DIR = os.path.join(SESSION_DIR, "failed_traces_reports")
 
+# Per-session ephemeral fuzz data directory (socket, target data, etc.)
+SESSION_DATA_PATH = os.path.join("/tmp/jam_fuzz", SESSION_ID)
 # Target unix domain socket
-SESSION_TARGET_SOCK = os.environ.get("JAM_FUZZ_TARGET_SOCK", f"/tmp/jam_fuzz_{SESSION_ID}.sock")
+SESSION_TARGET_SOCK = os.path.join(SESSION_DATA_PATH, "fuzz.sock")
 
 # Global environment variables that affect the fuzzer.
 SEED = os.environ.get("JAM_FUZZ_SEED", "42")
@@ -472,7 +475,7 @@ def run_target(target, log_file):
         # Set up environment variables for the subprocess
         env = os.environ.copy()
         env["JAM_FUZZ_TARGETS_DIR"] = TARGETS_DIR
-        env["JAM_FUZZ_HOST_SOCK_PATH"] = SESSION_TARGET_SOCK
+        env["JAM_FUZZ_DATA_PATH"] = SESSION_DATA_PATH
         target_process = subprocess.Popen(
             target_command,
             stdin=subprocess.DEVNULL,
