@@ -37,8 +37,6 @@
   },
   "jam4s": {
     "image": "jamforscala/jam4s:latest",
-    "cmd": "--fuzz --seed 0 --socket {SOCK_PATH}",
-    "env": "CONFIG_FILE=app/config/node-dev.conf",
     "gp_version": "0.7.2"
   },
   "jambda": {
