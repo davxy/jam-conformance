@@ -94,10 +94,7 @@
     "gp_version": "0.7.2"
   },
   "new-jamneration": {
-    "repo": "New-JAMneration/new-jamneration-release",
-    "file": "new-jamneration-target-linux-amd64-0.7.2.tar.gz",
-    "cmd": "new-jamneration-target {SOCK_PATH}",
-    "env": "USE_MINI_REDIS=true",
+    "image": "ghcr.io/new-jamneration/new-jamneration-target:latest",
     "gp_version": "0.7.2"
   },
   "pbnjam": {
