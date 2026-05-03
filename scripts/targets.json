@@ -32,7 +32,6 @@
   },
   "graymatter": {
     "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",
-    "cmd": "fuzz-m1-target --stay-open --listen {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "jam4s": {
