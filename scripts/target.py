@@ -504,7 +504,7 @@ def is_rootless_docker() -> bool:
         return False
 
 
-def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
+def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
     target_obj = TARGETS[target]
     if image is None:
         image = target_obj.image
@@ -513,7 +513,7 @@ def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: O
     env = target_obj.env
 
     # Use custom container name if provided, otherwise generate unique name with random suffix
-    if args and hasattr(args, 'container_name') and args.container_name:
+    if args.container_name:
         container_name = args.container_name
     else:
         # Generate unique container name with random suffix to allow parallel instances
@@ -566,10 +566,6 @@ def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: O
     print(f"Ensuring no leftover container with name {container_name}...")
     subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
 
-    rootless = is_rootless_docker()
-    if rootless:
-        print("Detected rootless Docker, skipping --user flag")
-
     docker_cmd = [
         "docker",
         "run",
@@ -616,15 +612,17 @@ def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: O
     # In rootful Docker, run as the host user so files are owned correctly.
     # In rootless Docker, container root already maps to the host user,
     # so --user would cause double UID remapping and permission errors.
-    if not rootless:
+    rootless = is_rootless_docker()
+    if rootless:
+        print("Detected rootless Docker, skipping --user flag")
+    else:
         docker_cmd.extend(["--user", f"{os.getuid()}:{os.getgid()}"])
 
     # Standard JAM fuzz packaging environment variables (see fuzz-proto/README.md).
     # Set first so target.json `env` and --target-env can still override them.
-    spec = args.spec if (args and hasattr(args, 'spec') and args.spec) else os.environ.get('JAM_FUZZ_SPEC', 'tiny')
     docker_cmd.extend([
         "-e", "JAM_FUZZ=1",
-        "-e", f"JAM_FUZZ_SPEC={spec}",
+        "-e", f"JAM_FUZZ_SPEC={os.environ['JAM_FUZZ_SPEC']}",
         "-e", f"JAM_FUZZ_DATA_PATH={CONTAINER_DATA_PATH}",
         "-e", f"JAM_FUZZ_SOCK_PATH={CONTAINER_SOCK_PATH}",
         "-e", f"JAM_FUZZ_LOG_LEVEL={os.environ.get('JAM_FUZZ_LOG_LEVEL', 'info')}",
@@ -634,7 +632,7 @@ def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: O
         for var in env.split():
             docker_cmd.extend(["-e", var])
 
-    if args and args.target_env:
+    if args.target_env:
         for var in args.target_env.split():
             docker_cmd.extend(["-e", var])
 
@@ -652,7 +650,7 @@ def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: O
 
     # Add priority args for Linux if requested
     current_os = get_os()
-    if current_os == "linux" and args and getattr(args, "docker_elevate_priority", False):
+    if current_os == "linux" and args.docker_elevate_priority:
         priority_cmd = [
             "sudo",
             "chrt",
@@ -870,7 +868,7 @@ def handle_clean_action(target: str) -> bool:
         return True
 
 
-def handle_run_action(target: str, os_name: str, args=None) -> bool:
+def handle_run_action(target: str, os_name: str, args) -> bool:
     """Handle the run action for a target."""
     if is_docker_target(target):
         run_docker_image(target, args)
@@ -885,7 +883,7 @@ def handle_run_action(target: str, os_name: str, args=None) -> bool:
         return False
 
 
-def run_target(target: str, os_name: str, args=None) -> None:
+def run_target(target: str, os_name: str, args) -> None:
     target_obj = TARGETS[target]
     command = target_obj.get_cmd(os_name)
 
@@ -977,10 +975,6 @@ def run_target(target: str, os_name: str, args=None) -> None:
                     key, value = var.split("=", 1)
                     os.environ[key] = value
 
-        # Set JAM_FUZZ_SPEC from CLI arg (overrides env var)
-        if args and hasattr(args, 'spec') and args.spec:
-            os.environ['JAM_FUZZ_SPEC'] = args.spec
-
         if args.target_env:
             for var in args.target_env.split():
                 if "=" in var:
@@ -1012,10 +1006,13 @@ def main():
 
     # Handle Docker override from command line (only for run action)
     if action == "run":
-        if hasattr(args, "docker") and args.docker:
+        if args.docker:
             RUN_DOCKER = 1
-        elif hasattr(args, "no_docker") and args.no_docker:
+        elif args.no_docker:
             RUN_DOCKER = 0
+        # Resolve JAM_FUZZ_SPEC once: CLI > env var > default. Downstream paths
+        # (docker forwarding, host subprocess) just read os.environ.
+        os.environ['JAM_FUZZ_SPEC'] = args.spec or os.environ.get('JAM_FUZZ_SPEC', 'tiny')
 
     # Determine OS
     if args.os:
