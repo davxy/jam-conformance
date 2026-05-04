@@ -95,14 +95,11 @@ CONFIG: Optional[Config] = None
 class Target:
     name: str
     repo: Optional[str] = None
-    # AI: Perhaps this should be a bool?
-    clone: Optional[int] = None
     image: Optional[str] = None
     file: Optional[Union[str, Dict[str, str]]] = None
     cmd: Optional[Union[str, Dict[str, str]]] = None
     args: Optional[str] = None
     env: Optional[str] = None
-    post: Optional[str] = None
     gp_version: Optional[str] = None
 
     def get_file(self, os_name: str) -> Optional[str]:
@@ -300,10 +297,6 @@ def post_actions(target: Target) -> bool:
     print(f"Performing post actions for {file}")
     target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
 
-    if target.post:
-        subprocess.run(target.post, shell=True, check=True, cwd=target_dir)
-        return True
-
     # Extract nested archives by peeling off extensions
     current_file = target_dir / file
     while current_file.exists():
@@ -356,41 +349,6 @@ def post_actions(target: Target) -> bool:
     return True
 
 
-def clone_github_repo(target: Target) -> bool:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        subprocess.run(
-            ["git", "clone", f"https://github.com/{target.repo}", "--depth", "1", temp_dir],
-            check=True,
-        )
-
-        result = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            cwd=temp_dir,
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        commit_hash = result.stdout.strip()
-        print(f"Cloning last revision: {commit_hash}")
-
-        target_dir = Path(f"{CONFIG.targets_dir}/{target.name}")
-        print(f"Cloned to {target_dir}")
-
-        target_dir.mkdir(parents=True, exist_ok=True)
-        target_dir_rev = target_dir / commit_hash
-
-        shutil.move(temp_dir, target_dir_rev)
-
-        latest_link = target_dir / "latest"
-        if latest_link.exists() or latest_link.is_symlink():
-            latest_link.unlink()
-        latest_link.symlink_to(target_dir_rev.resolve())
-
-        post_actions(target)
-
-    return True
-
-
 def get_docker_image(target: Target) -> bool:
     docker_image = target.image
 
@@ -427,12 +385,6 @@ def get_github_release(target: Target) -> bool:
     if not repo:
         print(f"Error: missing repository information for {target.name}")
         return False
-
-    if target.clone == 1:
-        print(
-            f"Info: No release file specified for {target.name} on {CONFIG.os_name}, cloning repository instead"
-        )
-        return clone_github_repo(target)
 
     # Get the latest release tag from GitHub API
     print("Fetching latest release information...")
@@ -513,13 +465,7 @@ def is_rootless_docker() -> bool:
         return False
 
 
-def run_docker_image(target: Target, args, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
-    if image is None:
-        image = target.image
-    if cmd is None:
-        cmd = target.cmd
-    env = target.env
-
+def run_docker_image(target: Target, args) -> None:
     # Use custom container name if provided, otherwise generate unique name with random suffix
     if args.container_name:
         container_name = args.container_name
@@ -529,13 +475,13 @@ def run_docker_image(target: Target, args, image: Optional[str] = None, cmd: Opt
         container_name = f"{target.name}-{random_suffix}"
 
     print(f"Running '{target.name}' on docker image")
-    print(f"Command: '{cmd}'")
+    print(f"Command: '{target.cmd}'")
     print(f"Container: '{container_name}'")
 
     try:
-        print_docker_image_info(image)
+        print_docker_image_info(target.image)
     except (subprocess.CalledProcessError, IndexError, ValueError):
-        print(f"Error: Docker image '{image}' not found locally.")
+        print(f"Error: Docker image '{target.image}' not found locally.")
         print(f"Please run: {sys.argv[0]} get {target.name}")
         sys.exit(1)
 
@@ -629,24 +575,26 @@ def run_docker_image(target: Target, args, image: Optional[str] = None, cmd: Opt
         "-e", f"JAM_FUZZ_LOG_LEVEL={CONFIG.log_level}",
     ])
 
-    if env:
-        for var in env.split():
+    if target.env:
+        for var in target.env.split():
             docker_cmd.extend(["-e", var])
 
     if args.target_env:
         for var in args.target_env.split():
             docker_cmd.extend(["-e", var])
 
-    if image == CONFIG.DEFAULT_DOCKER_IMAGE:
+    if target.is_repo_target():
+        # The target's image/cmd were overwritten upstream to wrap a host
+        # binary; mount its downloaded directory at /jam so it's executable.
         docker_cmd.extend(["-w", "/jam"])
         docker_cmd.extend(["-e", "HOME=/jam"])
         docker_cmd.extend(["-v", f"{CONFIG.targets_dir}/{target.name}/latest:/jam"])
 
-    docker_cmd.append(image)
+    docker_cmd.append(target.image)
 
     # Handle cmd as string
-    if cmd:
-        docker_cmd.extend(shlex.split(cmd))
+    if target.cmd:
+        docker_cmd.extend(shlex.split(target.cmd))
 
     # Add priority args for Linux if requested
     current_os = get_os()
@@ -714,9 +662,6 @@ def print_target_info(target: Target) -> None:
             print("Status: Not downloaded (Docker image not found locally)")
     else:
         print("Status: Not downloaded")
-
-    if target.clone:
-        print(f"Clone Mode: {'Yes' if target.clone == 1 else 'No'}")
 
     if target.file:
         if isinstance(target.cmd, dict):
@@ -852,8 +797,12 @@ def run_target(target: Target, args) -> None:
                 ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
                 check=True,
             )
-        # Run the host binary inside a dedicated default Docker image.
-        run_docker_image(target, args, image=CONFIG.DEFAULT_DOCKER_IMAGE, cmd=full_command)
+        # Wrap the host binary in a dedicated default Docker image.
+        # `target.repo` is left intact, which run_docker_image uses as the
+        # signal to mount the downloaded host-binary directory into /jam.
+        target.image = CONFIG.DEFAULT_DOCKER_IMAGE
+        target.cmd = full_command
+        run_docker_image(target, args)
     else:
         cleanup_done = False
         target_pid = None
