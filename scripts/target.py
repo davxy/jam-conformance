@@ -400,10 +400,6 @@ def clone_github_repo(target: str, os_name: str, repo: str) -> bool:
 
 
 def get_docker_image(target: str) -> bool:
-    if target not in TARGETS:
-        print(f"Error: Target {target} not found")
-        return False
-
     target_obj = TARGETS[target]
     docker_image = target_obj.image
 
@@ -434,10 +430,6 @@ def get_docker_image(target: str) -> bool:
 
 
 def get_github_release(target: str, os_name: str) -> bool:
-    if target not in TARGETS:
-        print(f"Error: Target {target} not found")
-        return False
-
     target_obj = TARGETS[target]
     repo = target_obj.repo
     file = get_target_file(target, os_name)
@@ -532,10 +524,6 @@ def is_rootless_docker() -> bool:
 
 
 def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
-    if target not in TARGETS:
-        print(f"Error: Target {target} not found")
-        return
-
     target_obj = TARGETS[target]
     if image is None:
         image = target_obj.image
@@ -916,10 +904,6 @@ def handle_run_action(target: str, os_name: str, args=None) -> bool:
 
 
 def run_target(target: str, os_name: str, args=None) -> None:
-    if target not in TARGETS:
-        print(f"Error: Target {target} not found")
-        return
-
     target_obj = TARGETS[target]
     command = target_obj.get_cmd(os_name)
 
