@@ -937,7 +937,7 @@ def run_target(target: str, os_name: str, args=None) -> None:
     if not target_dir.exists():
         print(f"Error: Target dir not found: {target_dir}")
         # Try to find the newest directory as fallback
-        base_dir = Path(f"targets/{target}")
+        base_dir = Path(f"{TARGETS_DIR}/{target}")
         if base_dir.exists():
             try:
                 newest_dir = max(base_dir.iterdir(), key=lambda p: p.stat().st_mtime)
