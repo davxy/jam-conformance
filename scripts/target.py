@@ -11,6 +11,7 @@ import signal
 import time
 import argparse
 import random
+import shlex
 import string
 from pathlib import Path
 from typing import ClassVar, Dict, List, Optional, Union
@@ -141,7 +142,7 @@ def load_targets() -> Dict[str, Target]:
 
 # Target configuration is loaded in main() after CLI args are parsed,
 # so that --targets-file can override JAM_FUZZ_TARGETS_FILE.
-TARGETS: Dict[str, "Target"] = {}
+TARGETS: Dict[str, Target] = {}
 
 
 def get_target(target: str) -> Optional[Target]:
@@ -281,26 +282,15 @@ def get_os() -> Optional[str]:
         return None
 
 
-def is_docker_target(target: str) -> bool:
-    return target in TARGETS and TARGETS[target].is_docker_target()
-
-
-def is_repo_target(target: str) -> bool:
-    return target in TARGETS and TARGETS[target].is_repo_target()
-
-
 def get_available_targets() -> List[str]:
     return sorted(list(TARGETS.keys()))
 
 
-def target_supports_os(name: str, os_name: str) -> bool:
-    target = get_target(name)
-    if target is None:
-        return False
-    if not target.supports_os(os_name):
-        print(f"Error: No {os_name} version available for {name}", file=sys.stderr)
-        return False
-    return True
+def _clean_host_data() -> None:
+    try:
+        shutil.rmtree(CONFIG.host_data_path)
+    except FileNotFoundError:
+        pass
 
 
 def post_actions(target_name: str, os_name: str) -> bool:
@@ -313,61 +303,60 @@ def post_actions(target_name: str, os_name: str) -> bool:
 
     print(f"Performing post actions for {file}")
     target_dir = Path(f"{CONFIG.targets_dir}/{target_name}/latest")
-    os.chdir(target_dir)
 
     if target.post:
-        subprocess.run(target.post, shell=True, check=True)
-    else:
-        # Extract nested archives by peeling off extensions
-        current_file = Path(file)
-        while current_file.exists():
-            if current_file.suffix == ".zip":
-                print(f"Extracting zip archive: {current_file}")
-                subprocess.run(["unzip", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("")
-            elif current_file.suffixes[-2:] == [".tar", ".gz"]:
-                print(f"Extracting tar.gz archive: {current_file}")
-                subprocess.run(["tar", "-xzf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("").with_suffix("")
-            elif current_file.suffix == ".tgz":
-                print(f"Extracting tgz archive: {current_file}")
-                subprocess.run(["tar", "-xzf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("")
-            elif current_file.suffixes[-2:] == [".tar", ".bz2"]:
-                print(f"Extracting tar.bz2 archive: {current_file}")
-                subprocess.run(["tar", "-xjf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("").with_suffix("")
-            elif current_file.suffix == ".tbz2":
-                print(f"Extracting tbz2 archive: {current_file}")
-                subprocess.run(["tar", "-xjf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("")
-            elif current_file.suffixes[-2:] == [".tar", ".xz"]:
-                print(f"Extracting tar.xz archive: {current_file}")
-                subprocess.run(["tar", "-xJf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("").with_suffix("")
-            elif current_file.suffix == ".txz":
-                print(f"Extracting txz archive: {current_file}")
-                subprocess.run(["tar", "-xJf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("")
-            elif current_file.suffix == ".tar":
-                print(f"Extracting tar archive: {current_file}")
-                subprocess.run(["tar", "-xf", str(current_file)], check=True)
-                current_file.unlink()
-                current_file = current_file.with_suffix("")
-            else:
-                # Not an archive, make it executable and stop
-                print(f"Making file executable: {current_file}")
-                current_file.chmod(0o755)
-                break
+        subprocess.run(target.post, shell=True, check=True, cwd=target_dir)
+        return True
 
-    os.chdir(CONFIG.CURRENT_DIR)
+    # Extract nested archives by peeling off extensions
+    current_file = target_dir / file
+    while current_file.exists():
+        if current_file.suffix == ".zip":
+            print(f"Extracting zip archive: {current_file}")
+            subprocess.run(["unzip", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("")
+        elif current_file.suffixes[-2:] == [".tar", ".gz"]:
+            print(f"Extracting tar.gz archive: {current_file}")
+            subprocess.run(["tar", "-xzf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("").with_suffix("")
+        elif current_file.suffix == ".tgz":
+            print(f"Extracting tgz archive: {current_file}")
+            subprocess.run(["tar", "-xzf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("")
+        elif current_file.suffixes[-2:] == [".tar", ".bz2"]:
+            print(f"Extracting tar.bz2 archive: {current_file}")
+            subprocess.run(["tar", "-xjf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("").with_suffix("")
+        elif current_file.suffix == ".tbz2":
+            print(f"Extracting tbz2 archive: {current_file}")
+            subprocess.run(["tar", "-xjf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("")
+        elif current_file.suffixes[-2:] == [".tar", ".xz"]:
+            print(f"Extracting tar.xz archive: {current_file}")
+            subprocess.run(["tar", "-xJf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("").with_suffix("")
+        elif current_file.suffix == ".txz":
+            print(f"Extracting txz archive: {current_file}")
+            subprocess.run(["tar", "-xJf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("")
+        elif current_file.suffix == ".tar":
+            print(f"Extracting tar archive: {current_file}")
+            subprocess.run(["tar", "-xf", str(current_file)], check=True, cwd=target_dir)
+            current_file.unlink()
+            current_file = current_file.with_suffix("")
+        else:
+            # Not an archive, make it executable and stop
+            print(f"Making file executable: {current_file}")
+            current_file.chmod(0o755)
+            break
+
     return True
 
 
@@ -559,10 +548,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
 
     # Clean start: remove any leftover data directory from previous runs
     # This ensures the socket and other runtime files are fresh
-    try:
-        shutil.rmtree(CONFIG.host_data_path)
-    except FileNotFoundError:
-        pass
+    _clean_host_data()
 
     # Create host data directory
     os.makedirs(CONFIG.host_data_path, exist_ok=True)
@@ -575,11 +561,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
         print(f"Cleaning up Docker container {container_name}...")
         subprocess.run(["docker", "kill", container_name], capture_output=True)
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
-        # Remove ephemeral data directory and socket files created during this run
-        try:
-            shutil.rmtree(CONFIG.host_data_path)
-        except FileNotFoundError:
-            pass
+        _clean_host_data()
 
     def signal_handler(signum, frame):
         cleanup_docker()
@@ -671,7 +653,6 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
 
     # Handle cmd as string
     if cmd:
-        import shlex
         docker_cmd.extend(shlex.split(cmd))
 
     # Add priority args for Linux if requested
@@ -807,18 +788,22 @@ def handle_get_action(target: str, os_name: str) -> bool:
                 f"Successfully downloaded: {successful} out of {total_targets} targets"
             )
             return False
-    elif is_repo_target(target):
-        if target_supports_os(target, os_name):
-            return get_github_release(target, os_name)
-        else:
-            return False
-    elif is_docker_target(target):
-        return get_docker_image(target)
-    else:
-        available_targets = get_available_targets()
+    target_obj = get_target(target)
+    if target_obj is None:
         print(f"Unknown target '{target}'")
-        print(f"Available targets: {' '.join(available_targets)} all")
+        print(f"Available targets: {' '.join(get_available_targets())} all")
         return False
+
+    if target_obj.is_repo_target():
+        if not target_obj.supports_os(os_name):
+            print(f"Error: No {os_name} version available for {target}")
+            return False
+        return get_github_release(target, os_name)
+    if target_obj.is_docker_target():
+        return get_docker_image(target)
+
+    print(f"Error: Target {target} has neither repo nor image configured")
+    return False
 
 
 def handle_list_action(gp_version: Optional[str] = None) -> bool:
@@ -896,17 +881,21 @@ def handle_clean_action(target: str) -> bool:
 
 def handle_run_action(target: str, os_name: str, args) -> bool:
     """Handle the run action for a target."""
-    if is_docker_target(target):
+    target_obj = get_target(target)
+    if target_obj is None:
+        print(f"Unknown target '{target}'")
+        print(f"Available targets: {' '.join(get_available_targets())}")
+        return False
+
+    if target_obj.is_docker_target():
         run_docker_image(target, args)
         return True
-    elif is_repo_target(target):
+    if target_obj.is_repo_target():
         run_target(target, os_name, args)
         return True
-    else:
-        available_targets = get_available_targets()
-        print(f"Unknown target '{target}'")
-        print(f"Available targets: {' '.join(available_targets)}")
-        return False
+
+    print(f"Error: Target {target} has neither repo nor image configured")
+    return False
 
 
 def run_target(target: str, os_name: str, args) -> None:
@@ -920,22 +909,8 @@ def run_target(target: str, os_name: str, args) -> None:
     target_dir = Path(f"{CONFIG.targets_dir}/{target}/latest")
     if not target_dir.exists():
         print(f"Error: Target dir not found: {target_dir}")
-        # Try to find the newest directory as fallback
-        base_dir = Path(f"{CONFIG.targets_dir}/{target}")
-        if base_dir.exists():
-            try:
-                newest_dir = max(base_dir.iterdir(), key=lambda p: p.stat().st_mtime)
-                if newest_dir.is_dir():
-                    print(f"Using newest available directory: {newest_dir}")
-                    target_dir = newest_dir
-                else:
-                    raise ValueError("No directories found")
-            except (ValueError, OSError):
-                print(f"Get the target first with: get {target}")
-                sys.exit(1)
-        else:
-            print(f"Get the target first with: get {target}")
-            sys.exit(1)
+        print(f"Get the target first with: get {target}")
+        sys.exit(1)
 
     full_command = f"./{command}"
     if target_obj.args is not None:
@@ -964,7 +939,6 @@ def run_target(target: str, os_name: str, args) -> None:
         target_pid = None
 
         def cleanup():
-            os.chdir(CONFIG.CURRENT_DIR)
             nonlocal cleanup_done, target_pid
             if cleanup_done:
                 return
@@ -979,11 +953,7 @@ def run_target(target: str, os_name: str, args) -> None:
                     os.kill(target_pid, signal.SIGKILL)
                 except ProcessLookupError:
                     pass
-            try:
-                # Remove ephemeral data directory and socket files created during this run
-                shutil.rmtree(CONFIG.host_data_path)
-            except FileNotFoundError:
-                pass
+            _clean_host_data()
 
         def signal_handler(signum, frame):
             cleanup()
@@ -1004,8 +974,7 @@ def run_target(target: str, os_name: str, args) -> None:
                     child_env[key] = value
 
         try:
-            os.chdir(target_dir)
-            process = subprocess.Popen(full_command, shell=True, env=child_env)
+            process = subprocess.Popen(full_command, shell=True, env=child_env, cwd=target_dir)
             target_pid = process.pid
             print(f"Waiting for target termination (pid={target_pid})")
             process.wait()
