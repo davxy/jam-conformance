@@ -140,15 +140,6 @@ def load_targets() -> Dict[str, Target]:
     return {name: Target(name=name, **cfg) for name, cfg in targets_data.items()}
 
 
-# Target configuration is loaded in main() after CLI args are parsed,
-# so that --targets-file can override JAM_FUZZ_TARGETS_FILE.
-TARGETS: Dict[str, Target] = {}
-
-
-def get_target(target: str) -> Optional[Target]:
-    return TARGETS.get(target)
-
-
 def create_parser() -> argparse.ArgumentParser:
     """Create and configure the argument parser."""
     parser = argparse.ArgumentParser(
@@ -156,12 +147,12 @@ def create_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  %(prog)s get all                    # Download all targets
+  %(prog)s list                       # List all available targets
   %(prog)s get jamzig                 # Download jamzig target
   %(prog)s run boka                   # Run boka target
   %(prog)s --os macos get jamzig      # Download jamzig for macOS
   %(prog)s run --no-docker spacejam   # Run spacejam directly on host
-  %(prog)s info all                   # Show info for all targets
+  %(prog)s info boka                  # Show info for boka target
 
 Environment variables (all overridable via CLI flags listed above):
   JAM_FUZZ_TARGETS_FILE    Path to targets JSON file (default: <script>/targets.json)
@@ -172,8 +163,6 @@ Environment variables (all overridable via CLI flags listed above):
   JAM_FUZZ_SPEC            Specification: tiny or full (default: tiny)
   JAM_FUZZ_LOG_LEVEL       Log level forwarded to the target (default: info)
   GITHUB_TOKEN             Optional bearer token for GitHub release lookups
-
-Use 'info all' to see available targets.
         """,
     )
 
@@ -200,11 +189,11 @@ Use 'info all' to see available targets.
     )
 
     # Get subcommand
-    get_parser = subparsers.add_parser("get", help="Download target(s)")
+    get_parser = subparsers.add_parser("get", help="Download target")
     get_parser.add_argument(
         "target",
         metavar="TARGET",
-        help='Target to download (or "all" for all targets)',
+        help="Target to download",
     )
 
     # Run subcommand
@@ -248,7 +237,7 @@ Use 'info all' to see available targets.
     info_parser.add_argument(
         "target",
         metavar="TARGET",
-        help='Target to show info for (or "all" for all targets)',
+        help="Target to show info for",
     )
 
     # Clean subcommand
@@ -282,10 +271,6 @@ def get_os() -> Optional[str]:
         return None
 
 
-def get_available_targets() -> List[str]:
-    return sorted(list(TARGETS.keys()))
-
-
 def _clean_host_data() -> None:
     try:
         shutil.rmtree(CONFIG.host_data_path)
@@ -293,16 +278,13 @@ def _clean_host_data() -> None:
         pass
 
 
-def post_actions(target_name: str, os_name: str) -> bool:
-    target = get_target(target_name)
-    if not target:
-        return False
+def post_actions(target: Target, os_name: str) -> bool:
     file = target.get_file(os_name)
     if not file:
         return False
 
     print(f"Performing post actions for {file}")
-    target_dir = Path(f"{CONFIG.targets_dir}/{target_name}/latest")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
 
     if target.post:
         subprocess.run(target.post, shell=True, check=True, cwd=target_dir)
@@ -360,10 +342,10 @@ def post_actions(target_name: str, os_name: str) -> bool:
     return True
 
 
-def clone_github_repo(target: str, os_name: str, repo: str) -> bool:
+def clone_github_repo(target: Target, os_name: str) -> bool:
     with tempfile.TemporaryDirectory() as temp_dir:
         subprocess.run(
-            ["git", "clone", f"https://github.com/{repo}", "--depth", "1", temp_dir],
+            ["git", "clone", f"https://github.com/{target.repo}", "--depth", "1", temp_dir],
             check=True,
         )
 
@@ -377,7 +359,7 @@ def clone_github_repo(target: str, os_name: str, repo: str) -> bool:
         commit_hash = result.stdout.strip()
         print(f"Cloning last revision: {commit_hash}")
 
-        target_dir = Path(f"{CONFIG.targets_dir}/{target}")
+        target_dir = Path(f"{CONFIG.targets_dir}/{target.name}")
         print(f"Cloned to {target_dir}")
 
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -395,12 +377,11 @@ def clone_github_repo(target: str, os_name: str, repo: str) -> bool:
     return True
 
 
-def get_docker_image(target: str) -> bool:
-    target_obj = TARGETS[target]
-    docker_image = target_obj.image
+def get_docker_image(target: Target) -> bool:
+    docker_image = target.image
 
     if not docker_image:
-        print(f"Error: No Docker image specified for {target}")
+        print(f"Error: No Docker image specified for {target.name}")
         return False
 
     print(f"Pulling Docker image: {docker_image}")
@@ -425,20 +406,19 @@ def get_docker_image(target: str) -> bool:
         return False
 
 
-def get_github_release(target: str, os_name: str) -> bool:
-    target_obj = TARGETS[target]
-    repo = target_obj.repo
-    file = target_obj.get_file(os_name)
+def get_github_release(target: Target, os_name: str) -> bool:
+    repo = target.repo
+    file = target.get_file(os_name)
 
     if not repo:
-        print(f"Error: missing repository information for {target}")
+        print(f"Error: missing repository information for {target.name}")
         return False
 
-    if target_obj.clone == 1:
+    if target.clone == 1:
         print(
-            f"Info: No release file specified for {target} on {os_name}, cloning repository instead"
+            f"Info: No release file specified for {target.name} on {os_name}, cloning repository instead"
         )
-        return clone_github_repo(target, os_name, repo)
+        return clone_github_repo(target, os_name)
 
     # Get the latest release tag from GitHub API
     print("Fetching latest release information...")
@@ -472,7 +452,7 @@ def get_github_release(target: str, os_name: str) -> bool:
         return False
 
     print(f"Downloaded target to: {tmp_path}")
-    target_dir = Path(f"{CONFIG.targets_dir}/{target}")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}")
     target_dir_rev = target_dir / latest_tag
 
     target_dir_rev.mkdir(parents=True, exist_ok=True)
@@ -519,13 +499,12 @@ def is_rootless_docker() -> bool:
         return False
 
 
-def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
-    target_obj = TARGETS[target]
+def run_docker_image(target: Target, args, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
     if image is None:
-        image = target_obj.image
+        image = target.image
     if cmd is None:
-        cmd = target_obj.cmd
-    env = target_obj.env
+        cmd = target.cmd
+    env = target.env
 
     # Use custom container name if provided, otherwise generate unique name with random suffix
     if args.container_name:
@@ -533,9 +512,9 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
     else:
         # Generate unique container name with random suffix to allow parallel instances
         random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
-        container_name = f"{target}-{random_suffix}"
+        container_name = f"{target.name}-{random_suffix}"
 
-    print(f"Running '{target}' on docker image")
+    print(f"Running '{target.name}' on docker image")
     print(f"Command: '{cmd}'")
     print(f"Container: '{container_name}'")
 
@@ -543,7 +522,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
         print_docker_image_info(image)
     except (subprocess.CalledProcessError, IndexError, ValueError):
         print(f"Error: Docker image '{image}' not found locally.")
-        print(f"Please run: {sys.argv[0]} get {target}")
+        print(f"Please run: {sys.argv[0]} get {target.name}")
         sys.exit(1)
 
     # Clean start: remove any leftover data directory from previous runs
@@ -647,7 +626,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
     if image == CONFIG.DEFAULT_DOCKER_IMAGE:
         docker_cmd.extend(["-w", "/jam"])
         docker_cmd.extend(["-e", "HOME=/jam"])
-        docker_cmd.extend(["-v", f"{CONFIG.targets_dir}/{target}/latest:/jam"])
+        docker_cmd.extend(["-v", f"{CONFIG.targets_dir}/{target.name}/latest:/jam"])
 
     docker_cmd.append(image)
 
@@ -686,7 +665,6 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
 
 def print_target_info(target: Target, os_name: str) -> None:
     """Print detailed information about a target."""
-    print(f"\n=== {target.name.upper()} ===")
     print(f"Name: {target.name}")
 
     # Show gp_version
@@ -749,115 +727,74 @@ def print_target_info(target: Target, os_name: str) -> None:
         print(f"Environment: {target.env}")
 
 
-def handle_info_action(target: str, os_name: str) -> bool:
-    """Handle the info action for a target or all targets."""
-    if target == "all":
-        for target_name in get_available_targets():
-            handle_info_action(target_name, os_name)
-    else:
-        target_obj = get_target(target)
-        if target_obj is None:
-            print(f"Error: Target {target} not found")
-            return False
-        print_target_info(target_obj, os_name)
+def handle_info_action(target_name: str, os_name: str, all_targets: Dict[str, Target]) -> bool:
+    """Handle the info action for a target."""
+    target = all_targets.get(target_name)
+    if target is None:
+        print(f"Error: Target {target_name} not found")
+        return False
+    print_target_info(target, os_name)
     return True
 
 
-def handle_get_action(target: str, os_name: str) -> bool:
-    """Handle the get action for a target or all targets."""
-    print(f"Downloading {target} for {os_name}...")
+def handle_get_action(target_name: str, os_name: str, all_targets: Dict[str, Target]) -> bool:
+    """Handle the get action for a target."""
+    print(f"Downloading {target_name} for {os_name}...")
 
-    if target == "all":
-        available_targets = get_available_targets()
-        failed_targets = []
-        for target in available_targets:
-            print("----------------------------------")
-            success = handle_get_action(target, os_name)
-            if not success:
-                failed_targets.append(target)
-        if not failed_targets:
-            print("All targets downloaded successfully!")
-            return True
-        else:
-            print(
-                f"Failed to download the following targets: {' '.join(failed_targets)}"
-            )
-            total_targets = len(available_targets)
-            successful = total_targets - len(failed_targets)
-            print(
-                f"Successfully downloaded: {successful} out of {total_targets} targets"
-            )
-            return False
-    target_obj = get_target(target)
-    if target_obj is None:
-        print(f"Unknown target '{target}'")
-        print(f"Available targets: {' '.join(get_available_targets())} all")
+    target = all_targets.get(target_name)
+    if target is None:
+        print(f"Unknown target '{target_name}'")
+        print(f"Available targets: {' '.join(sorted(all_targets))}")
         return False
 
-    if target_obj.is_repo_target():
-        if not target_obj.supports_os(os_name):
-            print(f"Error: No {os_name} version available for {target}")
+    if target.is_repo_target():
+        if not target.supports_os(os_name):
+            print(f"Error: No {os_name} version available for {target_name}")
             return False
         return get_github_release(target, os_name)
-    if target_obj.is_docker_target():
+    if target.is_docker_target():
         return get_docker_image(target)
 
-    print(f"Error: Target {target} has neither repo nor image configured")
+    print(f"Error: Target {target_name} has neither repo nor image configured")
     return False
 
 
-def handle_list_action(gp_version: Optional[str] = None) -> bool:
+def handle_list_action(all_targets: Dict[str, Target], gp_version: Optional[str]) -> bool:
     """Handle the list action to show all available targets."""
-    available_targets = get_available_targets()
+    names = sorted(all_targets)
 
     if gp_version == "all":
         gp_version = None
 
-    # Filter by gp_version if provided
     if gp_version:
-        filtered_targets = []
-        for target_name in available_targets:
-            target = get_target(target_name)
-            if target and target.gp_version == gp_version:
-                filtered_targets.append(target_name)
-        available_targets = filtered_targets
-
-        if not available_targets:
+        filtered = [n for n in names if all_targets[n].gp_version == gp_version]
+        if not filtered:
             print(f"No targets found for gp-version: {gp_version}")
             return True
+        for name in filtered:
+            print(name)
+        return True
 
-        for target in available_targets:
-            print(target)
-    else:
-        # Group targets by gp_version
-        gp_version_groups = {}
-        for target_name in available_targets:
-            target = get_target(target_name)
-            if target:
-                target_gp_version = target.gp_version if target.gp_version else "unknown"
-                if target_gp_version not in gp_version_groups:
-                    gp_version_groups[target_gp_version] = []
-                gp_version_groups[target_gp_version].append(target_name)
+    # Group by gp_version, most recent first
+    groups: Dict[str, List[str]] = {}
+    for name in names:
+        v = all_targets[name].gp_version or "unknown"
+        groups.setdefault(v, []).append(name)
 
-        # Sort gp versions in descending order (most recent first)
-        sorted_gp_versions = sorted(gp_version_groups.keys(), reverse=True)
-
-        # Print targets grouped by gp_version
-        for i, gp_ver in enumerate(sorted_gp_versions):
-            if i > 0:
-                print()  # Add blank line between groups
-            print(gp_ver)
-            print("=" * len(gp_ver))
-            for target in sorted(gp_version_groups[gp_ver]):
-                print(target)
-
+    for i, gp_ver in enumerate(sorted(groups, reverse=True)):
+        if i > 0:
+            print()
+        print(gp_ver)
+        print("=" * len(gp_ver))
+        for name in sorted(groups[gp_ver]):
+            print(name)
     return True
 
 
-def handle_clean_action(target: str) -> bool:
+def handle_clean_action(target_name: str) -> bool:
     """Handle the clean action for a target or all targets."""
-    if target == "all":
-        targets_dir = Path(f"{CONFIG.targets_dir}")
+    if target_name == "all":
+        targets_dir = Path(CONFIG.targets_dir)
         if targets_dir.exists():
             print("Cleaning all target files...")
             for item in targets_dir.iterdir():
@@ -868,53 +805,52 @@ def handle_clean_action(target: str) -> bool:
         else:
             print("No target files to clean.")
         return True
+
+    target_dir = Path(f"{CONFIG.targets_dir}/{target_name}")
+    if target_dir.exists():
+        print(f"Cleaning target {target_name}...")
+        shutil.rmtree(target_dir)
+        print(f"Target {target_name} cleaned successfully!")
     else:
-        target_dir = Path(f"{CONFIG.targets_dir}/{target}")
-        if target_dir.exists():
-            print(f"Cleaning target {target}...")
-            shutil.rmtree(target_dir)
-            print(f"Target {target} cleaned successfully!")
-        else:
-            print(f"Target {target} not found or already clean.")
-        return True
+        print(f"Target {target_name} not found or already clean.")
+    return True
 
 
-def handle_run_action(target: str, os_name: str, args) -> bool:
+def handle_run_action(target_name: str, os_name: str, args, all_targets: Dict[str, Target]) -> bool:
     """Handle the run action for a target."""
-    target_obj = get_target(target)
-    if target_obj is None:
-        print(f"Unknown target '{target}'")
-        print(f"Available targets: {' '.join(get_available_targets())}")
+    target = all_targets.get(target_name)
+    if target is None:
+        print(f"Unknown target '{target_name}'")
+        print(f"Available targets: {' '.join(sorted(all_targets))}")
         return False
 
-    if target_obj.is_docker_target():
+    if target.is_docker_target():
         run_docker_image(target, args)
         return True
-    if target_obj.is_repo_target():
+    if target.is_repo_target():
         run_target(target, os_name, args)
         return True
 
-    print(f"Error: Target {target} has neither repo nor image configured")
+    print(f"Error: Target {target_name} has neither repo nor image configured")
     return False
 
 
-def run_target(target: str, os_name: str, args) -> None:
-    target_obj = TARGETS[target]
-    command = target_obj.get_cmd(os_name)
+def run_target(target: Target, os_name: str, args) -> None:
+    command = target.get_cmd(os_name)
 
     if not command:
-        print(f"Error: No run command specified for {target} on {os_name}")
+        print(f"Error: No run command specified for {target.name} on {os_name}")
         return
 
-    target_dir = Path(f"{CONFIG.targets_dir}/{target}/latest")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
     if not target_dir.exists():
         print(f"Error: Target dir not found: {target_dir}")
-        print(f"Get the target first with: get {target}")
+        print(f"Get the target first with: get {target.name}")
         sys.exit(1)
 
     full_command = f"./{command}"
-    if target_obj.args is not None:
-        full_command += f" {target_obj.args}"
+    if target.args is not None:
+        full_command += f" {target.args}"
     if args.target_args:
         full_command += f" {args.target_args}"
 
@@ -931,8 +867,7 @@ def run_target(target: str, os_name: str, args) -> None:
                 ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
                 check=True,
             )
-        # Run the host binary inside a dedicated default Docker image,
-        # without mutating the cached Target.
+        # Run the host binary inside a dedicated default Docker image.
         run_docker_image(target, args, image=CONFIG.DEFAULT_DOCKER_IMAGE, cmd=full_command)
     else:
         cleanup_done = False
@@ -944,7 +879,7 @@ def run_target(target: str, os_name: str, args) -> None:
                 return
             cleanup_done = True
 
-            print(f"Cleaning up {target}...")
+            print(f"Cleaning up {target.name}...")
             if target_pid:
                 print(f"Killing target {target_pid}...")
                 try:
@@ -967,7 +902,7 @@ def run_target(target: str, os_name: str, args) -> None:
         # targets read it from their environment.
         child_env = os.environ.copy()
         child_env["JAM_FUZZ_SPEC"] = CONFIG.spec
-        for var_string in (target_obj.env or "", args.target_env):
+        for var_string in (target.env or "", args.target_env):
             for var in var_string.split():
                 if "=" in var:
                     key, value = var.split("=", 1)
@@ -983,13 +918,13 @@ def run_target(target: str, os_name: str, args) -> None:
 
 
 def main():
-    global CONFIG, TARGETS
+    global CONFIG
 
     parser = create_parser()
     args = parser.parse_args()
 
     CONFIG = Config.from_args(args)
-    TARGETS = load_targets()
+    all_targets = load_targets()
 
     action = args.action
     target = getattr(args, 'target', None)
@@ -1008,16 +943,15 @@ def main():
 
     success = False
     if action == "info":
-        success = handle_info_action(target, os_name)
+        success = handle_info_action(target, os_name, all_targets)
     elif action == "get":
-        success = handle_get_action(target, os_name)
+        success = handle_get_action(target, os_name, all_targets)
     elif action == "run":
-        success = handle_run_action(target, os_name, args)
+        success = handle_run_action(target, os_name, args, all_targets)
     elif action == "clean":
         success = handle_clean_action(target)
     elif action == "list":
-        gp_version = getattr(args, 'gp_version', None)
-        success = handle_list_action(gp_version)
+        success = handle_list_action(all_targets, args.gp_version)
 
     if not success:
         sys.exit(1)
