@@ -63,14 +63,6 @@ class Target:
     post: Optional[str] = None
     gp_version: Optional[str] = None
 
-    def get_image_with_tag(self) -> Optional[str]:
-        """Get the full image reference with tag. Defaults to 'latest' if no tag is present."""
-        if not self.image:
-            return None
-        if ':' in self.image:
-            return self.image
-        return f"{self.image}:latest"
-
     def get_file(self, os_name: str) -> Optional[str]:
         """Get the file for the given OS."""
         if not self.file:
@@ -413,7 +405,7 @@ def get_docker_image(target: str) -> bool:
         return False
 
     target_obj = TARGETS[target]
-    docker_image = target_obj.get_image_with_tag()
+    docker_image = target_obj.image
 
     if not docker_image:
         print(f"Error: No Docker image specified for {target}")
@@ -539,14 +531,16 @@ def is_rootless_docker() -> bool:
         return False
 
 
-def run_docker_image(target: str, args=None) -> None:
+def run_docker_image(target: str, args=None, image: Optional[str] = None, cmd: Optional[str] = None) -> None:
     if target not in TARGETS:
         print(f"Error: Target {target} not found")
         return
 
     target_obj = TARGETS[target]
-    image = target_obj.get_image_with_tag()
-    cmd = target_obj.cmd
+    if image is None:
+        image = target_obj.image
+    if cmd is None:
+        cmd = target_obj.cmd
     env = target_obj.env
 
     # Use custom container name if provided, otherwise generate unique name with random suffix
@@ -749,7 +743,7 @@ def print_target_info(target: Target, os_name: str) -> None:
     elif target.is_docker_target():
         # Check if Docker image exists locally
         try:
-            print_docker_image_info(target.get_image_with_tag())
+            print_docker_image_info(target.image)
         except (subprocess.CalledProcessError, FileNotFoundError):
             print("Status: Not downloaded (Docker image not found locally)")
     else:
@@ -973,11 +967,9 @@ def run_target(target: str, os_name: str, args=None) -> None:
                 ["docker", "pull", "--platform", DOCKER_PLATFORM, DEFAULT_DOCKER_IMAGE],
                 check=True,
             )
-        # Overwrite target information and run it in a dedicated docker image
-        target_obj = TARGETS[target]
-        target_obj.image = DEFAULT_DOCKER_IMAGE
-        target_obj.cmd = full_command
-        run_docker_image(target, args)
+        # Run the host binary inside a dedicated default Docker image,
+        # without mutating the cached Target.
+        run_docker_image(target, args, image=DEFAULT_DOCKER_IMAGE, cmd=full_command)
     else:
         cleanup_done = False
         target_pid = None
