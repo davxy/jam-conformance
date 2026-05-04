@@ -245,7 +245,7 @@ Environment variables (all overridable via CLI flags listed above):
     clean_parser.add_argument(
         "target",
         metavar="TARGET",
-        help='Target to clean (or "all" for all targets)',
+        help="Target to clean",
     )
 
     # List subcommand
@@ -727,35 +727,25 @@ def print_target_info(target: Target, os_name: str) -> None:
         print(f"Environment: {target.env}")
 
 
-def handle_info_action(target_name: str, os_name: str, all_targets: Dict[str, Target]) -> bool:
+def handle_info_action(target: Target, os_name: str) -> bool:
     """Handle the info action for a target."""
-    target = all_targets.get(target_name)
-    if target is None:
-        print(f"Error: Target {target_name} not found")
-        return False
     print_target_info(target, os_name)
     return True
 
 
-def handle_get_action(target_name: str, os_name: str, all_targets: Dict[str, Target]) -> bool:
+def handle_get_action(target: Target, os_name: str) -> bool:
     """Handle the get action for a target."""
-    print(f"Downloading {target_name} for {os_name}...")
-
-    target = all_targets.get(target_name)
-    if target is None:
-        print(f"Unknown target '{target_name}'")
-        print(f"Available targets: {' '.join(sorted(all_targets))}")
-        return False
+    print(f"Downloading {target.name} for {os_name}...")
 
     if target.is_repo_target():
         if not target.supports_os(os_name):
-            print(f"Error: No {os_name} version available for {target_name}")
+            print(f"Error: No {os_name} version available for {target.name}")
             return False
         return get_github_release(target, os_name)
     if target.is_docker_target():
         return get_docker_image(target)
 
-    print(f"Error: Target {target_name} has neither repo nor image configured")
+    print(f"Error: Target {target.name} has neither repo nor image configured")
     return False
 
 
@@ -791,39 +781,20 @@ def handle_list_action(all_targets: Dict[str, Target], gp_version: Optional[str]
     return True
 
 
-def handle_clean_action(target_name: str) -> bool:
-    """Handle the clean action for a target or all targets."""
-    if target_name == "all":
-        targets_dir = Path(CONFIG.targets_dir)
-        if targets_dir.exists():
-            print("Cleaning all target files...")
-            for item in targets_dir.iterdir():
-                if item.is_dir():
-                    print(f"Removing {item}")
-                    shutil.rmtree(item)
-            print("All target files cleaned successfully!")
-        else:
-            print("No target files to clean.")
-        return True
-
-    target_dir = Path(f"{CONFIG.targets_dir}/{target_name}")
+def handle_clean_action(target: Target) -> bool:
+    """Handle the clean action for a target."""
+    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}")
     if target_dir.exists():
-        print(f"Cleaning target {target_name}...")
+        print(f"Cleaning target {target.name}...")
         shutil.rmtree(target_dir)
-        print(f"Target {target_name} cleaned successfully!")
+        print(f"Target {target.name} cleaned successfully!")
     else:
-        print(f"Target {target_name} not found or already clean.")
+        print(f"Target {target.name} not found or already clean.")
     return True
 
 
-def handle_run_action(target_name: str, os_name: str, args, all_targets: Dict[str, Target]) -> bool:
+def handle_run_action(target: Target, os_name: str, args) -> bool:
     """Handle the run action for a target."""
-    target = all_targets.get(target_name)
-    if target is None:
-        print(f"Unknown target '{target_name}'")
-        print(f"Available targets: {' '.join(sorted(all_targets))}")
-        return False
-
     if target.is_docker_target():
         run_docker_image(target, args)
         return True
@@ -831,7 +802,7 @@ def handle_run_action(target_name: str, os_name: str, args, all_targets: Dict[st
         run_target(target, os_name, args)
         return True
 
-    print(f"Error: Target {target_name} has neither repo nor image configured")
+    print(f"Error: Target {target.name} has neither repo nor image configured")
     return False
 
 
@@ -942,16 +913,23 @@ def main():
             sys.exit(1)
 
     success = False
-    if action == "info":
-        success = handle_info_action(target, os_name, all_targets)
-    elif action == "get":
-        success = handle_get_action(target, os_name, all_targets)
-    elif action == "run":
-        success = handle_run_action(target, os_name, args, all_targets)
-    elif action == "clean":
-        success = handle_clean_action(target)
-    elif action == "list":
+    if action == "list":
         success = handle_list_action(all_targets, args.gp_version)
+    else:
+        # info / get / run / clean all need a single resolved Target
+        target_obj = all_targets.get(target)
+        if target_obj is None:
+            print(f"Unknown target '{target}'")
+            print(f"Available targets: {' '.join(sorted(all_targets))}")
+            sys.exit(1)
+        if action == "info":
+            success = handle_info_action(target_obj, os_name)
+        elif action == "get":
+            success = handle_get_action(target_obj, os_name)
+        elif action == "run":
+            success = handle_run_action(target_obj, os_name, args)
+        elif action == "clean":
+            success = handle_clean_action(target_obj)
 
     if not success:
         sys.exit(1)
