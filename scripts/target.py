@@ -17,6 +17,8 @@ from pathlib import Path
 from typing import ClassVar, Dict, List, Optional, Union
 from dataclasses import dataclass
 import ssl
+import platform
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 @dataclass
@@ -35,6 +37,7 @@ class Config:
     targets_file: str         # JAM_FUZZ_TARGETS_FILE, --targets-file
     spec: str                 # JAM_FUZZ_SPEC, --spec
     log_level: str            # JAM_FUZZ_LOG_LEVEL
+    os_name: str              # --os; defaults to "linux" when run_docker, else host OS
 
     # True constants
     DEFAULT_DOCKER_IMAGE: ClassVar[str] = "debian:stable-slim"
@@ -61,6 +64,17 @@ class Config:
             if args.spec:
                 spec = args.spec
 
+        if args.os:
+            os_name = args.os
+        elif run_docker:
+            # Targets always run on linux inside the Debian container.
+            os_name = "linux"
+        else:
+            os_name = get_os()
+            if os_name is None:
+                print("Unsupported OS", file=sys.stderr)
+                sys.exit(1)
+
         return cls(
             host_data_path=os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz"),
             docker_cpu_set=os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", cpu_default),
@@ -71,6 +85,7 @@ class Config:
             ),
             spec=spec,
             log_level=os.environ.get("JAM_FUZZ_LOG_LEVEL", "info"),
+            os_name=os_name,
         )
 
 
@@ -80,6 +95,7 @@ CONFIG: Optional[Config] = None
 class Target:
     name: str
     repo: Optional[str] = None
+    # AI: Perhaps this should be a bool?
     clone: Optional[int] = None
     image: Optional[str] = None
     file: Optional[Union[str, Dict[str, str]]] = None
@@ -260,12 +276,10 @@ Environment variables (all overridable via CLI flags listed above):
 
 
 def get_os() -> Optional[str]:
-    import platform
-
-    system = platform.system()
-    if system == "Linux":
+    system = platform.system().lower()
+    if system == "linux":
         return "linux"
-    elif system == "Darwin":
+    elif system == "darwin":
         return "macos"
     else:
         return None
@@ -278,8 +292,8 @@ def _clean_host_data() -> None:
         pass
 
 
-def post_actions(target: Target, os_name: str) -> bool:
-    file = target.get_file(os_name)
+def post_actions(target: Target) -> bool:
+    file = target.get_file(CONFIG.os_name)
     if not file:
         return False
 
@@ -342,7 +356,7 @@ def post_actions(target: Target, os_name: str) -> bool:
     return True
 
 
-def clone_github_repo(target: Target, os_name: str) -> bool:
+def clone_github_repo(target: Target) -> bool:
     with tempfile.TemporaryDirectory() as temp_dir:
         subprocess.run(
             ["git", "clone", f"https://github.com/{target.repo}", "--depth", "1", temp_dir],
@@ -372,7 +386,7 @@ def clone_github_repo(target: Target, os_name: str) -> bool:
             latest_link.unlink()
         latest_link.symlink_to(target_dir_rev.resolve())
 
-        post_actions(target, os_name)
+        post_actions(target)
 
     return True
 
@@ -406,9 +420,9 @@ def get_docker_image(target: Target) -> bool:
         return False
 
 
-def get_github_release(target: Target, os_name: str) -> bool:
+def get_github_release(target: Target) -> bool:
     repo = target.repo
-    file = target.get_file(os_name)
+    file = target.get_file(CONFIG.os_name)
 
     if not repo:
         print(f"Error: missing repository information for {target.name}")
@@ -416,9 +430,9 @@ def get_github_release(target: Target, os_name: str) -> bool:
 
     if target.clone == 1:
         print(
-            f"Info: No release file specified for {target.name} on {os_name}, cloning repository instead"
+            f"Info: No release file specified for {target.name} on {CONFIG.os_name}, cloning repository instead"
         )
-        return clone_github_repo(target, os_name)
+        return clone_github_repo(target)
 
     # Get the latest release tag from GitHub API
     print("Fetching latest release information...")
@@ -465,7 +479,7 @@ def get_github_release(target: Target, os_name: str) -> bool:
         latest_link.unlink()
     latest_link.symlink_to(target_dir_rev.resolve())
 
-    return post_actions(target, os_name)
+    return post_actions(target)
 
 
 def print_docker_image_info(image):
@@ -663,7 +677,7 @@ def run_docker_image(target: Target, args, image: Optional[str] = None, cmd: Opt
         cleanup_docker()
 
 
-def print_target_info(target: Target, os_name: str) -> None:
+def print_target_info(target: Target) -> None:
     """Print detailed information about a target."""
     print(f"Name: {target.name}")
 
@@ -727,21 +741,21 @@ def print_target_info(target: Target, os_name: str) -> None:
         print(f"Environment: {target.env}")
 
 
-def handle_info_action(target: Target, os_name: str) -> bool:
+def handle_info_action(target: Target) -> bool:
     """Handle the info action for a target."""
-    print_target_info(target, os_name)
+    print_target_info(target)
     return True
 
 
-def handle_get_action(target: Target, os_name: str) -> bool:
+def handle_get_action(target: Target) -> bool:
     """Handle the get action for a target."""
-    print(f"Downloading {target.name} for {os_name}...")
+    print(f"Downloading {target.name} for {CONFIG.os_name}...")
 
     if target.is_repo_target():
-        if not target.supports_os(os_name):
-            print(f"Error: No {os_name} version available for {target.name}")
+        if not target.supports_os(CONFIG.os_name):
+            print(f"Error: No {CONFIG.os_name} version available for {target.name}")
             return False
-        return get_github_release(target, os_name)
+        return get_github_release(target)
     if target.is_docker_target():
         return get_docker_image(target)
 
@@ -793,24 +807,24 @@ def handle_clean_action(target: Target) -> bool:
     return True
 
 
-def handle_run_action(target: Target, os_name: str, args) -> bool:
+def handle_run_action(target: Target, args) -> bool:
     """Handle the run action for a target."""
     if target.is_docker_target():
         run_docker_image(target, args)
         return True
     if target.is_repo_target():
-        run_target(target, os_name, args)
+        run_target(target, args)
         return True
 
     print(f"Error: Target {target.name} has neither repo nor image configured")
     return False
 
 
-def run_target(target: Target, os_name: str, args) -> None:
-    command = target.get_cmd(os_name)
+def run_target(target: Target, args) -> None:
+    command = target.get_cmd(CONFIG.os_name)
 
     if not command:
-        print(f"Error: No run command specified for {target.name} on {os_name}")
+        print(f"Error: No run command specified for {target.name} on {CONFIG.os_name}")
         return
 
     target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
@@ -900,18 +914,6 @@ def main():
     action = args.action
     target = getattr(args, 'target', None)
 
-    # Determine OS
-    if args.os:
-        os_name = args.os
-    elif CONFIG.run_docker:
-        # use linux, since we are running in a fixed Debian Docker image
-        os_name = "linux"
-    else:
-        os_name = get_os()
-        if os_name is None:
-            print("Unsupported OS", file=sys.stderr)
-            sys.exit(1)
-
     success = False
     if action == "list":
         success = handle_list_action(all_targets, args.gp_version)
@@ -923,11 +925,11 @@ def main():
             print(f"Available targets: {' '.join(sorted(all_targets))}")
             sys.exit(1)
         if action == "info":
-            success = handle_info_action(target_obj, os_name)
+            success = handle_info_action(target_obj)
         elif action == "get":
-            success = handle_get_action(target_obj, os_name)
+            success = handle_get_action(target_obj)
         elif action == "run":
-            success = handle_run_action(target_obj, os_name, args)
+            success = handle_run_action(target_obj, args)
         elif action == "clean":
             success = handle_clean_action(target_obj)
 
