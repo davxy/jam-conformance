@@ -2,7 +2,7 @@
 
 # Download a target
 download target="all":
-    ./fuzz-workflow.py -t "{{target}}" --skip-run --skip-report
+    ./fuzz-workflow.py -t "{{target}}" --skip-run --skip-report --parallel
 
 # Execute an exploratory workflow with a few targets and random seed
 explore target="all":
