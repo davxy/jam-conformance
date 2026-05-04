@@ -482,13 +482,8 @@ def run_docker_image(target: Target, args) -> None:
         "-e", f"JAM_FUZZ_LOG_LEVEL={CONFIG.log_level}",
     ])
 
-    if target.env:
-        for var in target.env.split():
-            docker_cmd.extend(["-e", var])
-
-    if args.target_env:
-        for var in args.target_env.split():
-            docker_cmd.extend(["-e", var])
+    for var in f"{target.env or ''} {args.target_env}".split():
+        docker_cmd.extend(["-e", var])
 
     if target.is_repo_target():
         # The target's image/cmd were overwritten upstream to wrap a host
