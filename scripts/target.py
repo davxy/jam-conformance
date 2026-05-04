@@ -13,21 +13,12 @@ import random
 import shlex
 import string
 from pathlib import Path
-from typing import ClassVar, Dict, List, Optional, Union
+from typing import ClassVar, Dict, List, Optional
 from dataclasses import dataclass
 import ssl
 import platform
 
 ssl._create_default_https_context = ssl._create_unverified_context
-
-
-def _detect_host_os() -> Optional[str]:
-    s = platform.system().lower()
-    if s == "linux":
-        return "linux"
-    if s == "darwin":
-        return "macos"
-    return None
 
 
 @dataclass
@@ -45,7 +36,6 @@ class Config:
     targets_file: str         # JAM_FUZZ_TARGETS_FILE, --targets-file
     spec: str                 # JAM_FUZZ_SPEC, --spec
     log_level: str            # JAM_FUZZ_LOG_LEVEL
-    os_name: str              # --os; defaults to "linux" since targets run in docker
 
     # True constants
     DEFAULT_DOCKER_IMAGE: ClassVar[str] = "debian:stable-slim"
@@ -55,7 +45,6 @@ class Config:
     CONTAINER_SOCK_PATH: ClassVar[str] = "/tmp/jam_fuzz/fuzz.sock"
     CURRENT_DIR: ClassVar[str] = os.getcwd()
     SCRIPT_DIR: ClassVar[str] = os.path.dirname(os.path.abspath(__file__))
-    HOST_OS: ClassVar[Optional[str]] = _detect_host_os()
 
     @classmethod
     def from_args(cls, args) -> "Config":
@@ -64,10 +53,6 @@ class Config:
         spec = os.environ.get("JAM_FUZZ_SPEC", "tiny")
         if args.action == "run" and args.spec:
             spec = args.spec
-
-        # Targets always run inside the linux/amd64 Debian container, so
-        # default to linux unless the user explicitly asks for another OS.
-        os_name = args.os or "linux"
 
         return cls(
             host_data_path=os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz"),
@@ -78,7 +63,6 @@ class Config:
             ),
             spec=spec,
             log_level=os.environ.get("JAM_FUZZ_LOG_LEVEL", "info"),
-            os_name=os_name,
         )
 
 
@@ -89,35 +73,11 @@ class Target:
     name: str
     repo: Optional[str] = None
     image: Optional[str] = None
-    file: Optional[Union[str, Dict[str, str]]] = None
-    cmd: Optional[Union[str, Dict[str, str]]] = None
+    file: Optional[str] = None
+    cmd: Optional[str] = None
     args: Optional[str] = None
     env: Optional[str] = None
     gp_version: Optional[str] = None
-
-    def get_file(self, os_name: str) -> Optional[str]:
-        """Get the file for the given OS."""
-        if not self.file:
-            return None
-        if isinstance(self.file, str):
-            return self.file
-        return self.file.get(os_name)
-
-    def get_cmd(self, os_name: str) -> Optional[str]:
-        """Get the command for the given OS."""
-        if not self.cmd:
-            return None
-        if isinstance(self.cmd, str):
-            return self.cmd
-        return self.cmd.get(os_name)
-
-    def supports_os(self, os_name: str) -> bool:
-        """Check if target supports the given OS."""
-        if not self.file:
-            return True
-        if isinstance(self.file, str):
-            return True
-        return os_name in self.file
 
     def is_docker_target(self) -> bool:
         """Check if this is a Docker target."""
@@ -156,7 +116,6 @@ Examples:
   %(prog)s list                       # List all available targets
   %(prog)s get jamzig                 # Download jamzig target
   %(prog)s run boka                   # Run boka target
-  %(prog)s --os macos get jamzig      # Download jamzig for macOS
   %(prog)s info boka                  # Show info for boka target
 
 Environment variables (all overridable via CLI flags listed above):
@@ -168,10 +127,6 @@ Environment variables (all overridable via CLI flags listed above):
   JAM_FUZZ_LOG_LEVEL       Log level forwarded to the target (default: info)
   GITHUB_TOKEN             Optional bearer token for GitHub release lookups
         """,
-    )
-
-    parser.add_argument(
-        "--os", choices=["linux", "macos"], help="Target OS (default: auto-detected)"
     )
 
     parser.add_argument(
@@ -288,15 +243,14 @@ ARCHIVE_EXTRACTORS = [
 
 
 def post_actions(target: Target) -> bool:
-    file = target.get_file(CONFIG.os_name)
-    if not file:
+    if not target.file:
         return False
 
-    print(f"Performing post actions for {file}")
+    print(f"Performing post actions for {target.file}")
     target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
 
     # Extract nested archives by peeling off extensions
-    current_file = target_dir / file
+    current_file = target_dir / target.file
     while current_file.exists():
         for suffixes, cmd in ARCHIVE_EXTRACTORS:
             if tuple(current_file.suffixes[-len(suffixes):]) == suffixes:
@@ -317,13 +271,11 @@ def post_actions(target: Target) -> bool:
 
 
 def get_docker_image(target: Target) -> bool:
-    docker_image = target.image
-
-    if not docker_image:
+    if not target.image:
         print(f"Error: No Docker image specified for {target.name}")
         return False
 
-    print(f"Pulling Docker image: {docker_image}")
+    print(f"Pulling Docker image: {target.image}")
 
     if not shutil.which("docker"):
         print("Error: Docker is not installed or not in PATH")
@@ -337,26 +289,23 @@ def get_docker_image(target: Target) -> bool:
         return False
 
     try:
-        subprocess.run(["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, docker_image], check=True)
-        print(f"Successfully pulled Docker image: {docker_image}")
+        subprocess.run(["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, target.image], check=True)
+        print(f"Successfully pulled Docker image: {target.image}")
         return True
     except subprocess.CalledProcessError:
-        print(f"Error: Failed to pull Docker image {docker_image}")
+        print(f"Error: Failed to pull Docker image {target.image}")
         return False
 
 
 def get_github_release(target: Target) -> bool:
-    repo = target.repo
-    file = target.get_file(CONFIG.os_name)
-
-    if not repo:
+    if not target.repo:
         print(f"Error: missing repository information for {target.name}")
         return False
 
     # Get the latest release tag from GitHub API
     print("Fetching latest release information...")
     try:
-        url = f"https://api.github.com/repos/{repo}/releases/latest"
+        url = f"https://api.github.com/repos/{target.repo}/releases/latest"
         req = urllib.request.Request(url)
         github_token = os.environ.get("GITHUB_TOKEN")
         if github_token:
@@ -371,13 +320,13 @@ def get_github_release(target: Target) -> bool:
     print(f"Latest version: {latest_tag}")
 
     # Construct download URL
-    download_url = f"https://github.com/{repo}/releases/download/{latest_tag}/{file}"
+    download_url = f"https://github.com/{target.repo}/releases/download/{latest_tag}/{target.file}"
     print(f"Downloading from: {download_url}")
 
     # Download to a temporary file to avoid race conditions when
     # multiple targets share the same filename (e.g., jamzilla and jamzilla-int)
     try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{file}") as tmp:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{target.file}") as tmp:
             tmp_path = tmp.name
         urllib.request.urlretrieve(download_url, tmp_path)
     except Exception as e:
@@ -389,7 +338,7 @@ def get_github_release(target: Target) -> bool:
     target_dir_rev = target_dir / latest_tag
 
     target_dir_rev.mkdir(parents=True, exist_ok=True)
-    shutil.move(tmp_path, target_dir_rev / file)
+    shutil.move(tmp_path, target_dir_rev / target.file)
     print(f"* Target downloaded to: {target_dir_rev}")
 
 
@@ -559,7 +508,7 @@ def run_docker_image(target: Target, args) -> None:
         docker_cmd.extend(shlex.split(target.cmd))
 
     # Add priority args for Linux if requested
-    if Config.HOST_OS == "linux" and args.docker_elevate_priority:
+    if args.docker_elevate_priority and platform.system().lower() == "linux":
         priority_cmd = [
             "sudo",
             "chrt",
@@ -590,18 +539,9 @@ def print_target_info(target: Target) -> None:
     """Print detailed information about a target."""
     print(f"Name: {target.name}")
 
-    # Show gp_version
     if target.gp_version:
         print(f"GP Version: {target.gp_version}")
 
-    # Show OS support
-    supported_oses = []
-    for os_check in ["linux", "macos"]:
-        if target.supports_os(os_check):
-            supported_oses.append(os_check)
-    print(f"Supported OS: {', '.join(supported_oses)}")
-
-    # Show target type
     target_type = []
     if target.is_docker_target():
         target_type.append("Docker")
@@ -609,14 +549,12 @@ def print_target_info(target: Target) -> None:
         target_type.append("Repository")
     print(f"Type: {', '.join(target_type)}")
 
-    # Check if target is downloaded/available
     target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
     if target.is_repo_target():
         print(f"Repository: https://github.com/{target.repo}")
         if target_dir.exists():
             print(f"Downloaded: {target_dir}")
     elif target.is_docker_target():
-        # Check if Docker image exists locally
         try:
             print_docker_image_info(target.image)
         except (subprocess.CalledProcessError, FileNotFoundError):
@@ -625,24 +563,11 @@ def print_target_info(target: Target) -> None:
         print("Status: Not downloaded")
 
     if target.file:
-        if isinstance(target.cmd, dict):
-            print("Files:")
-            for os_key, file_path in target.file.items():
-                print(f"  {os_key}: {file_path}")
-        else:
-            print(f"File: {target.file}")
-
+        print(f"File: {target.file}")
     if target.cmd:
-        if isinstance(target.cmd, dict):
-            print("Commands:")
-            for os_key, cmd in target.cmd.items():
-                print(f"  {os_key}: {cmd}")
-        else:
-            print(f"Command: {target.cmd}")
-
+        print(f"Command: {target.cmd}")
     if target.args:
         print(f"Arguments: {target.args}")
-
     if target.env:
         print(f"Environment: {target.env}")
 
@@ -655,12 +580,9 @@ def handle_info_action(target: Target) -> bool:
 
 def handle_get_action(target: Target) -> bool:
     """Handle the get action for a target."""
-    print(f"Downloading {target.name} for {CONFIG.os_name}...")
+    print(f"Downloading {target.name}...")
 
     if target.is_repo_target():
-        if not target.supports_os(CONFIG.os_name):
-            print(f"Error: No {CONFIG.os_name} version available for {target.name}")
-            return False
         return get_github_release(target)
     if target.is_docker_target():
         return get_docker_image(target)
@@ -724,10 +646,8 @@ def handle_run_action(target: Target, args) -> bool:
 
 
 def run_target(target: Target, args) -> None:
-    command = target.get_cmd(CONFIG.os_name)
-
-    if not command:
-        print(f"Error: No run command specified for {target.name} on {CONFIG.os_name}")
+    if not target.cmd:
+        print(f"Error: No run command specified for {target.name}")
         return
 
     target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
@@ -736,7 +656,7 @@ def run_target(target: Target, args) -> None:
         print(f"Get the target first with: get {target.name}")
         sys.exit(1)
 
-    full_command = f"./{command}"
+    full_command = f"./{target.cmd}"
     if target.args is not None:
         full_command += f" {target.args}"
     if args.target_args:

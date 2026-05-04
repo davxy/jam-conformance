@@ -6,27 +6,15 @@
   },
   "fastroll": {
     "repo": "fastroll-jam/fastroll-releases",
-    "file": {
-      "linux": "fastroll-linux-x86_64-tiny",
-      "macos": "fastroll-macos-aarch64-tiny"
-    },
-    "cmd": {
-      "linux": "fastroll-linux-x86_64-tiny",
-      "macos": "fastroll-macos-aarch64-tiny"
-    },
+    "file": "fastroll-linux-x86_64-tiny",
+    "cmd": "fastroll-linux-x86_64-tiny",
     "args": "fuzz --socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "gossamer": {
     "repo": "chainsafe/gossamer-jam-releases",
-    "file": {
-      "linux": "gossamer-jam-tiny-linux-amd64",
-      "macos": "gossamer-jam-tiny-macos-arm64"
-    },
-    "cmd": {
-      "linux": "gossamer-jam-tiny-linux-amd64",
-      "macos": "gossamer-jam-tiny-macos-arm64"
-    },
+    "file": "gossamer-jam-tiny-linux-amd64",
+    "cmd": "gossamer-jam-tiny-linux-amd64",
     "args": "target --socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
@@ -40,26 +28,16 @@
   },
   "jambda": {
     "repo": "ArcheLabs/jambda-release",
-    "file": {
-      "linux": "jambda-node-Linux-x64"
-    },
-    "cmd": {
-      "linux": "jambda-node-Linux-x64"
-    },
+    "file": "jambda-node-Linux-x64",
+    "cmd": "jambda-node-Linux-x64",
     "args": "fuzz-target --sock {SOCK_PATH}",
     "env": "RUST_LOG=off",
     "gp_version": "0.7.2"
   },
   "jamduna": {
     "repo": "jam-duna/jamtestnet",
-    "file": {
-      "linux": "duna_target_linux",
-      "macos": "duna_target_mac"
-    },
-    "cmd": {
-      "linux": "duna_target_linux",
-      "macos": "duna_target_mac"
-    },
+    "file": "duna_target_linux",
+    "cmd": "duna_target_linux",
     "args": "--socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
@@ -69,10 +47,7 @@
   },
   "jamixir": {
     "repo": "jamixir/jamixir-releases",
-    "file": {
-      "linux": "jamixir_linux-x86-64_0.7.2_tiny.tar.gz",
-      "macos": "jamixir_macos-arm64_0.7.2_tiny.tar.gz"
-    },
+    "file": "jamixir_linux-x86-64_0.7.2_tiny.tar.gz",
     "cmd": "jamixir fuzzer --log error --socket-path {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
@@ -115,10 +90,7 @@
   },
   "spacejam": {
     "repo": "spacejamapp/specjam",
-    "file": {
-      "linux": "spacejam-0.7.2-linux-amd64.tar.gz",
-      "macos": "spacejam-0.7.2-macos-arm64.tar.gz"
-    },
+    "file": "spacejam-0.7.2-linux-amd64.tar.gz",
     "cmd": "spacejam fuzz target {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
