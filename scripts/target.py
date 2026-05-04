@@ -290,6 +290,14 @@ def _clean_host_data() -> None:
         pass
 
 
+def _install_cleanup_handlers(cleanup_fn) -> None:
+    def handler(signum, frame):
+        cleanup_fn()
+        sys.exit(0)
+    signal.signal(signal.SIGINT, handler)
+    signal.signal(signal.SIGTERM, handler)
+
+
 # Trailing suffixes -> extractor command. Multi-suffix entries must come first
 # so e.g. .tar.gz isn't peeled as just .tar.
 ARCHIVE_EXTRACTORS = [
@@ -480,18 +488,13 @@ def run_docker_image(target: Target, args) -> None:
     os.chmod(CONFIG.host_data_path, 0o777)
     print(f"Host data path: {CONFIG.host_data_path}")
 
-    def cleanup_docker():
+    def cleanup():
         print(f"Cleaning up Docker container {container_name}...")
         subprocess.run(["docker", "kill", container_name], capture_output=True)
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
         _clean_host_data()
 
-    def signal_handler(signum, frame):
-        cleanup_docker()
-        sys.exit(0)
-
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
+    _install_cleanup_handlers(cleanup)
 
     # Pre-flight cleanup: remove any existing container with the same name
     print(f"Ensuring no leftover container with name {container_name}...")
@@ -605,7 +608,7 @@ def run_docker_image(target: Target, args) -> None:
         exit_code = process.wait()
         print(f"Target process exited with status: {exit_code}")
     finally:
-        cleanup_docker()
+        cleanup()
 
 
 def print_target_info(target: Target) -> None:
@@ -694,9 +697,6 @@ def handle_get_action(target: Target) -> bool:
 def handle_list_action(all_targets: Dict[str, Target], gp_version: Optional[str]) -> bool:
     """Handle the list action to show all available targets."""
     names = sorted(all_targets)
-
-    if gp_version == "all":
-        gp_version = None
 
     if gp_version:
         filtered = [n for n in names if all_targets[n].gp_version == gp_version]
@@ -807,12 +807,7 @@ def run_target(target: Target, args) -> None:
                     pass
             _clean_host_data()
 
-        def signal_handler(signum, frame):
-            cleanup()
-            sys.exit(0)
-
-        signal.signal(signal.SIGINT, signal_handler)
-        signal.signal(signal.SIGTERM, signal_handler)
+        _install_cleanup_handlers(cleanup)
 
         # Build the child env explicitly so we don't leak overrides into the
         # parent process. JAM_FUZZ_SPEC must be forwarded since downstream
