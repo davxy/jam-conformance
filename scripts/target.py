@@ -13,38 +13,69 @@ import argparse
 import random
 import string
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import ClassVar, Dict, List, Optional, Union
 from dataclasses import dataclass
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-# HOST-side data directory for all fuzz-related temporary files.
-# When running in Docker, this directory is mounted to CONTAINER_DATA_PATH inside the container.
-# Can be overridden via JAM_FUZZ_DATA_PATH environment variable (set by fuzz-workflow.py per session).
-HOST_DATA_PATH = os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz")
+@dataclass
+class Config:
+    """Constants and runtime configuration for the script.
 
-# Used to run binaries when target is not provided as a docker image
-DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
+    Instance fields are populated by `Config.from_args(args)` with precedence:
+    CLI flag > env var > default. ClassVar fields are true constants.
+    """
 
-# Maximum number of cores to use for docker containers
-_default_cpu_set = f"0-{os.cpu_count() - 1}" if os.cpu_count() and os.cpu_count() > 1 else "0"
-DOCKER_CPU_SET = os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", _default_cpu_set)
+    # CLI/env-driven values
+    host_data_path: str       # JAM_FUZZ_DATA_PATH
+    docker_cpu_set: str       # JAM_FUZZ_DOCKER_CPU_SET
+    run_docker: bool          # JAM_FUZZ_RUN_DOCKER, --docker/--no-docker
+    targets_dir: str          # JAM_FUZZ_TARGETS_DIR
+    targets_file: str         # JAM_FUZZ_TARGETS_FILE, --targets-file
+    spec: str                 # JAM_FUZZ_SPEC, --spec
+    log_level: str            # JAM_FUZZ_LOG_LEVEL
 
-# Whether to run targets in docker containers (1) or directly on host (0)
-RUN_DOCKER = int(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
+    # True constants
+    DEFAULT_DOCKER_IMAGE: ClassVar[str] = "debian:stable-slim"
+    DOCKER_PLATFORM: ClassVar[str] = "linux/amd64"
+    # Standard JAM fuzz packaging paths inside the container (see fuzz-proto/README.md).
+    CONTAINER_DATA_PATH: ClassVar[str] = "/tmp/jam_fuzz"
+    CONTAINER_SOCK_PATH: ClassVar[str] = "/tmp/jam_fuzz/fuzz.sock"
+    CURRENT_DIR: ClassVar[str] = os.getcwd()
+    SCRIPT_DIR: ClassVar[str] = os.path.dirname(os.path.abspath(__file__))
 
-# Forces a platform for docker commands (run, pull, etc)
-DOCKER_PLATFORM = "linux/amd64"
+    @staticmethod
+    def _parse_bool(s: str) -> bool:
+        return s.strip().lower() in ("1", "true", "yes", "y", "on")
 
-# Set directory variables
-CURRENT_DIR = os.getcwd()
-TARGETS_DIR = os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{CURRENT_DIR}/targets")
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-TARGETS_FILE = os.environ.get("JAM_FUZZ_TARGETS_FILE", f"{SCRIPT_DIR}/targets.json")
+    @classmethod
+    def from_args(cls, args) -> "Config":
+        cpu_default = f"0-{os.cpu_count() - 1}" if os.cpu_count() and os.cpu_count() > 1 else "0"
 
-# Standard JAM fuzz packaging paths (see fuzz-proto/README.md).
-CONTAINER_DATA_PATH = "/tmp/jam_fuzz"
-CONTAINER_SOCK_PATH = f"{CONTAINER_DATA_PATH}/fuzz.sock"
+        run_docker = cls._parse_bool(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
+        spec = os.environ.get("JAM_FUZZ_SPEC", "tiny")
+        if args.action == "run":
+            if args.docker:
+                run_docker = True
+            elif args.no_docker:
+                run_docker = False
+            if args.spec:
+                spec = args.spec
+
+        return cls(
+            host_data_path=os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz"),
+            docker_cpu_set=os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", cpu_default),
+            run_docker=run_docker,
+            targets_dir=os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{cls.CURRENT_DIR}/targets"),
+            targets_file=args.targets_file or os.environ.get(
+                "JAM_FUZZ_TARGETS_FILE", f"{cls.SCRIPT_DIR}/targets.json"
+            ),
+            spec=spec,
+            log_level=os.environ.get("JAM_FUZZ_LOG_LEVEL", "info"),
+        )
+
+
+CONFIG: Optional[Config] = None
 
 @dataclass
 class Target:
@@ -95,10 +126,10 @@ class Target:
 def load_targets() -> Dict[str, Target]:
     """Load target configuration from JSON file and convert to Target instances."""
     try:
-        with open(TARGETS_FILE, "r") as f:
-            text = f.read().replace("{SOCK_PATH}", CONTAINER_SOCK_PATH)
+        with open(CONFIG.targets_file, "r") as f:
+            text = f.read().replace("{SOCK_PATH}", CONFIG.CONTAINER_SOCK_PATH)
     except FileNotFoundError:
-        print(f"Error: targets.json not found at {TARGETS_FILE}")
+        print(f"Error: targets.json not found at {CONFIG.targets_file}")
         sys.exit(1)
 
     try:
@@ -133,12 +164,15 @@ Examples:
   %(prog)s run --no-docker spacejam   # Run spacejam directly on host
   %(prog)s info all                   # Show info for all targets
 
-Environment variables:
-  JAM_FUZZ_DATA_PATH       Host data directory (default: /tmp/jam_fuzz)
-  JAM_FUZZ_SPEC            Specification to use: tiny or full (default: tiny)
+Environment variables (all overridable via CLI flags listed above):
   JAM_FUZZ_TARGETS_FILE    Path to targets JSON file (default: <script>/targets.json)
-  JAM_FUZZ_RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
-  JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: all)
+  JAM_FUZZ_TARGETS_DIR     Where downloaded targets are stored (default: ./targets)
+  JAM_FUZZ_DATA_PATH       Host data directory (default: /tmp/jam_fuzz)
+  JAM_FUZZ_RUN_DOCKER      Run in Docker (1/true/yes) or host (0/false/no) (default: 1)
+  JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: all cores)
+  JAM_FUZZ_SPEC            Specification: tiny or full (default: tiny)
+  JAM_FUZZ_LOG_LEVEL       Log level forwarded to the target (default: info)
+  GITHUB_TOKEN             Optional bearer token for GitHub release lookups
 
 Use 'info all' to see available targets.
         """,
@@ -286,7 +320,7 @@ def post_actions(target_name: str, os_name: str) -> bool:
         return False
 
     print(f"Performing post actions for {file}")
-    target_dir = Path(f"{TARGETS_DIR}/{target_name}/latest")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target_name}/latest")
     os.chdir(target_dir)
 
     if target.post:
@@ -341,7 +375,7 @@ def post_actions(target_name: str, os_name: str) -> bool:
                 current_file.chmod(0o755)
                 break
 
-    os.chdir(CURRENT_DIR)
+    os.chdir(CONFIG.CURRENT_DIR)
     return True
 
 
@@ -362,7 +396,7 @@ def clone_github_repo(target: str, os_name: str, repo: str) -> bool:
         commit_hash = result.stdout.strip()
         print(f"Cloning last revision: {commit_hash}")
 
-        target_dir = Path(f"{TARGETS_DIR}/{target}")
+        target_dir = Path(f"{CONFIG.targets_dir}/{target}")
         print(f"Cloned to {target_dir}")
 
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -402,7 +436,7 @@ def get_docker_image(target: str) -> bool:
         return False
 
     try:
-        subprocess.run(["docker", "pull", "--platform", DOCKER_PLATFORM, docker_image], check=True)
+        subprocess.run(["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, docker_image], check=True)
         print(f"Successfully pulled Docker image: {docker_image}")
         return True
     except subprocess.CalledProcessError:
@@ -457,7 +491,7 @@ def get_github_release(target: str, os_name: str) -> bool:
         return False
 
     print(f"Downloaded target to: {tmp_path}")
-    target_dir = Path(f"{TARGETS_DIR}/{target}")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target}")
     target_dir_rev = target_dir / latest_tag
 
     target_dir_rev.mkdir(parents=True, exist_ok=True)
@@ -534,16 +568,16 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
     # Clean start: remove any leftover data directory from previous runs
     # This ensures the socket and other runtime files are fresh
     try:
-        shutil.rmtree(HOST_DATA_PATH)
+        shutil.rmtree(CONFIG.host_data_path)
     except FileNotFoundError:
         pass
 
     # Create host data directory
-    os.makedirs(HOST_DATA_PATH, exist_ok=True)
+    os.makedirs(CONFIG.host_data_path, exist_ok=True)
     # Ensure the directory is world-writable so the container user can create files
     # (needed for rootless Docker where the mapped user may differ from the host user)
-    os.chmod(HOST_DATA_PATH, 0o777)
-    print(f"Host data path: {HOST_DATA_PATH}")
+    os.chmod(CONFIG.host_data_path, 0o777)
+    print(f"Host data path: {CONFIG.host_data_path}")
 
     def cleanup_docker():
         print(f"Cleaning up Docker container {container_name}...")
@@ -551,7 +585,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
         # Remove ephemeral data directory and socket files created during this run
         try:
-            shutil.rmtree(HOST_DATA_PATH)
+            shutil.rmtree(CONFIG.host_data_path)
         except FileNotFoundError:
             pass
 
@@ -574,9 +608,9 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
         container_name,
         "--init",
         "--platform",
-        DOCKER_PLATFORM,
+        CONFIG.DOCKER_PLATFORM,
         "--cpuset-cpus",
-        f"{DOCKER_CPU_SET}",
+        f"{CONFIG.docker_cpu_set}",
         "--cpu-shares",
         "2048",
         "--cpu-quota",
@@ -606,7 +640,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
         "--cap-add",
         "IPC_LOCK",
         "-v",
-        f"{HOST_DATA_PATH}:{CONTAINER_DATA_PATH}",
+        f"{CONFIG.host_data_path}:{CONFIG.CONTAINER_DATA_PATH}",
     ]
 
     # In rootful Docker, run as the host user so files are owned correctly.
@@ -622,10 +656,10 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
     # Set first so target.json `env` and --target-env can still override them.
     docker_cmd.extend([
         "-e", "JAM_FUZZ=1",
-        "-e", f"JAM_FUZZ_SPEC={os.environ['JAM_FUZZ_SPEC']}",
-        "-e", f"JAM_FUZZ_DATA_PATH={CONTAINER_DATA_PATH}",
-        "-e", f"JAM_FUZZ_SOCK_PATH={CONTAINER_SOCK_PATH}",
-        "-e", f"JAM_FUZZ_LOG_LEVEL={os.environ.get('JAM_FUZZ_LOG_LEVEL', 'info')}",
+        "-e", f"JAM_FUZZ_SPEC={CONFIG.spec}",
+        "-e", f"JAM_FUZZ_DATA_PATH={CONFIG.CONTAINER_DATA_PATH}",
+        "-e", f"JAM_FUZZ_SOCK_PATH={CONFIG.CONTAINER_SOCK_PATH}",
+        "-e", f"JAM_FUZZ_LOG_LEVEL={CONFIG.log_level}",
     ])
 
     if env:
@@ -636,10 +670,10 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
         for var in args.target_env.split():
             docker_cmd.extend(["-e", var])
 
-    if image == DEFAULT_DOCKER_IMAGE:
+    if image == CONFIG.DEFAULT_DOCKER_IMAGE:
         docker_cmd.extend(["-w", "/jam"])
         docker_cmd.extend(["-e", "HOME=/jam"])
-        docker_cmd.extend(["-v", f"{TARGETS_DIR}/{target}/latest:/jam"])
+        docker_cmd.extend(["-v", f"{CONFIG.targets_dir}/{target}/latest:/jam"])
 
     docker_cmd.append(image)
 
@@ -664,7 +698,7 @@ def run_docker_image(target: str, args, image: Optional[str] = None, cmd: Option
             "-n0",
             "taskset",
             "-c",
-            f"{DOCKER_CPU_SET}",
+            f"{CONFIG.docker_cpu_set}",
         ]
         docker_cmd = priority_cmd + docker_cmd
 
@@ -702,7 +736,7 @@ def print_target_info(target: Target, os_name: str) -> None:
     print(f"Type: {', '.join(target_type)}")
 
     # Check if target is downloaded/available
-    target_dir = Path(f"{TARGETS_DIR}/{target.name}/latest")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
     if target.is_repo_target():
         print(f"Repository: https://github.com/{target.repo}")
         if target_dir.exists():
@@ -846,7 +880,7 @@ def handle_list_action(gp_version: Optional[str] = None) -> bool:
 def handle_clean_action(target: str) -> bool:
     """Handle the clean action for a target or all targets."""
     if target == "all":
-        targets_dir = Path(f"{TARGETS_DIR}")
+        targets_dir = Path(f"{CONFIG.targets_dir}")
         if targets_dir.exists():
             print("Cleaning all target files...")
             for item in targets_dir.iterdir():
@@ -858,7 +892,7 @@ def handle_clean_action(target: str) -> bool:
             print("No target files to clean.")
         return True
     else:
-        target_dir = Path(f"{TARGETS_DIR}/{target}")
+        target_dir = Path(f"{CONFIG.targets_dir}/{target}")
         if target_dir.exists():
             print(f"Cleaning target {target}...")
             shutil.rmtree(target_dir)
@@ -891,11 +925,11 @@ def run_target(target: str, os_name: str, args) -> None:
         print(f"Error: No run command specified for {target} on {os_name}")
         return
 
-    target_dir = Path(f"{TARGETS_DIR}/{target}/latest")
+    target_dir = Path(f"{CONFIG.targets_dir}/{target}/latest")
     if not target_dir.exists():
         print(f"Error: Target dir not found: {target_dir}")
         # Try to find the newest directory as fallback
-        base_dir = Path(f"{TARGETS_DIR}/{target}")
+        base_dir = Path(f"{CONFIG.targets_dir}/{target}")
         if base_dir.exists():
             try:
                 newest_dir = max(base_dir.iterdir(), key=lambda p: p.stat().st_mtime)
@@ -917,28 +951,28 @@ def run_target(target: str, os_name: str, args) -> None:
     if args.target_args:
         full_command += f" {args.target_args}"
 
-    if RUN_DOCKER == 1:
+    if CONFIG.run_docker:
         # Ensure the default Docker image is available locally
         try:
             subprocess.run(
-                ["docker", "image", "inspect", DEFAULT_DOCKER_IMAGE],
+                ["docker", "image", "inspect", CONFIG.DEFAULT_DOCKER_IMAGE],
                 check=True, capture_output=True,
             )
         except subprocess.CalledProcessError:
-            print(f"Docker image '{DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
+            print(f"Docker image '{CONFIG.DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
             subprocess.run(
-                ["docker", "pull", "--platform", DOCKER_PLATFORM, DEFAULT_DOCKER_IMAGE],
+                ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
                 check=True,
             )
         # Run the host binary inside a dedicated default Docker image,
         # without mutating the cached Target.
-        run_docker_image(target, args, image=DEFAULT_DOCKER_IMAGE, cmd=full_command)
+        run_docker_image(target, args, image=CONFIG.DEFAULT_DOCKER_IMAGE, cmd=full_command)
     else:
         cleanup_done = False
         target_pid = None
 
         def cleanup():
-            os.chdir(CURRENT_DIR)
+            os.chdir(CONFIG.CURRENT_DIR)
             nonlocal cleanup_done, target_pid
             if cleanup_done:
                 return
@@ -955,7 +989,7 @@ def run_target(target: str, os_name: str, args) -> None:
                     pass
             try:
                 # Remove ephemeral data directory and socket files created during this run
-                shutil.rmtree(HOST_DATA_PATH)
+                shutil.rmtree(CONFIG.host_data_path)
             except FileNotFoundError:
                 pass
 
@@ -966,24 +1000,20 @@ def run_target(target: str, os_name: str, args) -> None:
         signal.signal(signal.SIGINT, signal_handler)
         signal.signal(signal.SIGTERM, signal_handler)
 
-        target_obj = TARGETS[target]
-        env = target_obj.env
-        if env:
-            # Export environment variables
-            for var in env.split():
+        # Build the child env explicitly so we don't leak overrides into the
+        # parent process. JAM_FUZZ_SPEC must be forwarded since downstream
+        # targets read it from their environment.
+        child_env = os.environ.copy()
+        child_env["JAM_FUZZ_SPEC"] = CONFIG.spec
+        for var_string in (target_obj.env or "", args.target_env):
+            for var in var_string.split():
                 if "=" in var:
                     key, value = var.split("=", 1)
-                    os.environ[key] = value
-
-        if args.target_env:
-            for var in args.target_env.split():
-                if "=" in var:
-                    key, value = var.split("=", 1)
-                    os.environ[key] = value
+                    child_env[key] = value
 
         try:
             os.chdir(target_dir)
-            process = subprocess.Popen(full_command, shell=True)
+            process = subprocess.Popen(full_command, shell=True, env=child_env)
             target_pid = process.pid
             print(f"Waiting for target termination (pid={target_pid})")
             process.wait()
@@ -992,32 +1022,21 @@ def run_target(target: str, os_name: str, args) -> None:
 
 
 def main():
-    global RUN_DOCKER, TARGETS_FILE, TARGETS
+    global CONFIG, TARGETS
 
     parser = create_parser()
     args = parser.parse_args()
 
-    if args.targets_file:
-        TARGETS_FILE = args.targets_file
+    CONFIG = Config.from_args(args)
     TARGETS = load_targets()
 
     action = args.action
     target = getattr(args, 'target', None)
 
-    # Handle Docker override from command line (only for run action)
-    if action == "run":
-        if args.docker:
-            RUN_DOCKER = 1
-        elif args.no_docker:
-            RUN_DOCKER = 0
-        # Resolve JAM_FUZZ_SPEC once: CLI > env var > default. Downstream paths
-        # (docker forwarding, host subprocess) just read os.environ.
-        os.environ['JAM_FUZZ_SPEC'] = args.spec or os.environ.get('JAM_FUZZ_SPEC', 'tiny')
-
     # Determine OS
     if args.os:
         os_name = args.os
-    elif RUN_DOCKER == 1:
+    elif CONFIG.run_docker:
         # use linux, since we are running in a fixed Debian Docker image
         os_name = "linux"
     else:
