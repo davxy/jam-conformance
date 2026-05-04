@@ -1,0 +1,59 @@
+{
+  "boka": {
+    "image": "acala/boka:latest",
+    "cmd": "fuzz target --socket-path {SOCK_PATH}",
+    "gp_version": "0.7.2"
+  },
+  "graymatter": {
+    "image": "ghcr.io/jambrains/graymatter/gm:conformance-fuzzer-latest",
+    "gp_version": "0.7.2"
+  },
+  "jam4s": {
+    "image": "jamforscala/jam4s:latest",
+    "gp_version": "0.7.2"
+  },
+  "jamforge": {
+    "image": "ghcr.io/philoniare/jam-forge:latest",
+    "gp_version": "0.7.2"
+  },
+  "jampy": {
+    "image": "ghcr.io/dakk/jampy-target:0.7.2",
+    "gp_version": "0.7.2"
+  },
+  "jamzig": {
+    "image": "docker.io/jamzig/jam-conformance-target:latest",
+    "gp_version": "0.7.2"
+  },
+  "jamzilla": {
+    "image": "ghcr.io/ascrivener/jamzilla:edge",
+    "gp_version": "0.7.2"
+  },
+  "javajam": {
+    "image": "ghcr.io/methodfive/javajam:latest-amd64",
+    "gp_version": "0.7.2"
+  },
+  "new-jamneration": {
+    "image": "ghcr.io/new-jamneration/new-jamneration-target:latest",
+    "gp_version": "0.7.2"
+  },
+  "pyjamaz": {
+    "image": "jamdottech/pyjamaz:latest",
+    "gp_version": "0.7.2"
+  },
+  "tessera": {
+    "image": "ghcr.io/chainscore/tessera:latest",
+    "gp_version": "0.7.2"
+  },
+  "tsjam": {
+    "image": "ghcr.io/vekexasia/tsjam-target:0.7.2",
+    "gp_version": "0.7.2"
+  },
+  "turbojam": {
+    "image": "r2rationality/turbojam-fuzz:latest",
+    "gp_version": "0.7.2"
+  },
+  "vinwolf": {
+    "image": "ghcr.io/bloppan/vinwolf-target:latest",
+    "gp_version": "0.7.2"
+  }
+}

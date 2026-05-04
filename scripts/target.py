@@ -169,8 +169,9 @@ def load_targets() -> Dict[str, Target]:
     return targets
 
 
-# Load target configuration from JSON file
-TARGETS = load_targets()
+# Target configuration is loaded in main() after CLI args are parsed,
+# so that --targets-file can override JAM_FUZZ_TARGETS_FILE.
+TARGETS: Dict[str, "Target"] = {}
 
 
 def get_target(target: str) -> Optional[Target]:
@@ -183,8 +184,6 @@ def get_target(target: str) -> Optional[Target]:
 
 def create_parser() -> argparse.ArgumentParser:
     """Create and configure the argument parser."""
-    available_targets = get_available_targets()
-
     parser = argparse.ArgumentParser(
         description="JAM conformance target manager - download and run JAM implementation targets",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -199,8 +198,10 @@ Examples:
 
 Environment variables:
   JAM_FUZZ_DATA_PATH       Host data directory (default: /tmp/jam_fuzz)
+  JAM_FUZZ_SPEC            Specification to use: tiny or full (default: tiny)
+  JAM_FUZZ_TARGETS_FILE    Path to targets JSON file (default: <script>/targets.json)
   JAM_FUZZ_RUN_DOCKER      Run in Docker (1) or host (0) (default: 1)
-  JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: 16-32)
+  JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: all)
 
 Use 'info all' to see available targets.
         """,
@@ -217,6 +218,13 @@ Use 'info all' to see available targets.
         help="Specification to use (tiny or full, overrides JAM_FUZZ_SPEC env var)"
     )
 
+    parser.add_argument(
+        "--targets-file",
+        type=str,
+        default=None,
+        help="Path to targets JSON file (overrides JAM_FUZZ_TARGETS_FILE env var)",
+    )
+
     subparsers = parser.add_subparsers(
         dest="action", help="Action to perform", required=True
     )
@@ -225,7 +233,6 @@ Use 'info all' to see available targets.
     get_parser = subparsers.add_parser("get", help="Download target(s)")
     get_parser.add_argument(
         "target",
-        choices=available_targets + ["all"],
         metavar="TARGET",
         help='Target to download (or "all" for all targets)',
     )
@@ -233,7 +240,7 @@ Use 'info all' to see available targets.
     # Run subcommand
     run_parser = subparsers.add_parser("run", help="Run target")
     run_parser.add_argument(
-        "target", choices=available_targets, metavar="TARGET", help="Target to run"
+        "target", metavar="TARGET", help="Target to run"
     )
 
     docker_group = run_parser.add_mutually_exclusive_group()
@@ -276,7 +283,6 @@ Use 'info all' to see available targets.
     info_parser = subparsers.add_parser("info", help="Show target information")
     info_parser.add_argument(
         "target",
-        choices=available_targets + ["all"],
         metavar="TARGET",
         help='Target to show info for (or "all" for all targets)',
     )
@@ -285,7 +291,6 @@ Use 'info all' to see available targets.
     clean_parser = subparsers.add_parser("clean", help="Clean target files")
     clean_parser.add_argument(
         "target",
-        choices=available_targets + ["all"],
         metavar="TARGET",
         help='Target to clean (or "all" for all targets)',
     )
@@ -1079,10 +1084,14 @@ def run_target(target: str, os_name: str, args=None) -> None:
 
 
 def main():
-    global RUN_DOCKER
+    global RUN_DOCKER, TARGETS_FILE, TARGETS
 
     parser = create_parser()
     args = parser.parse_args()
+
+    if args.targets_file:
+        TARGETS_FILE = args.targets_file
+    TARGETS = load_targets()
 
     action = args.action
     target = getattr(args, 'target', None)
