@@ -112,61 +112,18 @@ def load_targets() -> Dict[str, Target]:
     """Load target configuration from JSON file and convert to Target instances."""
     try:
         with open(TARGETS_FILE, "r") as f:
-            targets_data = json.load(f)
+            text = f.read().replace("{SOCK_PATH}", CONTAINER_SOCK_PATH)
     except FileNotFoundError:
         print(f"Error: targets.json not found at {TARGETS_FILE}")
         sys.exit(1)
+
+    try:
+        targets_data = json.loads(text)
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON in targets.json: {e}")
         sys.exit(1)
 
-    targets = {}
-
-    for target_name, target_config in targets_data.items():
-        # Process string values to replace {SOCK_PATH} placeholder
-        processed_config = {}
-        for key, value in target_config.items():
-            if isinstance(value, str) and "{SOCK_PATH}" in value:
-                processed_config[key] = value.format(SOCK_PATH=CONTAINER_SOCK_PATH)
-            elif isinstance(value, dict):
-                # Handle nested dictionaries (file.linux, cmd.macos, etc.)
-                processed_dict = {}
-                for sub_key, sub_value in value.items():
-                    if isinstance(sub_value, str) and "{SOCK_PATH}" in sub_value:
-                        processed_dict[sub_key] = sub_value.format(
-                            SOCK_PATH=CONTAINER_SOCK_PATH
-                        )
-                    elif isinstance(sub_value, list):
-                        # Handle lists in nested dictionaries
-                        processed_list = []
-                        for item in sub_value:
-                            if isinstance(item, str) and "{SOCK_PATH}" in item:
-                                processed_list.append(
-                                    item.format(SOCK_PATH=CONTAINER_SOCK_PATH)
-                                )
-                            else:
-                                processed_list.append(item)
-                        processed_dict[sub_key] = processed_list
-                    else:
-                        processed_dict[sub_key] = sub_value
-                processed_config[key] = processed_dict
-            elif isinstance(value, list):
-                # Handle lists (args, cmd as list)
-                processed_list = []
-                for item in value:
-                    if isinstance(item, str) and "{SOCK_PATH}" in item:
-                        processed_list.append(item.format(SOCK_PATH=CONTAINER_SOCK_PATH))
-                    else:
-                        processed_list.append(item)
-                processed_config[key] = processed_list
-            elif isinstance(value, str) and "{SOCK_PATH}" in value:
-                processed_config[key] = value.format(SOCK_PATH=CONTAINER_SOCK_PATH)
-            else:
-                processed_config[key] = value
-
-        targets[target_name] = Target(name=target_name, **processed_config)
-
-    return targets
+    return {name: Target(name=name, **cfg) for name, cfg in targets_data.items()}
 
 
 # Target configuration is loaded in main() after CLI args are parsed,
