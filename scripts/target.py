@@ -23,10 +23,6 @@ ssl._create_default_https_context = ssl._create_unverified_context
 # Can be overridden via JAM_FUZZ_DATA_PATH environment variable (set by fuzz-workflow.py per session).
 HOST_DATA_PATH = os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz")
 
-# HOST-side path to the Unix domain socket used for fuzzer-target communication.
-# Always derived from HOST_DATA_PATH; socket file is created inside the mounted data directory.
-HOST_SOCK_PATH = os.path.join(HOST_DATA_PATH, "fuzz.sock")
-
 # Used to run binaries when target is not provided as a docker image
 DEFAULT_DOCKER_IMAGE = "debian:stable-slim"
 
@@ -79,10 +75,6 @@ class Target:
             return self.cmd
         return self.cmd.get(os_name)
 
-    def get_args(self) -> Optional[str]:
-        """Get the arguments."""
-        return self.args
-
     def supports_os(self, os_name: str) -> bool:
         """Check if target supports the given OS."""
         if not self.file:
@@ -124,11 +116,7 @@ TARGETS: Dict[str, "Target"] = {}
 
 
 def get_target(target: str) -> Optional[Target]:
-    if target in TARGETS:
-        return TARGETS[target]
-    else:
-        print(f"Error: Target {target} not found")
-        return None
+    return TARGETS.get(target)
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -289,13 +277,6 @@ def target_supports_os(name: str, os_name: str) -> bool:
     return True
 
 
-def get_target_file(name: str, os_name: str) -> Optional[str]:
-    target = get_target(name)
-    if target is None:
-        return None
-    return target.get_file(os_name)
-
-
 def post_actions(target_name: str, os_name: str) -> bool:
     target = get_target(target_name)
     if not target:
@@ -432,7 +413,7 @@ def get_docker_image(target: str) -> bool:
 def get_github_release(target: str, os_name: str) -> bool:
     target_obj = TARGETS[target]
     repo = target_obj.repo
-    file = get_target_file(target, os_name)
+    file = target_obj.get_file(os_name)
 
     if not repo:
         print(f"Error: missing repository information for {target}")
@@ -771,6 +752,7 @@ def handle_info_action(target: str, os_name: str) -> bool:
     else:
         target_obj = get_target(target)
         if target_obj is None:
+            print(f"Error: Target {target} not found")
             return False
         print_target_info(target_obj, os_name)
     return True
@@ -932,9 +914,8 @@ def run_target(target: str, os_name: str, args=None) -> None:
             sys.exit(1)
 
     full_command = f"./{command}"
-    command_args = target_obj.get_args()
-    if command_args is not None:
-        full_command += f" {command_args}"
+    if target_obj.args is not None:
+        full_command += f" {target_obj.args}"
     if args.target_args:
         full_command += f" {args.target_args}"
 
