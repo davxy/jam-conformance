@@ -8,7 +8,6 @@ import shutil
 import json
 import urllib.request
 import signal
-import time
 import argparse
 import random
 import shlex
@@ -42,12 +41,11 @@ class Config:
     # CLI/env-driven values
     host_data_path: str       # JAM_FUZZ_DATA_PATH
     docker_cpu_set: str       # JAM_FUZZ_DOCKER_CPU_SET
-    run_docker: bool          # JAM_FUZZ_RUN_DOCKER, --no-docker
     targets_dir: str          # JAM_FUZZ_TARGETS_DIR
     targets_file: str         # JAM_FUZZ_TARGETS_FILE, --targets-file
     spec: str                 # JAM_FUZZ_SPEC, --spec
     log_level: str            # JAM_FUZZ_LOG_LEVEL
-    os_name: str              # --os; defaults to "linux" when run_docker, else host OS
+    os_name: str              # --os; defaults to "linux" since targets run in docker
 
     # True constants
     DEFAULT_DOCKER_IMAGE: ClassVar[str] = "debian:stable-slim"
@@ -59,37 +57,21 @@ class Config:
     SCRIPT_DIR: ClassVar[str] = os.path.dirname(os.path.abspath(__file__))
     HOST_OS: ClassVar[Optional[str]] = _detect_host_os()
 
-    @staticmethod
-    def _parse_bool(s: str) -> bool:
-        return s.strip().lower() in ("1", "true", "yes", "y", "on")
-
     @classmethod
     def from_args(cls, args) -> "Config":
         cpu_default = f"0-{os.cpu_count() - 1}" if os.cpu_count() and os.cpu_count() > 1 else "0"
 
-        run_docker = cls._parse_bool(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
         spec = os.environ.get("JAM_FUZZ_SPEC", "tiny")
-        if args.action == "run":
-            if args.no_docker:
-                run_docker = False
-            if args.spec:
-                spec = args.spec
+        if args.action == "run" and args.spec:
+            spec = args.spec
 
-        if args.os:
-            os_name = args.os
-        elif run_docker:
-            # Targets always run on linux inside the Debian container.
-            os_name = "linux"
-        elif cls.HOST_OS is None:
-            print("Unsupported OS", file=sys.stderr)
-            sys.exit(1)
-        else:
-            os_name = cls.HOST_OS
+        # Targets always run inside the linux/amd64 Debian container, so
+        # default to linux unless the user explicitly asks for another OS.
+        os_name = args.os or "linux"
 
         return cls(
             host_data_path=os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz"),
             docker_cpu_set=os.environ.get("JAM_FUZZ_DOCKER_CPU_SET", cpu_default),
-            run_docker=run_docker,
             targets_dir=os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{cls.CURRENT_DIR}/targets"),
             targets_file=args.targets_file or os.environ.get(
                 "JAM_FUZZ_TARGETS_FILE", f"{cls.SCRIPT_DIR}/targets.json"
@@ -175,14 +157,12 @@ Examples:
   %(prog)s get jamzig                 # Download jamzig target
   %(prog)s run boka                   # Run boka target
   %(prog)s --os macos get jamzig      # Download jamzig for macOS
-  %(prog)s run --no-docker spacejam   # Run spacejam directly on host
   %(prog)s info boka                  # Show info for boka target
 
 Environment variables (all overridable via CLI flags listed above):
   JAM_FUZZ_TARGETS_FILE    Path to targets JSON file (default: <script>/targets.json)
   JAM_FUZZ_TARGETS_DIR     Where downloaded targets are stored (default: ./targets)
   JAM_FUZZ_DATA_PATH       Host data directory (default: /tmp/jam_fuzz)
-  JAM_FUZZ_RUN_DOCKER      Run in Docker (1/true/yes) or host (0/false/no) (default: 1)
   JAM_FUZZ_DOCKER_CPU_SET  CPU set for Docker containers (default: all cores)
   JAM_FUZZ_SPEC            Specification: tiny or full (default: tiny)
   JAM_FUZZ_LOG_LEVEL       Log level forwarded to the target (default: info)
@@ -226,11 +206,6 @@ Environment variables (all overridable via CLI flags listed above):
         "target", metavar="TARGET", help="Target to run"
     )
 
-    run_parser.add_argument(
-        "--no-docker",
-        action="store_true",
-        help="Run on host instead of Docker (overrides JAM_FUZZ_RUN_DOCKER env var)",
-    )
     run_parser.add_argument(
         "--target-args",
         type=str,
@@ -767,66 +742,24 @@ def run_target(target: Target, args) -> None:
     if args.target_args:
         full_command += f" {args.target_args}"
 
-    if CONFIG.run_docker:
-        # Ensure the default Docker image is available locally
-        try:
-            subprocess.run(
-                ["docker", "image", "inspect", CONFIG.DEFAULT_DOCKER_IMAGE],
-                check=True, capture_output=True,
-            )
-        except subprocess.CalledProcessError:
-            print(f"Docker image '{CONFIG.DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
-            subprocess.run(
-                ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
-                check=True,
-            )
-        # Wrap the host binary in a dedicated default Docker image.
-        # `target.repo` is left intact, which run_docker_image uses as the
-        # signal to mount the downloaded host-binary directory into /jam.
-        target.image = CONFIG.DEFAULT_DOCKER_IMAGE
-        target.cmd = full_command
-        run_docker_image(target, args)
-    else:
-        cleanup_done = False
-        target_pid = None
-
-        def cleanup():
-            nonlocal cleanup_done, target_pid
-            if cleanup_done:
-                return
-            cleanup_done = True
-
-            print(f"Cleaning up {target.name}...")
-            if target_pid:
-                print(f"Killing target {target_pid}...")
-                try:
-                    os.kill(target_pid, signal.SIGTERM)
-                    time.sleep(1)
-                    os.kill(target_pid, signal.SIGKILL)
-                except ProcessLookupError:
-                    pass
-            _clean_host_data()
-
-        _install_cleanup_handlers(cleanup)
-
-        # Build the child env explicitly so we don't leak overrides into the
-        # parent process. JAM_FUZZ_SPEC must be forwarded since downstream
-        # targets read it from their environment.
-        child_env = os.environ.copy()
-        child_env["JAM_FUZZ_SPEC"] = CONFIG.spec
-        for var_string in (target.env or "", args.target_env):
-            for var in var_string.split():
-                if "=" in var:
-                    key, value = var.split("=", 1)
-                    child_env[key] = value
-
-        try:
-            process = subprocess.Popen(full_command, shell=True, env=child_env, cwd=target_dir)
-            target_pid = process.pid
-            print(f"Waiting for target termination (pid={target_pid})")
-            process.wait()
-        finally:
-            cleanup()
+    # Ensure the default Docker image is available locally
+    try:
+        subprocess.run(
+            ["docker", "image", "inspect", CONFIG.DEFAULT_DOCKER_IMAGE],
+            check=True, capture_output=True,
+        )
+    except subprocess.CalledProcessError:
+        print(f"Docker image '{CONFIG.DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
+        subprocess.run(
+            ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
+            check=True,
+        )
+    # Wrap the host binary in a dedicated default Docker image.
+    # `target.repo` is left intact, which run_docker_image uses as the
+    # signal to mount the downloaded host-binary directory into /jam.
+    target.image = CONFIG.DEFAULT_DOCKER_IMAGE
+    target.cmd = full_command
+    run_docker_image(target, args)
 
 
 def main():
