@@ -1,3 +1,4 @@
 target
 **/targets/
 **/sessions/
+**/__pycache__

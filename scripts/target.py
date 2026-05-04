@@ -48,7 +48,7 @@ class Config:
 
     @classmethod
     def from_args(cls, args) -> "Config":
-        cpu_default = f"0-{os.cpu_count() - 1}" if os.cpu_count() and os.cpu_count() > 1 else "0"
+        cpu_default = f"0-{os.cpu_count() - 1}"
 
         spec = os.environ.get("JAM_FUZZ_SPEC", "tiny")
         if args.action == "run" and args.spec:
@@ -218,14 +218,6 @@ def _clean_host_data() -> None:
         shutil.rmtree(CONFIG.host_data_path)
     except FileNotFoundError:
         pass
-
-
-def _install_cleanup_handlers(cleanup_fn) -> None:
-    def handler(signum, frame):
-        cleanup_fn()
-        sys.exit(0)
-    signal.signal(signal.SIGINT, handler)
-    signal.signal(signal.SIGTERM, handler)
 
 
 # Trailing suffixes -> extractor command. Multi-suffix entries must come first
@@ -418,7 +410,11 @@ def run_docker_image(target: Target, args) -> None:
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
         _clean_host_data()
 
-    _install_cleanup_handlers(cleanup)
+    def signal_handler(signum, frame):
+        cleanup()
+        sys.exit(0)
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
 
     # Pre-flight cleanup: remove any existing container with the same name
     print(f"Ensuring no leftover container with name {container_name}...")
@@ -535,6 +531,43 @@ def run_docker_image(target: Target, args) -> None:
         cleanup()
 
 
+def run_target(target: Target, args) -> None:
+    if not target.cmd:
+        print(f"Error: No run command specified for {target.name}")
+        return
+
+    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
+    if not target_dir.exists():
+        print(f"Error: Target dir not found: {target_dir}")
+        print(f"Get the target first with: get {target.name}")
+        sys.exit(1)
+
+    full_command = f"./{target.cmd}"
+    if target.args is not None:
+        full_command += f" {target.args}"
+    if args.target_args:
+        full_command += f" {args.target_args}"
+
+    # Ensure the default Docker image is available locally
+    try:
+        subprocess.run(
+            ["docker", "image", "inspect", CONFIG.DEFAULT_DOCKER_IMAGE],
+            check=True, capture_output=True,
+        )
+    except subprocess.CalledProcessError:
+        print(f"Docker image '{CONFIG.DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
+        subprocess.run(
+            ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
+            check=True,
+        )
+    # Wrap the host binary in a dedicated default Docker image.
+    # `target.repo` is left intact, which run_docker_image uses as the
+    # signal to mount the downloaded host-binary directory into /jam.
+    target.image = CONFIG.DEFAULT_DOCKER_IMAGE
+    target.cmd = full_command
+    run_docker_image(target, args)
+
+
 def print_target_info(target: Target) -> None:
     """Print detailed information about a target."""
     print(f"Name: {target.name}")
@@ -549,9 +582,9 @@ def print_target_info(target: Target) -> None:
         target_type.append("Repository")
     print(f"Type: {', '.join(target_type)}")
 
-    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
     if target.is_repo_target():
         print(f"Repository: https://github.com/{target.repo}")
+        target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
         if target_dir.exists():
             print(f"Downloaded: {target_dir}")
     elif target.is_docker_target():
@@ -581,14 +614,9 @@ def handle_info_action(target: Target) -> bool:
 def handle_get_action(target: Target) -> bool:
     """Handle the get action for a target."""
     print(f"Downloading {target.name}...")
-
     if target.is_repo_target():
         return get_github_release(target)
-    if target.is_docker_target():
-        return get_docker_image(target)
-
-    print(f"Error: Target {target.name} has neither repo nor image configured")
-    return False
+    return get_docker_image(target)
 
 
 def handle_list_action(all_targets: Dict[str, Target], gp_version: Optional[str]) -> bool:
@@ -636,50 +664,9 @@ def handle_run_action(target: Target, args) -> bool:
     """Handle the run action for a target."""
     if target.is_docker_target():
         run_docker_image(target, args)
-        return True
-    if target.is_repo_target():
+    else:
         run_target(target, args)
-        return True
-
-    print(f"Error: Target {target.name} has neither repo nor image configured")
-    return False
-
-
-def run_target(target: Target, args) -> None:
-    if not target.cmd:
-        print(f"Error: No run command specified for {target.name}")
-        return
-
-    target_dir = Path(f"{CONFIG.targets_dir}/{target.name}/latest")
-    if not target_dir.exists():
-        print(f"Error: Target dir not found: {target_dir}")
-        print(f"Get the target first with: get {target.name}")
-        sys.exit(1)
-
-    full_command = f"./{target.cmd}"
-    if target.args is not None:
-        full_command += f" {target.args}"
-    if args.target_args:
-        full_command += f" {args.target_args}"
-
-    # Ensure the default Docker image is available locally
-    try:
-        subprocess.run(
-            ["docker", "image", "inspect", CONFIG.DEFAULT_DOCKER_IMAGE],
-            check=True, capture_output=True,
-        )
-    except subprocess.CalledProcessError:
-        print(f"Docker image '{CONFIG.DEFAULT_DOCKER_IMAGE}' not found locally. Pulling...")
-        subprocess.run(
-            ["docker", "pull", "--platform", CONFIG.DOCKER_PLATFORM, CONFIG.DEFAULT_DOCKER_IMAGE],
-            check=True,
-        )
-    # Wrap the host binary in a dedicated default Docker image.
-    # `target.repo` is left intact, which run_docker_image uses as the
-    # signal to mount the downloaded host-binary directory into /jam.
-    target.image = CONFIG.DEFAULT_DOCKER_IMAGE
-    target.cmd = full_command
-    run_docker_image(target, args)
+    return True
 
 
 def main():
