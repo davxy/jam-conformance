@@ -29,7 +29,7 @@ class Config:
     # CLI/env-driven values
     host_data_path: str       # JAM_FUZZ_DATA_PATH
     docker_cpu_set: str       # JAM_FUZZ_DOCKER_CPU_SET
-    run_docker: bool          # JAM_FUZZ_RUN_DOCKER, --docker/--no-docker
+    run_docker: bool          # JAM_FUZZ_RUN_DOCKER, --no-docker
     targets_dir: str          # JAM_FUZZ_TARGETS_DIR
     targets_file: str         # JAM_FUZZ_TARGETS_FILE, --targets-file
     spec: str                 # JAM_FUZZ_SPEC, --spec
@@ -55,9 +55,7 @@ class Config:
         run_docker = cls._parse_bool(os.environ.get("JAM_FUZZ_RUN_DOCKER", "1"))
         spec = os.environ.get("JAM_FUZZ_SPEC", "tiny")
         if args.action == "run":
-            if args.docker:
-                run_docker = True
-            elif args.no_docker:
+            if args.no_docker:
                 run_docker = False
             if args.spec:
                 spec = args.spec
@@ -214,16 +212,10 @@ Use 'info all' to see available targets.
         "target", metavar="TARGET", help="Target to run"
     )
 
-    docker_group = run_parser.add_mutually_exclusive_group()
-    docker_group.add_argument(
-        "--docker",
-        action="store_true",
-        help="Force Docker usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
-    )
-    docker_group.add_argument(
+    run_parser.add_argument(
         "--no-docker",
         action="store_true",
-        help="Force host usage (overrides JAM_FUZZ_RUN_DOCKER env var)",
+        help="Run on host instead of Docker (overrides JAM_FUZZ_RUN_DOCKER env var)",
     )
     run_parser.add_argument(
         "--target-args",
