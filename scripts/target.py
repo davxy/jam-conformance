@@ -21,6 +21,16 @@ import platform
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+
+def _detect_host_os() -> Optional[str]:
+    s = platform.system().lower()
+    if s == "linux":
+        return "linux"
+    if s == "darwin":
+        return "macos"
+    return None
+
+
 @dataclass
 class Config:
     """Constants and runtime configuration for the script.
@@ -47,6 +57,7 @@ class Config:
     CONTAINER_SOCK_PATH: ClassVar[str] = "/tmp/jam_fuzz/fuzz.sock"
     CURRENT_DIR: ClassVar[str] = os.getcwd()
     SCRIPT_DIR: ClassVar[str] = os.path.dirname(os.path.abspath(__file__))
+    HOST_OS: ClassVar[Optional[str]] = _detect_host_os()
 
     @staticmethod
     def _parse_bool(s: str) -> bool:
@@ -69,11 +80,11 @@ class Config:
         elif run_docker:
             # Targets always run on linux inside the Debian container.
             os_name = "linux"
+        elif cls.HOST_OS is None:
+            print("Unsupported OS", file=sys.stderr)
+            sys.exit(1)
         else:
-            os_name = get_os()
-            if os_name is None:
-                print("Unsupported OS", file=sys.stderr)
-                sys.exit(1)
+            os_name = cls.HOST_OS
 
         return cls(
             host_data_path=os.environ.get("JAM_FUZZ_DATA_PATH", "/tmp/jam_fuzz"),
@@ -272,21 +283,25 @@ Environment variables (all overridable via CLI flags listed above):
     return parser
 
 
-def get_os() -> Optional[str]:
-    system = platform.system().lower()
-    if system == "linux":
-        return "linux"
-    elif system == "darwin":
-        return "macos"
-    else:
-        return None
-
-
 def _clean_host_data() -> None:
     try:
         shutil.rmtree(CONFIG.host_data_path)
     except FileNotFoundError:
         pass
+
+
+# Trailing suffixes -> extractor command. Multi-suffix entries must come first
+# so e.g. .tar.gz isn't peeled as just .tar.
+ARCHIVE_EXTRACTORS = [
+    ((".tar", ".gz"),  ["tar", "-xzf"]),
+    ((".tar", ".bz2"), ["tar", "-xjf"]),
+    ((".tar", ".xz"),  ["tar", "-xJf"]),
+    ((".zip",),        ["unzip"]),
+    ((".tgz",),        ["tar", "-xzf"]),
+    ((".tbz2",),       ["tar", "-xjf"]),
+    ((".txz",),        ["tar", "-xJf"]),
+    ((".tar",),        ["tar", "-xf"]),
+]
 
 
 def post_actions(target: Target) -> bool:
@@ -300,48 +315,17 @@ def post_actions(target: Target) -> bool:
     # Extract nested archives by peeling off extensions
     current_file = target_dir / file
     while current_file.exists():
-        if current_file.suffix == ".zip":
-            print(f"Extracting zip archive: {current_file}")
-            subprocess.run(["unzip", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("")
-        elif current_file.suffixes[-2:] == [".tar", ".gz"]:
-            print(f"Extracting tar.gz archive: {current_file}")
-            subprocess.run(["tar", "-xzf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("").with_suffix("")
-        elif current_file.suffix == ".tgz":
-            print(f"Extracting tgz archive: {current_file}")
-            subprocess.run(["tar", "-xzf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("")
-        elif current_file.suffixes[-2:] == [".tar", ".bz2"]:
-            print(f"Extracting tar.bz2 archive: {current_file}")
-            subprocess.run(["tar", "-xjf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("").with_suffix("")
-        elif current_file.suffix == ".tbz2":
-            print(f"Extracting tbz2 archive: {current_file}")
-            subprocess.run(["tar", "-xjf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("")
-        elif current_file.suffixes[-2:] == [".tar", ".xz"]:
-            print(f"Extracting tar.xz archive: {current_file}")
-            subprocess.run(["tar", "-xJf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("").with_suffix("")
-        elif current_file.suffix == ".txz":
-            print(f"Extracting txz archive: {current_file}")
-            subprocess.run(["tar", "-xJf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("")
-        elif current_file.suffix == ".tar":
-            print(f"Extracting tar archive: {current_file}")
-            subprocess.run(["tar", "-xf", str(current_file)], check=True, cwd=target_dir)
-            current_file.unlink()
-            current_file = current_file.with_suffix("")
+        for suffixes, cmd in ARCHIVE_EXTRACTORS:
+            if tuple(current_file.suffixes[-len(suffixes):]) == suffixes:
+                ext = "".join(suffixes).lstrip(".")
+                print(f"Extracting {ext} archive: {current_file}")
+                subprocess.run(cmd + [str(current_file)], check=True, cwd=target_dir)
+                current_file.unlink()
+                for _ in suffixes:
+                    current_file = current_file.with_suffix("")
+                break
         else:
-            # Not an archive, make it executable and stop
+            # No archive matched: treat as the final binary
             print(f"Making file executable: {current_file}")
             current_file.chmod(0o755)
             break
@@ -597,8 +581,7 @@ def run_docker_image(target: Target, args) -> None:
         docker_cmd.extend(shlex.split(target.cmd))
 
     # Add priority args for Linux if requested
-    current_os = get_os()
-    if current_os == "linux" and args.docker_elevate_priority:
+    if Config.HOST_OS == "linux" and args.docker_elevate_priority:
         priority_cmd = [
             "sudo",
             "chrt",
