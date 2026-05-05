@@ -1,17 +1,32 @@
 #!/usr/bin/env python3
 
-# Generate reports from existing session folders.
-# This script takes a session folder and regenerates reports from the traces found there.
-# It mimics the report generation logic from fuzz-workflow.py but works on existing sessions.
+"""
+Regenerate a fuzzer report from a previously captured traces folder,
+without rerunning the fuzzer. This is the report-generation logic from
+fuzz-workflow.py extracted to operate on existing trace data.
 
-# example command: scripts/.venv/bin/python3 scripts/generate-session-reports.py scripts/sessions/<session-number> --spec tiny
-# (target is auto-detected from logs, but can be overridden with --target)
+Usage:
+    scripts/generate-report.py <traces-dir> --spec <tiny/full>
+
+The traces directory must contain the binary step files written by
+the fuzzer (genesis.bin and NNNNNNNN.bin, plus optionally report.bin).
+
+Steps are decoded from SCALE to JSON using the jam_types codecs and
+processed newest-first. With --report-prune, only a linear chain of
+ancestor blocks is kept (siblings whose parent matches the previously
+seen step are dropped). The walk stops once --report-depth distinct
+ancestors have been emitted (default 2).
+
+Decoded JSON and the matching .bin files land in ./report/ under the
+current working directory; report.bin, when present, is decoded into
+report.json there as well. Pass --overwrite to replace an existing
+report directory.
+"""
 
 import json
 import os
 import re
 import shutil
-import sys
 import tempfile
 import argparse
 
@@ -19,21 +34,15 @@ from jam_types import ScaleBytes
 from jam_types import spec
 from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
 
-# Set JAM_CONFORMANCE_DIR relative to the script's actual location
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-JAM_CONFORMANCE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
-
-DEFAULT_GP_VERSION = "0.7.2"
-
 
 def parse_command_line_args():
     parser = argparse.ArgumentParser(
-        description="Generate reports from existing session folders"
+        description="Generate a report from an existing traces folder"
     )
     parser.add_argument(
-        "session_dir",
+        "traces_dir",
         type=str,
-        help="Path to the session directory containing traces",
+        help="Path to the directory containing the binary trace files",
     )
     parser.add_argument(
         "-s",
@@ -46,23 +55,6 @@ def parse_command_line_args():
         "--report-prune",
         action="store_true",
         help="Exclude stale siblings from report chain",
-    )
-    parser.add_argument(
-        "--report-publish",
-        action="store_true",
-        help="Publish report to JAM_CONFORMANCE_DIR",
-    )
-    parser.add_argument(
-        "--gp-version",
-        type=str,
-        default=DEFAULT_GP_VERSION,
-        help=f"Gray Paper version (default: {DEFAULT_GP_VERSION})",
-    )
-    parser.add_argument(
-        "--target",
-        type=str,
-        default=None,
-        help="Target name (auto-detected from logs if not specified)",
     )
     parser.add_argument(
         "--spec",
@@ -209,72 +201,6 @@ def generate_report(session_trace_dir, session_report_dir, report_depth, report_
     process_report_file(session_trace_dir, session_report_dir)
 
 
-def detect_target_from_logs(session_dir):
-    """Auto-detect target name from log filenames"""
-    logs_dir = os.path.join(session_dir, "logs")
-
-    if not os.path.exists(logs_dir):
-        return None
-
-    # Look for fuzzer_*.log or target_*.log files
-    log_files = os.listdir(logs_dir)
-    for log_file in log_files:
-        # Match fuzzer_{target}.log or target_{target}.log
-        match = re.match(r'(?:fuzzer|target)_(.+)\.log$', log_file)
-        if match:
-            target = match.group(1)
-            print(f"Auto-detected target from logs: {target}")
-            return target
-
-    return None
-
-
-def publish_report_traces(session_report_dir, session_id, gp_version):
-    """Publish trace files to the jam-conformance directory"""
-    print("* Publish report traces")
-    dest_base = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", gp_version)
-    dest_dir = os.path.join(dest_base, "traces", session_id)
-
-    os.makedirs(dest_dir, exist_ok=True)
-
-    for f in os.listdir(session_report_dir):
-        if not (
-            re.match(r"\d{8}\.(bin|json)$", f) or re.match(r"genesis\.(bin|json)$", f)
-        ):
-            print(f"Skipping non-trace file {f}")
-            continue
-        print(f"Copying trace file {f} to {dest_dir}")
-        shutil.copy(os.path.join(session_report_dir, f), dest_dir)
-    print(f"Traces copied to {dest_dir}")
-
-
-def publish_report_report(session_report_dir, session_id, target, gp_version):
-    """Publish report files to the jam-conformance directory"""
-    print("* Publish report")
-    dest_base = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", gp_version)
-    dest_dir = os.path.join(dest_base, "reports", target, session_id)
-
-    os.makedirs(dest_dir, exist_ok=True)
-
-    for f in os.listdir(session_report_dir):
-        if f not in ["report.bin", "report.json"]:
-            continue
-        print(f"Copying report file {f} to {dest_dir}")
-        shutil.copy(os.path.join(session_report_dir, f), dest_dir)
-    print(f"Reports copied to {dest_dir}")
-
-
-def publish_report(session_report_dir, session_id, target, gp_version):
-    """Publish both traces and reports to jam-conformance"""
-    print("* Publishing report")
-    if not os.path.exists(session_report_dir):
-        print(f"Error: Report directory does not exist: {session_report_dir}")
-        exit(1)
-
-    publish_report_traces(session_report_dir, session_id, gp_version)
-    publish_report_report(session_report_dir, session_id, target, gp_version)
-
-
 def main():
     args = parse_command_line_args()
 
@@ -282,36 +208,18 @@ def main():
     print(f"Setting JAM spec: {args.spec}")
     spec.set_spec(args.spec)
 
-    # Validate session directory
-    session_dir = os.path.abspath(args.session_dir)
-    if not os.path.exists(session_dir):
-        print(f"Error: Session directory does not exist: {session_dir}")
-        exit(1)
-
-    if not os.path.isdir(session_dir):
-        print(f"Error: {session_dir} is not a directory")
-        exit(1)
-
-    # Get session ID from directory name
-    session_id = os.path.basename(session_dir)
-    print(f"Processing session: {session_id}")
-
-    # Auto-detect target if not specified
-    if args.target is None:
-        args.target = detect_target_from_logs(session_dir)
-        if args.target is None:
-            args.target = "unknown"
-            print("Warning: Could not auto-detect target from logs. Using 'unknown'.")
-
-    # Define directories
-    session_trace_dir = os.path.join(session_dir, "trace")
-    session_report_dir = os.path.join(session_dir, "report")
-
-    # Check if trace directory exists
+    # Validate traces directory
+    session_trace_dir = os.path.abspath(args.traces_dir)
     if not os.path.exists(session_trace_dir):
-        print(f"Error: Trace directory not found: {session_trace_dir}")
-        print(f"Expected structure: {session_dir}/trace/")
+        print(f"Error: Traces directory does not exist: {session_trace_dir}")
         exit(1)
+
+    if not os.path.isdir(session_trace_dir):
+        print(f"Error: {session_trace_dir} is not a directory")
+        exit(1)
+
+    # Report directory in the current working directory
+    session_report_dir = os.path.abspath("report")
 
     # Create or verify report directory
     if os.path.exists(session_report_dir):
@@ -336,21 +244,6 @@ def main():
     print("")
     print("✓ Report generation complete!")
     print(f"  Report directory: {session_report_dir}")
-
-    # Optionally publish the report
-    if args.report_publish:
-        if args.target == "unknown":
-            print("Warning: No target specified. Using 'unknown' as target name.")
-            print("Use --target to specify the correct target name for publishing.")
-
-        publish_report(
-            session_report_dir,
-            session_id,
-            args.target,
-            args.gp_version
-        )
-        print("✓ Report published!")
-
     print("")
 
 
