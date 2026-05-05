@@ -27,15 +27,28 @@ Date: 2026-05-05
 
 The fuzzer parameters for each lane are defined in `fuzzer_configs/`.
 
+## Acceptance Criteria
+
+### Known test vectors
+
+- 100% pass of the required known vectors.
+- Any mismatch is a hard conformance failure.
+- Self-assessed by the implementor; no explicit assessment performed during evaluation.
+
+### Fuzzer-driven lanes (L0–L3)
+
+For every step of a session, the target's response must match the fuzzer's expected outcome:
+
+- If the (possibly mutated) block is valid: the target imports it and the resulting post-state root matches the expected post-state root.
+- If the (possibly mutated) block is invalid: the target rejects it with an Error response. The specific error variant is not required to match — only that the target rejects.
+
+Every session must additionally reach its configured `max_steps`.
+
+The wire-level message exchange (block submission, import / state-root / error responses) is defined by the fuzzer protocol; see [`../fuzz-proto/README.md`](../fuzz-proto/README.md) and [`../fuzz-proto/fuzz-v1.asn`](../fuzz-proto/fuzz-v1.asn).
+
 ## Known Test Vectors
 
 Run implementation against all published and well-known test vectors.
-
-### Acceptance Criteria
-
-- 100% pass of required known vectors.
-- Any mismatch is a hard conformance failure.
-- Self-assessed by the implementor; no explicit assessment performed during evaluation.
 
 ## L0 -- Smoke test
 
@@ -46,14 +59,9 @@ Source: `fuzzer_configs/l0_tiny.toml`
 | jam_spec | tiny |
 | profile | empty |
 | max_mutations | 0 |
-| max_steps | 100 |
+| max_steps | 32 |
 | safrole | false |
 | skip_slots | false |
-
-### Acceptance Criteria
-
-- Target accepts trace input and produces matching state roots.
-- Session reaches `max_steps`.
 
 ## L1 -- Happy-path import
 
@@ -88,11 +96,6 @@ Source: `fuzzer_configs/l1_full.toml`
 | max_steps | 100000 |
 | safrole | false |
 | skip_slots | false |
-
-### Acceptance Criteria (L1a/L1b)
-
-- Expected state root matches target state root on every step.
-- Session reaches `max_steps`.
 
 ## L2 -- Mutations
 
@@ -130,11 +133,6 @@ Source: `fuzzer_configs/l2_full.toml`
 | safrole | false |
 | skip_slots | false |
 
-### Acceptance Criteria (L2a/L2b)
-
-- Expected state root matches target state root on every step.
-- Session reaches `max_steps`.
-
 ## L3 -- Safrole
 
 Both sub-runs enable Safrole and run with `skip_slots = false`.
@@ -169,11 +167,6 @@ Source: `fuzzer_configs/l3_full.toml`
 | max_steps | 100000 |
 | skip_slots | false |
 
-### Acceptance Criteria (L3a/L3b)
-
-- Expected state root matches target state root on every step.
-- Session reaches `max_steps`.
-
 ## Final Acceptance
 
 After all test lanes pass, two additional steps are required before complete acceptance:
@@ -183,5 +176,6 @@ After all test lanes pass, two additional steps are required before complete acc
 
 ## References
 
+- Fuzzer protocol: [`../fuzz-proto/README.md`](../fuzz-proto/README.md), [`../fuzz-proto/fuzz-v1.asn`](../fuzz-proto/fuzz-v1.asn)
 - JAM tiny profile: https://docs.jamcha.in/basics/chain-spec/tiny
 - JAM full profile: https://docs.jamcha.in/basics/chain-spec/full

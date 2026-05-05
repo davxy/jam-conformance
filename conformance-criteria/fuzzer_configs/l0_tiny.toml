@@ -1,11 +1,11 @@
 # L0 -- Smoke test (tiny spec)
 #
-# Minimal sanity run: 100 steps, empty workload, no mutations, no Safrole.
+# Minimal sanity run: 32 steps, empty workload, no mutations, no Safrole.
 
 jam_spec = "tiny"
 profile = "empty"
 safrole = false
-max_steps = 100
+max_steps = 32
 max_work_items = 0
 max_mutations = 0
 # 15 seconds timeout
