@@ -7,6 +7,14 @@ Date: 2026-05-05
 - Ensure that a team's Jam implementation is conformant to the M1 milestone.
 - Define test programme that all teams have to satisfy with explicit parameters and acceptance criteria
 
+## Versions
+
+Conformance runs must use tooling matching the Gray Paper version targeted by the implementation. The accepted minimum is GP 0.7.2; later releases are accepted as their tooling rows are added below.
+
+| GP version | Fuzzer | jam-types-py |
+|------------|--------|--------------|
+| 0.7.2 | [`fuzzer-gp-0.7.2`](https://github.com/paritytech/polkajam/releases/tag/fuzzer-gp-0.7.2) | [`v0.7.2`](https://github.com/davxy/jam-types-py/releases/tag/v0.7.2) |
+
 ## Test structure
 
 - Teams have to satisfy different tests to cover as much as possible about the Jam specification.
@@ -46,9 +54,21 @@ Every session must additionally reach its configured `max_steps`.
 
 The wire-level message exchange (block submission, import / state-root / error responses) is defined by the fuzzer protocol; see [`../fuzz-proto/README.md`](../fuzz-proto/README.md) and [`../fuzz-proto/fuzz-v1.asn`](../fuzz-proto/fuzz-v1.asn).
 
+## Submission
+
+The implementor submits the target as a Docker image conforming to the [Standard Target Packaging](../fuzz-proto/README.md#standard-target-packaging) section of the fuzzer protocol. In summary:
+
+- `linux/amd64` Docker image, kept minimal.
+- Reads `JAM_FUZZ`, `JAM_FUZZ_SPEC`, `JAM_FUZZ_DATA_PATH` and `JAM_FUZZ_SOCK_PATH` from the environment (plus the optional `JAM_FUZZ_LOG_LEVEL`); refuses to start if any required variable is missing.
+- Listens on the configured Unix domain socket and supports multiple fuzzer sessions in sequence, with exactly one `Initialize` message per session.
+
+Each lane is run against the submitted image using the corresponding `fuzzer_configs/*.toml`. Resulting traces, reports and summaries are published under [`../fuzz-reports/<gp-version>/`](../fuzz-reports/); see [`../fuzz-reports/README.md`](../fuzz-reports/README.md) for the layout and team registry.
+
+The known test vectors lane requires no submission beyond the implementor's self-assessment.
+
 ## Known Test Vectors
 
-Run implementation against all published and well-known test vectors.
+Run the implementation against the published JAM test vectors at https://github.com/davxy/jam-test-vectors.
 
 ## L0 -- Smoke test
 
@@ -177,5 +197,6 @@ After all test lanes pass, two additional steps are required before complete acc
 ## References
 
 - Fuzzer protocol: [`../fuzz-proto/README.md`](../fuzz-proto/README.md), [`../fuzz-proto/fuzz-v1.asn`](../fuzz-proto/fuzz-v1.asn)
+- JAM test vectors: https://github.com/davxy/jam-test-vectors
 - JAM tiny profile: https://docs.jamcha.in/basics/chain-spec/tiny
 - JAM full profile: https://docs.jamcha.in/basics/chain-spec/full
