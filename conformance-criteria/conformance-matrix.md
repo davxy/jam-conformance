@@ -18,7 +18,7 @@ Date: 2026-05-05
     * L1 -- Happy-path import: import without mutations or Safrole.
         - L1a -- Tiny spec
         - L1b -- Full spec
-    * L2 -- Mutations: happy-path import together with mutation/error handling, without Safrole.
+    * L2 -- Mutations: import with mutation/error handling, without Safrole.
         - L2a -- Tiny spec
         - L2b -- Full spec
     * L3 -- Safrole: exercise Safrole, no mutations.
@@ -73,7 +73,6 @@ Source: `fuzzer_configs/l1_tiny.toml`
 | max_steps | 100000 |
 | safrole | false |
 | skip_slots | false |
-| seeds | 10 random |
 
 ### L1b -- Full
 
@@ -89,7 +88,6 @@ Source: `fuzzer_configs/l1_full.toml`
 | max_steps | 100000 |
 | safrole | false |
 | skip_slots | false |
-| seeds | 10 random |
 
 ### Acceptance Criteria (L1a/L1b)
 
@@ -115,7 +113,6 @@ Source: `fuzzer_configs/l2_tiny.toml`
 | max_steps | 1000000 |
 | safrole | false |
 | skip_slots | false |
-| seeds | 10 random |
 
 ### L2b -- Full
 
@@ -132,7 +129,6 @@ Source: `fuzzer_configs/l2_full.toml`
 | max_steps | 1000000 |
 | safrole | false |
 | skip_slots | false |
-| seeds | 10 random |
 
 ### Acceptance Criteria (L2a/L2b)
 
@@ -157,7 +153,6 @@ Source: `fuzzer_configs/l3_tiny.toml`
 | max_work_items | 3 |
 | max_steps | 100000 |
 | skip_slots | false |
-| seeds | 10 random |
 
 ### L3b -- empty workload
 
@@ -165,7 +160,7 @@ Source: `fuzzer_configs/l3_full.toml`
 
 | Parameter | Value |
 |-----------|-------|
-| jam_spec | tiny |
+| jam_spec | full |
 | profile | empty |
 | fuzzy_profile | empty |
 | safrole | true |
@@ -173,7 +168,6 @@ Source: `fuzzer_configs/l3_full.toml`
 | max_work_items | 0 |
 | max_steps | 100000 |
 | skip_slots | false |
-| seeds | 10 random |
 
 ### Acceptance Criteria (L3a/L3b)
 

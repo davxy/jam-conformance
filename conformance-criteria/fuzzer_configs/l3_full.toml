@@ -1,8 +1,8 @@
-# L3 -- Safrole (tiny spec, empty workload)
+# L3 -- Safrole (full spec, empty workload)
 #
 # 100K steps with Safrole enabled, no work items, no mutations.
 
-jam_spec = "tiny"
+jam_spec = "full"
 profile = "empty"
 fuzzy_profile = "empty"
 safrole = true
