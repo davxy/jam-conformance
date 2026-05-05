@@ -1,32 +1,27 @@
 # L3 -- Safrole (tiny spec, empty workload)
 #
 # 100K steps with Safrole enabled, no work items, no mutations.
-# Exercises Safrole slot/epoch transitions on a minimal workload.
-# Acceptance: state roots match on every step; run reaches `max_steps`.
-
-source = "local"
 
 jam_spec = "tiny"
 profile = "empty"
 fuzzy_profile = "empty"
+safrole = true
 max_steps = 100000
 max_work_items = 0
 max_mutations = 0
+# Use u32::max to enable target pause/resume
 remote_timeout = 4294967295
-safrole = true
-
-# If required, overwrite via `--target-sock` CLI option
-target_sock = "/tmp/jam_fuzz/fuzz.sock"
 
 # Shared
+source = "local"
+# Overwrite via `--target-sock` CLI option if required
+target_sock = "/tmp/jam_fuzz/fuzz.sock"
 step_period = 0
 verbosity = 2
-
-# As per default
 trace_dir = "traces"
+log_file = "fuzz.log"
 skip_slots = false
 single_step = false
-log_file = "fuzz.log"
 show_config = false
 pause_on_error = false
 trace_traces = false

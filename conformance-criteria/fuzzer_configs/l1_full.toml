@@ -1,29 +1,26 @@
 # L1 -- Happy-path import (full spec)
 #
-# 100K steps, full workload, no mutations, no Safrole.
-# Acceptance: state roots match on every step; run reaches `max_steps`.
-
-source = "local"
+# 100K steps, workload, no mutations, no Safrole.
 
 jam_spec = "full"
 profile = "full"
 fuzzy_profile = "full"
+safrole = false
 max_steps = 100000
 max_work_items = 5
 max_mutations = 0
+# Use u32::max to enable target pause/resume
 remote_timeout = 4294967295
 
-# If required, overwrite via `--target-sock` CLI option
-target_sock = "/tmp/jam_fuzz/fuzz.sock"
-
 # Shared
+source = "local"
+# Overwrite via `--target-sock` CLI option if required
+target_sock = "/tmp/jam_fuzz/fuzz.sock"
 step_period = 0
 verbosity = 2
 trace_dir = "traces"
-safrole = false
 skip_slots = false
 single_step = false
-log_file = "fuzz.log"
 show_config = false
 pause_on_error = false
 trace_traces = false
