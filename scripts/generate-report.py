@@ -21,6 +21,14 @@ Decoded JSON and the matching .bin files land in ./report/ under the
 current working directory; report.bin, when present, is decoded into
 report.json there as well. Pass --overwrite to replace an existing
 report directory.
+
+Dependencies:
+    jam-types-py (https://github.com/davxy/jam-types-py) provides the
+    SCALE codecs used to decode traces. Producing a correct report for
+    a given Gray Paper version requires a matching jam-types-py
+    release: traces produced by a target implementing GP 0.7.2 must be
+    decoded with jam-types-py v0.7.2
+    (https://github.com/davxy/jam-types-py/releases/tag/v0.7.2).
 """
 
 import json
