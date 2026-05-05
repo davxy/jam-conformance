@@ -63,6 +63,10 @@
     "image": "ghcr.io/ascrivener/jamzilla:edge",
     "gp_version": "0.7.2"
   },
+  "jotl": {
+    "image": "ghcr.io/polykrate/jotl:latest",
+    "gp_version": "0.7.2"
+  },
   "javajam": {
     "image": "ghcr.io/methodfive/javajam:latest-amd64",
     "gp_version": "0.7.2"
