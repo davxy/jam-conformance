@@ -12,10 +12,10 @@ The traces directory must contain the binary step files written by
 the fuzzer (genesis.bin and NNNNNNNN.bin, plus optionally report.bin).
 
 Steps are decoded from SCALE to JSON using the jam_types codecs and
-processed newest-first. With --report-prune, only a linear chain of
-ancestor blocks is kept (siblings whose parent matches the previously
-seen step are dropped). The walk stops once --report-depth distinct
-ancestors have been emitted (default 2).
+processed newest-first. With --prune, only a linear chain of ancestor
+blocks is kept (siblings whose parent matches the previously seen
+step are dropped). The walk stops once --depth distinct ancestors
+have been emitted (default 2).
 
 Decoded JSON and the matching .bin files land in ./report/ under the
 current working directory; report.bin, when present, is decoded into
@@ -57,24 +57,27 @@ def parse_command_line_args():
         help="Path to the directory containing the binary trace files",
     )
     parser.add_argument(
-        "-s",
-        "--report-depth",
+        "-d",
+        "--depth",
         type=int,
         default=2,
         help="Report chain depth (default: 2)",
     )
     parser.add_argument(
-        "--report-prune",
+        "-p",
+        "--prune",
         action="store_true",
         help="Exclude stale siblings from report chain",
     )
     parser.add_argument(
+        "-s",
         "--spec",
         default="tiny",
         choices=["tiny", "full"],
         help="Specification to use (default=tiny)",
     )
     parser.add_argument(
+        "-o",
         "--overwrite",
         action="store_true",
         help="Overwrite existing report directory if it exists",
@@ -128,19 +131,15 @@ def process_report_file(source_dir, dest_dir):
         return False
 
 
-def generate_report(session_trace_dir, session_report_dir, report_depth, report_prune):
+def generate_report(session_trace_dir, session_report_dir, depth, prune):
     """Generate a report from the traces collected in a session"""
-
-    if not os.path.exists(session_trace_dir):
-        print(f"Error: Traces directory does not exist: {session_trace_dir}")
-        exit(1)
 
     print("-----------------------------------------------")
     print("Generating report from traces...")
     print(f"* Report dir: {session_report_dir}")
     print(f"* Traces dir: {session_trace_dir}")
-    print(f"  - depth {report_depth}")
-    print(f"  - prune {report_prune}")
+    print(f"  - depth {depth}")
+    print(f"  - prune {prune}")
     print("-----------------------------------------------")
     print("")
 
@@ -163,8 +162,6 @@ def generate_report(session_trace_dir, session_report_dir, report_depth, report_
         input_file = os.path.join(session_trace_dir, f)
         print(f"* Processing: {input_file}")
 
-        shutil.copy(input_file, session_report_dir)
-
         if f == "genesis.bin":
             type = "Genesis"
         else:
@@ -176,9 +173,9 @@ def generate_report(session_trace_dir, session_report_dir, report_depth, report_
             print(f"Error converting {f} to JSON: {e}")
             continue
 
-        # If `report-prune` option is enabled, we require the final output to
-        # be a linear series of blocks, in which each step holds the parent
-        # block of the following step.
+        # If `prune` option is enabled, we require the final output to be a
+        # linear series of blocks, in which each step holds the parent block
+        # of the following step.
         if type != "Genesis":
             with open(tmp_file, "r") as json_file:
                 try:
@@ -187,24 +184,22 @@ def generate_report(session_trace_dir, session_report_dir, report_depth, report_
                     print(f"Error loading JSON from {tmp_file}: {e}")
                     continue
 
-            curr_parent_hash = data.get("block", {}).get("header", "{}").get("parent", "")
+            curr_parent_hash = data.get("block", {}).get("header", {}).get("parent", "")
 
             # For the first file, initialize parent_root
             if curr_parent_hash == parent_hash:
-                if report_prune:
+                if prune:
                     print(f"Skipping sibling {f}")
                     continue
             else:
                 head_ancestry_depth += 1
                 parent_hash = curr_parent_hash
 
-            with open(tmp_file, "r") as json_file:
-                data = json.load(json_file)
-
+        shutil.copy(input_file, session_report_dir)
         output_file = os.path.join(session_report_dir, f"{f[:-4]}.json")
         shutil.copy(tmp_file, output_file)
 
-        if head_ancestry_depth >= report_depth:
+        if head_ancestry_depth >= depth:
             break
 
     if os.path.exists(tmp_file):
@@ -249,8 +244,8 @@ def main():
     generate_report(
         session_trace_dir,
         session_report_dir,
-        args.report_depth,
-        args.report_prune
+        args.depth,
+        args.prune
     )
 
     print("")
