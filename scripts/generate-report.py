@@ -45,7 +45,11 @@ from jam_types.fuzzer import Genesis, TraceStep, FuzzerReport
 
 def parse_command_line_args():
     parser = argparse.ArgumentParser(
-        description="Generate a report from an existing traces folder"
+        description=(
+            "Generate a report from an existing traces folder. "
+            "Requires jam-types-py (https://github.com/davxy/jam-types-py); "
+            "use a release matching the Gray Paper version of the traces."
+        )
     )
     parser.add_argument(
         "traces_dir",
