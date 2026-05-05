@@ -1,0 +1,163 @@
+# PolkaJam Fuzzer Configuration
+#
+# CLI arguments take precedence over settings in this file.
+# See `--help` for all available options.
+
+################################################################################
+# Core Settings
+################################################################################
+
+# Random number generator seed
+# Formats:
+#   - Hex: 0x followed by 64 hex characters (32 bytes)
+#   - Passphrase: Any string (hashed to produce seed)
+# [default: randomly generated]
+seed = "42"
+
+# Block data source for fuzzing
+# Options:
+#   - local: Internal block authoring engine
+#   - remote: Import from remote node via socket
+#   - trace: Replay pre-recorded traces
+# [default: local]
+source = "local"
+
+# JAM protocol specification variant
+# Options:
+#   - tiny: Smaller parameters for faster testing
+#   - full: Full production parameters
+# [default: tiny]
+jam_spec = "tiny"
+
+# Directory for execution traces
+# Usage depends on source:
+#   - local/remote: Output directory for generated traces
+#   - trace: Input directory (required)
+trace_dir = "traces"
+
+# Unix domain socket path for remote block source.
+# Receives blocks from a remote source for validation.
+# Only used when `source = "remote"`.
+# [default: none]
+# source_sock = "/tmp/jam_source.sock"
+
+# Unix domain socket path for remote conformance testing target.
+# Sends blocks to a remote target and compares state transitions
+# to validate implementation consistency.
+# [default: none]
+# target_sock = "/tmp/jam_target.sock"
+
+# Delay between fuzzing steps (milliseconds)
+# Actual duration may be longer if operations take time
+# [default: 1000]
+step_period = 100
+
+# Maximum number of steps
+# May terminate earlier on unrecoverable errors.
+# Note: Step count ≠ imported blocks (some may be invalid)
+# [default: unlimited]
+max_steps = 10000
+
+################################################################################
+# Fuzzing Behavior
+################################################################################
+
+# Enable Safrole consensus for block authoring
+# Disabling improves fuzzing speed
+# [default: false]
+safrole = false
+
+# Randomly skip slots during block authoring
+# [default: false]
+skip_slots = false
+
+# Pause after each step waiting for user input
+# [default: false]
+single_step = false
+
+# Work item execution profile
+# Controls which work item types are processed:
+#   - empty: No work items
+#   - full: All types (default)
+#   - storage: Storage operations only
+#   - preimages: Preimage operations only
+#   - management: Management operations only
+#   - validators_management: Validator management only
+# [default: full]
+profile = "full"
+
+# Fuzzy service instruction profile
+# Selects which PVM instructions are enabled in the fuzzy service:
+#   - mem-check: Memory validation
+#   - storage: Storage operations
+#   - preimages: Preimage operations
+#   - management: Service management
+#   - services: Service invocations
+#   - misc: Miscellaneous operations
+#   - full: All instructions (default)
+# [default: full]
+fuzzy_profile = "full"
+
+# Maximum work items per package
+# [default: 5]
+max_work_items = 5
+
+# Probability of applying mutations (0.0 - 1.0)
+# 0.0 = no mutations, 1.0 = always mutate
+# [default: 0.0]
+mutation_ratio = 0.1
+
+# Maximum mutations generated per block
+# Set to 0 to disable mutations
+# [default: 0]
+max_mutations = 5
+
+################################################################################
+# Output & Diagnostics
+################################################################################
+
+# Logging verbosity level (0-3)
+# Levels:
+#   - 0: Basic fuzzer logs
+#   - 1: Detailed fuzzer logs
+#   - 2: Backend logs (PVM, Safrole, etc.)
+#   - 3: On-chain statistics and auxiliary info
+# [default: 0]
+verbosity = 2
+
+# Log output file path
+# If not specified, logs are not persisted
+# [default: none]
+log_file = "fuzz.log"
+
+# Display configuration and exit without fuzzing
+# [default: false]
+show_config = false
+
+# Pause on non-fatal errors
+# [default: false]
+pause_on_error = false
+
+# Persist traces when replaying existing traces
+# When source is "trace", traced replays are normally not saved
+# Enabling this saves them to {trace_dir}_new
+# [default: false]
+trace_traces = false
+
+################################################################################
+# Advanced
+################################################################################
+
+# Use PVM interpreter instead of recompiler
+# [default: false]
+pvm_interpreter_backend = true
+
+# Remote operations timeout (seconds)
+# Maximum wait time for remote socket operations
+# [default: 30]
+remote_timeout = 30
+
+# Link overhead for remote target operations (microseconds)
+# Time overhead to account for in remote block import measurements
+# [default: 500]
+link_overhead = 500

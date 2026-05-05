@@ -1,6 +1,6 @@
 # Conformance Run Matrix (Proposed)
 
-Date: 2026-03-16
+Date: 2026-05-05
 
 ## Goals
 
@@ -14,15 +14,22 @@ Date: 2026-03-16
 - The test programme is divided in different lanes and teams have to pass all of them.
 
 - Lanes:
-    * L1 -- Known Test Vectors: run implementation against all published and well-known test vectors.
-    * L2 -- Mutations: testing happy-path import and mutation/error handling, without Safrole.
-        - L2a -- Tiny profile (1M steps, 5 work items)
-        - L2b -- Full profile (10K steps, 16 work items)
-    * L3 -- Safrole: exercising Safrole with slot-skipping, no mutations.
-        - L3a -- Tiny profile (10K steps)
-        - L3b -- Full profile (10K steps)
+    * L0 -- Smoke test: minimal sanity run on the tiny spec.
+    * L1 -- Happy-path import: import without mutations or Safrole.
+        - L1a -- Tiny spec
+        - L1b -- Full spec
+    * L2 -- Mutations: happy-path import together with mutation/error handling, without Safrole.
+        - L2a -- Tiny spec
+        - L2b -- Full spec
+    * L3 -- Safrole: exercise Safrole, no mutations.
+        - L3a -- `validators-management` workload
+        - L3b -- empty workload
 
-## L1 -- Known Test Vectors
+The fuzzer parameters for each lane are defined in `fuzzer_configs/`.
+
+## Known Test Vectors
+
+Run implementation against all published and well-known test vectors.
 
 ### Acceptance Criteria
 
@@ -30,15 +37,76 @@ Date: 2026-03-16
 - Any mismatch is a hard conformance failure.
 - Self-assessed by the implementor; no explicit assessment performed during evaluation.
 
+## L0 -- Smoke test
+
+Source: `fuzzer_configs/l0_tiny.toml`
+
+| Parameter | Value |
+|-----------|-------|
+| jam_spec | tiny |
+| profile | empty |
+| max_mutations | 0 |
+| max_steps | 100 |
+| safrole | false |
+| skip_slots | false |
+
+### Acceptance Criteria
+
+- Target accepts trace input and produces matching state roots.
+- Session reaches `max_steps`.
+
+## L1 -- Happy-path import
+
+Import without mutations and without Safrole.
+
+### L1a -- Tiny
+
+Source: `fuzzer_configs/l1_tiny.toml`
+
+| Parameter | Value |
+|-----------|-------|
+| jam_spec | tiny |
+| profile | full |
+| fuzzy_profile | full |
+| max_mutations | 0 |
+| max_work_items | 5 |
+| max_steps | 100000 |
+| safrole | false |
+| skip_slots | false |
+| seeds | 10 random |
+
+### L1b -- Full
+
+Source: `fuzzer_configs/l1_full.toml`
+
+| Parameter | Value |
+|-----------|-------|
+| jam_spec | full |
+| profile | full |
+| fuzzy_profile | full |
+| max_mutations | 0 |
+| max_work_items | 5 |
+| max_steps | 100000 |
+| safrole | false |
+| skip_slots | false |
+| seeds | 10 random |
+
+### Acceptance Criteria (L1a/L1b)
+
+- Expected state root matches target state root on every step.
+- Session reaches `max_steps`.
+
 ## L2 -- Mutations
 
 Testing both happy-path import and mutation/error handling, without Safrole.
 
 ### L2a -- Tiny
 
+Source: `fuzzer_configs/l2_tiny.toml`
+
 | Parameter | Value |
 |-----------|-------|
-| jam_profile | full |
+| jam_spec | tiny |
 | profile | full |
 | fuzzy_profile | full |
 | max_mutations | 5 |
@@ -51,15 +119,17 @@ Testing both happy-path import and mutation/error handling, without Safrole.
 
 ### L2b -- Full
 
+Source: `fuzzer_configs/l2_full.toml`
+
 | Parameter | Value |
 |-----------|-------|
-| jam_profile | full |
+| jam_spec | full |
 | profile | full |
 | fuzzy_profile | full |
 | max_mutations | 5 |
 | mutation_ratio | 0.1 |
-| max_work_items | 16 |
-| max_steps | 10000 |
+| max_work_items | 5 |
+| max_steps | 1000000 |
 | safrole | false |
 | skip_slots | false |
 | seeds | 10 random |
@@ -71,36 +141,38 @@ Testing both happy-path import and mutation/error handling, without Safrole.
 
 ## L3 -- Safrole
 
-Two sub-runs escalating from minimal to full profiles. Both enable `skip_slots` alongside `safrole`.
+Both sub-runs enable Safrole and run with `skip_slots = false`.
 
-### L3a -- Tiny
+### L3a -- `validators-management` workload
+
+Source: `fuzzer_configs/l3_tiny.toml`
 
 | Parameter | Value |
 |-----------|-------|
-| jam_profile | tiny |
+| jam_spec | tiny |
+| profile | validators-management |
+| fuzzy_profile | empty |
+| safrole | true |
+| max_mutations | 0 |
+| max_work_items | 3 |
+| max_steps | 100000 |
+| skip_slots | false |
+| seeds | 10 random |
+
+### L3b -- empty workload
+
+Source: `fuzzer_configs/l3_full.toml`
+
+| Parameter | Value |
+|-----------|-------|
+| jam_spec | tiny |
 | profile | empty |
 | fuzzy_profile | empty |
 | safrole | true |
-| max_mutations | 0 (forced) |
-| mutation_ratio | 0.0 |
+| max_mutations | 0 |
 | max_work_items | 0 |
-| max_steps | 10000 |
-| skip_slots | true |
-| seeds | 10 random |
-
-### L3b -- Full
-
-| Parameter | Value |
-|-----------|-------|
-| jam_profile | full |
-| profile | full |
-| fuzzy_profile | full |
-| safrole | true |
-| max_mutations | 0 (forced) |
-| mutation_ratio | 0.0 |
-| max_work_items | 5 |
-| max_steps | 10000 |
-| skip_slots | true |
+| max_steps | 100000 |
+| skip_slots | false |
 | seeds | 10 random |
 
 ### Acceptance Criteria (L3a/L3b)
