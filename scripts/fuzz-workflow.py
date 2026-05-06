@@ -437,11 +437,13 @@ def run_fuzzer_trace_mode(args, target, trace_dir, log_file):
 
 
 def wait_for_target_sock(target_process):
-    # Wait for the target to be actually accepting connections on the socket.
-    # Just checking file existence is not enough: the socket file may appear
-    # before the target has called listen(), causing connection failures
-    # especially under parallel startup load.
+    # Wait for the target's socket file to appear, then sleep briefly to let
+    # listen() settle. We deliberately do NOT probe with a connect+close:
+    # polkajam-fuzz --source remote treats a peer that disconnects without a
+    # PeerInfo handshake as a fatal error and exits, which kills the target
+    # before the real fuzzer can connect.
     socket_wait_timeout = 20
+    socket_settle_grace = 0.5
     socket_wait_start = time.time()
     while True:
         if target_process.poll() is not None:
@@ -453,13 +455,8 @@ def wait_for_target_sock(target_process):
             )
             exit(1)
         if os.path.exists(SESSION_TARGET_SOCK):
-            try:
-                sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-                sock.connect(SESSION_TARGET_SOCK)
-                sock.close()
-                break
-            except (ConnectionRefusedError, OSError):
-                pass
+            time.sleep(socket_settle_grace)
+            return
         time.sleep(0.1)
 
 
