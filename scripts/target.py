@@ -12,6 +12,8 @@ import argparse
 import random
 import shlex
 import string
+import threading
+import time
 from pathlib import Path
 from typing import ClassVar, Dict, List, Optional
 from dataclasses import dataclass
@@ -373,7 +375,39 @@ def is_rootless_docker() -> bool:
         return False
 
 
+def _chmod_socket_when_ready(container_name: str, sock_path: str, timeout_s: float = 60.0) -> None:
+    # On rootless Docker, the unix socket created by the container is owned
+    # by the rootlesskit-mapped subordinate uid (e.g. host 100999 for
+    # container 1000), and the host-side fuzzer cannot connect() to it
+    # without world-rw on the socket file. We chmod from inside the
+    # container because only the owning uid (or root) can chmod it, and
+    # the host is not that uid. On rootful this is a harmless no-op.
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        check = subprocess.run(
+            ["docker", "exec", container_name, "test", "-S", sock_path],
+            capture_output=True,
+        )
+        if check.returncode == 0:
+            subprocess.run(
+                ["docker", "exec", container_name, "chmod", "0666", sock_path],
+                capture_output=True,
+            )
+            print(f"chmod 0666 {sock_path} (inside {container_name})")
+            return
+        if b"No such container" in (check.stderr or b""):
+            return
+        time.sleep(0.2)
+    print(f"warning: socket {sock_path} did not appear in {container_name} within {timeout_s}s")
+
+
 def run_docker_image(target: Target, args) -> None:
+    if not target.image:
+        print(f"Error: No Docker image specified for {target.name}")
+        sys.exit(1)
+
+    image = target.image
+
     # Use custom container name if provided, otherwise generate unique name with random suffix
     if args.container_name:
         container_name = args.container_name
@@ -387,9 +421,9 @@ def run_docker_image(target: Target, args) -> None:
     print(f"Container: '{container_name}'")
 
     try:
-        print_docker_image_info(target.image)
+        print_docker_image_info(image)
     except (subprocess.CalledProcessError, IndexError, ValueError):
-        print(f"Error: Docker image '{target.image}' not found locally.")
+        print(f"Error: Docker image '{image}' not found locally.")
         print(f"Please run: {sys.argv[0]} get {target.name}")
         sys.exit(1)
 
@@ -408,6 +442,7 @@ def run_docker_image(target: Target, args) -> None:
         print(f"Cleaning up Docker container {container_name}...")
         subprocess.run(["docker", "kill", container_name], capture_output=True)
         subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
+        subprocess.run(["docker", "rmi", "-f", image], capture_output=True)
         _clean_host_data()
 
     def signal_handler(signum, frame):
@@ -492,7 +527,7 @@ def run_docker_image(target: Target, args) -> None:
         docker_cmd.extend(["-e", "HOME=/jam"])
         docker_cmd.extend(["-v", f"{CONFIG.targets_dir}/{target.name}/latest:/jam"])
 
-    docker_cmd.append(target.image)
+    docker_cmd.append(image)
 
     # Handle cmd as string
     if target.cmd:
@@ -519,6 +554,11 @@ def run_docker_image(target: Target, args) -> None:
 
     try:
         process = subprocess.Popen(docker_cmd)
+        threading.Thread(
+            target=_chmod_socket_when_ready,
+            args=(container_name, CONFIG.CONTAINER_SOCK_PATH),
+            daemon=True,
+        ).start()
         print(f"Waiting for target termination (pid={process.pid})")
         exit_code = process.wait()
         print(f"Target process exited with status: {exit_code}")
