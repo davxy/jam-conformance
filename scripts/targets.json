@@ -39,9 +39,7 @@
     "gp_version": "0.7.2"
   },
   "jamixir": {
-    "repo": "jamixir/jamixir-releases",
-    "file": "jamixir_linux-x86-64_0.7.2_tiny.tar.gz",
-    "cmd": "jamixir fuzzer --log error --socket-path {SOCK_PATH}",
+    "image": "ghcr.io/jamixir/jamixir:0.7.2",
     "gp_version": "0.7.2"
   },
   "jampy": {
