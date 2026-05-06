@@ -77,8 +77,8 @@
     "repo": "none",
     "file": "polkajam-fuzz",
     "cmd": "polkajam-fuzz",
-    "args": "--source remote --step-period 0 --source-sock {SOCK_PATH} --pvm-interpreter-backend true",
-    "env": "RUST_LOG=off",
+    "args": "--source remote --step-period 0 --source-sock {SOCK_PATH} --pvm-interpreter-backend true --max-mutations 0 --verbosity 4",
+    "env": "RUST_LOG=info",
     "gp_version": "0.7.2"
   },
   "pyjamaz": {
