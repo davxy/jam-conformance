@@ -35,10 +35,7 @@
     "gp_version": "0.7.2"
   },
   "jamduna": {
-    "repo": "jam-duna/jamtestnet",
-    "file": "duna_target_linux",
-    "cmd": "duna_target_linux",
-    "args": "--socket {SOCK_PATH}",
+    "image": "ghcr.io/jam-duna/duna-target:latest",
     "gp_version": "0.7.2"
   },
   "jamforge": {
