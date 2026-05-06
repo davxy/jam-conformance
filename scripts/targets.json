@@ -27,11 +27,7 @@
     "gp_version": "0.7.2"
   },
   "jambda": {
-    "repo": "ArcheLabs/jambda-release",
-    "file": "jambda-node-Linux-x64",
-    "cmd": "jambda-node-Linux-x64",
-    "args": "fuzz-target --sock {SOCK_PATH}",
-    "env": "RUST_LOG=off",
+    "image": "ghcr.io/archelabs/jambda-fuzz-target:latest",
     "gp_version": "0.7.2"
   },
   "jamduna": {
