@@ -70,7 +70,6 @@
   },
   "pbnjam": {
     "image": "shimonchick/pbnjam-fuzzer-target:latest",
-    "cmd": "--socket {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "polkajam": {
