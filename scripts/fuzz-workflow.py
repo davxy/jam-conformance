@@ -35,6 +35,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import tomllib
 
 from jam_types import ScaleBytes
 from jam_types import spec
@@ -90,6 +91,31 @@ SKIP_SLOTS = os.environ.get("JAM_FUZZ_SKIP_SLOTS", "false")
 FUZZER_LOG_TAIL_LENGTH = 100
 
 
+def config_jam_spec(config_path):
+    try:
+        with open(config_path, "rb") as f:
+            cfg = tomllib.load(f)
+    except FileNotFoundError:
+        print(f"Error: Fuzzer config not found: {config_path}")
+        exit(1)
+    except OSError as e:
+        print(f"Error: Unable to read fuzzer config {config_path}: {e}")
+        exit(1)
+    except tomllib.TOMLDecodeError as e:
+        print(f"Error: Invalid TOML in fuzzer config {config_path}: {e}")
+        exit(1)
+
+    value = cfg.get("jam_spec")
+    if value is None:
+        return None
+    if value not in ("tiny", "full"):
+        print(
+            f"Error: Invalid jam_spec={value!r} in {config_path} (must be 'tiny' or 'full')"
+        )
+        exit(1)
+    return value
+
+
 def make_dir(path, remove=True):
     """Helper function that optionally removes directory if it exists, then creates it"""
     if remove and os.path.exists(path):
@@ -111,6 +137,12 @@ def parse_command_line_args():
     )
     parser.add_argument(
         "-p", "--profile", type=str, default="full", help="Fuzzing profile to use"
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=None,
+        help="Path to polkajam-fuzz TOML config. When set, lane-defining fields come from this file and only per-session overrides are passed on the CLI.",
     )
     parser.add_argument(
         "--fuzzy-profile", type=str, default="full", help="Fuzzy service profile to use"
@@ -166,9 +198,9 @@ def parse_command_line_args():
     # Note: at present, 'full' may lead to errors in decoding .bin files to .json.
     parser.add_argument(
         "--spec",
-        default="tiny",
+        default=None,
         choices=["tiny", "full"],
-        help="Specification to use (default=tiny)",
+        help="Specification to use. When --config is set, this must match jam_spec in the config file; when omitted, jam_spec is inferred from the config or defaults to tiny.",
     )
 
     parser.add_argument(
@@ -251,6 +283,22 @@ def parse_command_line_args():
     )
 
     args = parser.parse_args()
+    if args.config:
+        config_spec = config_jam_spec(args.config)
+        if config_spec is None:
+            print(
+                f"Error: --config {args.config} has no jam_spec; required so target.py --spec matches polkajam-fuzz config"
+            )
+            exit(1)
+        if args.spec is None:
+            args.spec = config_spec
+        elif args.spec != config_spec:
+            print(
+                f"Error: --spec {args.spec} disagrees with jam_spec={config_spec} in {args.config}"
+            )
+            exit(1)
+    elif args.spec is None:
+        args.spec = "tiny"
     return args
 
 
@@ -328,43 +376,58 @@ def run_fuzzer_local_mode(args, log_file):
     safrole = "true" if args.safrole else SAFROLE
     skip_slots = "true" if args.skip_slots else SKIP_SLOTS
 
-    fuzzer_args = [
-        "--source",
-        args.source,
-        "--max-steps",
-        MAX_STEPS,
-        "--step-period",
-        STEP_PERIOD,
-        "--safrole",
-        safrole,
-        "--skip-slots",
-        skip_slots,
-        "--seed",
-        seed,
-        "--max-work-items",
-        MAX_WORK_ITEMS,
-        "--single-step",
-        SINGLE_STEP,
-        "--profile",
-        args.profile,
-        "--fuzzy-profile",
-        args.fuzzy_profile,
-        "--trace-dir",
-        SESSION_TRACE_DIR,
-        "--target-sock",
-        SESSION_TARGET_SOCK,
-        "--mutation-ratio",
-        str(args.mutation_ratio),
-        "--max-mutations",
-        str(args.max_mutations),
-        "--verbosity",
-        VERBOSITY,
-        "--remote-timeout",
-        REMOTE_TIMEOUT,
-        "--jam-spec",
-        args.spec,
-        "--pvm-interpreter-backend",
-    ]
+    if args.config:
+        print(f"Using polkajam-fuzz config: {args.config}")
+        fuzzer_args = [
+            "--config",
+            args.config,
+            "--source",
+            args.source,
+            "--seed",
+            seed,
+            "--trace-dir",
+            SESSION_TRACE_DIR,
+            "--target-sock",
+            SESSION_TARGET_SOCK,
+        ]
+    else:
+        fuzzer_args = [
+            "--source",
+            args.source,
+            "--max-steps",
+            MAX_STEPS,
+            "--step-period",
+            STEP_PERIOD,
+            "--safrole",
+            safrole,
+            "--skip-slots",
+            skip_slots,
+            "--seed",
+            seed,
+            "--max-work-items",
+            MAX_WORK_ITEMS,
+            "--single-step",
+            SINGLE_STEP,
+            "--profile",
+            args.profile,
+            "--fuzzy-profile",
+            args.fuzzy_profile,
+            "--trace-dir",
+            SESSION_TRACE_DIR,
+            "--target-sock",
+            SESSION_TARGET_SOCK,
+            "--mutation-ratio",
+            str(args.mutation_ratio),
+            "--max-mutations",
+            str(args.max_mutations),
+            "--verbosity",
+            VERBOSITY,
+            "--remote-timeout",
+            REMOTE_TIMEOUT,
+            "--jam-spec",
+            args.spec,
+            "--pvm-interpreter-backend",
+        ]
 
     result = fuzzer_run(fuzzer_args, log_file)
     if result.returncode == 0:
@@ -385,24 +448,42 @@ def run_fuzzer_trace_mode(args, target, trace_dir, log_file):
     input_trace_dir = os.path.join(SESSION_DIR, "trace", original_session_id)
     shutil.copytree(trace_dir, input_trace_dir)
 
-    fuzzer_args = [
-        "--source",
-        "trace",
-        "--seed",
-        SEED,
-        "--trace-dir",
-        input_trace_dir,
-        "--target-sock",
-        SESSION_TARGET_SOCK,
-        "--max-mutations",
-        "0",
-        "--verbosity",
-        VERBOSITY,
-        "--jam-spec",
-        args.spec,
-        "--pvm-interpreter-backend",
-        "--trace-traces",
-    ]
+    if args.config:
+        print(f"Using polkajam-fuzz config: {args.config}")
+        fuzzer_args = [
+            "--config",
+            args.config,
+            "--source",
+            "trace",
+            "--seed",
+            SEED,
+            "--trace-dir",
+            input_trace_dir,
+            "--target-sock",
+            SESSION_TARGET_SOCK,
+            "--max-mutations",
+            "0",
+            "--trace-traces",
+        ]
+    else:
+        fuzzer_args = [
+            "--source",
+            "trace",
+            "--seed",
+            SEED,
+            "--trace-dir",
+            input_trace_dir,
+            "--target-sock",
+            SESSION_TARGET_SOCK,
+            "--max-mutations",
+            "0",
+            "--verbosity",
+            VERBOSITY,
+            "--jam-spec",
+            args.spec,
+            "--pvm-interpreter-backend",
+            "--trace-traces",
+        ]
 
     result = fuzzer_run(fuzzer_args, log_file)
 
@@ -455,7 +536,7 @@ def wait_for_target_sock(target_process):
         time.sleep(0.1)
 
 
-def run_target(target, log_file):
+def run_target(target, log_file, target_spec):
     """Run the target"""
     print(f"* Running target: {target}")
 
@@ -469,6 +550,8 @@ def run_target(target, log_file):
 
     target_command = [
         os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+        "--spec",
+        target_spec,
         "run",
         target,
         "--container-name",
@@ -712,7 +795,7 @@ def run_local_workflow(args, target):
 
     target_log_file = os.path.join(SESSION_LOGS_DIR, f"target_{target}.log")
     fuzzer_log_file = os.path.join(SESSION_LOGS_DIR, f"fuzzer_{target}.log")
-    [target_process, target_pid] = run_target(target, target_log_file)
+    [target_process, target_pid] = run_target(target, target_log_file, args.spec)
     if target_process is None and target_pid == -1:
         print(f"Error: Unable to start target: {target}.")
         exit(1)
@@ -851,7 +934,7 @@ def run_trace_for_target(target, trace_dirs, source_traces_dir, args):
             SESSION_LOGS_DIR, f"fuzzer_{target}_{trace}.log"
         )
 
-        [target_process, target_pid] = run_target(target, target_log_file)
+        [target_process, target_pid] = run_target(target, target_log_file, args.spec)
         if target_process is None and target_pid == -1:
             print(f"Error: Unable to start target: {target}.")
             target_results.append(f"💀 {trace}")
