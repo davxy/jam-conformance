@@ -437,13 +437,9 @@ def run_fuzzer_trace_mode(args, target, trace_dir, log_file):
 
 
 def wait_for_target_sock(target_process):
-    # Wait for the target's socket file to appear, then sleep briefly to let
-    # listen() settle. We deliberately do NOT probe with a connect+close:
-    # polkajam-fuzz --source remote treats a peer that disconnects without a
-    # PeerInfo handshake as a fatal error and exits, which kills the target
-    # before the real fuzzer can connect.
+    # Do not probe with connect()+close: polkajam-fuzz --source remote treats
+    # a peer that disconnects before PeerInfo as fatal.
     socket_wait_timeout = 20
-    socket_settle_grace = 0.5
     socket_wait_start = time.time()
     while True:
         if target_process.poll() is not None:
@@ -454,8 +450,7 @@ def wait_for_target_sock(target_process):
                 f"Error: Target socket {SESSION_TARGET_SOCK} was not ready within {socket_wait_timeout} seconds."
             )
             exit(1)
-        if os.path.exists(SESSION_TARGET_SOCK):
-            time.sleep(socket_settle_grace)
+        if os.access(SESSION_TARGET_SOCK, os.R_OK | os.W_OK):
             return
         time.sleep(0.1)
 
