@@ -6,8 +6,11 @@ download target="all":
 
 # Execute an exploratory workflow with a few targets and random seed
 explore target="all" spec="tiny":
-    ./fuzz-workflow.py --targets "{{target}}" --spec "{{spec}}" --skip-get --report-publish --parallel --source local --rand-seed --max-mutations 5 --mutation-ratio 0.1
+    ./fuzz-workflow.py --targets "{{target}}" --spec "{{spec}}" --skip-get --report-publish --parallel --source local --max-mutations 5 --mutation-ratio 0.1 --seed 123
 
 # Execute a trace workflow with a few targets and publish the corresponding reports
 replay target="all" spec="tiny":
     ./fuzz-workflow.py --targets "{{target}}" --spec "{{spec}}" --skip-get --report-publish --parallel --source trace --max-mutations 0 --mutation-ratio 0
+
+conformance target="all" config="../conformance-criteria/fuzzer_configs/l0_tiny.toml":
+    ./fuzz-workflow.py --targets "{{target}}" --config "{{config}}" --skip-get --parallel --report-publish
