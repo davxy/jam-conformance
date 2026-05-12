@@ -107,8 +107,6 @@
   },
   "typeberry": {
     "image": "ghcr.io/fluffylabs/typeberry:latest",
-    "cmd": "--version=1 fuzz-target {SOCK_PATH}",
-    "env": "JAM_LOG=log",
     "gp_version": "0.7.2"
   },
   "vinwolf": {
