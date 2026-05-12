@@ -667,8 +667,6 @@ def generate_report(report_depth, report_prune):
         input_file = os.path.join(SESSION_TRACE_DIR, f)
         print(f"* Processing: {input_file}")
 
-        shutil.copy(input_file, SESSION_REPORT_DIR)
-
         if f == "genesis.bin":
             type = "Genesis"
         else:
@@ -691,7 +689,7 @@ def generate_report(report_depth, report_prune):
                     print(f"Error loading JSON from {tmp_file}: {e}")
                     continue
 
-            curr_parent_hash = data.get("block", {}).get("header", "{}").get("parent", "")
+            curr_parent_hash = data.get("block", {}).get("header", {}).get("parent", "")
 
             # For the first file, initialize parent_root
             if curr_parent_hash == parent_hash:
@@ -702,9 +700,7 @@ def generate_report(report_depth, report_prune):
                 head_ancestry_depth += 1
                 parent_hash = curr_parent_hash
 
-            with open(tmp_file, "r") as json_file:
-                data = json.load(json_file)
-
+        shutil.copy(input_file, SESSION_REPORT_DIR)
         output_file = os.path.join(SESSION_REPORT_DIR, f"{f[:-4]}.json")
         shutil.copy(tmp_file, output_file)
 
