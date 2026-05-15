@@ -1,6 +1,6 @@
 {
   "boka": {
-    "image": "acala/boka:latest",
+    "image": "docker.io/acala/boka:latest",
     "cmd": "fuzz target --socket-path {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
@@ -23,7 +23,7 @@
     "gp_version": "0.7.2"
   },
   "jam4s": {
-    "image": "jamforscala/jam4s:latest",
+    "image": "docker.io/jamforscala/jam4s:latest",
     "gp_version": "0.7.2"
   },
   "jambda": {
@@ -67,7 +67,7 @@
     "gp_version": "0.7.2"
   },
   "pbnjam": {
-    "image": "shimonchick/pbnjam-fuzzer-target:latest",
+    "image": "docker.io/shimonchick/pbnjam-fuzzer-target:latest",
     "gp_version": "0.7.2"
   },
   "polkajam": {
@@ -79,11 +79,11 @@
     "gp_version": "0.7.2"
   },
   "pyjamaz": {
-    "image": "jamdottech/pyjamaz:latest",
+    "image": "docker.io/jamdottech/pyjamaz:latest",
     "gp_version": "0.7.2"
   },
   "spacejam": {
-    "image": "clearloop/spacejam:latest",
+    "image": "docker.io/clearloop/spacejam:latest",
     "gp_version": "0.7.2"
   },
   "strawberry": {
@@ -102,7 +102,7 @@
     "gp_version": "0.7.2"
   },
   "turbojam": {
-    "image": "r2rationality/turbojam-fuzz:latest",
+    "image": "docker.io/r2rationality/turbojam-fuzz:latest",
     "gp_version": "0.7.2"
   },
   "typeberry": {
