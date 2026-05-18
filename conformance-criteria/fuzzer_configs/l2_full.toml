@@ -1,6 +1,6 @@
 # L2 -- Mutations (full spec)
 #
-# 1M steps, workload, mutations, no Safrole.
+# 100K steps, workload, mutations, no Safrole.
 
 jam_spec = "full"
 profile = "full"
