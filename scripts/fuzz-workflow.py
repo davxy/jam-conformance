@@ -85,12 +85,26 @@ SESSION_TARGET_SOCK = os.path.join(SESSION_DATA_PATH, "fuzz.sock")
 
 FUZZER_LOG_TAIL_LENGTH = 100
 
-# Defaults for fuzzer parameters (overridable via CLI flags).
-DEFAULT_MAX_STEPS = "1000000"
-DEFAULT_STEP_PERIOD = "0"
-DEFAULT_MAX_WORK_ITEMS = "5"
-DEFAULT_VERBOSITY = "1"
-DEFAULT_REMOTE_TIMEOUT = "30"
+# Defaults for fuzzer parameters. Resolution order is:
+#   CLI flag > JAM_FUZZ_* env var > hardcoded default
+# The env-var lookup happens here so argparse picks it up as the default,
+# meaning any explicit CLI flag still wins.
+def _env_bool(name, default=False):
+    val = os.environ.get(name)
+    if val is None:
+        return default
+    return val.strip().lower() in ("1", "true", "yes", "on")
+
+
+DEFAULT_MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
+DEFAULT_STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
+DEFAULT_MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
+DEFAULT_VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
+DEFAULT_REMOTE_TIMEOUT = os.environ.get("JAM_FUZZ_REMOTE_TIMEOUT", "30")
+DEFAULT_SEED = os.environ.get("JAM_FUZZ_SEED")
+DEFAULT_SAFROLE = _env_bool("JAM_FUZZ_SAFROLE")
+DEFAULT_SKIP_SLOTS = _env_bool("JAM_FUZZ_SKIP_SLOTS")
+DEFAULT_SINGLE_STEP = _env_bool("JAM_FUZZ_SINGLE_STEP")
 
 
 def config_jam_spec(config_path):
@@ -261,25 +275,28 @@ def parse_command_line_args():
     parser.add_argument(
         "--seed",
         type=str,
-        default=None,
-        help="Fuzzer seed (hex). If not specified, a random seed is generated.",
+        default=DEFAULT_SEED,
+        help="Fuzzer seed (hex). If not specified (and JAM_FUZZ_SEED is unset), a random seed is generated.",
     )
 
     parser.add_argument(
         "--safrole",
         action="store_true",
+        default=DEFAULT_SAFROLE,
         help="Enable safrole.",
     )
 
     parser.add_argument(
         "--skip-slots",
         action="store_true",
+        default=DEFAULT_SKIP_SLOTS,
         help="Enable skip-slots.",
     )
 
     parser.add_argument(
         "--single-step",
         action="store_true",
+        default=DEFAULT_SINGLE_STEP,
         help="Enable single-step.",
     )
 
