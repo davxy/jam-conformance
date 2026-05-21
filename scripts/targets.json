@@ -5,10 +5,7 @@
     "gp_version": "0.7.2"
   },
   "fastroll": {
-    "repo": "fastroll-jam/fastroll-releases",
-    "file": "fastroll-linux-x86_64-tiny",
-    "cmd": "fastroll-linux-x86_64-tiny",
-    "args": "fuzz --socket {SOCK_PATH}",
+    "image": "ghcr.io/fastroll-jam/fastroll:latest",
     "gp_version": "0.7.2"
   },
   "gossamer": {
