@@ -1,3 +1,3 @@
 fastapi
 uvicorn[standard]
-jam-types @ git+https://github.com/davxy/jam-types-py.git@v0.7.2.1
+jam-types @ git+https://github.com/davxy/jam-types-py.git@v0.7.2

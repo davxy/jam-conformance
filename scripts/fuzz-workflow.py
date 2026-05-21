@@ -24,6 +24,13 @@
 #   Contains traces, reports, logs from the fuzzing session
 # - SESSION_TARGET_SOCK: SESSION_DATA_PATH/fuzz.sock
 #   Unix domain socket for fuzzer-target communication
+#
+# Publish / source paths:
+# - --base-dir sets the parent under which traces/ and reports/ live.
+#   Defaults to <jam-conformance>/fuzz-reports/<GP_VERSION>.
+# In --source trace mode, source traces are read from <base-dir>/traces.
+# With --publish, fresh traces are copied to <base-dir>/traces and
+# reports are written under <base-dir>/reports.
 
 import json
 import os
@@ -179,8 +186,15 @@ def parse_command_line_args():
     )
     parser.add_argument(
         "--report-publish",
+        "--publish",
         action="store_true",
-        help="Publish report to JAM_CONFORMANCE_DIR",
+        help="Publish report. Traces and reports are written under <base-dir>/{traces,reports} (default base: <jam-conformance>/fuzz-reports/<GP_VERSION>).",
+    )
+    parser.add_argument(
+        "--base-dir",
+        type=str,
+        default=None,
+        help="Base directory under which traces/ and reports/ live. Used both to read source traces (--source trace) and to publish (--publish). Defaults to <jam-conformance>/fuzz-reports/<GP_VERSION>.",
     )
     parser.add_argument(
         "-D",
@@ -747,9 +761,9 @@ def process_report_file(source_dir, dest_dir):
         return False
 
 
-def publish_report_traces(dest_base):
+def publish_report_traces(traces_dest):
     print("* Publish report traces")
-    dest_dir = os.path.join(dest_base, "traces", SESSION_ID)
+    dest_dir = os.path.join(traces_dest, SESSION_ID)
     make_dir(dest_dir)
     for f in os.listdir(SESSION_REPORT_DIR):
         if not (
@@ -762,9 +776,9 @@ def publish_report_traces(dest_base):
     print(f"Traces copied to {dest_dir}")
 
 
-def publish_report_report(dest_base, target):
+def publish_report_report(reports_dest, target):
     print("* Publish report")
-    dest_dir = os.path.join(dest_base, "reports", target, SESSION_ID)
+    dest_dir = os.path.join(reports_dest, target, SESSION_ID)
     make_dir(dest_dir)
 
     for f in os.listdir(SESSION_REPORT_DIR):
@@ -775,15 +789,16 @@ def publish_report_report(dest_base, target):
     print(f"Reports copied to {dest_dir}")
 
 
-def publish_report(target):
+def publish_report(target, traces_dest, reports_dest):
     print("* Publishing report")
     if not os.path.exists(SESSION_REPORT_DIR):
         print(f"Error: Traces directory does not exist: {SESSION_REPORT_DIR}")
         print("You may want to run the session first")
         exit(1)
-    dest_base = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION)
-    publish_report_traces(dest_base)
-    publish_report_report(dest_base, target)
+    print(f"* Traces destination: {traces_dest}")
+    print(f"* Reports destination: {reports_dest}")
+    publish_report_traces(traces_dest)
+    publish_report_report(reports_dest, target)
 
 
 def run_local_workflow(args, target):
@@ -820,7 +835,7 @@ def run_local_workflow(args, target):
         make_dir(SESSION_REPORT_DIR)
         generate_report(args.report_depth, args.report_prune)
         if args.report_publish:
-            publish_report(target)
+            publish_report(target, args.trace_dir, args.report_dir)
     else:
         print("Skipping report generation")
 
@@ -838,9 +853,7 @@ def run_trace_workflow(args, target):
     if args.skip_report:
         print("Warning: Ignoring flag to skip report generation.")
 
-    base_target_dir = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION)
-
-    source_traces_dir = os.path.join(base_target_dir, "traces")
+    source_traces_dir = args.trace_dir
     if not os.path.exists(source_traces_dir):
         print(f"No traces available in {source_traces_dir}. Exiting.")
         exit(1)
@@ -879,15 +892,18 @@ def run_trace_workflow(args, target):
     # for an earlier session. That means we may have reports on file ready to publish,
     # even if we did not run the fuzzing process in this execution.
     if args.report_publish:
-        print("* Publishing report to jam-conformance")
+        print(f"* Publishing reports to: {args.report_dir}")
         # Overwrite the previous report if any. This always keeps the last example
         # of a target failing a particular trace.
         shutil.copytree(
             SESSION_FAILED_TRACES_DIR,
-            os.path.join(base_target_dir, "reports"),
+            args.report_dir,
             dirs_exist_ok=True,
         )
-        summaries_dir = os.path.join(base_target_dir, "summaries")
+        # Summaries live next to the reports directory so the default layout
+        # (<...>/<GP_VERSION>/{reports,summaries}) is preserved.
+        summaries_parent = os.path.dirname(args.report_dir.rstrip(os.sep)) or "."
+        summaries_dir = os.path.join(summaries_parent, "summaries")
         os.makedirs(summaries_dir, exist_ok=True)
         shutil.copy(summary_file, summaries_dir)
 
@@ -1137,6 +1153,14 @@ def main():
     else:
         # Try to detect GP version from polkajam-fuzz
         GP_VERSION = get_gp_version_from_fuzzer()
+
+    # Resolve trace/report directories from --base-dir (default:
+    # <jam-conformance>/fuzz-reports/<GP_VERSION>).
+    base_dir = args.base_dir or os.path.join(
+        JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION
+    )
+    args.trace_dir = os.path.join(base_dir, "traces")
+    args.report_dir = os.path.join(base_dir, "reports")
 
     # Handle --list-targets command
     if args.list_targets:
