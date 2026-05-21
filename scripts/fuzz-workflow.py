@@ -183,8 +183,12 @@ def parse_command_line_args():
     )
     parser.add_argument(
         "--report-publish",
-        action="store_true",
-        help="Publish report to JAM_CONFORMANCE_DIR",
+        "--publish",
+        nargs="?",
+        const=True,
+        default=False,
+        metavar="PATH",
+        help="Publish report. Without a value, publishes under <jam-conformance>/fuzz-reports/<GP_VERSION>/. With PATH, places the traces/ and reports/ folders directly under PATH.",
     )
     parser.add_argument(
         "-D",
@@ -763,13 +767,15 @@ def publish_report_report(dest_base, target):
     print(f"Reports copied to {dest_dir}")
 
 
-def publish_report(target):
+def publish_report(target, dest_base=None):
     print("* Publishing report")
     if not os.path.exists(SESSION_REPORT_DIR):
         print(f"Error: Traces directory does not exist: {SESSION_REPORT_DIR}")
         print("You may want to run the session first")
         exit(1)
-    dest_base = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION)
+    if dest_base is None:
+        dest_base = os.path.join(JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION)
+    print(f"* Publish destination: {dest_base}")
     publish_report_traces(dest_base)
     publish_report_report(dest_base, target)
 
@@ -808,7 +814,8 @@ def run_local_workflow(args, target):
         make_dir(SESSION_REPORT_DIR)
         generate_report(args.report_depth, args.report_prune)
         if args.report_publish:
-            publish_report(target)
+            custom_dest = args.report_publish if isinstance(args.report_publish, str) else None
+            publish_report(target, custom_dest)
     else:
         print("Skipping report generation")
 
@@ -867,15 +874,20 @@ def run_trace_workflow(args, target):
     # for an earlier session. That means we may have reports on file ready to publish,
     # even if we did not run the fuzzing process in this execution.
     if args.report_publish:
-        print("* Publishing report to jam-conformance")
+        publish_dest = (
+            args.report_publish
+            if isinstance(args.report_publish, str)
+            else base_target_dir
+        )
+        print(f"* Publishing report to: {publish_dest}")
         # Overwrite the previous report if any. This always keeps the last example
         # of a target failing a particular trace.
         shutil.copytree(
             SESSION_FAILED_TRACES_DIR,
-            os.path.join(base_target_dir, "reports"),
+            os.path.join(publish_dest, "reports"),
             dirs_exist_ok=True,
         )
-        summaries_dir = os.path.join(base_target_dir, "summaries")
+        summaries_dir = os.path.join(publish_dest, "summaries")
         os.makedirs(summaries_dir, exist_ok=True)
         shutil.copy(summary_file, summaries_dir)
 
