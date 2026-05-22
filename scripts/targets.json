@@ -79,7 +79,7 @@
     "gp_version": "0.7.2"
   },
   "spacejam": {
-    "image": "docker.io/clearloop/spacejam:latest",
+    "image": "ghcr.io/spacejamapp/spacejam:latest",
     "gp_version": "0.7.2"
   },
   "strawberry": {
