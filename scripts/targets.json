@@ -9,9 +9,7 @@
   },
   "gossamer": {
     "repo": "chainsafe/gossamer-jam-releases",
-    "file": "gossamer-jam-tiny-linux-amd64",
-    "cmd": "gossamer-jam-tiny-linux-amd64",
-    "args": "target --socket {SOCK_PATH}",
+    "image": "ghcr.io/chainsafe/go-jam:latest",
     "gp_version": "0.7.2"
   },
   "graymatter": {
