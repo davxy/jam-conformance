@@ -1,7 +1,6 @@
 {
   "boka": {
     "image": "docker.io/acala/boka:latest",
-    "cmd": "fuzz target --socket-path {SOCK_PATH}",
     "gp_version": "0.7.2"
   },
   "fastroll": {
