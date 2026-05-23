@@ -83,18 +83,28 @@ SESSION_DATA_PATH = os.path.join("/tmp/jam_fuzz", SESSION_ID)
 # Target unix domain socket
 SESSION_TARGET_SOCK = os.path.join(SESSION_DATA_PATH, "fuzz.sock")
 
-# Global environment variables that affect the fuzzer.
-SEED = os.environ.get("JAM_FUZZ_SEED", "42")
-MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
-STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
-MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
-SINGLE_STEP = os.environ.get("JAM_FUZZ_SINGLE_STEP", "false")
-VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
-REMOTE_TIMEOUT = os.environ.get("JAM_FUZZ_REMOTE_TIMEOUT", "30")
-SAFROLE = os.environ.get("JAM_FUZZ_SAFROLE", "false")
-SKIP_SLOTS = os.environ.get("JAM_FUZZ_SKIP_SLOTS", "false")
-
 FUZZER_LOG_TAIL_LENGTH = 100
+
+# Defaults for fuzzer parameters. Resolution order is:
+#   CLI flag > JAM_FUZZ_* env var > hardcoded default
+# The env-var lookup happens here so argparse picks it up as the default,
+# meaning any explicit CLI flag still wins.
+def _env_bool(name, default=False):
+    val = os.environ.get(name)
+    if val is None:
+        return default
+    return val.strip().lower() in ("1", "true", "yes", "on")
+
+
+DEFAULT_MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
+DEFAULT_STEP_PERIOD = os.environ.get("JAM_FUZZ_STEP_PERIOD", "0")
+DEFAULT_MAX_WORK_ITEMS = os.environ.get("JAM_FUZZ_MAX_WORK_ITEMS", "5")
+DEFAULT_VERBOSITY = os.environ.get("JAM_FUZZ_VERBOSITY", "1")
+DEFAULT_REMOTE_TIMEOUT = os.environ.get("JAM_FUZZ_REMOTE_TIMEOUT", "30")
+DEFAULT_SEED = os.environ.get("JAM_FUZZ_SEED")
+DEFAULT_SAFROLE = _env_bool("JAM_FUZZ_SAFROLE")
+DEFAULT_SKIP_SLOTS = _env_bool("JAM_FUZZ_SKIP_SLOTS")
+DEFAULT_SINGLE_STEP = _env_bool("JAM_FUZZ_SINGLE_STEP")
 
 
 def config_jam_spec(config_path):
@@ -263,23 +273,66 @@ def parse_command_line_args():
     )
 
     parser.add_argument(
-        "--rand-seed",
-        action="store_true",
-        help="Use a random fuzzer seed",
+        "--seed",
+        type=str,
+        default=DEFAULT_SEED,
+        help="Fuzzer seed (hex). If not specified (and JAM_FUZZ_SEED is unset), a random seed is generated.",
     )
 
     parser.add_argument(
         "--safrole",
         action="store_true",
-        default=None,
-        help="Enable safrole (overrides JAM_FUZZ_SAFROLE env var)",
+        default=DEFAULT_SAFROLE,
+        help="Enable safrole.",
     )
 
     parser.add_argument(
         "--skip-slots",
         action="store_true",
-        default=None,
-        help="Enable skip-slots (overrides JAM_FUZZ_SKIP_SLOTS env var)",
+        default=DEFAULT_SKIP_SLOTS,
+        help="Enable skip-slots.",
+    )
+
+    parser.add_argument(
+        "--single-step",
+        action="store_true",
+        default=DEFAULT_SINGLE_STEP,
+        help="Enable single-step.",
+    )
+
+    parser.add_argument(
+        "--max-steps",
+        type=str,
+        default=DEFAULT_MAX_STEPS,
+        help=f"Max fuzzer steps (default {DEFAULT_MAX_STEPS}).",
+    )
+
+    parser.add_argument(
+        "--step-period",
+        type=str,
+        default=DEFAULT_STEP_PERIOD,
+        help=f"Step period (default {DEFAULT_STEP_PERIOD}).",
+    )
+
+    parser.add_argument(
+        "--max-work-items",
+        type=str,
+        default=DEFAULT_MAX_WORK_ITEMS,
+        help=f"Max work items (default {DEFAULT_MAX_WORK_ITEMS}).",
+    )
+
+    parser.add_argument(
+        "--verbosity",
+        type=str,
+        default=DEFAULT_VERBOSITY,
+        help=f"Fuzzer verbosity (default {DEFAULT_VERBOSITY}).",
+    )
+
+    parser.add_argument(
+        "--remote-timeout",
+        type=str,
+        default=DEFAULT_REMOTE_TIMEOUT,
+        help=f"Remote timeout in seconds (default {DEFAULT_REMOTE_TIMEOUT}).",
     )
 
     parser.add_argument(
@@ -380,63 +433,50 @@ def run_fuzzer_local_mode(args, log_file):
     """
     Run `polkajam-fuzz` with local source with the provided arguments.
     """
-
-    if args.rand_seed:
-        seed = format(random.randint(0, 2**64 - 1), 'x')
-    else:
-        seed = SEED
-
-    safrole = "true" if args.safrole else SAFROLE
-    skip_slots = "true" if args.skip_slots else SKIP_SLOTS
-
+    fuzzer_args = [
+        "--trace-dir",
+        SESSION_TRACE_DIR,
+        "--target-sock",
+        SESSION_TARGET_SOCK,
+    ]
     if args.config:
         print(f"Using polkajam-fuzz config: {args.config}")
-        fuzzer_args = [
+        fuzzer_args += [
             "--config",
             args.config,
-            "--source",
-            args.source,
-            "--seed",
-            seed,
-            "--trace-dir",
-            SESSION_TRACE_DIR,
-            "--target-sock",
-            SESSION_TARGET_SOCK,
         ]
     else:
-        fuzzer_args = [
+        seed = args.seed if args.seed else format(random.randint(0, 2**64 - 1), 'x')
+
+        fuzzer_args += [
             "--source",
             args.source,
             "--max-steps",
-            MAX_STEPS,
+            args.max_steps,
             "--step-period",
-            STEP_PERIOD,
+            args.step_period,
             "--safrole",
-            safrole,
+            "true" if args.safrole else "false",
             "--skip-slots",
-            skip_slots,
+            "true" if args.skip_slots else "false",
             "--seed",
             seed,
             "--max-work-items",
-            MAX_WORK_ITEMS,
+            args.max_work_items,
             "--single-step",
-            SINGLE_STEP,
+            "true" if args.single_step else "false",
             "--profile",
             args.profile,
             "--fuzzy-profile",
             args.fuzzy_profile,
-            "--trace-dir",
-            SESSION_TRACE_DIR,
-            "--target-sock",
-            SESSION_TARGET_SOCK,
             "--mutation-ratio",
             str(args.mutation_ratio),
             "--max-mutations",
             str(args.max_mutations),
             "--verbosity",
-            VERBOSITY,
+            args.verbosity,
             "--remote-timeout",
-            REMOTE_TIMEOUT,
+            args.remote_timeout,
             "--jam-spec",
             args.spec,
             "--pvm-interpreter-backend",
@@ -461,41 +501,30 @@ def run_fuzzer_trace_mode(args, target, trace_dir, log_file):
     input_trace_dir = os.path.join(SESSION_DIR, "trace", original_session_id)
     shutil.copytree(trace_dir, input_trace_dir)
 
+    fuzzer_args = [
+        "--source",
+        "trace",
+        "--trace-dir",
+        input_trace_dir,
+        "--target-sock",
+        SESSION_TARGET_SOCK,
+        "--max-mutations",
+        "0",
+        "--trace-traces",
+    ]
     if args.config:
         print(f"Using polkajam-fuzz config: {args.config}")
-        fuzzer_args = [
+        fuzzer_args += [
             "--config",
             args.config,
-            "--source",
-            "trace",
-            "--seed",
-            SEED,
-            "--trace-dir",
-            input_trace_dir,
-            "--target-sock",
-            SESSION_TARGET_SOCK,
-            "--max-mutations",
-            "0",
-            "--trace-traces",
         ]
     else:
-        fuzzer_args = [
-            "--source",
-            "trace",
-            "--seed",
-            SEED,
-            "--trace-dir",
-            input_trace_dir,
-            "--target-sock",
-            SESSION_TARGET_SOCK,
-            "--max-mutations",
-            "0",
+        fuzzer_args += [
             "--verbosity",
-            VERBOSITY,
+            args.verbosity,
             "--jam-spec",
             args.spec,
             "--pvm-interpreter-backend",
-            "--trace-traces",
         ]
 
     result = fuzzer_run(fuzzer_args, log_file)
@@ -1020,18 +1049,17 @@ def get_selected_target_list(targets):
     return valid_targets
 
 
-def run_targets_recursively(targets, parallel=False, rand_seed=False):
+def run_targets_recursively(targets, parallel=False):
     """
     Run multiple targets by launching separate script processes for each target.
     Each target gets its own subprocess with a unique session ID.
 
     Args:
         targets: List of target names to run
-        original_args: Original command-line arguments
         parallel: If True, run all targets in parallel; if False, run sequentially
     """
     mode = "parallel" if parallel else "sequential"
-    print(f"Running workflow for {len(targets)} targets in {mode} mode...")      
+    print(f"Running workflow for {len(targets)} targets in {mode} mode...")
 
     # Build arguments for recursive calls
     base_args = []
@@ -1044,8 +1072,12 @@ def run_targets_recursively(targets, parallel=False, rand_seed=False):
         if arg in ["-t", "--targets"]:
             skip_next = True
             continue
-        # Skip --parallel and --rand-seed to avoid confusion in child processes
-        if arg == "--parallel" or arg == "--rand-seed":
+        # Skip --verbosity; children are forced to verbosity 0 below
+        if arg == "--verbosity":
+            skip_next = True
+            continue
+        # Skip --parallel to avoid confusion in child processes
+        if arg == "--parallel":
             continue
         base_args.append(arg)
 
@@ -1060,14 +1092,8 @@ def run_targets_recursively(targets, parallel=False, rand_seed=False):
         session_id = f"{int(time.time())}_{random.randint(1000, 9999)}"
         target_env = env.copy()
         target_env["JAM_FUZZ_SESSION_ID"] = session_id
-        target_env["JAM_FUZZ_VERBOSITY"] = "0"
 
-        if rand_seed:
-            target_env["JAM_FUZZ_SEED"] = session_id
-        else:
-            target_env["JAM_FUZZ_SEED"] = SEED
-
-        cmd = [sys.executable, os.path.abspath(__file__), "--target", target, "--gp-version", GP_VERSION] + base_args
+        cmd = [sys.executable, os.path.abspath(__file__), "--target", target, "--gp-version", GP_VERSION, "--verbosity", "0"] + base_args
         print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
         proc = subprocess.Popen(cmd, env=target_env)
         processes.append((target, proc, session_id))
@@ -1181,7 +1207,7 @@ def main():
     # Handle multiple targets with recursive execution
     # (sequential by default, parallel if --parallel flag is set)
     if len(targets) > 1 and not os.environ.get("JAM_FUZZ_SINGLE_TARGET"):
-        run_targets_recursively(targets, parallel=args.parallel, rand_seed=args.rand_seed)
+        run_targets_recursively(targets, parallel=args.parallel)
         return
 
     target = targets[0]
