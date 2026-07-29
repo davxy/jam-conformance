@@ -1,0 +1,18 @@
+[package]
+name = "ed25519-derive-generator"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Nothing-up-my-sleeve derivation of a second edwards25519 generator"
+
+# Own workspace root, so this stays out of the parent package's build graph.
+[workspace]
+
+[dependencies]
+# Same curve backend ed25519-consensus itself uses, so the derived point is
+# checked by exactly the code that will consume it.
+curve25519-dalek = { package = "curve25519-dalek-ng", version = "4.1", default-features = false, features = ["u64_backend", "alloc"] }
+sha2 = { version = "0.9", default-features = false }
+hex = { version = "0.4", default-features = false, features = ["alloc"] }
+# The curve backend keeps affine coordinates private, so x is recovered here.
+num-bigint = "0.4"
