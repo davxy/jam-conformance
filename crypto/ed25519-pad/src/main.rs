@@ -14,7 +14,7 @@ use sha2::{Digest, Sha512};
 
 /// Domain string the generator is derived from, unless one is given on the
 /// command line.
-const DOMAIN: &str = "jam/ed25519-generator";
+const DOMAIN: &str = "jam_banned_key";
 
 /// p = 2^255 - 19, little-endian.
 const P_BYTES: [u8; 32] = {
