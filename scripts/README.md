@@ -183,8 +183,8 @@ are mismatches, the resulting trace is a potential test-case. The result should 
 if it reveals a unique scenario, it should be added to the test battery by copying the important
 part of the trace to `fuzz-reports` on the Jam-conformance repo.
 
-Running the same command once, with the same parameters, should produce essentially the same
-execution, as the randomness used is fixed by the parameters.
+Running the same command again, with the same parameters and the same seed, should produce
+essentially the same execution.
 
 ### Starting the Fuzzer in Local Mode
 
@@ -230,14 +230,17 @@ Run all available targets:
 
 #### Controlling Randomness
 
-By default, the fuzzer uses a fixed seed for reproducibility. To generate different execution
-paths, use a random seed:
+By default, each run uses a random seed. To reproduce a run, pass the seed that the fuzzer prints
+at the top of its log:
 ```
-./fuzz-workflow.py --target <target> --rand-seed
+./fuzz-workflow.py --target <target> --seed <seed>
 ```
 
-The seed used for a particular run can be found in the report file, allowing you to reproduce the
-exact same execution by setting the `JAM_FUZZ_SEED` environment variable.
+The seed is either `0x` followed by 64 hex characters, or any passphrase. The `JAM_FUZZ_SEED`
+environment variable sets the same value, and `--seed` takes precedence over it.
+
+When several targets run together, all of them use the given seed. Without a seed, each target
+gets its own random seed.
 
 #### Publishing Reports
 

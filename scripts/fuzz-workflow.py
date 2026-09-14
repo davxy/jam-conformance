@@ -276,7 +276,7 @@ def parse_command_line_args():
         "--seed",
         type=str,
         default=DEFAULT_SEED,
-        help="Fuzzer seed (hex). If not specified (and JAM_FUZZ_SEED is unset), a random seed is generated.",
+        help="Fuzzer seed: 0x followed by 64 hex characters, or any passphrase. If not specified (and JAM_FUZZ_SEED is unset), a random seed is generated.",
     )
 
     parser.add_argument(
