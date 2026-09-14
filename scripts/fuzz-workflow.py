@@ -349,6 +349,8 @@ def parse_command_line_args():
     )
 
     args = parser.parse_args()
+    if not args.seed:
+        args.seed = format(random.randint(0, 2**64 - 1), 'x')
     if args.config:
         config_spec = config_jam_spec(args.config)
         if config_spec is None:
@@ -434,6 +436,8 @@ def run_fuzzer_local_mode(args, log_file):
     Run `polkajam-fuzz` with local source with the provided arguments.
     """
     fuzzer_args = [
+        "--seed",
+        args.seed,
         "--trace-dir",
         SESSION_TRACE_DIR,
         "--target-sock",
@@ -446,8 +450,6 @@ def run_fuzzer_local_mode(args, log_file):
             args.config,
         ]
     else:
-        seed = args.seed if args.seed else format(random.randint(0, 2**64 - 1), 'x')
-
         fuzzer_args += [
             "--source",
             args.source,
@@ -459,8 +461,6 @@ def run_fuzzer_local_mode(args, log_file):
             "true" if args.safrole else "false",
             "--skip-slots",
             "true" if args.skip_slots else "false",
-            "--seed",
-            seed,
             "--max-work-items",
             args.max_work_items,
             "--single-step",
@@ -502,6 +502,8 @@ def run_fuzzer_trace_mode(args, target, trace_dir, log_file):
     shutil.copytree(trace_dir, input_trace_dir)
 
     fuzzer_args = [
+        "--seed",
+        args.seed,
         "--source",
         "trace",
         "--trace-dir",
