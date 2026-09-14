@@ -14,6 +14,7 @@ Conformance runs must use tooling matching the Gray Paper version targeted by th
 | GP version | Fuzzer | jam-types-py |
 |------------|--------|--------------|
 | 0.7.2 | [`fuzzer-gp-0.7.2`](https://github.com/paritytech/polkajam/releases/tag/fuzzer-gp-0.7.2) | [`v0.7.2`](https://github.com/davxy/jam-types-py/releases/tag/v0.7.2) |
+| 0.8.0 | [`fuzzer-gp-0.8.0`](https://github.com/paritytech/polkajam/releases/tag/fuzzer-gp-0.8.0) | [`v0.8.0`](https://github.com/davxy/jam-types-py/releases/tag/v0.8.0) |
 
 ## Test structure
 
