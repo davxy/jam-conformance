@@ -130,24 +130,28 @@ while others provide optional configuration.
 - `JAM_FUZZ_SESSION_ID` - Custom session identifier. Defaults to the current Unix timestamp. Use
   this to create named sessions or overwrite existing session data.
 - `JAM_FUZZ_STEP_PERIOD` - Minimum time (in milliseconds) to wait between successive steps.
-  Defaults to `0` (no delay). Useful for rate-limiting or debugging.
+  Defaults to `0` (no delay). Useful for rate-limiting or debugging. Default for `--step-period`.
 - `JAM_FUZZ_VERBOSITY` - Log verbosity level for the Fuzzer. Defaults to `1`. Higher values
-  produce more detailed logging output.
+  produce more detailed logging output. Default for `--verbosity`.
 
 ### Fuzzing Behavior (Local Mode Only)
 
 These variables control how blocks are generated and imported during local mode fuzzing. They are
-ignored in trace mode since blocks are read from existing traces.
+ignored in trace mode since blocks are read from existing traces. Each variable sets the default
+of the command-line flag with the same name (see
+[Local Mode Parameters](#local-mode-parameters)); the flag takes precedence.
 
 - `JAM_FUZZ_MAX_STEPS` - Maximum number of steps to execute in a fuzzing session. Controls how
-  long the fuzzer runs before terminating.
+  long the fuzzer runs before terminating. Default for `--max-steps`.
 - `JAM_FUZZ_SEED` - Seed for all randomness used in the session. Using the same seed with the same
   parameters ensures reproducible execution. The seed can be found in session reports to reproduce
-  specific runs.
+  specific runs. Default for `--seed`.
 - `JAM_FUZZ_SAFROLE` - Whether to use Safrole to produce tickets for determining the next block
-  author. Affects consensus behavior during fuzzing.
+  author. Affects consensus behavior during fuzzing. Default for `--safrole`.
 - `JAM_FUZZ_MAX_WORK_ITEMS` - Maximum number of work items in work packages. Affects the data
-  volume of various instructions executed by services.
+  volume of various instructions executed by services. Default for `--max-work-items`.
+- `JAM_FUZZ_SKIP_SLOTS`, `JAM_FUZZ_SINGLE_STEP`, `JAM_FUZZ_REMOTE_TIMEOUT` - Defaults for
+  `--skip-slots`, `--single-step` and `--remote-timeout`.
 
 ## Creating a Test Vector
 
@@ -183,8 +187,8 @@ are mismatches, the resulting trace is a potential test-case. The result should 
 if it reveals a unique scenario, it should be added to the test battery by copying the important
 part of the trace to `fuzz-reports` on the Jam-conformance repo.
 
-Running the same command once, with the same parameters, should produce essentially the same
-execution, as the randomness used is fixed by the parameters.
+Running the same command again, with the same parameters and the same seed, should produce
+essentially the same execution.
 
 ### Starting the Fuzzer in Local Mode
 
@@ -230,14 +234,17 @@ Run all available targets:
 
 #### Controlling Randomness
 
-By default, the fuzzer uses a fixed seed for reproducibility. To generate different execution
-paths, use a random seed:
+By default, each run uses a random seed. To reproduce a run, pass the seed that the fuzzer prints
+at the top of its log:
 ```
-./fuzz-workflow.py --target <target> --rand-seed
+./fuzz-workflow.py --target <target> --seed <seed>
 ```
 
-The seed used for a particular run can be found in the report file, allowing you to reproduce the
-exact same execution by setting the `JAM_FUZZ_SEED` environment variable.
+The seed is either `0x` followed by 64 hex characters, or any passphrase. The `JAM_FUZZ_SEED`
+environment variable sets the same value, and `--seed` takes precedence over it.
+
+When several targets run together, all of them use the given seed. Without a seed, each target
+gets its own random seed.
 
 #### Publishing Reports
 
@@ -294,9 +301,23 @@ parameters are ignored in trace mode since blocks are read from existing traces.
 - `--mutation-ratio <ratio>` - Probability of generating mutations. Only active if
   `--max-mutations > 0`.
 
-See the [Environment Variables](#environment-variables) section for additional configuration
-options including `JAM_FUZZ_MAX_STEPS`, `JAM_FUZZ_SEED`, `JAM_FUZZ_SAFROLE`, and
-`JAM_FUZZ_MAX_WORK_ITEMS`.
+#### Fuzzer Run Parameters
+- `--max-steps <n>` - Maximum number of fuzzer steps. Defaults to `1000000`.
+- `--step-period <ms>` - Minimum time between successive steps. Defaults to `0`.
+- `--max-work-items <n>` - Maximum number of work items in work packages. Defaults to `5`.
+- `--safrole [true|false]` - Use Safrole to produce tickets for block authoring. Defaults to
+  `false`. The bare flag means `true`.
+- `--skip-slots [true|false]` - Randomly skip slots during block authoring. Defaults to `false`.
+  The bare flag means `true`.
+- `--single-step [true|false]` - Pause after each step and wait for user input. Defaults to
+  `false`. The bare flag means `true`.
+- `--remote-timeout <s>` - Timeout in seconds when waiting for the target. Defaults to `30`.
+- `--verbosity <n>` - Fuzzer log verbosity, `0` to `3`. Defaults to `1`. Also used in trace mode.
+- `--seed <seed>` - See [Controlling Randomness](#controlling-randomness).
+
+Each of these flags reads its default from the `JAM_FUZZ_*` environment variable with the same
+name; see [Environment Variables](#environment-variables). With `--config`, the config file
+defines these values and the flags are ignored, except `--seed`.
 
 ## Running a Test Battery
 

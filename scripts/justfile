@@ -10,7 +10,7 @@ explore target="all" spec="tiny":
 
 # Execute a trace workflow with a few targets and publish the corresponding reports
 replay target="all" spec="tiny":
-    ./fuzz-workflow.py --targets "{{target}}" --spec "{{spec}}" --skip-get --report-publish --parallel --source trace --max-mutations 0 --mutation-ratio 0 --base-dir "../fuzz-reports/0.7.2/{{spec}}"
+    ./fuzz-workflow.py --targets "{{target}}" --spec "{{spec}}" --skip-get --publish --parallel --source trace --max-mutations 0 --mutation-ratio 0 --base-dir "../fuzz-reports/0.7.2/{{spec}}"
 
 conformance target="all" config="../conformance-criteria/fuzzer_configs/l0_tiny.toml":
-    ./fuzz-workflow.py --targets "{{target}}" --config "{{config}}" --skip-get --parallel --report-publish
+    ./fuzz-workflow.py --targets "{{target}}" --config "{{config}}" --skip-get --parallel --publish
