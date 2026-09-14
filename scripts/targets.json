@@ -61,7 +61,7 @@
   },
   "pbnjam": {
     "image": "docker.io/shimonchick/pbnjam-fuzzer-target:latest",
-    "gp_version": "0.7.2"
+    "gp_version": "0.8.0"
   },
   "polkajam": {
     "repo": "none",
