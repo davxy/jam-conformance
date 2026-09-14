@@ -1063,26 +1063,6 @@ def run_targets_recursively(targets, parallel=False):
     mode = "parallel" if parallel else "sequential"
     print(f"Running workflow for {len(targets)} targets in {mode} mode...")
 
-    # Build arguments for recursive calls
-    base_args = []
-    skip_next = False
-    for i, arg in enumerate(sys.argv[1:]):
-        if skip_next:
-            skip_next = False
-            continue
-        # Skip the targets argument as we'll replace it
-        if arg in ["-t", "--targets"]:
-            skip_next = True
-            continue
-        # Skip --verbosity; children are forced to verbosity 0 below
-        if arg == "--verbosity":
-            skip_next = True
-            continue
-        # Skip --parallel to avoid confusion in child processes
-        if arg == "--parallel":
-            continue
-        base_args.append(arg)
-
     # Set up environment
     env = os.environ.copy()
     env["JAM_FUZZ_SINGLE_TARGET"] = "1"  # Prevent recursive execution
@@ -1095,7 +1075,10 @@ def run_targets_recursively(targets, parallel=False):
         target_env = env.copy()
         target_env["JAM_FUZZ_SESSION_ID"] = session_id
 
-        cmd = [sys.executable, os.path.abspath(__file__), "--target", target, "--gp-version", GP_VERSION, "--verbosity", "0"] + base_args
+        # argparse keeps the last value, so these override whatever the user
+        # passed, in any spelling (-t, --target, --targets=...).
+        child_args = ["--targets", target, "--gp-version", GP_VERSION, "--verbosity", "0"]
+        cmd = [sys.executable, os.path.abspath(__file__)] + sys.argv[1:] + child_args
         print(f"{'Launching' if parallel else 'Running'} target {target} with session {session_id}")
         proc = subprocess.Popen(cmd, env=target_env)
         processes.append((target, proc, session_id))
