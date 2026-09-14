@@ -89,11 +89,20 @@ FUZZER_LOG_TAIL_LENGTH = 100
 #   CLI flag > JAM_FUZZ_* env var > hardcoded default
 # The env-var lookup happens here so argparse picks it up as the default,
 # meaning any explicit CLI flag still wins.
+def boolean(value):
+    normalized = value.strip().lower()
+    if normalized in ("1", "true", "yes", "on"):
+        return True
+    if normalized in ("0", "false", "no", "off"):
+        return False
+    raise ValueError(f"expected true or false, got {value!r}")
+
+
 def _env_bool(name, default=False):
     val = os.environ.get(name)
     if val is None:
         return default
-    return val.strip().lower() in ("1", "true", "yes", "on")
+    return boolean(val)
 
 
 DEFAULT_MAX_STEPS = os.environ.get("JAM_FUZZ_MAX_STEPS", "1000000")
@@ -281,23 +290,29 @@ def parse_command_line_args():
 
     parser.add_argument(
         "--safrole",
-        action="store_true",
+        type=boolean,
+        nargs="?",
+        const=True,
         default=DEFAULT_SAFROLE,
-        help="Enable safrole.",
+        help="Enable safrole (optional value: true or false).",
     )
 
     parser.add_argument(
         "--skip-slots",
-        action="store_true",
+        type=boolean,
+        nargs="?",
+        const=True,
         default=DEFAULT_SKIP_SLOTS,
-        help="Enable skip-slots.",
+        help="Enable skip-slots (optional value: true or false).",
     )
 
     parser.add_argument(
         "--single-step",
-        action="store_true",
+        type=boolean,
+        nargs="?",
+        const=True,
         default=DEFAULT_SINGLE_STEP,
-        help="Enable single-step.",
+        help="Enable single-step (optional value: true or false).",
     )
 
     parser.add_argument(
