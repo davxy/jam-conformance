@@ -14,7 +14,8 @@ The following components are required to run the conformance test suite:
 
 - **Python 3**: Runtime environment for the test scripts
 - **[jam-types-py](https://github.com/davxy/jam-types-py)**: Python library providing JAM
-  protocol support types and utilities
+  protocol support types and utilities. The installed release must match the Gray Paper
+  version of the fuzzer, see [Gray Paper Version](#gray-paper-version)
 - **[jam-conformance](https://github.com/davxy/jam-conformance)**: Repository containing the
   conformance testing infrastructure (scripts, reports, traces)
 - **[polkajam-fuzz](https://github.com/paritytech/polkajam)**: Fuzzer based on the PolkaJam
@@ -30,7 +31,7 @@ targets. It provides the following capabilities:
 - **Target Management**: Downloads JAM implementations from GitHub releases or Docker images
 - **Execution**: Runs targets either directly on the host or within Docker containers
 - **Configuration**: Targets are defined in `targets.json` with information about their source,
-  execution command, and platform support
+  execution command, platform support and the Gray Paper version they implement (`gp_version`)
 
 Key commands:
 ```
@@ -137,9 +138,8 @@ while others provide optional configuration.
 ### Fuzzing Behavior (Local Mode Only)
 
 These variables control how blocks are generated and imported during local mode fuzzing. They are
-ignored in trace mode since blocks are read from existing traces. Each variable sets the default
-of the command-line flag with the same name (see
-[Local Mode Parameters](#local-mode-parameters)); the flag takes precedence.
+ignored in trace mode since blocks are read from existing traces. They are also ignored when
+`--config` is set, see [Fuzzer Config Files](#fuzzer-config-files).
 
 - `JAM_FUZZ_MAX_STEPS` - Maximum number of steps to execute in a fuzzing session. Controls how
   long the fuzzer runs before terminating. Default for `--max-steps`.
@@ -152,6 +152,72 @@ of the command-line flag with the same name (see
   volume of various instructions executed by services. Default for `--max-work-items`.
 - `JAM_FUZZ_SKIP_SLOTS`, `JAM_FUZZ_SINGLE_STEP`, `JAM_FUZZ_REMOTE_TIMEOUT` - Defaults for
   `--skip-slots`, `--single-step` and `--remote-timeout`.
+
+## Gray Paper Version
+
+`fuzz-workflow.py` works on one Gray Paper (GP) version per run. The version selects the
+targets and the report directory.
+
+The version is resolved in this order:
+1. The `--gp-version` flag, when given.
+2. The output of `polkajam-fuzz --version`, for example
+   `polkajam-fuzz 0.1.27-29b5e524f165 (GP 0.7.2)`. The value in parentheses is used.
+3. `DEFAULT_GP_VERSION` in the script, when the detection fails.
+
+The version has these effects:
+- **Target filter**: each entry in `targets.json` has a `gp_version` field. Only targets whose
+  field equals the resolved version are available. Any other target is skipped with the warning
+  `'<target>' is not available for the selected GP version and will be skipped`. Use
+  `--list-targets` to print the available targets, or `./target.py list` to print all targets
+  grouped by version.
+- **Report directory**: traces are read from, and published to,
+  `<jam-conformance>/fuzz-reports/<gp_version>/{traces,reports,summaries}`. The `--base-dir`
+  flag overrides the parent directory.
+- **Trace decoding**: the script decodes `.bin` traces and reports with jam-types-py. The
+  installed jam-types-py release must match the GP version, for example `v0.7.2` for GP 0.7.2.
+  With a different release the `.json` files are wrong or the decoding fails.
+
+The tooling accepted for each GP version is listed in the
+[conformance matrix](../conformance-criteria/conformance-matrix.md#versions).
+
+### New Gray Paper Version Checklist
+
+Steps to move the workflow to a new GP version `X.Y.Z`:
+
+1. Build or download a `polkajam-fuzz` for the version. `polkajam-fuzz --version` must print
+   `(GP X.Y.Z)`. Point `POLKAJAM_FUZZ_BIN` to it.
+2. Install the jam-types-py release for the version.
+3. In `targets.json`, set `"gp_version": "X.Y.Z"` for each target that has migrated. Leave the
+   other targets on their current version.
+4. Update `DEFAULT_GP_VERSION` in `fuzz-workflow.py` and the base directories in the `justfile`
+   recipes.
+5. Run the workflow in local mode with `--report-publish`. The first publish creates
+   `fuzz-reports/X.Y.Z/`. Trace mode needs traces already present in that directory.
+6. Add the team list for the version to `fuzz-reports/README.md`, the tooling row to
+   `conformance-criteria/conformance-matrix.md`, and an entry to `NEWS.md`.
+
+## Fuzzer Config Files
+
+The `--config <file>` flag passes a polkajam-fuzz TOML config file to the fuzzer. The configs
+used for the conformance lanes are in
+[conformance-criteria/fuzzer_configs](../conformance-criteria/fuzzer_configs), one per lane
+(`l0_tiny.toml`, `l1_tiny.toml`, ...).
+
+When `--config` is set:
+- All lane-defining fields come from the file: spec, profiles, steps, Safrole, mutations, work
+  items, verbosity and timeouts. The command-line flags and `JAM_FUZZ_*` variables for these
+  fields are ignored.
+- The script still passes the per-session values `--source`, `--seed`, `--trace-dir` and
+  `--target-sock`. `--rand-seed` and `JAM_FUZZ_SEED` still apply.
+- The file must set `jam_spec`. `--spec` may be omitted. When given, it must equal `jam_spec`.
+  The value is also used to start the target and to decode the traces.
+- In trace mode (`--source trace`) the script adds `--max-mutations 0` and `--trace-traces`.
+
+Run one conformance lane against a target and publish the result:
+```
+./fuzz-workflow.py --targets jamduna --config ../conformance-criteria/fuzzer_configs/l0_tiny.toml --skip-get --report-publish
+```
+This is what the `conformance` recipe in the `justfile` does.
 
 ## Creating a Test Vector
 
@@ -286,7 +352,8 @@ Graypaper that the implementations are meant to conform to.
 ### Local Mode Parameters
 
 Several command-line parameters control block generation behavior during local mode fuzzing. These
-parameters are ignored in trace mode since blocks are read from existing traces.
+parameters are ignored in trace mode since blocks are read from existing traces, and when
+`--config` is set (see [Fuzzer Config Files](#fuzzer-config-files)).
 
 #### Block Generation Profiles
 - `--profile <name>` - Defines the possible operations to include in work packages executed by
