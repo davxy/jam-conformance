@@ -1,0 +1,80 @@
+{
+    "config": {
+        "seed": "39586e57ab383f08",
+        "jam_spec": {
+            "tiny": null
+        },
+        "max_steps": 4294967295,
+        "safrole": false,
+        "disputes": false,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 1,
+        "import_max_step": 2,
+        "import_min": 8.317167,
+        "import_max": 8.317167,
+        "import_mean": 8.317167,
+        "import_p50": 8.317167,
+        "import_p75": 0.0,
+        "import_p90": 8.317167,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 414.049357,
+            "import_max": 414.049357,
+            "import_mean": 414.049357,
+            "import_p50": 414.049357,
+            "import_p75": 0.0,
+            "import_p90": 414.049357,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xefd06676158e863a937c82ed6053c21c151dca2e8e98fd353e8dac46e287ba7e",
+                "got": "0x3671dd077623c961850ba8c34017bc06bb0e78f7df6dcb0c5428cf456b90e300"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0e000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x0000000000000000000001a243ef65d759d9fd5a9445817f21afbdbff2a982af7ba59a075cf41ab8fb9ef7b3020000767cbfd396a39888d1b577da051977c68dd8e4fcc03410be341d18e4956be3cd0600000000000000000000000000000000000000000000000000000000000000000000006353d71c9d214ee8581ff7ae630463c043db9bcfb845c0c2c64b1c3a4fb0d4d40700000021e8f4efffbd542feaf346ea6fa165e767e42f25210787517a5dbc6cd1d4763e0bed3c0de9068b850699abab1a83e94479c3aa661dfdd0f7a816dfed70f932b06353d71c9d214ee8581ff7ae630463c043db9bcfb845c0c2c64b1c3a4fb0d4d40700000021e8f4efffbd542feaf346ea6fa165e767e42f25210787517a5dbc6cd1d4763e032f973db7441c3299fb0b224875c8350319bf2b8e971944fe35060d63e00b7b673cebdc96d33f0ca815c17554dcd50c38fe28c6c53e9564ad87205365a6f8b0099fcd75d361b5ec1ef1ee101fdb63cade8bd4e52f08d935e885b2bb75ee648a2c002357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f81600000100000000128fc8f0578f393bd12da1e73e030afe53fde62069fc8f6f87a5c914b1843135f843a5e6bb4759b6ad2e549454a9dca6ccdb8c9f143cd8dd921d710e1bb4192adfd9060000000000000401100000c03d87000280e000012f973db7441c3299fb0b224875c8350319bf2b8e971944fe35060d63e00b7b6700",
+                        "got": "0x0000000000000000000001a243ef65d759d9fd5a9445817f21afbdbff2a982af7ba59a075cf41ab8fb9ef7b3020000767cbfd396a39888d1b577da051977c68dd8e4fcc03410be341d18e4956be3cd0600000000000000000000000000000000000000000000000000000000000000000000006353d71c9d214ee8581ff7ae630463c043db9bcfb845c0c2c64b1c3a4fb0d4d40700000021e8f4efffbd542feaf346ea6fa165e767e42f25210787517a5dbc6cd1d4763e0bed3c0de9068b850699abab1a83e94479c3aa661dfdd0f7a816dfed70f932b06353d71c9d214ee8581ff7ae630463c043db9bcfb845c0c2c64b1c3a4fb0d4d40700000021e8f4efffbd542feaf346ea6fa165e767e42f25210787517a5dbc6cd1d4763e032f973db7441c3299fb0b224875c8350319bf2b8e971944fe35060d63e00b7b673cebdc96d33f0ca815c17554dcd50c38fe28c6c53e9564ad87205365a6f8b0099fcd75d361b5ec1ef1ee101fdb63cade8bd4e52f08d935e885b2bb75ee648a2c002357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f81600000100000000128fc8f0578f393bd12da1e73e030afe53fde62069fc8f6f87a5c914b1843135f843a5e6bb4759b6ad2e549454a9dca6ccdb8c9f143cd8dd921d710e1bb4192adfd9060000000000000401100000c03d87000280e000022f973db7441c3299fb0b224875c8350319bf2b8e971944fe35060d63e00b7b679fcd75d361b5ec1ef1ee101fdb63cade8bd4e52f08d935e885b2bb75ee648a2c00"
+                    }
+                }
+            ]
+        }
+    }
+}
