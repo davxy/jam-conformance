@@ -55,6 +55,10 @@
     "image": "ghcr.io/methodfive/javajam:latest-amd64",
     "gp_version": "0.8.0"
   },
+  "lasair": {
+    "image": "ghcr.io/abutlabs/lasair-fuzz-target:latest",
+    "gp_version": "0.8.0"
+  },
   "new-jamneration": {
     "image": "ghcr.io/new-jamneration/new-jamneration-target:latest",
     "gp_version": "0.7.2"
