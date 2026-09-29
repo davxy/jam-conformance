@@ -1,0 +1,69 @@
+{
+    "config": {
+        "seed": "bfdeb24a37fa1e4e",
+        "jam_spec": {
+            "tiny": null
+        },
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": {
+            "fuzzy": null
+        },
+        "fuzzy_profile": {
+            "misc": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 3,
+        "import_max_step": 2,
+        "import_min": 1.480783,
+        "import_max": 8.581122,
+        "import_mean": 5.141310000000001,
+        "import_p50": 5.362,
+        "import_p75": 8.581,
+        "import_p90": 8.581,
+        "import_p99": 8.581,
+        "import_std_dev": 3.5553114929846865
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 1,
+                "patch": 2
+            },
+            "app_name": "jam-forge"
+        },
+        "stats": {
+            "steps": 3,
+            "imported": 2,
+            "import_max_step": 2,
+            "import_min": 289.675916,
+            "import_max": 387.786213,
+            "import_mean": 338.7310645,
+            "import_p50": 387.786,
+            "import_p75": 387.786,
+            "import_p90": 387.786,
+            "import_p99": 387.786,
+            "import_std_dev": 69.37445631292617
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "Import failed: InvalidHeader - Header: Invalid extrinsic hash"
+        }
+    }
+}

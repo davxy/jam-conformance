@@ -1,0 +1,69 @@
+{
+    "config": {
+        "seed": "e059b689c2d19221",
+        "jam_spec": {
+            "tiny": null
+        },
+        "max_steps": 1000,
+        "safrole": true,
+        "disputes": true,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 2,
+        "import_max_step": 1,
+        "import_min": 1.304181,
+        "import_max": 1.654499,
+        "import_mean": 1.47934,
+        "import_p50": 1.654,
+        "import_p75": 1.654,
+        "import_p90": 1.654,
+        "import_p99": 1.654,
+        "import_std_dev": 0.24771223337170897
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 2,
+                "minor": 0,
+                "patch": 0
+            },
+            "app_name": "lasair"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 1.820151,
+            "import_max": 1.820151,
+            "import_mean": 1.820151,
+            "import_p50": 1.820151,
+            "import_p75": 0.0,
+            "import_p90": 1.820151,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "ok",
+            "got": "bad_extrinsic_hash"
+        }
+    }
+}

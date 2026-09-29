@@ -1,0 +1,66 @@
+{
+    "config": {
+        "seed": "44c2a645be94f131",
+        "jam_spec": {
+            "tiny": null
+        },
+        "max_steps": 1000,
+        "safrole": true,
+        "disputes": true,
+        "profile": {
+            "full": null
+        },
+        "fuzzy_profile": {
+            "full": null
+        },
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0
+    },
+    "stats": {
+        "steps": 170,
+        "imported": 52,
+        "import_max_step": 22,
+        "import_min": 1.1775550000000001,
+        "import_max": 108.013324,
+        "import_mean": 3.5927501538461524,
+        "import_p50": 1.307,
+        "import_p75": 1.492,
+        "import_p90": 1.764,
+        "import_p99": 8.837,
+        "import_std_dev": 14.803339307307256
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 2,
+                "minor": 0,
+                "patch": 0
+            },
+            "app_name": "lasair"
+        },
+        "stats": {
+            "steps": 170,
+            "imported": 52,
+            "import_max_step": 3,
+            "import_min": 1.1972960000000001,
+            "import_max": 903.490892,
+            "import_mean": 54.14257263461539,
+            "import_p50": 50.185,
+            "import_p75": 51.876,
+            "import_p90": 56.376,
+            "import_p99": 170.487,
+            "import_std_dev": 123.8379615733766
+        }
+    },
+    "error": {
+        "local_fatal": "Other error: Local source stuck: no block produced within authoring budget"
+    }
+}
