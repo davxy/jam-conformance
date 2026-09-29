@@ -207,8 +207,8 @@ When `--config` is set:
 - All lane-defining fields come from the file: spec, profiles, steps, Safrole, mutations, work
   items, verbosity and timeouts. The command-line flags and `JAM_FUZZ_*` variables for these
   fields are ignored.
-- The script still passes the per-session values `--source`, `--seed`, `--trace-dir` and
-  `--target-sock`. `--rand-seed` and `JAM_FUZZ_SEED` still apply.
+- The script still passes the per-session values `--seed`, `--trace-dir` and `--target-sock`.
+  `--seed` and `JAM_FUZZ_SEED` still apply.
 - The file must set `jam_spec`. `--spec` may be omitted. When given, it must equal `jam_spec`.
   The value is also used to start the target and to decode the traces.
 - In trace mode (`--source trace`) the script adds `--max-mutations 0` and `--trace-traces`.
