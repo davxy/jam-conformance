@@ -10,6 +10,14 @@
 
 ## Teams
 
+### GP 0.8.0
+
+* jamforge (scala)
+* jampy (python)
+* javajam (java)
+* lasair (ocaml)
+* pbnjam (ts)
+
 ### GP 0.7.2
 
 * boka (swift)
@@ -18,14 +26,10 @@
 * graymatter (elixir)
 * jam4s (scala)
 * jamduna (go)
-* jamforge (scala)
 * jamixir (elixir)
-* jampy (python)
 * jamzig (zig)
 * jamzilla (go)
-* javajam (java)
 * new-jamneration (go)
-* pbnjam (ts)
 * polkajam (rust)
 * pyjamaz (python)
 * spacejam (rust)
