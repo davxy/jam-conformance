@@ -162,6 +162,7 @@ Encoded:
 | `Initialize`   | `StateRoot`  | Initialize or reset target state |
 | `ImportBlock`  | `StateRoot`  | Import block and return resulting state root |
 | `GetState`     | `State`      | Retrieve posterior state associated to given header hash |
+| `RefineBundle` | `WorkReport` | Compute the work-report of a work-package bundle |
 
 The only exception is the `Error` message, which the target may return for
 certain requests when a protocol-defined error condition occurs.
@@ -180,6 +181,7 @@ triggers a specific reaction from the fuzzer.
 | Request        | Response | Description |
 |----------------|----------|-------------|
 | `ImportBlock`  | `Error`  | Import block failure |
+| `RefineBundle` | `Error`  | No valid work-report for the bundle |
 
 ### General Rules
 
@@ -207,6 +209,34 @@ The protocol adheres to a strict **request–response** model with the following
 - **Full state retrieval:** When a state root mismatch is detected the fuzzer
   attempts to fetch the whole state from the target to produce a comprehensive
   fuzz report.
+
+### Work-Package Refinement
+
+This request is available only when `feature-refine` is enabled
+(see [Refinement](#refinement)).
+
+- **Refine request**. `RefineBundle` contains the arguments of the work-report
+  function $\Xi(p, c, l, v)$ (GP 0.8.0, section 14.4). These are the core index
+  $c$, the segment-root dictionary $l$ and the size $v$ of the assurer set.
+  The request also contains the parts of the work-package bundle: the
+  work-package $p$, the extrinsic data, the import segments and their
+  justifications.
+- **Refine success**. The target verifies the bundle: the extrinsic data must
+  agree with the hashes in the work-items, and each import segment with its
+  justification. Then the target computes the work-report and returns it.
+  The bundle length and the erasure root of the work-report come from the GP
+  bundle encoding, which the target makes from the parts.
+  A work-item that fails in refine (e.g. out-of-gas or panic) does not cause a
+  refine failure: its error is part of the work-report.
+- **Refine failure**. The target must return an `Error` message when the bundle
+  does not verify (GP 0.8.0, section 17). It must do the same when
+  $\Xi$ gives no work-report (e.g. Is-Authorized fails). Then the target waits
+  for the next request from the fuzzer.
+- **Refine state**. The target uses the posterior state of the last block that
+  it imported with success, or the `Initialize` state if it imported no block.
+- **Report verification**. The fuzzer compares the work-report of the target with
+  the work-report that it computes locally. When the two results differ, the
+  fuzzer produces a fuzz report and terminates the session.
 
 ### Protocol Session
 
@@ -242,6 +272,13 @@ The protocol adheres to a strict **request–response** model with the following
              |   |          ...            |   |
              +---+-------------------------+---+
                  |                         |
+             +---+--- REFINEMENT ----------+---+
+             |   |      RefineBundle       |   |
+             |   | ----------------------> |   | Refine bundle on head state
+             |   |  WorkReport (or Error)  |   |
+Check report |   | <---------------------- |   | Return work-report
+             +---+-------------------------+---+
+                 |                         |
              +---+--- ON ROOT MISMATCH ----+---+
              |   |      GetState           |   |
              |   | ----------------------> |   | Request full state
@@ -250,6 +287,9 @@ The protocol adheres to a strict **request–response** model with the following
              +---+-------------------------+---+
                  |                         |
 ```
+
+Refinement requests are optional. They can come at any point after
+initialization, between block imports.
 
 ## Features
 
@@ -307,6 +347,36 @@ mutations are never used as parents for subsequent blocks.
 3. Mutate $B_i$ into several variants: $B_{i1}$, $B_{i2}$, $B_{i3}$  
 4. Import these variants in order: $B_{i1}$, $B_{i2}$, $B_{i3}$, and finally the original $B_i$  
 5. Repeat from step 2  
+
+### Refinement
+
+When `feature-refine` is enabled, the fuzzer tests the work-report computation
+of the target. The method is the same as for block import: the fuzzer computes
+the result locally and in the target, and compares the two results.
+The request and response rules are in [Work-Package Refinement](#work-package-refinement).
+
+The work-report computation reads the chain state only through historical
+lookups at the lookup-anchor slot (GP 0.8.0, section 14.3 and appendix B.3).
+Thus all states that are not older than the lookup-anchor block give the same
+result. A guarantor uses the state of the most recent block (GP 0.8.0,
+section 15), and the target does the same.
+
+With `feature-fork`, the fuzzer sends `RefineBundle` only after the import of the
+original block. Thus the last block that the target imported with success is the
+head of the chain.
+
+The target computes only $\Xi$. It does not check if the authorizer is in the
+authorization pool, and it does not check the refinement context. Block import
+does these checks on the guarantees extrinsic.
+
+#### Typical Workflow
+
+1. The fuzzer imports block $B_i$ locally and in the target.
+2. The fuzzer selects a work-package for a guarantee of a later block, and
+   computes its work-report locally on the posterior state of $B_i$.
+3. The fuzzer sends a `RefineBundle` with the same arguments to the target.
+4. If the two work-reports are equal, the fuzzer continues with block $B_{i+1}$,
+   which can contain a guarantee for the work-report.
 
 ---
 
