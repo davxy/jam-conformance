@@ -1,0 +1,72 @@
+{
+    "config": {
+        "seed": "d2467c028812f4d4",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "management",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 28.79632,
+            "import_max": 28.79632,
+            "import_mean": 28.79632,
+            "import_p50": 28.79632,
+            "import_p75": 28.79632,
+            "import_p90": 28.79632,
+            "import_p99": 28.79632,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: authorizer gas used above the work-package limit",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0xa6b614560c5bd423d4444bab53e4b8d0ff904d9499cf9b4fc17d046d26934093",
+    "mutations": [
+        "WorkPackageSpec#00",
+        "WorkPackageSpec#00",
+        "WorkReport#15"
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "config": {
+        "seed": "586798b4705f969f",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "fuzzy",
+        "fuzzy_profile": "management",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 5,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 1.732349,
+        "import_max": 1.732349,
+        "import_mean": 1.732349,
+        "import_p50": 1.732349,
+        "import_p75": 1.732349,
+        "import_p90": 1.732349,
+        "import_p99": 1.732349,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 2,
+                "minor": 0,
+                "patch": 2
+            },
+            "app_name": "lasair"
+        },
+        "stats": {
+            "steps": 5,
+            "imported": 2,
+            "import_max_step": 5,
+            "import_min": 2.618951,
+            "import_max": 27.325912000000002,
+            "import_mean": 14.972431500000003,
+            "import_p50": 27.325,
+            "import_p75": 27.325,
+            "import_p90": 27.325,
+            "import_p99": 27.325,
+            "import_std_dev": 17.470459665611564
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: refine load above the work-package limits",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0xdf9daadd33cf2396a8cfc745da501e239c5bd4483ff7726c1262266d9d6f1539",
+    "mutations": [
+        "WorkReport#23"
+    ]
+}

@@ -1,0 +1,73 @@
+{
+    "config": {
+        "seed": "2ddd898e37e0dfc2",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 35.342716,
+            "import_max": 35.342716,
+            "import_mean": 35.342716,
+            "import_p50": 35.342716,
+            "import_p75": 35.342716,
+            "import_p90": 35.342716,
+            "import_p99": 35.342716,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: bundle length above the work-package limit",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0x0f7588c34ac2cc6b6d70c84fa443f6145e190f95d8c34b9b6644f143076daf81",
+    "mutations": [
+        "WorkPackageSpec#10",
+        "WorkReport#05",
+        "WorkReport#20",
+        "WorkReport#06"
+    ]
+}

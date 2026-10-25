@@ -1,0 +1,71 @@
+{
+    "config": {
+        "seed": "532901762714969d",
+        "jam_spec": "tiny",
+        "max_steps": 120,
+        "safrole": true,
+        "disputes": true,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 130.707044,
+            "import_max": 130.707044,
+            "import_mean": 130.707044,
+            "import_p50": 130.707044,
+            "import_p75": 130.707044,
+            "import_p90": 130.707044,
+            "import_p99": 130.707044,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: bundle length above the work-package limit",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0xc660e81f368bec662f843427328c2a1711a9cd4c4e6db86d8e2749120b4f2292",
+    "mutations": [
+        "WorkPackageSpec#08",
+        "WorkPackageSpec#09"
+    ]
+}

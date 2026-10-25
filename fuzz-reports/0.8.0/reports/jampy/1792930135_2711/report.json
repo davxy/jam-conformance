@@ -1,0 +1,79 @@
+{
+    "config": {
+        "seed": "5ee026c19ca6112f",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "source": "local",
+        "skip_slots": true,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 9,
+        "imported": 9,
+        "import_max_step": 2,
+        "import_min": 1.403752,
+        "import_max": 9.64162,
+        "import_mean": 4.605096444444444,
+        "import_p50": 4.284,
+        "import_p75": 6.64,
+        "import_p90": 8.14,
+        "import_p99": 9.641,
+        "import_std_dev": 3.0614608814268762
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 9,
+            "imported": 9,
+            "import_max_step": 2,
+            "import_min": 5.302007,
+            "import_max": 873.660372,
+            "import_mean": 280.86837988888885,
+            "import_p50": 221.161,
+            "import_p75": 419.452,
+            "import_p90": 653.047,
+            "import_p99": 873.66,
+            "import_std_dev": 314.5287253579351
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x27da211000250af850a751da6d985436bd378c6bcd3cdb6ffe4fec67280373d8",
+                "got": "0x480920e86b7bdfa78d32ece4494f199cf5c781ac01d0e515d4ac2cf41b403706"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00000000000000002bc0ae3f000000000000000000",
+                        "got": "0x000000000000000000000000000000000000000000"
+                    }
+                }
+            ]
+        }
+    },
+    "mutant_of": null,
+    "mutations": []
+}

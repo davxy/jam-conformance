@@ -1,0 +1,70 @@
+{
+    "config": {
+        "seed": "7795a58d77f4cd7b",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "management",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 4,
+                "patch": 15
+            },
+            "app_name": "JavaJAM"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 12.319737,
+            "import_max": 12.319737,
+            "import_mean": 12.319737,
+            "import_p50": 12.319737,
+            "import_p75": 12.319737,
+            "import_p90": 12.319737,
+            "import_p99": 12.319737,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: authorizer gas used above the work-package limit",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0xacb48a497366f7e7945436b1cd3e13c441d961ee056b9a370286ff66fa1f08ff",
+    "mutations": [
+        "WorkReport#14"
+    ]
+}

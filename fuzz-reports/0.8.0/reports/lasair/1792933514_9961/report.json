@@ -1,0 +1,71 @@
+{
+    "config": {
+        "seed": "800fc737ce3bbe77",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "fuzzy",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 3,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 2,
+                "minor": 0,
+                "patch": 2
+            },
+            "app_name": "lasair"
+        },
+        "stats": {
+            "steps": 3,
+            "imported": 1,
+            "import_max_step": 3,
+            "import_min": 1.917049,
+            "import_max": 1.917049,
+            "import_mean": 1.917049,
+            "import_p50": 1.917049,
+            "import_p75": 1.917049,
+            "import_p90": 1.917049,
+            "import_p99": 1.917049,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: segment count differs from the digest exports",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0x3b05adfb2fcd032a31704524b7dfc457888676b4bd0f18e7a11a1bf77320bca2",
+    "mutations": [
+        "WorkReport#16",
+        "WorkPackageSpec#15"
+    ]
+}
