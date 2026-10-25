@@ -17,6 +17,7 @@
 * javajam (java)
 * lasair (ocaml)
 * pbnjam (ts)
+* pyjamaz (python)
 
 [Summary](./0.8.0/summaries/summary-table.md)
 
@@ -33,7 +34,6 @@
 * jamzilla (go)
 * new-jamneration (go)
 * polkajam (rust)
-* pyjamaz (python)
 * spacejam (rust)
 * strawberry (go)
 * tessera (python)
