@@ -18,6 +18,8 @@
 * lasair (ocaml)
 * pbnjam (ts)
 
+[Summary](./0.8.0/summaries/summary-table.md)
+
 ### GP 0.7.2
 
 * boka (swift)

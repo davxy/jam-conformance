@@ -1,0 +1,79 @@
+{
+    "config": {
+        "seed": "d1b10bca09d9aa0a",
+        "jam_spec": "tiny",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "source": "trace",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 0,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 0,
+            "imported": 0,
+            "import_max_step": 0,
+            "import_min": 0.0,
+            "import_max": 0.0,
+            "import_mean": 0.0,
+            "import_p50": 0.0,
+            "import_p75": 0.0,
+            "import_p90": 0.0,
+            "import_p99": 0.0,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x43162ed715d98b8bd04f390d4ef12c408895127f722ccbf7de97f5664a9fb6fe",
+                "got": "0x59e00152ee0030967d01f7f8ea1b89c6286137f48bbafb6e3154ad71b5fd5162"
+            },
+            "keyvals": [
+                {
+                    "key": "0x0c000000000000000000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00000000782b92f8782b92f8782b92f87226565202722656527b74080000000000782b92f8431f030000000000",
+                        "got": "0x00000000782b92f8782b92f8782b92f87226565200"
+                    }
+                }
+            ]
+        }
+    },
+    "mutant_of": null,
+    "mutations": []
+}
