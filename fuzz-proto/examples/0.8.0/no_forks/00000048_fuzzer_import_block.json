@@ -1,0 +1,46 @@
+{
+    "import_block": {
+        "header": {
+            "parent": "0x25e0e6084732c6bf0defb2ba3a64c5604fd35564a3fe74c415abeb2ffe6d6782",
+            "parent_state_root": "0x325007b65d2617c3543b5696750bc313157082bef4e169277e4018ab9707a278",
+            "extrinsic_hash": "0xc0359929da206515861f0a3e6d73ba115fd98570d3fb439b5450a957d90cf7ce",
+            "slot": 47,
+            "epoch_mark": null,
+            "tickets_mark": null,
+            "author_index": 0,
+            "entropy_source": "0x2794988b8a525e85338e8ecb81112e7952b7aa81270b294e72d2c7bf5553418b366d09f813fe194ce58c43a92d19d0db8405473d2b2a23e417d447738999fa1171d11ad836efbd06ac89f8afcccfb52841a01e4d4d11686c12b4e71dd6ceac0c",
+            "offenders_mark": [],
+            "seal": "0xc3374d033a8c84284a908d74a37c34d60dd7ffa0c971ea53b79f17ea9743f58ea1d131f84863076c62ea8e941dfb7265f0e1c088be7cc2b964fd9da9b9aaa70812df67f0deb7df73aab47af6df18ac505b5a22d040d262afb526298ff3c29b0b"
+        },
+        "extrinsic": {
+            "tickets": [],
+            "preimages": [],
+            "guarantees": [],
+            "assurances": [
+                {
+                    "anchor": "0x25e0e6084732c6bf0defb2ba3a64c5604fd35564a3fe74c415abeb2ffe6d6782",
+                    "bitfield": "0x02",
+                    "validator_index": 1,
+                    "signature": "0xfd788b608638ca9d5e55245e46b1e914307539828c23bbba4100215bb966433dab2451bf36697902fd4fff422062b912729707c39c59aa777a6944b8a6397107"
+                },
+                {
+                    "anchor": "0x25e0e6084732c6bf0defb2ba3a64c5604fd35564a3fe74c415abeb2ffe6d6782",
+                    "bitfield": "0x02",
+                    "validator_index": 2,
+                    "signature": "0x8b3791994513207ff0384da11b9665532e37ca12b0d028ef5ec91411cf8715a43b9db86bb429870a53255edfdcb3c5253f47071a2c9910545ce1da370a2d9f0e"
+                },
+                {
+                    "anchor": "0x25e0e6084732c6bf0defb2ba3a64c5604fd35564a3fe74c415abeb2ffe6d6782",
+                    "bitfield": "0x02",
+                    "validator_index": 4,
+                    "signature": "0x1e6bd03fa24b7e2f7a669417a29be9cfcd12190a3f443dc478181b55a0736446f091040367316b2d29183d2eafffd84b5e9de33059dfea061db0c452fee75704"
+                }
+            ],
+            "disputes": {
+                "verdicts": [],
+                "culprits": [],
+                "faults": []
+            }
+        }
+    }
+}
