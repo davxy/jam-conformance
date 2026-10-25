@@ -1,3 +1,3 @@
 {
-    "error": "Local chain error: block execution failure: safrole error: tickets were found outside of lottery period"
+    "error": "Local chain error: block header verification failure: InvalidTicketsMark"
 }

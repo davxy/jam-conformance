@@ -1,3 +1,3 @@
 {
-    "error": "Local chain error: block execution failure: reports error: erasure-coded shard count differs from the active validator count"
+    "error": "Local chain error: block execution failure: reports error: work report with no work results"
 }

@@ -3,14 +3,14 @@
         "header": {
             "parent": "0xe7798d30c2e6a2aaff94f1ad5e91eaec7f8ec2d9d95d881edef9b2ae625872f6",
             "parent_state_root": "0x5763b77e460ec7e4c4b53d64a888072aab10787f2c46611fde80971abbb7ef06",
-            "extrinsic_hash": "0xad60886b0a6043d49cf8864fcafe99768d0079b077ee4b80c4a460fcfa6c6973",
+            "extrinsic_hash": "0x198cb5428381a4256561809331426fdded5507ecaa0d71a9170a6961b85ab0c2",
             "slot": 7,
             "epoch_mark": null,
             "tickets_mark": null,
             "author_index": 4,
             "entropy_source": "0xcdeb6152ec95c3f8654f04eeeccbd6087354b51a40fd453f609cc2ec8d552c6c90cdbf8633ac2cdc4d2bbba612fa26069a44f01c580623012584ce683402d108af92715b1cde2d58fc9b8f2fc3836435420030dd3640bd9112bef61b2914050a",
             "offenders_mark": [],
-            "seal": "0x496467666003d9c29f98a06381ed78d3bfe64673919040f6647bc2e1b074db83dbd7dd6650c70447cb14b7fc36dc3ce4e16440839a8d61031da8e3e5f7fe131cafc59368e5660c20d54faf75f125d597f4b205a4d6db49bbb6295099c3421611"
+            "seal": "0x496467666003d9c29f98a06381ed78d3bfe64673919040f6647bc2e1b074db83d5c4e409717f082be830c308311d105ccd7c8de5db779cecb2f07e5410adab12c35c454b3f1569f1b4f29ca2069d35d89939c3862d0b192f8c4fb3b5b88bc403"
         },
         "extrinsic": {
             "tickets": [
@@ -41,7 +41,7 @@
                         },
                         "context": {
                             "anchor": "0x17010e1699a7e419f395831be2a3ec0a0c54c2e3c377057ddf283c9227b0c9a6",
-                            "anchor_slot": 772,
+                            "anchor_slot": 4,
                             "state_root": "0xf8533c84f282364387f245067dfb2a1501ce3ff6a3535a9b51bf6f85aa51c63e",
                             "beefy_root": "0xb4c11951957c6f8f642c4af61cd6b24640fec6dc7fc607ee8206a99e92410d30",
                             "lookup_anchor": "0x17010e1699a7e419f395831be2a3ec0a0c54c2e3c377057ddf283c9227b0c9a6",
@@ -54,14 +54,9 @@
                         },
                         "core_index": 0,
                         "authorizer_hash": "0x2357426f2313559a271d6782dc00197b379f79cbe3c6a1e72f61f7b592c509f8",
-                        "auth_gas_used": 18446744073709551509,
+                        "auth_gas_used": 22,
                         "auth_output": "0x",
-                        "segment_root_lookup": [
-                            {
-                                "work_package_hash": "0x210b0bbf1220d2b992181a0fc07678716eff0ae1dd23edb815ef6591c3f97cab",
-                                "segment_tree_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
-                            }
-                        ],
+                        "segment_root_lookup": [],
                         "results": [
                             {
                                 "service_id": 0,
@@ -75,7 +70,7 @@
                                     "gas_used": 14119,
                                     "imports": 0,
                                     "extrinsic_count": 1,
-                                    "extrinsic_size": 0,
+                                    "extrinsic_size": 12,
                                     "exports": 0
                                 }
                             },
@@ -91,7 +86,7 @@
                                     "gas_used": 14142,
                                     "imports": 0,
                                     "extrinsic_count": 7,
-                                    "extrinsic_size": 0,
+                                    "extrinsic_size": 434,
                                     "exports": 0
                                 }
                             },
@@ -105,14 +100,14 @@
                                 },
                                 "refine_load": {
                                     "gas_used": 14110,
-                                    "imports": 3073,
+                                    "imports": 0,
                                     "extrinsic_count": 5,
-                                    "extrinsic_size": 0,
+                                    "extrinsic_size": 388,
                                     "exports": 0
                                 }
                             },
                             {
-                                "service_id": 4294967295,
+                                "service_id": 0,
                                 "code_hash": "0xfff67606e2ac9d59e839e2e4f769afaffc05a3afef916a28b04309969cf8075d",
                                 "payload_hash": "0x474db084a8a927b3397bc86b43f28329b06dd730cc3a9d96bb8ea02263401ace",
                                 "accumulate_gas": 2000000,
@@ -123,7 +118,7 @@
                                     "gas_used": 14123,
                                     "imports": 0,
                                     "extrinsic_count": 2,
-                                    "extrinsic_size": 0,
+                                    "extrinsic_size": 98,
                                     "exports": 0
                                 }
                             },
@@ -139,7 +134,7 @@
                                     "gas_used": 14129,
                                     "imports": 0,
                                     "extrinsic_count": 4,
-                                    "extrinsic_size": 0,
+                                    "extrinsic_size": 215,
                                     "exports": 0
                                 }
                             }
@@ -149,15 +144,7 @@
                     "signatures": [
                         {
                             "validator_index": 1,
-                            "signature": "0x7f15013d3796c4ad981a5acba1ff76645ed4e0d7bff9bcfd0909ac8a2d406bb9febceda6f621a1345d64532e661012b212c9e774413788fb00ee6bc58b41c40f"
-                        },
-                        {
-                            "validator_index": 2,
-                            "signature": "0xb8b5664844ecb0686fb227db3c4fef55ce9705ff3b93887f152bdd37baa571f1327f1ab950550ae60f4f442bb8853e6dc37cd94a2cf20177c4112e1b6ae7f00f"
-                        },
-                        {
-                            "validator_index": 4,
-                            "signature": "0xeef8028e808b40ccc1fa285d331b5e40ef1c75c1e2e9bed3ccb4aa4410780071a7823665340ca002731ece345eea9cd545dd954818448cb0390d0a6800b9d804"
+                            "signature": "0x9069e648c5983533d106733a1f5d057ed2b94711e923524830c00e57125c00ebda6e4c76a91bb631655aabd6f5c95dd3c47c33e781bf2e628e0694f4493e040a"
                         }
                     ]
                 },

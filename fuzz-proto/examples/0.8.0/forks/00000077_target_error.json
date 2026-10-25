@@ -1,3 +1,3 @@
 {
-    "error": "Local chain error: block execution failure: reports error: report rotation before last"
+    "error": "Local chain error: invalid parent state root (expected: 0x948fbe1e565fad8e..., actual: 0x949dbe1f5e5f2d8e...)"
 }
