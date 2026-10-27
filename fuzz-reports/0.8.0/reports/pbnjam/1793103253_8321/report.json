@@ -1,0 +1,79 @@
+{
+    "config": {
+        "seed": "c4e7c70774c8f97e",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "fuzzy",
+        "fuzzy_profile": "misc",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 5,
+        "imported": 5,
+        "import_max_step": 2,
+        "import_min": 1.450856,
+        "import_max": 9.443715000000001,
+        "import_mean": 4.9001152,
+        "import_p50": 5.359,
+        "import_p75": 6.217,
+        "import_p90": 9.443,
+        "import_p99": 9.443,
+        "import_std_dev": 3.2684057573189564
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 5,
+            "imported": 5,
+            "import_max_step": 2,
+            "import_min": 20.574194000000002,
+            "import_max": 59.885875,
+            "import_mean": 43.540741,
+            "import_p50": 40.883,
+            "import_p75": 55.765,
+            "import_p90": 59.885,
+            "import_p99": 59.885,
+            "import_std_dev": 15.490411112503308
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xf0243db128239f6c024136cfb078ecbb76d7130878599dbd76960ce91d05128c",
+                "got": "0x6c4e651606fdeac1e57a911c3e070d92dac995532eae37994476626fce945b7a"
+            },
+            "keyvals": [
+                {
+                    "key": "0xff550038006500d70000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d2be519836c597853fe606645d3c82d581f621062c07a141dbff9045af5042e1b83b04000000000010270000000000001027000000000000d336020000000000000000000000000002000000020000000400000000000000",
+                        "got": "0x00d2be519836c597853fe606645d3c82d581f621062c07a141dbff9045af5042e1b83b04000000000010270000000000001027000000000000d336020000000000000000000000000002000000020000000500000000000000"
+                    }
+                }
+            ]
+        }
+    },
+    "mutant_of": null,
+    "mutations": []
+}
