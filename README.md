@@ -20,7 +20,6 @@ testing infrastructure.
 - [fuzz-proto](./fuzz-proto) - Fuzzer protocol specification
 - [fuzz-reports](./fuzz-reports) - Fuzzer reports
 - [fuzz-perf](./fuzz-perf) - Fuzzer performance reports
-- [pvm-traces](./pvm-traces) - PVM execution traces scratchpad
 - [crypto](./crypto) - Crypto primitives vectors
 - [scripts](./scripts) - Conformance testing scripts and tools
 
