@@ -1,6 +1,6 @@
 {
     "config": {
-        "seed": "4dfc7b7b908cc5a6",
+        "seed": "79036f2133141a13",
         "jam_spec": "tiny",
         "max_steps": 4294967295,
         "safrole": false,
@@ -18,13 +18,13 @@
         "steps": 3,
         "imported": 1,
         "import_max_step": 3,
-        "import_min": 9.390583,
-        "import_max": 9.390583,
-        "import_mean": 9.390583,
-        "import_p50": 9.390583,
-        "import_p75": 9.390583,
-        "import_p90": 9.390583,
-        "import_p99": 9.390583,
+        "import_min": 7.487388999999999,
+        "import_max": 7.487388999999999,
+        "import_mean": 7.487388999999999,
+        "import_p50": 7.487388999999999,
+        "import_p75": 7.487388999999999,
+        "import_p90": 7.487388999999999,
+        "import_p99": 7.487388999999999,
         "import_std_dev": 0.0
     },
     "target": {
