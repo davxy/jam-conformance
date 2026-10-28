@@ -1,0 +1,70 @@
+{
+    "config": {
+        "seed": "188ca6e3749323fb",
+        "jam_spec": "tiny",
+        "max_steps": 240,
+        "safrole": true,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": true,
+        "version": "0.1.29-0179ea545edd-dirty"
+    },
+    "stats": {
+        "steps": 130,
+        "imported": 46,
+        "import_max_step": 36,
+        "import_min": 1.751895,
+        "import_max": 127.800857,
+        "import_mean": 16.999454956521735,
+        "import_p50": 10.909,
+        "import_p75": 14.499,
+        "import_p90": 19.926,
+        "import_p99": 127.8,
+        "import_std_dev": 24.744255413076807
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 2,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 3,
+                "patch": 4
+            },
+            "app_name": "PyJAMaz"
+        },
+        "stats": {
+            "steps": 130,
+            "imported": 47,
+            "import_max_step": 26,
+            "import_min": 13.965566,
+            "import_max": 1926.145456,
+            "import_mean": 203.5066553617021,
+            "import_p50": 47.402,
+            "import_p75": 179.153,
+            "import_p90": 260.525,
+            "import_p99": 1926.145,
+            "import_std_dev": 416.29330932488665
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: safrole error: some submitted ticket has not been persisted because of its score",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0x60f6dfcf77d0c474eb90e8165e679fb36c912fae6a2fb474ea1e2be40c77ed5e",
+    "mutations": [
+        "BoundedVec<TicketEnvelope, MaxTicketsPerBlock>#02"
+    ]
+}
