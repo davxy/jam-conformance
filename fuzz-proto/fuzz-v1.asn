@@ -2,7 +2,7 @@
 
 FuzzProtocol DEFINITIONS ::= BEGIN
 
--- `Block`, `Header` as defined by gray paper. 
+-- `Block`, `Header`, `WorkReport`, `SegmentRootLookup` as defined by gray paper.
 -- See also https://github.com/w3f/jamtestvectors/blob/master/lib/jam-types.asn
 
 -- Refer to jam-types.asn in the jam-test-vectors repo
@@ -26,6 +26,8 @@ Features ::= U32
 feature-ancestry INTEGER ::= 1  -- 2^0
 -- Simple forking: forks are supported but always limited to a maximum depth of 1.
 feature-fork INTEGER     ::= 2  -- 2^1
+-- Work-package refinement: the target computes work-reports of bundles.
+feature-refine INTEGER   ::= 4  -- 2^2
 -- Reserved for future extensions.
 feature-reserved INTEGER ::= 2147483648   -- 2^31
 
@@ -76,7 +78,30 @@ Initialize ::= SEQUENCE {
 
 GetState ::= HeaderHash
 
-GetExports ::= OpaqueHash
+-- Arguments of the GP work-report function, and the work-package bundle
+RefineBundle ::= SEQUENCE {
+    -- Core index of the work-report
+    core-index CoreIndex,
+    -- Work-package hash to segments-root dictionary
+    segment-root-lookup SegmentRootLookup,
+    -- Size of the assurer set
+    erasure-shards ValidatorIndex,
+    bundle WorkPackageBundle
+}
+
+-- Parts of the GP work-package bundle, in the order of the GP bundle encoding.
+-- The GP encoding has no length prefix for the three sequences and for each extrinsic.
+WorkPackageBundle ::= SEQUENCE {
+    work-package    WorkPackage,
+    -- Extrinsic data of all the work-items, in work-item order
+    extrinsics      SEQUENCE OF ByteSequence,
+    -- Import segments of all the work-items, in work-item order
+    import-segments SEQUENCE OF Segment,
+    -- Merkle path of each import segment, in the same order
+    justifications  SEQUENCE OF SEQUENCE OF Hash
+}
+
+Segment ::= OCTET STRING (SIZE(4104))
 
 StateRoot ::= StateRootHash
 
@@ -90,6 +115,8 @@ Message ::= CHOICE {
     import-block  [3] ImportBlock,
     get-state     [4] GetState,
     state         [5] State,
+    refine-bundle [6] RefineBundle,
+    work-report   [7] WorkReport,
     error         [255] Error
 }
 
