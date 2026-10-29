@@ -1,0 +1,72 @@
+{
+    "config": {
+        "seed": "9fb9f4a984101712",
+        "jam_spec": "tiny",
+        "max_steps": 1000,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 1,
+        "mutation_ratio": 0.1,
+        "max_mutations": 5,
+        "source": "local",
+        "skip_slots": false,
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
+    },
+    "stats": {
+        "steps": 625,
+        "imported": 209,
+        "import_max_step": 301,
+        "import_min": 1.404198,
+        "import_max": 276.284692,
+        "import_mean": 10.345918478468892,
+        "import_p50": 3.251,
+        "import_p75": 4.213,
+        "import_p90": 6.309,
+        "import_p99": 132.703,
+        "import_std_dev": 32.50224579642751
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 625,
+            "imported": 210,
+            "import_max_step": 269,
+            "import_min": 3.3187569999999997,
+            "import_max": 8099.285632000001,
+            "import_mean": 117.20372055238087,
+            "import_p50": 31.691,
+            "import_p75": 77.054,
+            "import_p90": 204.325,
+            "import_p99": 1087.948,
+            "import_std_dev": 581.050759328219
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block execution failure: reports error: duplicate package",
+            "got": "ok"
+        }
+    },
+    "mutant_of": "0xa489485c43b45a5ba0c5b6d44096f5586eee6cd8440fc41c89d8a833b2b280df",
+    "mutations": [
+        "WorkReport#16",
+        "WorkReport#22",
+        "WorkPackageSpec#17"
+    ]
+}
