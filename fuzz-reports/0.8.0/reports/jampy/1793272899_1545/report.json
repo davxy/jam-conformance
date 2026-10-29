@@ -1,0 +1,68 @@
+{
+    "config": {
+        "seed": "1e0c001732acad39",
+        "jam_spec": "tiny",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "source": "trace",
+        "skip_slots": false,
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
+    },
+    "stats": {
+        "steps": 5,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 1.859489,
+        "import_max": 1.859489,
+        "import_mean": 1.859489,
+        "import_p50": 1.859489,
+        "import_p75": 1.859489,
+        "import_p90": 1.859489,
+        "import_p99": 1.859489,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_name": "jampy"
+        },
+        "stats": {
+            "steps": 5,
+            "imported": 2,
+            "import_max_step": 4,
+            "import_min": 14.177173,
+            "import_max": 15.266577999999999,
+            "import_mean": 14.7218755,
+            "import_p50": 15.266,
+            "import_p75": 15.266,
+            "import_p90": 15.266,
+            "import_p99": 15.266,
+            "import_std_dev": 0.7703256629585303
+        }
+    },
+    "error": {
+        "import_result_diff": {
+            "exp": "Local chain error: block header verification failure: InvalidEpochMark",
+            "got": "ok"
+        }
+    },
+    "mutant_of": null,
+    "mutations": []
+}

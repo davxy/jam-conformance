@@ -1,0 +1,79 @@
+{
+    "config": {
+        "seed": "c0a711be783ee134",
+        "jam_spec": "tiny",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "source": "trace",
+        "skip_slots": false,
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
+    },
+    "stats": {
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 9.290068999999999,
+        "import_max": 9.290068999999999,
+        "import_mean": 9.290068999999999,
+        "import_p50": 9.290068999999999,
+        "import_p75": 9.290068999999999,
+        "import_p90": 9.290068999999999,
+        "import_p99": 9.290068999999999,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 80.471136,
+            "import_max": 80.471136,
+            "import_mean": 80.471136,
+            "import_p50": 80.471136,
+            "import_p75": 80.471136,
+            "import_p90": 80.471136,
+            "import_p99": 80.471136,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0xf0243db128239f6c024136cfb078ecbb76d7130878599dbd76960ce91d05128c",
+                "got": "0x6c4e651606fdeac1e57a911c3e070d92dac995532eae37994476626fce945b7a"
+            },
+            "keyvals": [
+                {
+                    "key": "0xff550038006500d70000000000000000000000000000000000000000000000",
+                    "diff": {
+                        "exp": "0x00d2be519836c597853fe606645d3c82d581f621062c07a141dbff9045af5042e1b83b04000000000010270000000000001027000000000000d336020000000000000000000000000002000000020000000400000000000000",
+                        "got": "0x00d2be519836c597853fe606645d3c82d581f621062c07a141dbff9045af5042e1b83b04000000000010270000000000001027000000000000d336020000000000000000000000000002000000020000000500000000000000"
+                    }
+                }
+            ]
+        }
+    },
+    "mutant_of": null,
+    "mutations": []
+}

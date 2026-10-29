@@ -1,0 +1,86 @@
+{
+    "config": {
+        "seed": "c0a711be783ee134",
+        "jam_spec": "tiny",
+        "max_steps": 4294967295,
+        "safrole": false,
+        "disputes": false,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
+        "mutation_ratio": 0.1,
+        "max_mutations": 0,
+        "source": "trace",
+        "skip_slots": false,
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
+    },
+    "stats": {
+        "steps": 2,
+        "imported": 1,
+        "import_max_step": 2,
+        "import_min": 13.995602,
+        "import_max": 13.995602,
+        "import_mean": 13.995602,
+        "import_p50": 13.995602,
+        "import_p75": 13.995602,
+        "import_p90": 13.995602,
+        "import_p99": 13.995602,
+        "import_std_dev": 0.0
+    },
+    "target": {
+        "info": {
+            "fuzz_version": 1,
+            "fuzz_features": 3,
+            "jam_version": {
+                "major": 0,
+                "minor": 8,
+                "patch": 0
+            },
+            "app_version": {
+                "major": 0,
+                "minor": 7,
+                "patch": 2
+            },
+            "app_name": "pbnj-fuzzer-target"
+        },
+        "stats": {
+            "steps": 2,
+            "imported": 1,
+            "import_max_step": 2,
+            "import_min": 407.017532,
+            "import_max": 407.017532,
+            "import_mean": 407.017532,
+            "import_p50": 407.017532,
+            "import_p75": 407.017532,
+            "import_p90": 407.017532,
+            "import_p99": 407.017532,
+            "import_std_dev": 0.0
+        }
+    },
+    "error": {
+        "state_diff": {
+            "roots": {
+                "exp": "0x31e006d29557bc58e106830e621a4b789402b1476ff8c00456e6c4dd75c0bfd6",
+                "got": "0x3f0cfb0777490164b6ee20e1b629336bdf4c7ebf92e70b0e9379b3b5f5d88b17"
+            },
+            "keyvals": [
+                {
+                    "key": "0x3d5300cfb3435edb7a392317bcfbd2594fda26a12e0a916e7e5a5e4eb06272",
+                    "diff": {
+                        "exp": "0x70d988c64d0646ed6d2269de3e488661e4ed9eafa194b2f611",
+                        "got": "0x"
+                    }
+                },
+                {
+                    "key": "0x3d710071b3025e782e59445239b422f0f0994605fb586c71b14b7e1dd0ce84",
+                    "diff": {
+                        "exp": "0x011d000000",
+                        "got": "0x00"
+                    }
+                }
+            ]
+        }
+    },
+    "mutant_of": null,
+    "mutations": []
+}

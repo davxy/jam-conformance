@@ -53,9 +53,9 @@ GP_VERSION = DEFAULT_GP_VERSION
 
 CURRENT_DIR = os.getcwd()
 
-# Set JAM_CONFORMANCE_DIR (the entry point to the jam-conformance repo) relative to the script's actual location.
+# Set JAM_FUZZING_DIR (the entry point to the jam-fuzzing repo) relative to the script's actual location.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-JAM_CONFORMANCE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+JAM_FUZZING_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
 
 TARGETS_DIR = os.environ.get("JAM_FUZZ_TARGETS_DIR", f"{CURRENT_DIR}/targets")
 
@@ -608,7 +608,7 @@ def run_target(target, log_file, target_spec):
         pass
 
     target_command = [
-        os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+        os.path.join(JAM_FUZZING_DIR, "scripts/target.py"),
         "--spec",
         target_spec,
         "run",
@@ -1035,7 +1035,7 @@ def is_step_file(f):
 def get_full_target_list():
     """Get the list of available targets, optionally filtered by spec version"""
     cmd = [
-        os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+        os.path.join(JAM_FUZZING_DIR, "scripts/target.py"),
         "list",
         "--gp-version",
         GP_VERSION
@@ -1124,7 +1124,7 @@ def get_target(target):
     env["JAM_FUZZ_TARGETS_DIR"] = TARGETS_DIR
 
     target_command = [
-        os.path.join(JAM_CONFORMANCE_DIR, "scripts/target.py"),
+        os.path.join(JAM_FUZZING_DIR, "scripts/target.py"),
         "get",
         target,
     ]
@@ -1174,7 +1174,7 @@ def main():
     # Resolve trace/report directories from --base-dir (default:
     # <jam-conformance>/fuzz-reports/<GP_VERSION>).
     base_dir = args.base_dir or os.path.join(
-        JAM_CONFORMANCE_DIR, "fuzz-reports", GP_VERSION
+        JAM_FUZZING_DIR, "fuzz-reports", GP_VERSION
     )
     args.trace_dir = os.path.join(base_dir, "traces")
     args.report_dir = os.path.join(base_dir, "reports")
