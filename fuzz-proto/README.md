@@ -319,20 +319,24 @@ teams are **strongly encouraged** to perform preliminary self-testing using the
 ### Testing Requirements
 
 - **Targets supporting forks**: Must pass all fuzzer traces in the
-  [`examples/v1/forks`](examples/v1/forks) folder
+  [`examples/0.8.0/forks`](examples/0.8.0/forks) folder
 - **Targets not supporting forks**: Must at least pass all traces in the
-  [`examples/v1/no_forks`](examples/v1/no_forks) folder
+  [`examples/0.8.0/no_forks`](examples/0.8.0/no_forks) folder
 
 ### Running Self-Tests
+
+minifuzz decodes the traces with [jam-types-py](https://github.com/davxy/jam-types-py).
+The installed jam-types-py release must match the Gray Paper version of the traces
+(e.g. `v0.8.0` for `examples/0.8.0`).
 
 Use the minifuzz tool to validate your implementation against the precomputed traces:
 
 ```bash
 # For targets supporting forks
-python minifuzz/minifuzz.py -d examples/v1/forks --target-sock /tmp/jam_target.sock
+python minifuzz/minifuzz.py -d examples/0.8.0/forks --target-sock /tmp/jam_target.sock
 
 # For targets not supporting forks  
-python minifuzz/minifuzz.py -d examples/v1/no_forks --target-sock /tmp/jam_target.sock
+python minifuzz/minifuzz.py -d examples/0.8.0/no_forks --target-sock /tmp/jam_target.sock
 ```
 
 ---
