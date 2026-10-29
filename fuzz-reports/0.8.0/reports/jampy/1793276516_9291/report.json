@@ -1,31 +1,31 @@
 {
     "config": {
-        "seed": "b2bfd5c744856b42",
+        "seed": "1e0c001732acad39",
         "jam_spec": "tiny",
-        "max_steps": 4000,
+        "max_steps": 4294967295,
         "safrole": false,
         "disputes": false,
-        "profile": "fuzzy",
-        "fuzzy_profile": "services",
+        "profile": "full",
+        "fuzzy_profile": "full",
         "max_work_items": 5,
         "mutation_ratio": 0.1,
         "max_mutations": 0,
-        "source": "local",
+        "source": "trace",
         "skip_slots": false,
         "version": "0.1.29-4a8f6b7e9d93-dirty"
     },
     "stats": {
-        "steps": 3198,
-        "imported": 3198,
-        "import_max_step": 1722,
-        "import_min": 1.434207,
-        "import_max": 76.486632,
-        "import_mean": 4.392933393370866,
-        "import_p50": 4.021,
-        "import_p75": 5.501,
-        "import_p90": 7.503,
-        "import_p99": 13.029,
-        "import_std_dev": 3.1812503254933784
+        "steps": 1,
+        "imported": 1,
+        "import_max_step": 1,
+        "import_min": 12.223259,
+        "import_max": 12.223259,
+        "import_mean": 12.223259,
+        "import_p50": 12.223259,
+        "import_p75": 12.223259,
+        "import_p90": 12.223259,
+        "import_p99": 12.223259,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -44,17 +44,17 @@
             "app_name": "jampy"
         },
         "stats": {
-            "steps": 3198,
-            "imported": 3198,
-            "import_max_step": 2,
-            "import_min": 4.569622,
-            "import_max": 1166.4988759999999,
-            "import_mean": 83.24790733020653,
-            "import_p50": 66.454,
-            "import_p75": 124.399,
-            "import_p90": 173.052,
-            "import_p99": 282.699,
-            "import_std_dev": 69.21587925412081
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 2205.5308139999997,
+            "import_max": 2205.5308139999997,
+            "import_mean": 2205.5308139999997,
+            "import_p50": 2205.5308139999997,
+            "import_p75": 2205.5308139999997,
+            "import_p90": 2205.5308139999997,
+            "import_p99": 2205.5308139999997,
+            "import_std_dev": 0.0
         }
     },
     "error": {
