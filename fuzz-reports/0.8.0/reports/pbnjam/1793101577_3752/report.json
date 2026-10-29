@@ -1,31 +1,31 @@
 {
     "config": {
-        "seed": "488827ffa0946e36",
+        "seed": "9987c960496af131",
         "jam_spec": "tiny",
-        "max_steps": 2000,
+        "max_steps": 4294967295,
         "safrole": false,
         "disputes": false,
         "profile": "full",
         "fuzzy_profile": "full",
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5,
-        "source": "local",
+        "max_mutations": 0,
+        "source": "trace",
         "skip_slots": false,
-        "version": "0.1.29-0179ea545edd-dirty"
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
     },
     "stats": {
         "steps": 2,
         "imported": 2,
-        "import_max_step": 2,
-        "import_min": 1.343402,
-        "import_max": 1.398598,
-        "import_mean": 1.371,
-        "import_p50": 1.398,
-        "import_p75": 1.398,
-        "import_p90": 1.398,
-        "import_p99": 1.398,
-        "import_std_dev": 0.03902946589437269
+        "import_max_step": 1,
+        "import_min": 1.327868,
+        "import_max": 1.385418,
+        "import_mean": 1.356643,
+        "import_p50": 1.385,
+        "import_p75": 1.385,
+        "import_p90": 1.385,
+        "import_p99": 1.385,
+        "import_std_dev": 0.0406939952572858
     },
     "target": {
         "info": {
@@ -47,13 +47,13 @@
             "steps": 2,
             "imported": 1,
             "import_max_step": 1,
-            "import_min": 97.70799500000001,
-            "import_max": 97.70799500000001,
-            "import_mean": 97.70799500000001,
-            "import_p50": 97.70799500000001,
-            "import_p75": 97.70799500000001,
-            "import_p90": 97.70799500000001,
-            "import_p99": 97.70799500000001,
+            "import_min": 88.103632,
+            "import_max": 88.103632,
+            "import_mean": 88.103632,
+            "import_p50": 88.103632,
+            "import_p75": 88.103632,
+            "import_p90": 88.103632,
+            "import_p99": 88.103632,
             "import_std_dev": 0.0
         }
     },

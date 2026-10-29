@@ -1,31 +1,31 @@
 {
     "config": {
-        "seed": "234849fed5b6fbde",
+        "seed": "9987c960496af131",
         "jam_spec": "tiny",
-        "max_steps": 240,
-        "safrole": true,
+        "max_steps": 4294967295,
+        "safrole": false,
         "disputes": false,
-        "profile": "validators_management",
-        "fuzzy_profile": "empty",
-        "max_work_items": 3,
+        "profile": "full",
+        "fuzzy_profile": "full",
+        "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5,
-        "source": "local",
+        "max_mutations": 0,
+        "source": "trace",
         "skip_slots": false,
-        "version": "0.1.29-0179ea545edd-dirty"
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
     },
     "stats": {
-        "steps": 66,
-        "imported": 23,
-        "import_max_step": 43,
-        "import_min": 1.8365790000000002,
-        "import_max": 116.80456699999999,
-        "import_mean": 15.07785013043478,
-        "import_p50": 10.295,
-        "import_p75": 14.545,
-        "import_p90": 18.237,
-        "import_p99": 116.804,
-        "import_std_dev": 22.632814195575477
+        "steps": 4,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -44,17 +44,17 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 66,
-            "imported": 24,
-            "import_max_step": 62,
-            "import_min": 22.928334000000003,
-            "import_max": 157.738003,
-            "import_mean": 80.617621,
-            "import_p50": 70.742,
-            "import_p75": 95.651,
-            "import_p90": 148.225,
-            "import_p99": 157.738,
-            "import_std_dev": 37.82531738403362
+            "steps": 4,
+            "imported": 1,
+            "import_max_step": 4,
+            "import_min": 166.78502600000002,
+            "import_max": 166.78502600000002,
+            "import_mean": 166.78502600000002,
+            "import_p50": 166.78502600000002,
+            "import_p75": 166.78502600000002,
+            "import_p90": 166.78502600000002,
+            "import_p99": 166.78502600000002,
+            "import_std_dev": 0.0
         }
     },
     "error": {
@@ -63,8 +63,6 @@
             "got": "ok"
         }
     },
-    "mutant_of": "0x76678f7f7d6eb1ba67988a82d6786ad5720e4df7feaacd5594b32207df829a36",
-    "mutations": [
-        "BoundedVec<TicketEnvelope, MaxTicketsPerBlock>#03"
-    ]
+    "mutant_of": null,
+    "mutations": []
 }

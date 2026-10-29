@@ -1,31 +1,31 @@
 {
     "config": {
-        "seed": "2564ef7b99c92d38",
+        "seed": "9987c960496af131",
         "jam_spec": "tiny",
-        "max_steps": 1000,
+        "max_steps": 4294967295,
         "safrole": false,
         "disputes": false,
-        "profile": "fuzzy",
-        "fuzzy_profile": "services",
+        "profile": "full",
+        "fuzzy_profile": "full",
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5,
-        "source": "local",
+        "max_mutations": 0,
+        "source": "trace",
         "skip_slots": false,
-        "version": "0.1.29-0179ea545edd-dirty"
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
     },
     "stats": {
-        "steps": 498,
-        "imported": 191,
-        "import_max_step": 344,
-        "import_min": 1.473865,
-        "import_max": 12.69081,
-        "import_mean": 4.483495026178006,
-        "import_p50": 4.139,
-        "import_p75": 5.817,
-        "import_p90": 7.776,
-        "import_p99": 12.115,
-        "import_std_dev": 2.2940071216125646
+        "steps": 4,
+        "imported": 1,
+        "import_max_step": 4,
+        "import_min": 11.799482,
+        "import_max": 11.799482,
+        "import_mean": 11.799482,
+        "import_p50": 11.799482,
+        "import_p75": 11.799482,
+        "import_p90": 11.799482,
+        "import_p99": 11.799482,
+        "import_std_dev": 0.0
     },
     "target": {
         "info": {
@@ -44,17 +44,17 @@
             "app_name": "pbnj-fuzzer-target"
         },
         "stats": {
-            "steps": 498,
-            "imported": 191,
-            "import_max_step": 242,
-            "import_min": 30.336621,
-            "import_max": 820.7548959999999,
-            "import_mean": 315.0774425811519,
-            "import_p50": 312.794,
-            "import_p75": 400.844,
-            "import_p90": 530.215,
-            "import_p99": 764.39,
-            "import_std_dev": 169.70722341827607
+            "steps": 4,
+            "imported": 1,
+            "import_max_step": 4,
+            "import_min": 464.597443,
+            "import_max": 464.597443,
+            "import_mean": 464.597443,
+            "import_p50": 464.597443,
+            "import_p75": 464.597443,
+            "import_p90": 464.597443,
+            "import_p99": 464.597443,
+            "import_std_dev": 0.0
         }
     },
     "error": {

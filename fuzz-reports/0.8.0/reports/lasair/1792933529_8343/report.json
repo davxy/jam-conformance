@@ -1,30 +1,30 @@
 {
     "config": {
-        "seed": "586798b4705f969f",
+        "seed": "6a540c1464141011",
         "jam_spec": "tiny",
-        "max_steps": 1000,
+        "max_steps": 4294967295,
         "safrole": false,
         "disputes": false,
-        "profile": "fuzzy",
-        "fuzzy_profile": "management",
+        "profile": "full",
+        "fuzzy_profile": "full",
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5,
-        "source": "local",
+        "max_mutations": 0,
+        "source": "trace",
         "skip_slots": false,
-        "version": "0.1.29-0179ea545edd-dirty"
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
     },
     "stats": {
-        "steps": 5,
-        "imported": 1,
-        "import_max_step": 4,
-        "import_min": 1.732349,
-        "import_max": 1.732349,
-        "import_mean": 1.732349,
-        "import_p50": 1.732349,
-        "import_p75": 1.732349,
-        "import_p90": 1.732349,
-        "import_p99": 1.732349,
+        "steps": 1,
+        "imported": 0,
+        "import_max_step": 0,
+        "import_min": 0.0,
+        "import_max": 0.0,
+        "import_mean": 0.0,
+        "import_p50": 0.0,
+        "import_p75": 0.0,
+        "import_p90": 0.0,
+        "import_p99": 0.0,
         "import_std_dev": 0.0
     },
     "target": {
@@ -44,17 +44,17 @@
             "app_name": "lasair"
         },
         "stats": {
-            "steps": 5,
-            "imported": 2,
-            "import_max_step": 5,
-            "import_min": 2.618951,
-            "import_max": 27.325912000000002,
-            "import_mean": 14.972431500000003,
-            "import_p50": 27.325,
-            "import_p75": 27.325,
-            "import_p90": 27.325,
-            "import_p99": 27.325,
-            "import_std_dev": 17.470459665611564
+            "steps": 1,
+            "imported": 1,
+            "import_max_step": 1,
+            "import_min": 26.795026999999997,
+            "import_max": 26.795026999999997,
+            "import_mean": 26.795026999999997,
+            "import_p50": 26.795026999999997,
+            "import_p75": 26.795026999999997,
+            "import_p90": 26.795026999999997,
+            "import_p99": 26.795026999999997,
+            "import_std_dev": 0.0
         }
     },
     "error": {
@@ -63,8 +63,6 @@
             "got": "ok"
         }
     },
-    "mutant_of": "0xdf9daadd33cf2396a8cfc745da501e239c5bd4483ff7726c1262266d9d6f1539",
-    "mutations": [
-        "WorkReport#23"
-    ]
+    "mutant_of": null,
+    "mutations": []
 }

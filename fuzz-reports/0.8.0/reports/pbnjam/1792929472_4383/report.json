@@ -1,31 +1,31 @@
 {
     "config": {
-        "seed": "8e2b8ec781dab8b0",
+        "seed": "9987c960496af131",
         "jam_spec": "tiny",
-        "max_steps": 1000,
+        "max_steps": 4294967295,
         "safrole": false,
         "disputes": false,
         "profile": "full",
         "fuzzy_profile": "full",
         "max_work_items": 5,
         "mutation_ratio": 0.1,
-        "max_mutations": 5,
-        "source": "local",
+        "max_mutations": 0,
+        "source": "trace",
         "skip_slots": false,
-        "version": "0.1.29-0179ea545edd-dirty"
+        "version": "0.1.29-4a8f6b7e9d93-dirty"
     },
     "stats": {
         "steps": 3,
         "imported": 2,
         "import_max_step": 2,
-        "import_min": 1.735704,
-        "import_max": 1.79646,
-        "import_mean": 1.766082,
-        "import_p50": 1.796,
-        "import_p75": 1.796,
-        "import_p90": 1.796,
-        "import_p99": 1.796,
-        "import_std_dev": 0.042960979597769906
+        "import_min": 1.315084,
+        "import_max": 1.4228299999999998,
+        "import_mean": 1.368957,
+        "import_p50": 1.422,
+        "import_p75": 1.422,
+        "import_p90": 1.422,
+        "import_p99": 1.422,
+        "import_std_dev": 0.07618792724572575
     },
     "target": {
         "info": {
@@ -47,13 +47,13 @@
             "steps": 3,
             "imported": 1,
             "import_max_step": 2,
-            "import_min": 94.55982999999999,
-            "import_max": 94.55982999999999,
-            "import_mean": 94.55982999999999,
-            "import_p50": 94.55982999999999,
-            "import_p75": 94.55982999999999,
-            "import_p90": 94.55982999999999,
-            "import_p99": 94.55982999999999,
+            "import_min": 98.70606799999999,
+            "import_max": 98.70606799999999,
+            "import_mean": 98.70606799999999,
+            "import_p50": 98.70606799999999,
+            "import_p75": 98.70606799999999,
+            "import_p90": 98.70606799999999,
+            "import_p99": 98.70606799999999,
             "import_std_dev": 0.0
         }
     },
